@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-img :src="imgSrc"
-           aspect-ratio="1.7">
+    <v-img :src="getImgUrl('2019-01-10-12-29-23.jpg')"
+           aspect-ratio="2.5">
       <v-layout align-center justify-center row fill-height>
         <v-flex text-xs-center>
           <span class="text-shadow display-2 font-weight-light">
@@ -24,7 +24,10 @@ export default {
 		text: {type: String}
 	},
 	methods: {
-	},
+    getImgUrl(img) {
+      return require("../assets/" + img);
+    }
+  },
 }
 </script>
 <style>

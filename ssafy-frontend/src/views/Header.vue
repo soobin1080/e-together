@@ -1,6 +1,6 @@
 <template>
 <div>
-<v-navigation-drawer v-model="sidebar" app>
+<v-navigation-drawer v-model="sidebar" fixed temporary>
       <v-list>
         <v-list-item
           v-for="item in menuItems"
@@ -21,7 +21,7 @@
       </span>
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
-          {{ appTitle }}
+          <strong>{{ appTitle }}</strong>
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -36,20 +36,6 @@
       </v-toolbar-items>
     </v-app-bar>
 </div>
-  <!-- <div>
-    <b-navbar toggleable="lg" type="dark" variant="info">
-      <router-link to="/"><b-navbar-brand>Blog</b-navbar-brand></router-link>
-
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
-          <b-nav-item><router-link to="/post">Post</router-link></b-nav-item>
-          <b-nav-item><router-link to="/portfolio">Portfolio</router-link></b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
-  </div> -->
 </template>
 
 <script>

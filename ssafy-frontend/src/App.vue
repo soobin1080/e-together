@@ -1,15 +1,20 @@
 <template>
   <v-app>
+	   <Header></Header>
     <v-content>
-      <Header></Header>
+     
       <router-view />
+	  
     </v-content>
+	<Footer></Footer>
+	
   </v-app>
 </template>
 
 <script>
 import store from "./store";
 import Header from "./views/Header";
+import Footer from "./views/Footer";
 
 export default {
   name: "App",
@@ -20,7 +25,8 @@ export default {
     };
   },
   components: {
-    Header
+	Header,
+	Footer
   }
 };
 </script>
