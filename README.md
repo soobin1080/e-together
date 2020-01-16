@@ -54,7 +54,7 @@ $ npm list
   (반응형 웹 만들기 - 이미지 출력 설정, 텍스트 정렬)
 
   ```html
-  <p class="mr-4 text-center text-sm-left" >
+  <p class="mr-4 text-center text-sm-left" >
   <v-flex d-none d-sm-flex>
   ```
 
@@ -108,8 +108,7 @@ $ npm list
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
-          <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">                   {{ item.title }}
-          </v-btn>
+          <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path"> {{ item.title }} </v-btn>
         </v-toolbar-items>
       </v-app-bar>
   ```
@@ -235,10 +234,8 @@ $ npm list
   (Firebase 호스팅 활용)
 
   ```
-  $ npm run build 
-  
+  $ npm run build
   $ firebase init - 호스팅 설정
-  
   $ firebase deploy
   ```
 
