@@ -47,7 +47,7 @@ $ npm list
 
   (스켈레톤 코드의 데이터 구조 파악 및 Firebase Database 구축 (Portfolio, Post))
 
-  ![image-20200116104853078](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20200116104853078.png)
+  ![image-20200116104853078](./typora-user-images/image-20200116104853078.png)
 
 - Req. 3. About Me 리사이징
 
@@ -134,7 +134,7 @@ $ npm list
 
   (Favicon 변경)
   
-  ![image-20200116110916898](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20200116110916898.png)
+  ![image-20200116110916898](./typora-user-images/image-20200116110916898.png)
 
 
 
@@ -144,7 +144,7 @@ $ npm list
 
   (네비게이션 바, 사이드 바 - Header/Footer 컴포넌트 분리)
   
-  ![image-20200116111123092](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20200116111123092.png)
+  ![image-20200116111123092](./typora-user-images/image-20200116111123092.png)
   
   - App.vue
   
