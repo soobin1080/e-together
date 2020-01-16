@@ -27,10 +27,6 @@ $ npm list
 
 - IDE: Visual Studio Code
 
-  ![image-20200116104610614](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20200116104610614.png)![image-20200116104635750](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20200116104635750.png)
-
-  
-
 - Firebase - 데이터베이스 이용
 
   
