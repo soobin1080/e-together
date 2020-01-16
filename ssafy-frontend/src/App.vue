@@ -1,13 +1,10 @@
 <template>
   <v-app>
-	   <Header></Header>
+    <Header></Header>
     <v-content>
-     
       <router-view />
-	  
     </v-content>
-	<Footer></Footer>
-	
+    <Footer></Footer>
   </v-app>
 </template>
 
@@ -25,8 +22,8 @@ export default {
     };
   },
   components: {
-	Header,
-	Footer
+    Header,
+    Footer
   }
 };
 </script>

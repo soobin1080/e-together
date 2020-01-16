@@ -11,7 +11,7 @@
           <v-list-item-content>{{ item.title }}</v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+</v-navigation-drawer>
 
     <v-app-bar app>
       <span class="hidden-sm-and-up">
@@ -48,7 +48,8 @@ export default {
       menuItems: [
           { title: 'Home', path: '/'},
           { title: 'Post', path: '/post'},
-          { title: 'Portfolio', path: '/portfolio'}
+          { title: 'Portfolio', path: '/portfolio'},
+          { title: 'Login', path: '/login'}
      ]
     }
   }

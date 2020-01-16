@@ -36,7 +36,7 @@ export default {
   },
   data() {
     return {
-      portfolios: []
+      portfolios: []     
     };
   },
   components: {
@@ -51,6 +51,9 @@ export default {
     },
     loadMorePortfolios() {
       this.limits=this.limits+4;
+      if(this.limits>=this.portfolios.length){
+        this.loadMore=false;
+      }
     }
   }
 };

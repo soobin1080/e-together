@@ -25,6 +25,20 @@ export default {
 			this.$store.state.accessToken = result.credential.accessToken
 			this.$store.state.user = result.user
 		}
+		// FirebaseService
+        // .auth()
+        // .signInWithEmailAndPassword(this.email, this.pwd)
+        // .then(user => {
+        //   alert("로그인 성공!");
+        //   sessionStorage.setItem("email", firebase.auth().currentUser.email);
+        //   this.loading = false;
+        //   this.$router.push('/dashboard');
+        //   this.$router.go();
+        // })
+        // .catch(error => {
+        //   alert(error);
+        //   this.loading = false;
+        // });
 	},
 	mounted() {
 		console.log(this.$store.state)

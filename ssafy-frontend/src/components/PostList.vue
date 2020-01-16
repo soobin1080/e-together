@@ -40,7 +40,10 @@ export default {
       this.posts = await FirebaseService.getPosts();
     },
     loadMorePosts() {
-		this.limits=this.limits+4;
+	  this.limits=this.limits+4;
+      if(this.limits>=this.posts.length){
+        this.loadMore=false;
+      }
 	}
   }
 };

@@ -47,14 +47,14 @@ $ npm list
 
   (스켈레톤 코드의 데이터 구조 파악 및 Firebase Database 구축 (Portfolio, Post))
 
-  ![image-20200116104853078](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20200116104853078.png)
+  ![image-20200116104853078](./typora-user-images/image-20200116104853078.png)
 
 - Req. 3. About Me 리사이징
 
   (반응형 웹 만들기 - 이미지 출력 설정, 텍스트 정렬)
 
   ```html
-  <p class="mr-4 text-center text-sm-left" >
+  <p class="mr-4 text-center text-sm-left" >
   <v-flex d-none d-sm-flex>
   ```
 
@@ -108,8 +108,7 @@ $ npm list
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-xs-only">
-          <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">                   {{ item.title }}
-          </v-btn>
+          <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path"> {{ item.title }} </v-btn>
         </v-toolbar-items>
       </v-app-bar>
   ```
@@ -134,7 +133,7 @@ $ npm list
 
   (Favicon 변경)
   
-  ![image-20200116110916898](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20200116110916898.png)
+  ![image-20200116110916898](./typora-user-images/image-20200116110916898.png)
 
 
 
@@ -144,7 +143,7 @@ $ npm list
 
   (네비게이션 바, 사이드 바 - Header/Footer 컴포넌트 분리)
   
-  ![image-20200116111123092](C:\Users\multicampus\AppData\Roaming\Typora\typora-user-images\image-20200116111123092.png)
+  ![image-20200116111123092](./typora-user-images/image-20200116111123092.png)
   
   - App.vue
   
@@ -190,8 +189,9 @@ $ npm list
   </style>
   ```
   
-  (커스터마이징 - 더보기 버튼 : 4개씩 limits 늘려주기)
-  
+
+- (커스터마이징 - 더보기 버튼 : 4개씩 limits 늘려주기, DB에 데이터<=limits면 더보기 버튼 사라지기)
+
   ```html
   <script>
   import Portfolio from "@/components/Portfolio";
@@ -220,6 +220,9 @@ $ npm list
       },
       loadMorePortfolios() {
         this.limits=this.limits+4;
+        if(this.limits>=this.portfolios.length){
+          this.loadMore=false;
+        }
       }
     }
   };
@@ -236,9 +239,7 @@ $ npm list
 
   ```
   $ npm run build 
-  
   $ firebase init - 호스팅 설정
-  
   $ firebase deploy
   ```
 
