@@ -37,7 +37,10 @@ export default {
   },
   methods: {
     async getPosts() {
-      this.posts = await FirebaseService.getPosts();
+	  this.posts = await FirebaseService.getPosts();
+	  if(this.limits>=this.posts.length){
+       this.loadMore=false;
+      }
     },
     loadMorePosts() {
 	  this.limits=this.limits+4;

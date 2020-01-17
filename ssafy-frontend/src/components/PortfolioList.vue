@@ -43,11 +43,14 @@ export default {
     Portfolio
   },
   mounted() {
-    this.getPortfolios();
+    this.getPortfolios();    
   },
   methods: {
     async getPortfolios() {
       this.portfolios = await FirebaseService.getPortfolios();
+      if(this.limits>=this.portfolios.length){
+       this.loadMore=false;
+      }
     },
     loadMorePortfolios() {
       this.limits=this.limits+4;
