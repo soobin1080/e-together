@@ -7,7 +7,7 @@
       <!-- About Me -->
       <v-layout my-5>
         <v-flex lg12>
-          <h2 class="headline mb-3">About Me</h2>
+          <h2 class="headline mb-3"><strong>About Me</strong></h2>
           <p class="mr-4 text-center text-sm-left" >
             안녕하세요, SSAFY 참가자 여러분!
             <br />함께 프로젝트를 진행하게 되어서 기쁩니다. Vue는 어렵지 않습니다. 차근차근 하나씩 따라하다보면 어느새 멋진 블로그가
@@ -22,7 +22,7 @@
       <!-- Portfolio -->
       <v-layout my-5>
         <v-flex xs12>
-          <h2 class="headline my-5 text-xs-center">Portfolio</h2>                  
+          <h2 class="headline my-5 text-xs-center"><strong>Portfolio</strong></h2>                  
           <PortfolioList></PortfolioList>
         </v-flex>
       </v-layout>
@@ -30,7 +30,7 @@
       <!-- Post -->
       <v-layout my-5>
         <v-flex xs12>
-          <h2 class="headline my-5 text-xs-center">Post</h2>
+          <h2 class="headline my-5 text-xs-center"><strong>Post</strong></h2>
           <PostList :column="2"></PostList>
         </v-flex>
       </v-layout>
@@ -38,7 +38,7 @@
       <!-- Github -->
       <v-layout my-5>
         <v-flex xs12>
-          <h2 class="headline my-5 text-xs-center">Project</h2>
+          <h2 class="headline my-5 text-xs-center"><strong>Project</strong></h2>
           <RepositoryList></RepositoryList>
         </v-flex>
       </v-layout>
