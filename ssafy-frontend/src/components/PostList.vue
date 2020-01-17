@@ -53,4 +53,7 @@ export default {
   max-width: 700px;  
   margin: auto;
 }
+button.v-btn.v-btn--contained.theme--dark.v-size--default.info {
+    float: right;
+}
 </style>

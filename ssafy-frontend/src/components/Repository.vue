@@ -3,7 +3,7 @@
     <v-layout>
 
       <v-flex xs12>
-        <h2 class="font-weight-regular">{{repos.path_with_namespace}}</h2>
+        <h3 class="font-weight-regular"><a :href="repos.web_url" target="_blank" style="color:dimgray;"> {{repos.path_with_namespace}}</a></h3>
         <p class="subheading mb-1 grey--text text--darken-1 font-weight-light">{{repos.namespace.name}}</p>
       </v-flex>
 
@@ -36,12 +36,19 @@ export default {
 </script>
 
 <style scoped>
-h2{
+h3{
  
   white-space: nowrap;  
 
-  overflow-x: scroll;
+  overflow-x: auto;
+  
   overflow-y: hidden;
+ 
   
 }
+::-webkit-scrollbar{height: 5px;}
+::-webkit-scrollbar-track {background-color:#f1f1f1;}
+::-webkit-scrollbar-thumb {background-color:lightgray;border-radius: 10px;}
+::-webkit-scrollbar-thumb:hover {background: dimgray;}
+
 </style>

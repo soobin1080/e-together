@@ -1,5 +1,5 @@
 <template>
-  <v-layout py-4 h-100>
+  <v-layout py-4 h-90>
     <v-flex>
       <div class="caption">{{formatedDate}}</div>
       <h2 class="color-333 headline font-weight-light">{{title}}</h2>
