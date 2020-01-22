@@ -24,11 +24,6 @@
 <!--         <package name="com.ssafy.edu.hrm"/> -->
 <!--     </typeAliases> -->
     <mappers>
-<!--         <mapper resource="mapper/posts.xml"/>
-        <mapper resource="mapper/member.xml"/>
-        <mapper resource="mapper/comments.xml"/>
-        <mapper resource="mapper/food.xml"/>
-        <mapper resource="mapper/intake.xml"/>
-        <mapper resource="mapper/notices.xml"/> -->
+        <mapper resource="mapper/user.xml"/>
     </mappers>
 </configuration>
