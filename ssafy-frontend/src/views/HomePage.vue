@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <ImgBanner>
       <div class="text-center text-white" style="line-height:1.2em;" slot="text" v-resize-text>ahnzzi94<br/><p style="font-size:0.2em;">집수니의 바깥 나드리</p></div>
     </ImgBanner>
@@ -52,6 +53,7 @@ import PortfolioList from "../components/PortfolioList";
 import PostList from "../components/PostList";
 import RepositoryList from "../components/RepositoryList";
 import ResizeText from "vue-resize-text";
+//import LoginModal from "../components/LoginModal"
 
 export default {
   name: "HomePage",
@@ -59,7 +61,8 @@ export default {
     ImgBanner,
     PortfolioList,
     PostList,
-    RepositoryList
+    RepositoryList,
+   // LoginModal,
   },
   methods: {
     getImgUrl(img) {

@@ -4,6 +4,7 @@ import 'vuetify/dist/vuetify.min.css'
 import VueSimplemde from 'vue-simplemde'
 import 'simplemde/dist/simplemde.min.css'
 import 'font-awesome/css/font-awesome.min.css'
+import VModal from 'vue-js-modal'
 
 import App from './App.vue'
 import router from './router'
@@ -23,6 +24,8 @@ Vue.use(Vuetify)
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
+Vue.use(VModal)
+
 
 new Vue({
   router,

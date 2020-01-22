@@ -1,5 +1,6 @@
 <template>
 <div>
+  <LoginModal></LoginModal>
 <v-navigation-drawer v-model="sidebar" fixed temporary>
       <v-list>
         <v-list-item
@@ -9,6 +10,9 @@
           <v-list-item-action>           
           </v-list-item-action>
           <v-list-item-content>{{ item.title }}</v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="$modal.show('login-modal')">
+          <v-list-item-content>Login</v-list-item-content>
         </v-list-item>
       </v-list>
 </v-navigation-drawer>
@@ -33,14 +37,21 @@
           :to="item.path">         
           {{ item.title }}
         </v-btn>
+        <v-btn @click="$modal.show('login-modal')">
+          Login
+        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
 </div>
 </template>
 
 <script>
+import LoginModal from '../components/LoginModal'
 export default {
   name: "Header",
+  components: {
+    LoginModal,
+  },
   data(){
     return {
       appTitle: 'Blog',
@@ -49,7 +60,7 @@ export default {
           { title: 'Home', path: '/'},
           { title: 'Post', path: '/post'},
           { title: 'Portfolio', path: '/portfolio'},
-          { title: 'Login', path: '/login'}
+          //{ title: 'Login', path: '/login'}
      ]
     }
   }
