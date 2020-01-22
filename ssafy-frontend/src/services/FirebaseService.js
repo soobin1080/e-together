@@ -5,18 +5,19 @@ import 'firebase/auth'
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
 
+
 // Setup Firebase
 // Do change to your own firebase configuration
 const firebaseConfig = {
-	apiKey: "AIzaSyAZx47EfWe-nSTqFC4e1pcatIhZcaj-sVU",
-	authDomain: "ssafy-frontend-13a9b.firebaseapp.com",
-	databaseURL: "https://ssafy-frontend-13a9b.firebaseio.com",
-	projectId: "ssafy-frontend-13a9b",
-	storageBucket: "ssafy-frontend-13a9b.appspot.com",
-	messagingSenderId: "836381237242",
-	appId: "1:836381237242:web:cc7c54c19bb76dfb2b0e43",
-	measurementId: "G-KYLMQYL2QD"
-  }
+  apiKey: "AIzaSyDsZyLT45vBk_XE32xRyM8MM9dA6HKOCsQ",
+  authDomain: "solar-virtue-258705.firebaseapp.com",
+  databaseURL: "https://solar-virtue-258705.firebaseio.com",
+  projectId: "solar-virtue-258705",
+  storageBucket: "solar-virtue-258705.appspot.com",
+  messagingSenderId: "153925964602",
+  appId: "1:153925964602:web:76986ed1f3a73852bd7603",
+  measurementId: "G-T6D7YR0J51"
+};
 firebase.initializeApp(firebaseConfig)
 
 const firestore = firebase.firestore()
@@ -64,6 +65,7 @@ export default {
 		})
 	},
 	loginWithGoogle() {
+		console.log('google active')
 		let provider = new firebase.auth.GoogleAuthProvider()
 		return firebase.auth().signInWithPopup(provider).then(function(result) {
 			let accessToken = result.credential.accessToken
@@ -72,5 +74,21 @@ export default {
 		}).catch(function(error) {
 			console.error('[Google Login Error]', error)
 		})
+	},
+	loginWithFackbook() {
+		console.log('facebook active')
+		var provider = new firebase.auth.FacebookAuthProvider();
+		return firebase.auth().signInWithPopup(provider).then(function(result) {
+			console.log(result)
+			let accessToken = result.credential.accessToken
+			let user = result.user
+			//return result
+		}).catch(function(error) {
+			console.log('[Facebook Login Error]', error)
+			// let errorCode = error.code;
+			// let errorMessage = error.message;
+			// let email = error.email;
+			// let credential = error.credential;
+		});
 	}
 }
