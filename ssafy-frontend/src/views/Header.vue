@@ -2,19 +2,32 @@
 <div>
   <LoginModal></LoginModal>
 <v-navigation-drawer v-model="sidebar" fixed temporary>
-      <v-list>
-        <v-list-item
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.path">
-          <v-list-item-action>           
-          </v-list-item-action>
-          <v-list-item-content>{{ item.title }}</v-list-item-content>
-        </v-list-item>
-        <v-list-item @click="$modal.show('login-modal')">
-          <v-list-item-content>Login</v-list-item-content>
-        </v-list-item>
-      </v-list>
+
+    <v-list>
+      <h5 class="ml-5">hello</h5>
+      <v-list-item
+        v-for="item in menuItems"
+        :key="item.title"
+        :to="item.path">
+        <v-list-item-action>           
+        </v-list-item-action>
+        <v-list-item-content>{{ item.title }}</v-list-item-content>
+      </v-list-item>
+      <v-list-item
+        v-if="this.$store.state.user" 
+        @click="$modal.show('login-modal')" 
+        ><v-list-item-action>           
+        </v-list-item-action>
+        <v-list-item-content class="text-center">Logout</v-list-item-content>
+      </v-list-item>
+      <v-list-item
+        v-else 
+        @click="$modal.show('login-modal')" 
+        ><v-list-item-action>           
+        </v-list-item-action>
+        <v-list-item-content class="text-center">Login</v-list-item-content>
+      </v-list-item>
+    </v-list>
 </v-navigation-drawer>
 
     <v-app-bar app>
@@ -37,7 +50,7 @@
           :to="item.path">         
           {{ item.title }}
         </v-btn>
-        <v-btn @click="$modal.show('login-modal')">
+        <v-btn text @click="$modal.show('login-modal')">
           Login
         </v-btn>
       </v-toolbar-items>
@@ -60,7 +73,6 @@ export default {
           { title: 'Home', path: '/'},
           { title: 'Post', path: '/post'},
           { title: 'Portfolio', path: '/portfolio'},
-          //{ title: 'Login', path: '/login'}
      ]
     }
   }
