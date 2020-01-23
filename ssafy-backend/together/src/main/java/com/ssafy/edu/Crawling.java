@@ -6,7 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-public class Main {
+public class Crawling {
 
 	public static void main(String[] args) {
 		// Jsoup를 이용해서 http://www.cgv.co.kr/movies/ 크롤링
