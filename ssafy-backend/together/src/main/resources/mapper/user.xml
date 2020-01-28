@@ -2,9 +2,92 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ssafy.user">
-
-	<select id="findAllUsers" resultType="com.ssafy.edu.model.User">
-		SELECT email, pwd, nickname FROM USER
+	<!-- 로그인 -->
+	<select id="login" parameterType="com.ssafy.edu.model.User" resultType="com.ssafy.edu.model.User">
+		SELECT COUNT(EMAIL) AS COUNT, EMAIL, PWD, NAME, WITHDRAW, AUTH, PHONE
+		FROM USER 
+		WHERE EMAIL = #{email} AND PWD = MD5(#{pwd})
 	</select>
+
+	<!-- 회원가입 탈퇴여부 withdraw = 0, 일반 사용자 auth = 1 -->
+	<insert id="regi" parameterType="com.ssafy.edu.model.User">
+		INSERT INTO USER(EMAIL, PWD, NAME, WITHDRAW, AUTH, PHONE)
+		VALUES(#{email}, MD5(#{pwd}), #{name}, 0, 1, #{phone})
+	</insert>
+
+	<!-- 아이디로 회원 정보 가져오기 -->
+	<select id="findUserByEmail" parameterType="java.lang.String"
+		resultType="com.ssafy.edu.model.User">
+		SELECT EMAIL, PWD, NAME, WITHDRAW, AUTH, PHONE
+		FROM USER 
+		WHERE EMAIL = #{email}
+	</select>
+
+	<!-- 내 정보 가져오기  -->
+	<select id="myselfDetail" parameterType="java.lang.String"
+		resultType="com.ssafy.edu.model.User">
+		SELECT EMAIL, NAME, PHONE, AUTH
+		FROM USER
+		WHERE EMAIL=#{email}
+	</select>
+	
+	
+	<!-- 회원 정보 수정 -->
+	<update id="updateMyself" parameterType="com.ssafy.edu.model.User">
+		UPDATE USER SET NAME=#{name}, EMAIL=#{email}, PHONE = #{phone}
+		WHERE EMAIL=#{email}
+	</update>
+
+	<!-- 회원 정보 삭제 -->
+	<update id="deleteMyself" parameterType="java.lang.String">
+		UPDATE USER SET EMAIL='XXXX', NAME='XXXX', PWD='XXXX', WITHDRAW = 1 WHERE EMAIL=#{email}
+	</update>
+
+	<!-- 모든 회원 검색 -->
+	<select id="findAllUsers" resultType="com.ssafy.edu.model.User">
+		SELECT EMAIL, NAME
+		FROM USER
+		WHERE WITHDRAW=0 AND AUTH=1 ORDER BY EMAIL
+	</select>
+	
+	<!-- email 체크 -->
+	<!-- 개수가 1개이상이면 중복 이메일이 있는 것임 -->
+	<select id="emailCheck" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(EMAIL) FROM USER WHERE EMAIL = #{email}
+	</select>
+	
+	<!-- 로그아웃 -->
+	<select id="logout" parameterType="com.ssafy.edu.model.User" resultType="com.ssafy.edu.model.User">
+		SELECT COUNT(EMAIL) AS COUNT, EMAIL
+		FROM USER WHERE EMAIL=#{email}	
+	</select>
+	
+	<!-- 내 정보 비밀번호 체크 -->
+	<select id="pwdCheck" parameterType="com.ssafy.edu.model.User"
+		resultType="java.lang.Integer">
+		SELECT COUNT(EMAIL) FROM USER
+		WHERE EMAIL=#{email} AND
+		PWD=MD5(#{pwd})
+	</select>
+	
+	<!-- 이메일 찾기 -->
+	<select id="findEmail" parameterType="com.ssafy.edu.model.User"
+		resultType="com.ssafy.edu.model.User">
+		SELECT EMAIL FROM USER
+		WHERE NAME=#{name} AND EMAIL=#{email}
+	</select>
+	
+	<!-- 비밀번호 찾기 전 회원이 있는지 확인  -->
+	<select id="findUserInfo" parameterType="com.ssafy.edu.model.User"
+		resultType="com.ssafy.edu.model.User">
+		SELECT EMAIL, NAME
+		FROM USER
+		WHERE EMAIL=#{email} AND NAME=#{name}
+	</select>
+	
+	<!-- pwd수정 -->
+	<update id="updatePwd" parameterType="com.ssafy.edu.model.User">
+		UPDATE USER SET PWD=MD5(#{pwd}) WHERE EMAIL=#{email}
+	</update>
 	
 </mapper>
