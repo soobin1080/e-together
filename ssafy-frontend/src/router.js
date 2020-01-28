@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HomePage from './views/HomePage.vue'
+import MainPage from './views/MainPage.vue'
 import PostPage from './views/PostPage.vue'
 import PortfolioPage from './views/PortfolioPage.vue'
 import LoginPage from './views/LoginPage.vue'
 import SignInPage from './views/SignInPage.vue'
+import MartPage from './views/MartPage.vue'
 
 Vue.use(Router)
 
@@ -15,7 +16,7 @@ export default new Router({
 		{
 			path: '/',
 			name: 'home',
-			component: HomePage
+			component: MainPage
 		},
 		{
 			path: '/post',
@@ -33,10 +34,10 @@ export default new Router({
 			component: LoginPage
 		},
 		{
-			path: '/signin',
-			name: 'signin',
-			component: SignInPage
 
-		}
+			path: '/mart',
+			name: 'mart',
+			component: MartPage
+		},		
   ]
 })
