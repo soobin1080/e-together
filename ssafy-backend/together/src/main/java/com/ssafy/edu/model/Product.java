@@ -7,21 +7,24 @@ public class Product implements Serializable{
 	private String pro_name;
 	private int price;
 	private String main_category;
+	private String sub_category;
 	private double gram;
-	private String img;
-	
+	private double capacity;
 	public Product() {
 		super();
 	}
-	
-	public Product(int pro_id, String pro_name, int price, String main_category, double gram, String img) {
+
+	public Product(int pro_id, String pro_name, int price, String main_category, String sub_category, double gram,
+			double capacity) {
+
 		super();
 		this.pro_id = pro_id;
 		this.pro_name = pro_name;
 		this.price = price;
 		this.main_category = main_category;
+		this.sub_category = sub_category;
 		this.gram = gram;
-		this.img = img;
+		this.capacity = capacity;
 	}
 	
 
@@ -52,9 +55,14 @@ public class Product implements Serializable{
 	public String getMain_category() {
 		return main_category;
 	}
-
 	public void setMain_category(String main_category) {
 		this.main_category = main_category;
+	}
+	public String getSub_category() {
+		return sub_category;
+	}
+	public void setSub_category(String sub_category) {
+		this.sub_category = sub_category;
 	}
 
 	public double getGram() {
@@ -65,22 +73,20 @@ public class Product implements Serializable{
 		this.gram = gram;
 	}
 
-	public String getImg() {
-		return img;
+	public double getCapacity() {
+		return capacity;
 	}
+	public void setCapacity(double capacity) {
+		this.capacity = capacity;
 
-	public void setImg(String img) {
-		this.img = img;
 	}
 
 	@Override
 	public String toString() {
 		return "Product [pro_id=" + pro_id + ", pro_name=" + pro_name + ", price=" + price + ", main_category="
-				+ main_category + ", gram=" + gram + ", img=" + img + "]";
+
+				+ main_category + ", sub_category=" + sub_category + ", gram=" + gram + ", capacity=" + capacity + "]";
 	}
 
-	
-	
-	
 	
 }
