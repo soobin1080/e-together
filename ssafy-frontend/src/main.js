@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import Vuetify from 'vuetify/lib'
 import 'vuetify/dist/vuetify.min.css'
 import VueSimplemde from 'vue-simplemde'
@@ -21,11 +22,13 @@ Vue.config.productionTip = false
 
 Vue.use(VueSimplemde)
 Vue.use(Vuetify)
+Vue.use(Vuex)
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VModal)
 
+export const eventBus = new Vue()
 
 new Vue({
   router,
