@@ -9,7 +9,9 @@ export default new Vuex.Store({
     user: '',
 
     people: '',
-    money: ''
+    money: '',
+    title: '',
+    body:''
     },
     computed:{
       people(){
