@@ -19,7 +19,7 @@ public class MariaDBTransaction1 {
 	static final String USERNAME = "together";
 	static final String PASSWORD = "together1!";
 
-	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+	public static void main(String[] args) throws SQLException {
 
 		Connection connection = null;
 		PreparedStatement preparedStatementInsert = null;
