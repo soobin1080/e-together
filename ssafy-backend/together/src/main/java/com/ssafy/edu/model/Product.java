@@ -10,12 +10,14 @@ public class Product implements Serializable{
 	private String sub_category;
 	private double gram;
 	private double capacity;
+	private String img;
+
 	public Product() {
 		super();
 	}
 
 	public Product(int pro_id, String pro_name, int price, String main_category, String sub_category, double gram,
-			double capacity) {
+			double capacity, String img) {
 
 		super();
 		this.pro_id = pro_id;
@@ -78,6 +80,14 @@ public class Product implements Serializable{
 	}
 	public void setCapacity(double capacity) {
 		this.capacity = capacity;
+
+	}
+
+	public double getImg() {
+		return capacity;
+	}
+	public void setImg(String img) {
+		this.img = img;
 
 	}
 
