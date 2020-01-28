@@ -8,7 +8,7 @@
       <!-- Post -->
       <v-layout>
         <v-flex xs12>
-          <PostList :limits="4" :load-more="true"></PostList>
+          <PostList :limits="limits" :load-more="loadMore" @morePost="loadMorePost"></PostList>
         </v-flex>
       </v-layout>
 
@@ -22,7 +22,24 @@ import PostList from '../components/PostList'
 import ResizeText from "vue-resize-text";
 
 export default {
-	name: 'PostPage',
+  name: 'PostPage',
+  data() {
+    return {
+      limits: 6,
+      loadMore: true,
+    }
+  },
+  methods: {
+    loadMorePost(postsLength) { // 계산한 값은 다시 하위 컴포넌트로 전달
+      //console.log("postsLength : "+postsLength)
+      if (this.limits + 4 > postsLength) {
+        this.loadMore = false
+        this.limits = postsLength
+            } else {
+            this.limits += 6
+          }
+      },
+  },
 	components: {
 		ImgBanner,
 		PostList,

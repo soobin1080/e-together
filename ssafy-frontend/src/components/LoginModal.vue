@@ -3,17 +3,16 @@
   <div class="box">
     <div class="box-part" id="bp-left">
       <div class="partition" id="partition-register">
-        <div class="partition-title">CREATE ACCOUNT</div>
+        <div class="partition-title">LOGIN</div>
         <div class="partition-form">
-          <form autocomplete="false">
+          <form action="" autocomplete="false" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
             <div class="autocomplete-fix">
               <input type="password">
             </div>
 
-            <input id="n-email" type="text" placeholder="Email">
-            <input id="n-username" type="text" placeholder="Username">
-            <input id="n-password2" type="password" placeholder="Password">
+            <input id="n-email" name="username" type="text" placeholder="Email" v-model="email">
+            <input id="n-password2" type="password" name="password" placeholder="Password" v-model="password">
           </form>
 
           <div style="margin-top: 42px">
@@ -21,9 +20,9 @@
 
           <div class="button-set">
             <router-link to="/signin" tag="span">
-              <button id="goto-signin-btn">Sign In</button>
+              <button id="goto-signin-btn">Sign Up</button>
             </router-link>
-            <button id="register-btn">Register</button>
+            <button id="register-btn" @click="login">Login</button>
           </div>
 
           <button class="large-btn google-btn"  @click="loginWithGoogle">connect with <span>google</span></button>
@@ -45,7 +44,9 @@ export default {
   name: 'LoginModal',
   data () {
     return {
-      modalWidth: MODAL_WIDTH
+      modalWidth: MODAL_WIDTH,
+      email: "",
+      password: "",
     }
   },
   created () {
@@ -70,7 +71,10 @@ export default {
         //this.$store.state.accessToken = result.credential.accessToken
         //this.$store.state.user = result.user
       },
+      login() {
+        
 
+      }
       
     },
 }

@@ -6,6 +6,7 @@ import PortfolioPage from './views/PortfolioPage.vue'
 import LoginPage from './views/LoginPage.vue'
 import SignInPage from './views/SignInPage.vue'
 import MartPage from './views/MartPage.vue'
+import UserInfoPage from './views/UserInfoPage.vue'
 
 Vue.use(Router)
 
@@ -29,15 +30,21 @@ export default new Router({
 			component: PortfolioPage
 		},
 		{
-			path: '/login',
-			name: 'login',
-			component: LoginPage
-		},
-		{
 
 			path: '/mart',
 			name: 'mart',
 			component: MartPage
-		},		
+		},
+		{
+			path: '/signin',
+			name: 'signin',
+			component: SignInPage
+		},
+		{
+			path: '/userinfo',
+			name: 'userinfo',
+			component: UserInfoPage
+
+		},
   ]
 })
