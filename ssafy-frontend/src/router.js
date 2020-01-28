@@ -6,6 +6,7 @@ import PortfolioPage from './views/PortfolioPage.vue'
 import LoginPage from './views/LoginPage.vue'
 import SignInPage from './views/SignInPage.vue'
 import MartPage from './views/MartPage.vue'
+import TeamPage from './views/TeamPage.vue'
 
 Vue.use(Router)
 
@@ -39,5 +40,10 @@ export default new Router({
 			name: 'mart',
 			component: MartPage
 		},		
+		{
+			path: '/team',
+			name: 'team',
+			component: TeamPage
+		},	
   ]
 })
