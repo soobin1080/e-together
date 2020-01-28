@@ -336,9 +336,9 @@ public class UserController {
 
 	@ApiOperation(value = "이메일로 회원 검색하기", response = User.class)
 	@RequestMapping(value = "/findUserByEmail/{email}", method = RequestMethod.GET)
-	public ResponseEntity<User> findUserByEmail(@PathVariable String id) throws Exception {
+	public ResponseEntity<User> findUserByEmail(@PathVariable String email) throws Exception {
 		logger.info("1-------------findUserByEmail-----------------------------" + new Date());
-		User isUser = userService.findUserByEmail(id);
+		User isUser = userService.findUserByEmail(email);
 
 		if (isUser == null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
