@@ -40,7 +40,7 @@
 
 	<!-- 회원 정보 삭제 -->
 	<update id="deleteMyself" parameterType="java.lang.String">
-		UPDATE USER SET EMAIL='XXXX', NAME='XXXX', PWD='XXXX', WITHDRAW = 1 WHERE EMAIL=#{email}
+		UPDATE USER SET EMAIL='XXXX', NAME='XXXX', PWD='XXXX', PHONE='XXXX', WITHDRAW = 1 WHERE EMAIL=#{email}
 	</update>
 
 	<!-- 모든 회원 검색 -->

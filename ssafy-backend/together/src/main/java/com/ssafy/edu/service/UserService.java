@@ -1,102 +1,52 @@
 package com.ssafy.edu.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.edu.dao.UserDaoImpl;
-import com.ssafy.edu.model.User;
+import com.ssafy.edu.model.Role;
+import com.ssafy.edu.model.UserDto;
+import com.ssafy.edu.model.UserEntity;
+import com.ssafy.edu.model.UserRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class UserService implements IUserService {
+@AllArgsConstructor
+public class UserService implements UserDetailsService {
+    private UserRepository userRepository;
 
-	@Autowired
-	private UserDaoImpl userdao;
+    @Transactional
+    public Long joinUser(UserDto userDto) {
+        // 비밀번호 암호화
+               BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+               userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-	@Override
-	@Transactional
-	public User login(User user) {
-		return userdao.login(user);
-	}
+        return userRepository.save(userDto.toEntity()).getId();
+    }
 
-	@Override
-	@Transactional
-	public void regi(User user) {
-		userdao.regi(user);
-	}
+    @Override
+    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
+        Optional<UserEntity> userEntityWrapper = userRepository.findByEmail(userEmail);
+        UserEntity userEntity = userEntityWrapper.get();
 
-	@Override
-	@Transactional
-	public User findUserByEmail(String email) {
-		return userdao.findUserByEmail(email);
-	}
+        List<GrantedAuthority> authorities = new ArrayList<>();
 
-	@Override
-	@Transactional
-	public void updateMyself(User user) {
-		userdao.updateMyself(user);
-	}
+        if (("admin@example.com").equals(userEmail)) {
+            authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
+        } else {
+            authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
+        }
 
-	@Override
-	@Transactional
-	public User myselfDetail(String email) {
-		return userdao.myselfDetail(email);
-	}
-	
-	@Override
-	@Transactional
-	public void deleteMyself(String email) {
-		userdao.deleteMyself(email);
-	}
-
-	@Override
-	@Transactional
-	public List<User> findAllUsers() {
-		return userdao.findAllUsers();
-	}
-	
-	@Override
-	@Transactional
-	public int emailCheck(String email) {
-		return userdao.emailCheck(email);
-	}
-	
-	@Override
-	@Transactional
-	public User logout(User user){
-		return userdao.logout(user);
-	}
-	
-	@Override
-	@Transactional
-	public int pwdCheck(User user) {
-		return userdao.pwdCheck(user);
-	}
-	
-	@Override
-	@Transactional
-	public User findEmail(User user) {
-		return userdao.findEmail(user);
-	}
-	
-	@Override
-	@Transactional
-	public User findUserInfo(User user) {
-		return userdao.findUserInfo(user);
-	}
-	
-	@Override
-	@Transactional
-	public void updatePwd(User user) {
-		userdao.updatePwd(user);
-	}
-
-	@Override
-	public void findPwd(User finduserinfo) {
-		userdao.findPwd(finduserinfo);
-	}
-	
-	
+        return new User(userEntity.getEmail(), userEntity.getPassword(), authorities);
+    }
 }
