@@ -9,20 +9,21 @@
   <v-container fluid>
   <h1 class="text-center mt-5">회원가입</h1>
 
-    <v-text-field
+    <!-- <v-text-field
       v-model="name"
       :rules="nameRules"
       label="name"
       counter=10,
       required
-    ></v-text-field>
+    ></v-text-field> -->
 
     <v-text-field
-      v-model="nickname"
+      v-model="name"
       :rules="nameRules"
-      label="Nickname"
-      counter=10,
+      label="nickname"
+      counter=20,
       required
+      autocomplete="name"
     ></v-text-field>
 
     <v-text-field
@@ -49,23 +50,13 @@
     
 
     <v-col class="d-flex" style="padding-left:0;">
-        <v-select
-          style=" width: 20%;"
-          :items="phoneNumbers"
+        <v-text-field
+          v-model="phone"
           label="phone"
-          :rules="[rules.required]"
-        ></v-select>
-
-        <v-text-field
-          v-model="num_2"  
-          style="width: 39%; padding-left:1%;"
-          :rules="[rules.required, rules.min_4, rules.is_num]"
-          ></v-text-field>
-        <v-text-field
-          v-model="num_3"
-          style="width: 39%; padding-left:1%;"
-          :rules="[rules.required, rules.min_4, rules.is_num]">
-        </v-text-field>
+          :rules="[rules.required, rules.is_num]"
+          required 
+          autocomplete="tel"
+        ></v-text-field>
     </v-col>
 
     <!-- <v-select
@@ -118,9 +109,7 @@ export default {
     name: "",
     email: "",
     nickname: "",
-    num_1: "",
-    num_2: "",
-    num_3: "",
+    phone: "",
     show1: false,
     valid: true,
     password: "",
@@ -133,15 +122,12 @@ export default {
     },
     nameRules: [
       v => !!v || 'Name is required',
-      v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+      v => (v && v.length <= 20) || 'Name must be less than 20 characters',
     ],
     emailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
     ],
-    phoneNumbers: [
-      '010', '011'
-    ]
    
   }),
   methods: {
