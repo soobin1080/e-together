@@ -4,6 +4,7 @@ import MainPage from './views/MainPage.vue'
 import PostPage from './views/PostPage.vue'
 import PortfolioPage from './views/PortfolioPage.vue'
 import LoginPage from './views/LoginPage.vue'
+import SignInPage from './views/SignInPage.vue'
 import MartPage from './views/MartPage.vue'
 
 Vue.use(Router)
@@ -33,6 +34,7 @@ export default new Router({
 			component: LoginPage
 		},
 		{
+
 			path: '/mart',
 			name: 'mart',
 			component: MartPage

@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
 		accessToken: '',
     user: '',
+
     people: '',
     money: ''
     },
@@ -15,6 +16,4 @@ export default new Vuex.Store({
         return this.$store.state.people
       }
     }
-
-
 })

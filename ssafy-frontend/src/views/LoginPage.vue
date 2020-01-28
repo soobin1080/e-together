@@ -20,11 +20,14 @@ export default {
 	},
 	components: {},
 	methods: {
-		async loginWithGoogle() {
-			const result = await FirebaseService.loginWithGoogle()
-			this.$store.state.accessToken = result.credential.accessToken
-			this.$store.state.user = result.user
-		}
+		// async loginWithGoogle() {
+    //   const result = await FirebaseService.loginWithGoogle()
+    //   //console.log(result.user)
+		// 	this.$store.state.accessToken = result.credential.accessToken
+    //   this.$store.state.user = result.user
+
+    //   //console.log(this.$store.state.user)
+		// }
 		// FirebaseService
         // .auth()
         // .signInWithEmailAndPassword(this.email, this.pwd)

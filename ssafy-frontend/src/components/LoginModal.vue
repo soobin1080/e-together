@@ -20,7 +20,9 @@
           </div>
 
           <div class="button-set">
-            <button id="goto-signin-btn">Sign In</button>
+            <router-link to="/signin" tag="span">
+              <button id="goto-signin-btn">Sign In</button>
+            </router-link>
             <button id="register-btn">Register</button>
           </div>
 
@@ -54,9 +56,13 @@ export default {
   methods: {
       async loginWithGoogle() {
         const result = await FirebaseService.loginWithGoogle()
-        console.log(result)
         this.$store.state.accessToken = result.credential.accessToken
         this.$store.state.user = result.user
+        if (result) {
+          this.$modal.hide('login-modal')
+          this.$router.push('/')
+          console.log(this.$store.state.user)
+        }
       },
       async loginWithFackbook() {
         const result = await FirebaseService.loginWithFackbook()
