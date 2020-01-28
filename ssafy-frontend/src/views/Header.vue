@@ -78,6 +78,7 @@ export default {
           { title: 'Home', path: '/'},
           { title: 'Mart', path: '/mart'},
           { title: 'Portfolio', path: '/portfolio'},
+          {title: 'UserInfo', path: '/userinfo'},
      ]
     }
   }
