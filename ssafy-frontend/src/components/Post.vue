@@ -2,7 +2,7 @@
   <v-layout py-4 h-90>
     <v-flex>
       <div class="caption">{{formatedDate}}</div>
-      <h2 class="color-333 headline font-weight-light">{{title}}</h2>
+      <h2 class="color-333 headline font-weight-light mt-2">{{title}}</h2>
       <p class="mb-1 color-666 font-weight-light subheading">{{body}}</p>
     </v-flex>
   </v-layout>

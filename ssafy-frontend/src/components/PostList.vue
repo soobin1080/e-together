@@ -1,6 +1,6 @@
 <template>
   <v-layout mt-5 wrap>
-    <v-flex v-for="i in posts.length > limits ? limits : posts.length" xs12 sm6 lg3 :key="i">
+    <v-flex v-for="i in posts.length > limits ? limits : posts.length" xs12 sm6 lg3 :key="i" p-2>
       <Post class="ma-3" :date="posts[i - 1].created_at" :title="posts[i - 1].title" :body="posts[i - 1].body"></Post>
       <v-divider></v-divider>
     </v-flex>
@@ -21,7 +21,7 @@ export default {
   name: "PostList",
   props: {
     column: { type: Number, default: 1 },
-    limits: { type: Number, default: 4 },
+    limits: { type: Number, default: 6 },
     loadMore: { type: Boolean, default: false }
   },
   data() {
@@ -37,16 +37,14 @@ export default {
   },
   methods: {
     async getPosts() {
-	  this.posts = await FirebaseService.getPosts();
-	  if(this.limits>=this.posts.length){
-       this.loadMore=false;
-      }
-    },
+			this.posts = await FirebaseService.getPosts()
+			if (this.posts.length <= this.limits) {
+				this.loadMore = false;
+			}
+		},
+
     loadMorePosts() {
-	  this.limits=this.limits+4;
-      if(this.limits>=this.posts.length){
-        this.loadMore=false;
-      }
+      this.$emit('morePost', this.posts.length)
 	}
   }
 };

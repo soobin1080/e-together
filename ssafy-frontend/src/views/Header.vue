@@ -38,7 +38,7 @@
       </span>
       <v-toolbar-title>
         <router-link to="/" tag="span" style="cursor: pointer">
-          <strong>{{ appTitle }}</strong>
+          <v-img :src="getImgUrl('etogether.png')" width="100px" />
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -65,14 +65,20 @@ export default {
   components: {
     LoginModal,
   },
+  methods: {
+    getImgUrl(img) {
+      return require("../assets/" + img);
+    }
+  },
   data(){
     return {
       appTitle: 'Blog',
       sidebar: false,
       menuItems: [
           { title: 'Home', path: '/'},
-          { title: 'Post', path: '/post'},
+          { title: 'Mart', path: '/mart'},
           { title: 'Portfolio', path: '/portfolio'},
+          {title: 'UserInfo', path: '/userinfo'},
      ]
     }
   }
