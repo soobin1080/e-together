@@ -1,26 +1,31 @@
 <template>
-  <b-list-group>
+  <div style="width:100%">
     <b-list-group-item style="text-align:center; background-color:lightgrey" >
       <strong >장보기 내역</strong>
     </b-list-group-item>
     <b-list-group-item class="product_table" style="height:350px">
       
       <table style="width:100%; margin:auto"  >
-         <col width="70%" />
-              <col width="30%" />
+         <col width="50%" />
+              <col width="15%" />
+              <col width="35%" />
         <thead>
                 <tr style="text-align:center">
                   <th>항목</th>
                   <th>수량</th>
+                  <th>가격</th>
                 </tr>
               </thead>
               <tbody>
         <tr>
-          <td class="product">
-            {{this.$store.state.title}}
+          <td class="product" style="font-size:9pt">
+            {{this.$store.state.pro_name}}
           </td>
-          <td style="text-align:right">
+          <td class="quantity" style="text-align:right">
            <input type="number" size="small" style="text-align:center; width:85%">
+            </td>
+             <td class="pro_price" style="text-align:right">
+          
             </td>
         </tr>
               </tbody>
@@ -111,8 +116,8 @@
         </tr>
       </table>
     </b-list-group-item>
-    <v-btn @click="list_submit">저장하기</v-btn>
-  </b-list-group>
+    <v-btn block @click="list_submit">저장하기</v-btn>
+  </div>
   
 </template>
 <script>

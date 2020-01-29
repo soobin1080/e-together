@@ -76,7 +76,7 @@ export default {
       sidebar: false,
       menuItems: [
           { title: 'Home', path: '/'},
-          { title: 'Mart', path: '/mart'},
+          { title: 'Mart', path: '/product'},
           { title: 'Portfolio', path: '/portfolio'},
           {title: 'UserInfo', path: '/userinfo'},
      ]

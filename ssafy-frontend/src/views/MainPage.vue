@@ -42,7 +42,7 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {         
         this.snackbar = true;
-        this.$router.push("/mart"); 
+        this.$router.push("/product"); 
         this.$store.state.people=this.people;
         this.$store.state.money=this.money;
       }
@@ -61,10 +61,10 @@ export default {
 .main {
   padding-top: 120px;
   padding-bottom: 120px;
-  width: 600px;
+  width: 450px;
 }
 .btn {
-  width: 580px;
+  width: 430px;
   margin: auto;
 }
 </style>

@@ -20,6 +20,30 @@
         </v-flex>
       </v-layout>
 
+         <!-- About Me -->
+      <v-layout my-5>
+        <v-flex lg12>
+          <h2 class="headline mb-3"><strong>프로젝트 진행사항</strong></h2>
+            
+        </v-flex>
+      </v-layout>
+
+         <!-- About Me -->
+      <v-layout my-5>
+        <v-flex lg12>
+          <h2 class="headline mb-3"><strong>기술 스택</strong></h2>
+            
+        </v-flex>
+      </v-layout>
+
+         <!-- About Me -->
+      <v-layout my-5>
+        <v-flex lg12>
+          <h2 class="headline mb-3"><strong>학습정보</strong></h2>
+           
+        </v-flex>
+      </v-layout>
+
       <!-- Portfolio -->
       <v-layout my-5>
         <v-flex xs12>
@@ -39,7 +63,7 @@
       <!-- Github -->
       <v-layout my-5>
         <v-flex xs12>
-          <h2 class="headline my-5 text-xs-center"><strong>Project</strong></h2>
+          <h2 class="headline my-5 text-xs-center"><strong>Git</strong></h2>
           <RepositoryList></RepositoryList>
         </v-flex>
       </v-layout>
