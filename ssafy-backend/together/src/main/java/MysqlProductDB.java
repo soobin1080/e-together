@@ -34,7 +34,7 @@ public class MysqlProductDB {
 			
 			Elements element = doc.select("ul.em_lnb_lst");
 			
-			while
+			
 			
 
 			for (int i = 1; i <= 15; i++) {
