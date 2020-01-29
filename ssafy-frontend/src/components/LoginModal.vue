@@ -5,25 +5,27 @@
       <div class="partition" id="partition-register">
         <div class="partition-title">LOGIN</div>
         <div class="partition-form">
-          <form action="" autocomplete="false" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-
+          <form action="" autocomplete="false" method="POST">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <div class="autocomplete-fix">
               <input type="password">
             </div>
 
             <input id="n-email" name="username" type="text" placeholder="Email" v-model="email">
             <input id="n-password2" type="password" name="password" placeholder="Password" v-model="password">
+            <div style="margin-top: 42px">
+            </div>
+            <div class="button-set">
+              <router-link to="/signup" tag="span">
+                <button id="goto-signup-btn">Sign Up</button>
+              </router-link>
+              <button id="register-btn" type="submit" @click="login">Login</button>
+            </div>
           </form>
 
-          <div style="margin-top: 42px">
-          </div>
+          
 
-          <div class="button-set">
-            <router-link to="/signin" tag="span">
-              <button id="goto-signin-btn">Sign Up</button>
-            </router-link>
-            <button id="register-btn" @click="login">Login</button>
-          </div>
+          
 
           <button class="large-btn google-btn"  @click="loginWithGoogle">connect with <span>google</span></button>
           <button class="large-btn facebook-btn" @click="loginWithFackbook">connect with <span>facebook</span></button>
@@ -61,7 +63,7 @@ export default {
         this.$store.state.user = result.user
         if (result) {
           this.$modal.hide('login-modal')
-          this.$router.push('/')
+          //this.$router.push('/')
           console.log(this.$store.state.user)
         }
       },
@@ -70,6 +72,13 @@ export default {
         // console.log(result)
         //this.$store.state.accessToken = result.credential.accessToken
         //this.$store.state.user = result.user
+        this.$store.state.accessToken = result.credential.accessToken
+        this.$store.state.user = result.user
+        if (result) {
+          this.$modal.hide('login-modal')
+          //this.$router.push('/')
+          console.log(this.$store.state.user)
+        }
       },
       login() {
         
@@ -193,7 +202,7 @@ $facebook_color: #3880FF;
     margin-bottom: 8px;
   }
   #register-btn,
-  #signin-btn {
+  #signup-btn {
     margin-left: 8px;
   }
   .facebook-btn {

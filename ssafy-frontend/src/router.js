@@ -4,10 +4,11 @@ import MainPage from './views/MainPage.vue'
 import PostPage from './views/PostPage.vue'
 import PortfolioPage from './views/PortfolioPage.vue'
 import LoginPage from './views/LoginPage.vue'
-import SignInPage from './views/SignInPage.vue'
+import SignUpPage from './views/SignUpPage.vue'
 import MartPage from './views/MartPage.vue'
 import TeamPage from './views/TeamPage.vue'
 import UserInfoPage from './views/UserInfoPage.vue'
+import MyBudgetListPage from './views/MyBudgetListPage.vue'
 
 Vue.use(Router)
 
@@ -42,15 +43,20 @@ export default new Router({
 			component: TeamPage
 		},	
 		{
-			path: '/signin',
-			name: 'signin',
-			component: SignInPage
+			path: '/signup',
+			name: 'signup',
+			component: SignUpPage
 		},
 		{
 			path: '/userinfo',
 			name: 'userinfo',
 			component: UserInfoPage
 
+		},
+		{
+			path: '/mylist',
+			name: 'mylist',
+			component: MyBudgetListPage
 		},
   ]
 })
