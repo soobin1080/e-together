@@ -1,11 +1,11 @@
 <template>
   <v-layout mt-5 wrap>
-    <v-flex  v-for="i in product.length > limits ? limits : product.length" xs12 sm6 lg4 :key="i">
+    <v-flex v-for="product in computedPagingProducts" xs12 sm6 lg4 :key="product.pro_name">
       <Product
         class="ma-3"
-        :pro_name="product[i - 1].pro_name"
-        :price="product[i - 1].price"
-        :img="product[i - 1].img"
+        :pro_name="product.pro_name"
+        :price="product.price"
+        :img="product.img"
       ></Product>
       <v-divider></v-divider>
     </v-flex>
@@ -23,10 +23,29 @@ import Product from "@/components/Product";
 
 export default {
   name: "ProductsList",
+  data() {
+    return{
+      pagingProductList : []
+    }
+  },
   props: {
     limits: { type: Number, default: 454 },
     loadMore: { type: Boolean, default: false },
-    product: {type: Object}
+    product: {type: Object},
+    productPerPage: {
+      type: Number,
+    },
+    products: {
+      type: Array
+    },
+    pages : {
+      type: Number,
+      required: true
+    },
+    category : {
+      type: String,
+      required: true
+    }
   },
   data() {
     return {
@@ -41,7 +60,7 @@ export default {
   },
   mounted() {
     // console.log("mount: productlist에서 뿌려줘!!!!:" + this.keyword);
-    this.all();
+    //this.all();
   },
   methods: {
     all() {
@@ -54,6 +73,36 @@ export default {
         this.loadMore = false;
       }
     }
+  },
+
+  computed: {
+    computedPagingProducts() {
+      console.log("productlist computed")
+      this.pagingProductList = []
+      
+      let tempList = []
+      if (this.category !== "전체") {
+        tempList = this.products.filter(product => {
+          // console.log("productlist computed")
+          return product.main_category === this.category
+        })
+      } else {
+        tempList = this.products
+      }
+
+      let start = ((this.pages-1)*this.productPerPage)
+      let end = ((this.pages-1)*this.productPerPage) + this.productPerPage
+
+      if (end > tempList.length) {
+          end = tempList.length
+        }
+      for (let i = start; i < end; i++) {
+          this.pagingProductList.push(tempList[i])
+        }
+      //console.log("pagingProudct : " + this.pagingProductList)
+      return this.pagingProductList
+
+    },
   }
 };
 </script>

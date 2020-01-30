@@ -24,7 +24,7 @@
       :length="pagingLength"
       total-visible="9"
     ></v-pagination>
-  </div>
+    </div>
 
   </div>
 </template>

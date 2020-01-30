@@ -63,10 +63,6 @@
     computed : {
       computedPagingBudgets: function(){
         this.pagingBudgets = []
-        // let currentPage = this.pages
-        // console.log(currentPage*5-5)
-        // console.log(this.pagingList)
-        // console.log("computedBudgetList active")
         let tmp = 0;
         for (let i = (this.pages*5)-5; i < this.pages*5; i++) {
           console.log("i : "+i)
