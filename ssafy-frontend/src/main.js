@@ -10,11 +10,14 @@ import VModal from 'vue-js-modal'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import VueCsrf from 'vue-csrf';
 import './registerServiceWorker'
 
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+window.csrf_token = "{{ csrf_token() }}"
 
 
 Vue.config.productionTip = false
@@ -26,6 +29,7 @@ Vue.use(Vuex)
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VModal)
+Vue.use(VueCsrf);
 
 export const eventBus = new Vue()
 

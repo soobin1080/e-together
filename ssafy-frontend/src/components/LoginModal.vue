@@ -1,17 +1,14 @@
 <template>
 <modal name="login-modal" transition="pop-out" :width="modalWidth" :height="400">
+  
   <div class="box">
     <div class="box-part" id="bp-left">
       <div class="partition" id="partition-register">
         <div class="partition-title">LOGIN</div>
         <div class="partition-form">
-          <form action="" autocomplete="false" method="POST">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-            <div class="autocomplete-fix">
-              <input type="password">
-            </div>
-
-            <input id="n-email" name="username" type="text" placeholder="Email" v-model="email">
+          <form action="/user/login" method="get">
+            <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
+            <input id="n-email" name="username" type="text" placeholder="Email" v-model="username">
             <input id="n-password2" type="password" name="password" placeholder="Password" v-model="password">
             <div style="margin-top: 42px">
             </div>
@@ -19,14 +16,10 @@
               <router-link to="/signup" tag="span">
                 <button id="goto-signup-btn">Sign Up</button>
               </router-link>
-              <button id="register-btn" type="submit" @click="login">Login</button>
+              <button id="register-btn" type="submit">Login</button>
             </div>
           </form>
-
           
-
-          
-
           <button class="large-btn google-btn"  @click="loginWithGoogle">connect with <span>google</span></button>
           <button class="large-btn facebook-btn" @click="loginWithFackbook">connect with <span>facebook</span></button>
         </div>
@@ -41,13 +34,15 @@
 </template>
 <script>
 import FirebaseService from '@/services/FirebaseService'
+import axios from 'axios'
 const MODAL_WIDTH = 656
 export default {
   name: 'LoginModal',
   data () {
     return {
+      
       modalWidth: MODAL_WIDTH,
-      email: "",
+      username: "",
       password: "",
     }
   },
@@ -81,11 +76,33 @@ export default {
         }
       },
       login() {
-        
-
-      }
-      
+        // console.log("login active")
+        // axios.defaults.headers.common = {
+        //   'X-Requested-With': 'XMLHttpRequest',
+        //   'X-CSRF-TOKEN': this.$csrfToken
+        // };
+        // axios.defaults.xsrfCookieName = 'csrftoken'
+        // axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+        // axios.get("/user/login/")
+        //   console.log("get active")
+        //   .then(response => {
+        //     console.log(response)
+      //     })
+      // //  http
+      // //   .post("/user/login", {
+      // //       username: this.username,
+      // //       password: this.password
+            
+      // //   })
+      // //   .then(response => {
+      // //     console.log(response)
+      // //   })
+      //   .catch(error =>{
+      //     console.log(error)
+      //   })
+      // })
     },
+  }
 }
 </script>
 <style lang="scss">
