@@ -17,6 +17,10 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 
+import VuetifyNumberInput from '@jzolago/vuetify-number-input'
+
+
+
 Vue.config.productionTip = false
 
 Vue.use(VueSimplemde)
@@ -26,6 +30,8 @@ Vue.use(Vuex)
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VModal)
+
+Vue.use(VuetifyNumberInput);
 
 export const eventBus = new Vue()
 
