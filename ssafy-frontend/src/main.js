@@ -20,6 +20,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 window.csrf_token = "{{ csrf_token() }}"
 
 
+import VuetifyNumberInput from '@jzolago/vuetify-number-input'
+
+
+
 Vue.config.productionTip = false
 
 Vue.use(VueSimplemde)
@@ -30,6 +34,8 @@ Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VModal)
 Vue.use(VueCsrf);
+
+Vue.use(VuetifyNumberInput);
 
 export const eventBus = new Vue()
 
