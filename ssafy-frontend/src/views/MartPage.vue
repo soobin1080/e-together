@@ -51,17 +51,18 @@
       </v-col>
 
       <!-- 장보기 내역 -->
-      <b-col>
+      <v-col>
       <v-flex d-none d-lg-flex>
           <BudgetList></BudgetList>
       </v-flex>
-       </b-col>
+       </v-col>
 
-      <!-- modal 창 -->
+     
+    </v-row>
+     <!-- modal 창 -->
       <b-modal id="modal-1" scrollable>
         <BudgetList></BudgetList>
       </b-modal>
-    </v-row>
   </div>
 </template>
 <script>
@@ -78,7 +79,7 @@ export default {
   data() {
     return {
       keyword: "",
-      products: []    
+      products: Object    
     };
   },
  mounted(){

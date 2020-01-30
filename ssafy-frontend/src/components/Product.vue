@@ -9,18 +9,24 @@
           </template>
           <span>{{pro_name}}</span>
         </v-tooltip>
-        <div class="grey--text">{{price}}원</div>
-        <div class="lightgrey--text">
+        <div class="black--text" style="font-size:12pt;">
           수량:
           <input
             type="number"
-            placeholder="0"
+            placeholder="1"
+            min="1"
             size="small"
-            style="text-align:center; width:60px"
+            style="text-align:center; font-size:12pt; width:50px"
             inline
             controls
+            v-model="quantity"
+            :quantity="quantity"
           />
-          <v-btn small color="#ffd900" @click="buy">+</v-btn>
+          <div class="grey--text" style="float:right">{{price}}원</div>
+
+          <div>
+            <v-btn small color="#ffd900" style="float:right" @click="addcart">+</v-btn>
+          </div>
         </div>
       </div>
     </v-card-title>
@@ -35,12 +41,30 @@ export default {
     price: { type: String },
     img: { type: String }
   },
-
+  data: () => ({
+    quantity: 1
+  }),
+  // computed: {
+  //   mul:function(){
+  //     return this.quantity*this.stringNumberToInt(this.price)
+  //   }
+  // },
   methods: {
-    buy() {
+    // addcart() {
+    //   this.$store.commit(addCart, { pro_name: this.pro_name, price: this.price, quantity: this.quantity });
+
+    //   // this.$store.state.product.pro_name = this.pro_name;
+    //   // this.$store.state.product.price = this.price;
+    //   // this.$store.state.product.quantity = this.quantity;
+    // },
+    addcart() {
       this.$store.state.pro_name = this.pro_name;
       this.$store.state.price = this.price;
-    }
+      this.$store.state.quantity = this.quantity;
+    },
+    // stringNumberToInt(stringNumber) {
+    //   return parseInt(stringNumber.replace(/,/g, ""));
+    // }
   }
 };
 </script>
@@ -61,15 +85,7 @@ export default {
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* 여러 줄 자르기 추가 스타일 */
-  /* white-space: normal;
-  line-height: 1.2;
-  height: 4.6em;
-  text-align: left;
-  word-wrap: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical; */
+  text-overflow: ellipsis;
 }
 </style>
 

@@ -17,56 +17,10 @@
         <v-flex lg12>
           <h2 class="headline mb-3">About <strong> Team</strong></h2>
           <v-img :src="getImgUrl('팀소개.png')" aspect-ratio="1.915"/>    
+          <v-img :src="getImgUrl('프로젝트 진행사항.png')" aspect-ratio="1.915"/>   
         </v-flex>
       </v-layout>
 
-         <!-- About Me -->
-      <v-layout my-5>
-        <v-flex lg12>
-          <h2 class="headline mb-3"><strong>프로젝트 진행사항</strong></h2>
-            
-        </v-flex>
-      </v-layout>
-
-         <!-- About Me -->
-      <v-layout my-5>
-        <v-flex lg12>
-          <h2 class="headline mb-3"><strong>기술 스택</strong></h2>
-            
-        </v-flex>
-      </v-layout>
-
-         <!-- About Me -->
-      <v-layout my-5>
-        <v-flex lg12>
-          <h2 class="headline mb-3"><strong>학습정보</strong></h2>
-           
-        </v-flex>
-      </v-layout>
-
-      <!-- Portfolio -->
-      <v-layout my-5>
-        <v-flex xs12>
-          <h2 class="headline my-5 text-xs-center"><strong>Portfolio</strong></h2>                  
-          <PortfolioList></PortfolioList>
-        </v-flex>
-      </v-layout>
-
-      <!-- Post -->
-      <v-layout my-5>
-        <v-flex xs12>
-          <h2 class="headline my-5 text-xs-center"><strong>Post</strong></h2>
-          <PostList :column="2"></PostList>
-        </v-flex>
-      </v-layout>
-
-      <!-- Github -->
-      <v-layout my-5>
-        <v-flex xs12>
-          <h2 class="headline my-5 text-xs-center"><strong>Git</strong></h2>
-          <RepositoryList></RepositoryList>
-        </v-flex>
-      </v-layout>
     </v-container>
   </div>
 </template>

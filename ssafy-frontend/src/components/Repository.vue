@@ -1,10 +1,10 @@
 <template>
-  <div class="py-3">
+  <div class="py-1">
     <v-layout>
 
       <v-flex xs12>
-        <h3 class="font-weight-regular"><a :href="repos.web_url" target="_blank" style="color:dimgray;"> {{repos.path_with_namespace}}</a></h3>
-        <p class="subheading mb-1 grey--text text--darken-1 font-weight-light">{{repos.namespace.name}}</p>
+        <p class="font-weight-regular"> {{repos.namespace.name}} : <a :href="repos.web_url" target="_blank" style="color:dimgray;"> {{repos.path_with_namespace}}</a></p>
+       
       </v-flex>
 
     </v-layout>
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style scoped>
-h3{
+p{
  
   white-space: nowrap;  
 
