@@ -13,17 +13,17 @@
           solo-inverted
           shaped
           v-model="keyword"
-          v-on:keyup.enter="search(keyword)"          
+          v-on:keyup.enter="getProductList(keyword)"          
         ></v-text-field>
 
         <b-card no-body style="height:700px;">
           <!-- 카테고리 탭 -->
           <b-tabs small card>
             <b-tab title="전체">
-              <ProductList :keyword=keyword></ProductList>
+              <ProductList :product="products"></ProductList>
             </b-tab>
             <b-tab title="과일">
-              <!-- <ProductList></ProductList> -->
+             
             </b-tab>
             <b-tab title="채소">
               <!-- <ProductList></ProductList> -->
@@ -65,6 +65,7 @@
   </div>
 </template>
 <script>
+import http from "../http-common";
 import BudgetList from "../components/BudgetList";
 import ProductList from "../components/ProductList";
 
@@ -76,20 +77,61 @@ export default {
   
   data() {
     return {
-      keyword: ""     
+      keyword: "",
+      products: []    
     };
   },
- 
-  methods: {
-    
+ mounted(){
+   this.getProductList(this.keyword);
+ },
+
+  methods: {    
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-    search(keyword){
-      console.log("/////검색어: "+keyword+" "+this.keyword);
-      this.keyword=keyword;
+    // search(keyword){
+    //   console.log("/////검색어: "+keyword+" "+this.keyword);
+    //   this.keyword=keyword;
       
-    }
+    // },
+    getProductList(keyword) {
+      // this.$emit('search');
+      this.keyword=keyword;
+      console.log("키워드는" + this.keyword);
+      if (this.keyword != "" && this.keyword.length > 0) {
+        this.search();
+      } else {
+        this.all();
+      }
+    },
+    all() {
+      http
+        .get("/product")
+        .then(response => {
+          console.log("!!!!!!!!!!!!"+response.data);
+          this.products = response.data;
+          console.log("!!!!!!!!!!product: "+this.products);
+          // console.log(this.products.length);
+        })
+        .catch(() => {
+          this.errored = true;
+          // alert("error!!");
+        })
+        .finally(() => (this.loading = false));
+    },
+    search() {      
+        http
+        .get("/product/" + this.keyword)
+        .then(response => {
+          console.log(response.data);
+          this.products = response.data;
+        })
+        .catch(() => {
+          this.errored = true;
+          // alert("error!!");
+        })
+        .finally(() => (this.loading = false));
+    },
   }
 };
 </script>
