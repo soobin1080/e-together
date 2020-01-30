@@ -8,7 +8,12 @@
       </div>
     </ImgBanner>
     <v-card style="width:80%;" class="mx-auto my-5">
-      <MyBudgetList :currentPage="pages" :limits="5" :loadMore="true" ref="mybudgetlist"></MyBudgetList>
+      <MyBudgetList 
+        :pages="pages" 
+        :loadMore="true" 
+        :pagingList="pagingList" 
+        :allLength="allLength"
+        ref="mybudgetlist"></MyBudgetList>
     </v-card>
 
     
@@ -16,7 +21,7 @@
       {{pages}}
     <v-pagination
       v-model="pages"
-      :length="15"
+      :length="pagingLength"
       total-visible="9"
     ></v-pagination>
   </div>
@@ -40,7 +45,11 @@
       title: "",
       body: "",
       pages: 1,
-      pageLength: 10,
+      allPages: [],
+      pagingList: [],
+      pagingLength: 0,
+      allLength: 0,
+      budgetPerPage: 5,
       items: [{
           icon: 'folder',
           iconClass: 'grey lighten-1 white--text',
@@ -69,17 +78,38 @@
         title = this.title
         body = this.body
         FirebaseService.postMyBudgets(title, body)
-        // this.$refs.mybudgetlist.getMyBudgets()
-      }
-
+        this.$refs.mybudgetlist.getMyBudgets()
+      },
+      async getMyBudgets() {
+        console.log("active")
+        this.pagingList= await FirebaseService.getMyBudgets();
+        return this.pagingList
+    },
     },
     computed: {
-
+      // computedPagingList : () => ({
+      //   async getMyBudget() {
+      //     console.log("active")
+      //     this.pagingList= await FirebaseService.getMyBudgets();
+      //     return this.paginList
+      //   }
+      // })
     },
-    mounted() {
-      //this.$root.$emit('asyncBudgetList')
-
-    }
+   async mounted() {
+     this.allPages = await FirebaseService.getMyBudgets()
+     this.allLength = this.allPages.length
+     console.log("allLength : " + this.allPages.length)
+     this.pagingList= await FirebaseService.getMyBudgetPaging(((this.pages-1)*5), ((this.pages-1)*5)+5, this.allLength)
+     console.log(this.pagingList)
+     
+     if (this.allLength % this.budgetPerPage === 0) {
+       this.pagingLength = parseInt(this.allLength / 5)
+     } else {
+       this.pagingLength = parseInt((this.allLength / 5) + 1)
+     }
+     console.log("pagingLength : "+this.pagingLength)
+      //this.getMyBudgets()
+  }
   }
 </script>
 

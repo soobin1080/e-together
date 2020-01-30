@@ -6,7 +6,7 @@
     </v-list-item-avatar>
    
     <v-list-item-content>
-      <v-list-item-title>{{title}}</v-list-item-title>
+      <v-list-item-title>{{title}}, {{date}}</v-list-item-title>
       <v-list-item-subtitle>{{body}}</v-list-item-subtitle>
     </v-list-item-content>
 
@@ -23,17 +23,17 @@
   },
 
     data() {
+      return {
 
+      }
     },
 
     methods: {
-      async getMyBudget() {
-        this.mybudgets = await FirebaseService.getMyBudgets();
-      }
+      
 
     },
     mount() {
-      this.getMyBudget();
+      
     }
 
   }

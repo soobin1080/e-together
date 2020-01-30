@@ -1,10 +1,10 @@
 <template>
   <v-list two-line subheader>
-    <v-list-item v-for="i in computedMyBudgets.length > limits ? limits : computedMyBudgets.length" :key="i">
+    <v-list-item v-for="budget in computedPagingBudgets" :key="budget.created_at">
       <MyBudget 
-        :date="mybudgets[i-1].created_at.toString()" 
-        :title="mybudgets[i-1].title" 
-        :body="mybudgets[i-1].body"
+        :date="budget.created_at.toString()" 
+        :title="budget.title" 
+        :body="budget.body"
         >
       </MyBudget>
 
@@ -35,29 +35,57 @@
       },
       pages : {
         type: Number
+      },
+      pagingList: {
+        type: Array,
+        required: true
+      },
+      allLength: {
+        type: Number,
+        required: true
       }
+    
     },
+
 
     data() {
       return {
-        mybudgets: [],
+        pagingbudgets: [],
       }
     },
 
     methods: {
-      async getMyBudgets() {
-        this.mybudgets = await FirebaseService.getMyBudgets();
-      }
+      // async getMyBudgets() {
+      //   this.mybudgets = await FirebaseService.getMyBudgets();
+      // }
 
     },
     computed : {
-      computedMyBudgets: function(){
-        this.getMyBudgets()
-        return this.mybudgets
+      computedPagingBudgets: function(){
+        this.pagingBudgets = []
+        // let currentPage = this.pages
+        // console.log(currentPage*5-5)
+        // console.log(this.pagingList)
+        // console.log("computedBudgetList active")
+        let tmp = 0;
+        for (let i = (this.pages*5)-5; i < this.pages*5; i++) {
+          console.log("i : "+i)
+          if (i === (this.allLength)) {
+            this.limits = tmp
+            console.log(tmp)
+            break
+            }
+          else {
+            this.pagingBudgets.push(this.pagingList[i])
+          }
+          tmp++
+        }
+        console.log(this.pagingBudgets)
+        return this.pagingBudgets
       }
     },
     mounted() {
-      this.getMyBudgets();
+
     }
 
   }
