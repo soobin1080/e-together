@@ -1,20 +1,13 @@
 <template>
   <v-layout mt-5 wrap>
-    <v-flex
-      v-for="i in products.length > limits ? limits : products.length"
-      xs12
-      sm6
-      lg3
-      :key="i"
-    >
+    <v-flex  v-for="i in product.length > limits ? limits : product.length" xs12 sm6 lg4 :key="i">
       <Product
         class="ma-3"
-        :date="products[i - 1].created_at.toString()"
-        :title="products[i - 1].title"
-        :body="products[i - 1].body"
-        :imgSrc="products[i - 1].img"
+        :pro_name="product[i - 1].pro_name"
+        :price="product[i - 1].price"
+        :img="product[i - 1].img"
       ></Product>
-	  <v-divider></v-divider>
+      <v-divider></v-divider>
     </v-flex>
 
     <v-flex xs12 text-xs-center round my-5 v-if="loadMore">
@@ -25,37 +18,40 @@
   </v-layout>
 </template>
 <script>
+import http from "../http-common";
 import Product from "@/components/Product";
-import FirebaseService from "@/services/FirebaseService";
 
 export default {
   name: "ProductsList",
   props: {
-    limits: { type: Number, default: 4 },
-    loadMore: { type: Boolean, default: false }
+    limits: { type: Number, default: 454 },
+    loadMore: { type: Boolean, default: false },
+    product: {type: Object}
   },
   data() {
     return {
-      products: []     
     };
   },
   components: {
     Product
   },
+ 
+  created() {
+    // console.log("create: productlist에서 뿌려줘!!!!:" + this.keyword);
+  },
   mounted() {
-    this.getProducts();    
+    // console.log("mount: productlist에서 뿌려줘!!!!:" + this.keyword);
+    this.all();
   },
   methods: {
-    async getProducts() {
-      this.products = await FirebaseService.getProducts();
-      if(this.limits>=this.products.length){
-       this.loadMore=false;
-      }
+    all() {
+      product=this.$attrs.product
     },
+    
     loadMoreProducts() {
-      this.limits=this.limits+4;
-      if(this.limits>=this.products.length){
-        this.loadMore=false;
+      this.limits = this.limits + 4;
+      if (this.limits >= this.products.length) {
+        this.loadMore = false;
       }
     }
   }

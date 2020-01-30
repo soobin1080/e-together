@@ -10,8 +10,9 @@ export default new Vuex.Store({
 
     people: '',
     money: '',
-    title: '',
-    body:''
+    pro_name: '',
+    price:''
+
     },
     computed:{
       people(){

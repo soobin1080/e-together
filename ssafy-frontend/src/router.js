@@ -33,10 +33,16 @@ export default new Router({
 		},
 		{
 
-			path: '/mart',
-			name: 'mart',
+			path: '/product',
+			name: 'product',
 			component: MartPage
-		},		
+		},
+		// {
+
+		// 	path: '/product/:keyword',
+		// 	name: 'product_search',
+		// 	component: MartPage
+		// },		
 		{
 			path: '/team',
 			name: 'team',
