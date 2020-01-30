@@ -4,6 +4,7 @@ import 'firebase/auth'
 
 const POSTS = 'posts'
 const PORTFOLIOS = 'portfolios'
+const MYBUDGETS = 'mybudgets'
 
 
 // Setup Firebase
@@ -62,6 +63,58 @@ export default {
 			body,
 			img,
 			created_at: firebase.firestore.FieldValue.serverTimestamp()
+		})
+	},
+
+	getMyBudgets() {
+		const mybudgetsCollection = firestore.collection(MYBUDGETS)
+		return mybudgetsCollection
+				.orderBy('created_at', 'desc')
+				.get()
+				.then((docSnapshots) => {
+					//let t = 0;					
+					return docSnapshots.docs.map((doc) => {
+						let data = doc.data()
+						//console.log(data)
+						//console.log("t : "+t)
+						//t++
+						//data.created_at = new Date(data.created_at.toDate())
+						return data
+						
+					})
+				})
+
+	},
+
+	getMyBudgetPaging(x, y, allLength) {
+		if (y > allLength) {
+			y = allLength
+		}
+		const mybudgetsCollection = firestore.collection(MYBUDGETS)
+		return mybudgetsCollection
+				.orderBy('created_at', 'desc')
+				.get()
+				.then((docSnapshots) => {
+					let t = 0					
+					return docSnapshots.docs.map((doc) => {
+						console.log("t : "+t)
+						let data = doc.data()
+						//console.log(data)
+						//data.created_at = new Date(data.created_at.toDate())
+						if (x <= t && t <= y) {
+							return data
+						}
+						t++
+					})
+				})
+	},
+
+	postMyBudgets(title, body) {
+		console.log("active")
+		return firestore.collection(MYBUDGETS).add({
+			title,
+			body,
+			created_at : firebase.firestore.FieldValue.serverTimestamp()
 		})
 	},
 	loginWithGoogle() {

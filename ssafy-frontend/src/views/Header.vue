@@ -79,6 +79,7 @@ export default {
           { title: 'Mart', path: '/mart'},
           { title: 'Portfolio', path: '/portfolio'},
           {title: 'UserInfo', path: '/userinfo'},
+          {title: 'MyList', path: '/mylist'},
      ]
     }
   }

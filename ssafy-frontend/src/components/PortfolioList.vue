@@ -1,5 +1,5 @@
 <template>
-  <v-layout mt-5 wrap>
+  <v-card mt-5 wrap>
     <v-flex
       v-for="i in portfolios.length > limits ? limits : portfolios.length"
       xs12
@@ -22,7 +22,7 @@
         <v-icon size="25" class="mr-2">fa-plus</v-icon>더 보기
       </v-btn>
     </v-flex>
-  </v-layout>
+  </v-card>
 </template>
 <script>
 import Portfolio from "@/components/Portfolio";

@@ -104,7 +104,7 @@
 
 <script>
 export default {
-  name: 'SignInPage',
+  name: 'SignUpPage',
   data: () =>  ({
     name: "",
     email: "",
