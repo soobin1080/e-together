@@ -1,8 +1,8 @@
 <template>
   <div>
-    <input type="text" name="title" v-model="title" />
-    <input type="text" name="body" v-model="body" />
-    <v-btn @click="postMyBudgets(title, body)">add</v-btn>
+    <!-- <input type="text" name="title" v-model="title" /> -->
+    <!-- <input type="text" name="body" v-model="body" /> -->
+    <!-- <v-btn @click="postMyBudgets(title, body)">add</v-btn> -->
     <ImgBanner>
       <div class="text-center text-white" style="line-height:1.2em;font-size:2.5em;" slot="text" v-resize-text>My Budget
       </div>
