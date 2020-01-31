@@ -1,52 +1,102 @@
 package com.ssafy.edu.service;
 
-import lombok.AllArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.edu.model.Role;
-import com.ssafy.edu.model.UserDto;
-import com.ssafy.edu.model.UserEntity;
-import com.ssafy.edu.model.UserRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.ssafy.edu.dao.UserDaoImpl;
+import com.ssafy.edu.model.User;
 
 @Service
-@AllArgsConstructor
-public class UserService implements UserDetailsService {
-    private UserRepository userRepository;
+public class UserService implements IUserService {
 
-    @Transactional
-    public Long joinUser(UserDto userDto) {
-        // 비밀번호 암호화
-               BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-               userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+	@Autowired
+	private UserDaoImpl userdao;
 
-        return userRepository.save(userDto.toEntity()).getId();
-    }
+	@Override
+	@Transactional
+	public User login(User user) {
+		return userdao.login(user);
+	}
 
-    @Override
-    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        Optional<UserEntity> userEntityWrapper = userRepository.findByEmail(userEmail);
-        UserEntity userEntity = userEntityWrapper.get();
+	@Override
+	@Transactional
+	public int regi(User user) {
+		return userdao.regi(user);
+	}
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
+	@Override
+	@Transactional
+	public User findUserByEmail(String email) {
+		return userdao.findUserByEmail(email);
+	}
 
-        if (("admin@example.com").equals(userEmail)) {
-            authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
-        } else {
-            authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
-        }
+	@Override
+	@Transactional
+	public void updateMyself(User user) {
+		userdao.updateMyself(user);
+	}
 
-        return new User(userEntity.getEmail(), userEntity.getPassword(), authorities);
-    }
+	@Override
+	@Transactional
+	public User myselfDetail(String email) {
+		return userdao.myselfDetail(email);
+	}
+	
+	@Override
+	@Transactional
+	public void deleteMyself(User user) {
+		userdao.deleteMyself(user);
+	}
+
+	@Override
+	@Transactional
+	public List<User> findAllUsers() {
+		return userdao.findAllUsers();
+	}
+	
+	@Override
+	@Transactional
+	public int emailCheck(User user) {
+		return userdao.emailCheck(user);
+	}
+	
+	@Override
+	@Transactional
+	public User logout(User user){
+		return userdao.logout(user);
+	}
+	
+	@Override
+	@Transactional
+	public int pwdCheck(User user) {
+		return userdao.pwdCheck(user);
+	}
+	
+	@Override
+	@Transactional
+	public User findEmail(User user) {
+		return userdao.findEmail(user);
+	}
+	
+	@Override
+	@Transactional
+	public User findUserInfo(User user) {
+		return userdao.findUserInfo(user);
+	}
+	
+	@Override
+	@Transactional
+	public void updatePwd(User user) {
+		userdao.updatePwd(user);
+	}
+
+	@Override
+	public void findPwd(User finduserinfo) {
+		userdao.findPwd(finduserinfo);
+	}
+	
+	
 }
