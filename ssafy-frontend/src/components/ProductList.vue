@@ -1,12 +1,7 @@
 <template>
   <v-layout mt-5 wrap>
     <v-flex v-for="product in computedPagingProducts" xs12 sm6 lg4 :key="product.pro_name">
-      <Product
-        class="ma-3"
-        :pro_name="product.pro_name"
-        :price="product.price"
-        :img="product.img"
-      ></Product>
+      <Product class="ma-3" :pro_name="product.pro_name" :price="product.price" :img="product.img"></Product>
       <v-divider></v-divider>
     </v-flex>
 
@@ -24,49 +19,40 @@ import Product from "@/components/Product";
 export default {
   name: "ProductsList",
   data() {
-    return{
-      pagingProductList : []
-    }
+    return {
+      pagingProductList: []
+    };
   },
   props: {
     limits: { type: Number, default: 454 },
     loadMore: { type: Boolean, default: false },
-    product: {type: Object},
+    product: { type: Object },
     productPerPage: {
-      type: Number,
+      type: Number
     },
     products: {
       type: Array
     },
-    pages : {
+    pages: {
       type: Number,
       required: true
     },
-    category : {
+    category: {
       type: String,
       required: true
     }
   },
   data() {
-    return {
-    };
+    return {};
   },
   components: {
     Product
   },
- 
-  created() {
-    // console.log("create: productlist에서 뿌려줘!!!!:" + this.keyword);
-  },
-  mounted() {
-    // console.log("mount: productlist에서 뿌려줘!!!!:" + this.keyword);
-    //this.all();
-  },
   methods: {
     all() {
-      product=this.$attrs.product
+      product = this.$attrs.product;
     },
-    
+
     loadMoreProducts() {
       this.limits = this.limits + 4;
       if (this.limits >= this.products.length) {
@@ -74,35 +60,33 @@ export default {
       }
     }
   },
-
   computed: {
     computedPagingProducts() {
-      console.log("productlist computed")
-      this.pagingProductList = []
-      
-      let tempList = []
+      console.log("productlist computed");
+      this.pagingProductList = [];
+
+      let tempList = [];
       if (this.category !== "전체") {
         tempList = this.products.filter(product => {
           // console.log("productlist computed")
-          return product.main_category === this.category
-        })
+          return product.main_category === this.category;
+        });
       } else {
-        tempList = this.products
+        tempList = this.products;
       }
 
-      let start = ((this.pages-1)*this.productPerPage)
-      let end = ((this.pages-1)*this.productPerPage) + this.productPerPage
+      let start = (this.pages - 1) * this.productPerPage;
+      let end = (this.pages - 1) * this.productPerPage + this.productPerPage;
 
       if (end > tempList.length) {
-          end = tempList.length
-        }
+        end = tempList.length;
+      }
       for (let i = start; i < end; i++) {
-          this.pagingProductList.push(tempList[i])
-        }
+        this.pagingProductList.push(tempList[i]);
+      }
       //console.log("pagingProudct : " + this.pagingProductList)
-      return this.pagingProductList
-
-    },
+      return this.pagingProductList;
+    }
   }
 };
 </script>

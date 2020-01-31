@@ -137,9 +137,8 @@ export default {
     total: "",
     people: "",
     money: "",
-    quantity:0,
-    price:0
-          
+    quantity: 0,
+    price: 0
   }),
   created() {
     this.people = this.people;
@@ -150,10 +149,10 @@ export default {
     this.money = this.$store.state.money;
   },
   computed: {
-    mul:function(){      
-      this.quantity=this.$store.state.quantity;
-      this.price=this.stringNumberToInt(this.$store.state.price);
-      return this.quantity*this.price;
+    mul: function() {
+      this.quantity = this.$store.state.quantity;
+      this.price = this.stringNumberToInt(this.$store.state.price);
+      return this.quantity * this.price;
     }
   },
   methods: {
@@ -167,13 +166,11 @@ export default {
     list_submit() {
       // DB에 저장(Sub III때 구현)
     },
-     stringNumberToInt(stringNumber) {
-       console.log(parseInt(stringNumber.replace(/,/g, "")));
+    stringNumberToInt(stringNumber) {
+      console.log(parseInt(stringNumber.replace(/,/g, "")));
       return parseInt(stringNumber.replace(/,/g, ""));
     }
-  },
-  
-  
+  }
 };
 </script>
 <style>

@@ -32,7 +32,6 @@
     </v-card-title>
   </v-card>
 </template>
-
 <script>
 export default {
   name: "Product",
@@ -44,31 +43,15 @@ export default {
   data: () => ({
     quantity: 1
   }),
-  // computed: {
-  //   mul:function(){
-  //     return this.quantity*this.stringNumberToInt(this.price)
-  //   }
-  // },
   methods: {
-    // addcart() {
-    //   this.$store.commit(addCart, { pro_name: this.pro_name, price: this.price, quantity: this.quantity });
-
-    //   // this.$store.state.product.pro_name = this.pro_name;
-    //   // this.$store.state.product.price = this.price;
-    //   // this.$store.state.product.quantity = this.quantity;
-    // },
     addcart() {
       this.$store.state.pro_name = this.pro_name;
       this.$store.state.price = this.price;
       this.$store.state.quantity = this.quantity;
-    },
-    // stringNumberToInt(stringNumber) {
-    //   return parseInt(stringNumber.replace(/,/g, ""));
-    // }
+    }
   }
 };
 </script>
-
 <style scoped>
 .lightgrey--text {
   font-size: 13pt;
