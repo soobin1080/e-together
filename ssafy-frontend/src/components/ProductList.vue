@@ -2,7 +2,6 @@
   <v-layout mt-5 wrap>
     <v-flex v-for="product in computedPagingProducts" xs12 sm6 lg4 :key="product.pro_name">
       <Product class="ma-3" :pro_name="product.pro_name" :price="product.price" :img="product.img"></Product>
-      <v-divider></v-divider>
     </v-flex>
 
     <v-flex xs12 text-xs-center round my-5 v-if="loadMore">
