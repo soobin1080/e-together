@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- <input type="text" name="title" v-model="title" /> -->
-    <!-- <input type="text" name="body" v-model="body" /> -->
-    <!-- <v-btn @click="postMyBudgets(title, body)">add</v-btn> -->
+    <!-- <input type="text" name="title" v-model="title" />
+    <input type="text" name="body" v-model="body" />
+    <v-btn @click="postMyBudgets(title, body)">add</v-btn> -->
     <ImgBanner>
       <div
         class="text-center text-white"
@@ -82,11 +82,12 @@ export default {
       title = this.title;
       body = this.body;
       FirebaseService.postMyBudgets(title, body);
-      this.$refs.mybudgetlist.getMyBudgets();
+      this.getMyBudgets();
     },
     async getMyBudgets() {
       console.log("active");
       this.pagingList = await FirebaseService.getMyBudgets();
+      this.pagingLength = parseInt(this.pagingList / 5)+1
       return this.pagingList;
     }
   },

@@ -6,6 +6,7 @@ import VueSimplemde from 'vue-simplemde'
 import 'simplemde/dist/simplemde.min.css'
 import 'font-awesome/css/font-awesome.min.css'
 import VModal from 'vue-js-modal'
+import VueAxios from 'vue-axios'
 
 import App from './App.vue'
 import router from './router'
@@ -17,8 +18,6 @@ import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '@mdi/font/css/materialdesignicons.css'
-
-window.csrf_token = "{{ csrf_token() }}"
 
 
 import VuetifyNumberInput from '@jzolago/vuetify-number-input'
@@ -35,7 +34,7 @@ Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VModal)
 Vue.use(VueCsrf);
-
+Vue.use(VueAxios, axios)
 Vue.use(VuetifyNumberInput);
 
 export const eventBus = new Vue()

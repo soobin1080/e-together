@@ -1,5 +1,5 @@
 <template>
-  <v-list-item>
+  <v-list-item @click="">
 
     <v-list-item-avatar>
       <i class="fas fa-folder-open"></i>

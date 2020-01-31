@@ -151,55 +151,57 @@
   </div>
 </template>
 <script>
-export default {
-  data: () => ({
-    total: "",
-    people: "",
-    money: "",
-    quantity: 0,
-    price: 0
-  }),
-  created() {
-    this.people = this.people;
-    this.money = this.money;
-  },
-  mounted() {
-    this.people = this.$store.state.people;
-    this.money = this.$store.state.money;
-  },
-  computed: {
-    mul: function() {
-      this.quantity = this.$store.state.quantity;
-      this.price = this.stringNumberToInt(this.$store.state.price);
-      return this.quantity * this.price;
-    }
-  },
+  export default {
+    data: () => ({
+      total: "",
+      people: "",
+      money: "",
+      quantity: 0,
+      price: 0,
+      dialog: false,
+    }),
+    created() {
+      this.people = this.people;
+      this.money = this.money;
+    },
 
-  methods: {
-    triggerEvent() {
-      this.$store.state.people = this.people;
-      this.$store.state.money = this.money;
-    },
-    cal() {
-      this.total += Number(this.mul);
-    },
-    list_submit() {
-      // DB에 저장(Sub III때 구현)
-    },
-    stringNumberToInt(stringNumber) {
-      console.log(parseInt(stringNumber.replace(/,/g, "")));
-      return parseInt(stringNumber.replace(/,/g, ""));
-    },
-    budgetSave(bool) {
-      if (bool === true) {
-        const result = confirm("hello");
-        if (result) {
-          router.push("/mylist");
+      methods: {
+        triggerEvent() {
+          this.$store.state.people = this.people;
+          this.$store.state.money = this.money;
+        },
+        cal() {
+          this.total += Number(this.mul);
+        },
+        list_submit() {
+          // DB에 저장(Sub III때 구현)
+        },
+        stringNumberToInt(stringNumber) {
+          console.log(parseInt(stringNumber.replace(/,/g, "")));
+          return parseInt(stringNumber.replace(/,/g, ""));
+        },
+        budgetSave(bool) {
+          if (bool === true) {
+
+            const result = confirm("hello")
+            if (result) {
+              router.push("/mylist")
+            }
+          }
         }
-      }
+      },
+    mounted() {
+      this.people = this.$store.state.people;
+      this.money = this.$store.state.money;
+    },
+    computed: {
+      mul: function () {
+        this.quantity = this.$store.state.quantity;
+        this.price = this.stringNumberToInt(this.$store.state.price);
+        return this.quantity * this.price;
+      },
     }
-  }
-};
+  };
 </script>
 <style>
 .product {
