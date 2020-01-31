@@ -17,6 +17,7 @@ import './registerServiceWorker'
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '@mdi/font/css/materialdesignicons.css'
 
 
 import VuetifyNumberInput from '@jzolago/vuetify-number-input'

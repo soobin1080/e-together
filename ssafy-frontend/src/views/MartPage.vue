@@ -45,6 +45,7 @@
             >
               {{tab.title}}
             </v-tab>
+            
           </v-tabs>
         
           <ProductList 
@@ -67,14 +68,14 @@
 
           <!-- modal 플로팅 버튼-->
           <v-btn
-            absolute
+            fixed
             dark
             fab
             bottom
             right
             color="#ffd900"
             v-b-modal.modal-1
-            class="hidden-lg-only"
+            class="hidden-lg-only"            
           >
             <i class="material-icons">shopping_cart</i>
           </v-btn>

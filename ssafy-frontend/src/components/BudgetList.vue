@@ -32,8 +32,14 @@
             <strong>인원</strong>
           </td>
           <td width="80%" style="text-align:right">
-            <input type="number" :step="10" id="people" v-model="people" @input="triggerEvent"
-              style="text-align:right" />명
+            <input
+              type="number"
+              :step="10"
+              id="people"
+              v-model="people"
+              @input="triggerEvent"
+              style="text-align:right"
+            />명
           </td>
         </tr>
       </table>
@@ -45,8 +51,14 @@
             <strong>예산</strong>
           </td>
           <td width="80%" style="text-align:right">
-            <input type="number" :step="10000" id="money" v-model="money" @input="triggerEvent"
-              style="text-align:right" />원
+            <input
+              type="number"
+              :step="10000"
+              id="money"
+              v-model="money"
+              @input="triggerEvent"
+              style="text-align:right"
+            />원
           </td>
         </tr>
       </table>
@@ -58,7 +70,9 @@
             <strong>차트</strong>
           </td>
           <td width="80%" style="text-align:right">
-            <table style="radius:2; width:100%; margin:auto; text-align:center; background-color:#d9eeff">
+            <table
+              style="radius:2; width:100%; margin:auto; text-align:center; background-color:#d9eeff"
+            >
               <col width="80px" />
               <col width="100px" />
               <thead>
@@ -128,13 +142,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn color="green darken-1" text @click="budgetSave(true)">
-            저장
-          </v-btn>
+          <v-btn color="green darken-1" text @click="budgetSave(true)">저장</v-btn>
 
-          <v-btn color="green darken-1" text @click="budgetSave(false)">
-            취소
-          </v-btn>
+          <v-btn color="green darken-1" text @click="budgetSave(false)">취소</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -194,16 +204,16 @@
   };
 </script>
 <style>
-  .product {
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.product {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .product_table {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    width: 100%;
-  }
+.product_table {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+}
 </style>

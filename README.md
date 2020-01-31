@@ -51,8 +51,8 @@ e-투계더는 emart 상품을 기반으로 워크샵, MT, 여행 등 단체로 
 - `POST /deleteMyself` : 탈퇴
 - `GET /findAllUsers` : 전체 회원 정보 리스트 반환
 - `GET /fingUserByEmail/{email}` : 이메일로 회원 검색
-- `GET /auth/signin` : 권한을 가지고 로그인
-- `GET /auth/signup` : 권한을 가지고 회원가입
+- `POST /auth/signin` : 권한을 가지고 로그인
+- `POST /auth/signup` : 권한을 가지고 회원가입
 
 
 

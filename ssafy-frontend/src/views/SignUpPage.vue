@@ -96,7 +96,10 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation();
-    }
+    },
+     reset() {
+      this.$refs.form.reset();
+    },
   },
   mounted() {
     this.$modal.hide("login-modal");
