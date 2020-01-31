@@ -85,13 +85,13 @@
         .post("auth/signin", {
           headers: {
             'Accept' : 'application/json',
-            'tokenType': 'Bearer',
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmppQHRlc3QuY29tIiwiaWF0IjoxNTgwNDM5NTk1LCJleHAiOjE1ODA1MjU5OTV9.3FT_bA-B6KTxMwNpUHVVAgZdGUbdwTjbsAH1TBUickTJWlRllhW0wsbk8mA6HPv4jjw8scFKnhZlsIILmoueGg"
+            'tokenType' : 'Bearer',
+            'Content-Type' : 'application/json',
+            'Authorization' : "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmppQHRlc3QuY29tIiwiaWF0IjoxNTgwNDM5NTk1LCJleHAiOjE1ODA1MjU5OTV9.3FT_bA-B6KTxMwNpUHVVAgZdGUbdwTjbsAH1TBUickTJWlRllhW0wsbk8mA6HPv4jjw8scFKnhZlsIILmoueGg"
           },
           auth : {
           "email": this.username,
-          "pwd" : this.pwd,
+          "pwd": this.pwd,
           }
         })
         .then(response => {         
