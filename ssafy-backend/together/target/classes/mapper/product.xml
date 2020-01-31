@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssafy.product">
+
+	<!-- pro_id,pro_name,price ,main_category ,gram ,img -->
+	<!-- 전체 식품 보기 - -->
+	<select id="getProductList"
+		resultType="com.ssafy.edu.model.Product">
+		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
+		FROM PRODUCT
+	</select>
+
+	<select id="searchProduct" parameterType="java.lang.String"
+		resultType="com.ssafy.edu.model.Product">
+		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
+		FROM PRODUCT WHERE PRO_NAME LIKE CONCAT('%',#{keyword},'%')
+	</select>
+	
+	<select id="getProductCategory" parameterType="java.lang.String"
+		resultType="com.ssafy.edu.model.Product">
+		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
+		FROM PRODUCT WHERE MAIN_CATEGORY= #{category}
+	</select> 
+	
+	<select id="getProductCategoryKeword" parameterType="com.ssafy.edu.model.Product"
+		resultType="com.ssafy.edu.model.Product">
+		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
+		FROM PRODUCT WHERE MAIN_CATEGORY= #{category} AND PRO_NAME LIKE CONCAT('%',#{keyword},'%')
+	</select> 
+
+</mapper>
+

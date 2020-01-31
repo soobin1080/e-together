@@ -11,4 +11,4 @@ public class SSAFYApplication {
 		SpringApplication.run(SSAFYApplication.class, args);
 	}
 }
-//http://localhost:8197/safefood/swagger-ui.html
+//http://localhost:8197/together/swagger-ui.html
