@@ -22,7 +22,7 @@ import com.ssafy.edu.service.IProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-//http://localhost:8197/humans/swagger-ui.html
+//http://localhost:8197/together/swagger-ui.html
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/api")

@@ -6,13 +6,13 @@
 	<select id="login" parameterType="com.ssafy.edu.model.User" resultType="com.ssafy.edu.model.User">
 		SELECT COUNT(EMAIL) AS COUNT, EMAIL, PWD, NAME, WITHDRAW, AUTH, PHONE
 		FROM USER 
-		WHERE EMAIL = #{email} AND PWD = MD5(#{pwd})
+		WHERE EMAIL = #{email} AND PWD = #{pwd}
 	</select>
 
 	<!-- 회원가입 탈퇴여부 withdraw = 0, 일반 사용자 auth = 1 -->
 	<insert id="regi" parameterType="com.ssafy.edu.model.User">
 		INSERT INTO USER(EMAIL, PWD, NAME, WITHDRAW, AUTH, PHONE)
-		VALUES(#{email}, MD5(#{pwd}), #{name}, 0, 1, #{phone})
+		VALUES(#{email}, #{pwd}, #{name}, 0, 1, #{phone})
 	</insert>
 
 	<!-- 아이디로 회원 정보 가져오기 -->
@@ -67,7 +67,7 @@
 		resultType="java.lang.Integer">
 		SELECT COUNT(EMAIL) FROM USER
 		WHERE EMAIL=#{email} AND
-		PWD=MD5(#{pwd})
+		PWD=#{pwd}
 	</select>
 	
 	<!-- 이메일 찾기 -->
@@ -87,7 +87,7 @@
 	
 	<!-- pwd수정 -->
 	<update id="updatePwd" parameterType="com.ssafy.edu.model.User">
-		UPDATE USER SET PWD=MD5(#{pwd}) WHERE EMAIL=#{email}
+		UPDATE USER SET PWD=#{pwd} WHERE EMAIL=#{email}
 	</update>
 	
 </mapper>
