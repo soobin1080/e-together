@@ -143,19 +143,33 @@
   </div>
 </template>
 <script>
-import router from '../router.js'
-  export default {
-    data: () => ({
-      total: "",
-      people: "",
-      money: "",
-      quantity: 0,
-      price: 0,
-      dialog: false,
-    }),
-    created() {
-      this.people = this.people;
-      this.money = this.money;
+export default {
+  data: () => ({
+    total: "",
+    people: "",
+    money: "",
+    quantity: 0,
+    price: 0
+  }),
+  created() {
+    this.people = this.people;
+    this.money = this.money;
+  },
+  mounted() {
+    this.people = this.$store.state.people;
+    this.money = this.$store.state.money;
+  },
+  computed: {
+    mul: function() {
+      this.quantity = this.$store.state.quantity;
+      this.price = this.stringNumberToInt(this.$store.state.price);
+      return this.quantity * this.price;
+    }
+  },
+  methods: {
+    triggerEvent() {
+      this.$store.state.people = this.people;
+      this.$store.state.money = this.money;
     },
     mounted() {
       this.people = this.$store.state.people;

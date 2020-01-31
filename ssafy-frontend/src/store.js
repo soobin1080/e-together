@@ -20,22 +20,6 @@ export default new Vuex.Store({
   computed: {
 
   },
-  // mutations: {
-  //   addCart: (state, payload) => {
-  //     if (payload.product !== '') {
-  //       localStorage.setItem(payload.product, JSON.stringify({
-  //         todo: payload.product,
-  //         done: false
-  //       }));
-
-  //       state.productlist.push({
-  //         product: payload.product,
-  //         done: false,
-  //       });
-  //     } else {
-  //       alert('할 일을 입력해주세요!');
-  //     }
-  //   }
-  // }
+ 
   
 })
