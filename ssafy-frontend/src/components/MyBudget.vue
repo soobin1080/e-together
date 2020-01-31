@@ -17,7 +17,7 @@
   export default {
     name: "MyBudget",
     props: {
-    date: { type: String },
+    date: { type: Number },
     title: { type: String },
     body: { type: String },
   },
@@ -33,7 +33,16 @@
 
     },
     mount() {
-      
+
+    },
+
+    computed: {
+     convertDate() {
+       console.log("convertDate")
+       let convertDate = new Date(this.date)
+       console.log(convertDate)
+       return this.date
+     }
     }
 
   }

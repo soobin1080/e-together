@@ -32,14 +32,8 @@
             <strong>인원</strong>
           </td>
           <td width="80%" style="text-align:right">
-            <input
-              type="number"
-              :step="10"
-              id="people"
-              v-model="people"
-              @input="triggerEvent"
-              style="text-align:right"
-            />명
+            <input type="number" :step="10" id="people" v-model="people" @input="triggerEvent"
+              style="text-align:right" />명
           </td>
         </tr>
       </table>
@@ -51,14 +45,8 @@
             <strong>예산</strong>
           </td>
           <td width="80%" style="text-align:right">
-            <input
-              type="number"
-              :step="10000"
-              id="money"
-              v-model="money"
-              @input="triggerEvent"
-              style="text-align:right"
-            />원
+            <input type="number" :step="10000" id="money" v-model="money" @input="triggerEvent"
+              style="text-align:right" />원
           </td>
         </tr>
       </table>
@@ -70,9 +58,7 @@
             <strong>차트</strong>
           </td>
           <td width="80%" style="text-align:right">
-            <table
-              style="radius:2; width:100%; margin:auto; text-align:center; background-color:#d9eeff"
-            >
+            <table style="radius:2; width:100%; margin:auto; text-align:center; background-color:#d9eeff">
               <col width="80px" />
               <col width="100px" />
               <thead>
@@ -128,64 +114,100 @@
         </tr>
       </table>
     </b-list-group-item>
-    <v-btn block @click="list_submit">저장하기</v-btn>
+    <v-btn block @click.stop="dialog=true">저장하기</v-btn>
+
+    <!-- 제목 지정 modal -->
+    <v-dialog v-model="dialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">제목</v-card-title>
+        
+        <v-col>
+          <v-text-field autocomplete="nope"
+            label="제목"
+          ></v-text-field>
+        </v-col>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="green darken-1" text @click="budgetSave(true)">
+            저장
+          </v-btn>
+
+          <v-btn color="green darken-1" text @click="budgetSave(false)">
+            취소
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
-export default {
-  data: () => ({
-    total: "",
-    people: "",
-    money: "",
-    quantity:0,
-    price:0
-          
-  }),
-  created() {
-    this.people = this.people;
-    this.money = this.money;
-  },
-  mounted() {
-    this.people = this.$store.state.people;
-    this.money = this.$store.state.money;
-  },
-  computed: {
-    mul:function(){      
-      this.quantity=this.$store.state.quantity;
-      this.price=this.stringNumberToInt(this.$store.state.price);
-      return this.quantity*this.price;
-    }
-  },
-  methods: {
-    triggerEvent() {
-      this.$store.state.people = this.people;
-      this.$store.state.money = this.money;
+import router from '../router.js'
+  export default {
+    data: () => ({
+      total: "",
+      people: "",
+      money: "",
+      quantity: 0,
+      price: 0,
+      dialog: false,
+    }),
+    created() {
+      this.people = this.people;
+      this.money = this.money;
     },
-    cal() {
-      this.total += Number(this.mul);
+    mounted() {
+      this.people = this.$store.state.people;
+      this.money = this.$store.state.money;
     },
-    list_submit() {
-      // DB에 저장(Sub III때 구현)
+    computed: {
+      mul: function () {
+        this.quantity = this.$store.state.quantity;
+        this.price = this.stringNumberToInt(this.$store.state.price);
+        return this.quantity * this.price;
+      }
     },
-     stringNumberToInt(stringNumber) {
-       console.log(parseInt(stringNumber.replace(/,/g, "")));
-      return parseInt(stringNumber.replace(/,/g, ""));
-    }
-  },
-  
-  
-};
+    methods: {
+      triggerEvent() {
+        this.$store.state.people = this.people;
+        this.$store.state.money = this.money;
+      },
+      cal() {
+        this.total += Number(this.mul);
+      },
+      list_submit() {
+        // DB에 저장(Sub III때 구현)
+      },
+      stringNumberToInt(stringNumber) {
+        console.log(parseInt(stringNumber.replace(/,/g, "")));
+        return parseInt(stringNumber.replace(/,/g, ""));
+      },
+      budgetSave(bool) {
+        if (bool === true) {
+
+          const result = confirm("hello")
+          if (result) {
+            router.push("/mylist")
+          }
+        }
+      }
+    },
+
+
+  };
 </script>
 <style>
-.product {
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.product_table {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  width: 100%;
-}
+  .product {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .product_table {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+  }
 </style>

@@ -26,17 +26,40 @@
           v-on:keyup.enter="getProductList(keyword)"          
         ></v-text-field>
 
-        <b-card no-body style="height:700px;">
+        <b-card no-body style="height:1000px;">
+          <v-tabs
+            dark
+            background-color="darken-3"
+            show-arrows
+          >
+          <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
+            <v-tab
+              v-for="tab in tabs"
+              :key="tab.title"
+              @click="clickTab(tab.title)"
+              v-model="category"
+            >
+              {{tab.title}}
+            </v-tab>
+          </v-tabs>
+
+          <ProductList 
+                :products="products"
+                :pages="pages" 
+                :category="category"
+                :productPerPage="productPerPage"
+                ></ProductList>
           <!-- 카테고리 탭 -->
-          <b-tabs small card :tabs="tabs">
+          <!-- <b-tabs small card :tabs="tabs">
               <b-tab v-for="tab in tabs" :key="tab.title" :title="tab.title" @click="clickTab">
-                  <ProductList 
-                    :products="products" 
-                    :pages="pages" 
-                    :category="category"
-                    :productPerPage="productPerPage"></ProductList>
               </b-tab>
-          </b-tabs>
+              <ProductList 
+                :products="products" 
+                :pages="pages" 
+                :category="category"
+                :productPerPage="productPerPage"></ProductList>
+              
+          </b-tabs> -->
 
           <!-- modal 플로팅 버튼-->
           <v-btn
@@ -103,24 +126,36 @@ export default {
       productPerPage: 9,
       pagingLength: 10,
       category: "전체",
+      allLegnth: 0,
+      pagingLength: 0,
     };
   },
  mounted(){
    this.getProductList(this.keyword)
  },
  computed : {
-  //  selectedTab : function(title){
-  //    consloe.log(title)
-  //    this.category = title
-  //    return
-  //  }
+   
  },
 
   methods: {
-    clickTab : function(event) {
-      console.log(event.target.text)
-      this.category = event.target.text
-      return
+    clickTab : function(title) {
+      console.log(title)
+      this.category = title
+      if (this.category !== "전체") {
+      this.pagingProduct = this.products.filter(product => {
+        return product.main_category === this.category
+        })
+      } else {
+      this.pagingProduct = this.products
+      }
+
+      this.allLength = this.pagingProduct.length
+      if (this.allLength % this.productPerPage === 0) {
+        this.pagingLength = parseInt(this.allLength / this.productPerPage)
+      } else {
+        this.pagingLength = parseInt(this.allLength / this.productPerPage) + 1
+      }
+      this.pages = 1
     },
     selectTab : function(title) {
       this.category = title
@@ -164,7 +199,6 @@ export default {
          // console.log("!!!!!!!!!!!!"+response.data);
           this.products = response.data;
           //console.log("!!!!!!!!!!product: "+this.products);
-          console.log(this.products);
         })
         .catch(() => {
           this.errored = true;

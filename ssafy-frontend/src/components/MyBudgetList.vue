@@ -2,7 +2,7 @@
   <v-list two-line subheader>
     <v-list-item v-for="budget in computedPagingBudgets" :key="budget.created_at">
       <MyBudget 
-        :date="budget.created_at.toString()" 
+        :date="budget.created_at.seconds" 
         :title="budget.title" 
         :body="budget.body"
         >
