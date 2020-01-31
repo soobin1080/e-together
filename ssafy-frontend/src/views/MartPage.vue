@@ -10,10 +10,7 @@
     </ImgBanner>
 
     <!-- page navigation-->
-    <div class="text-center">
-      {{pages}}
-      <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
-    </div>
+    
 
     <v-row class="main" style="padding-top:120px">
       <v-col lg="8">
@@ -30,7 +27,10 @@
           v-on:keyup.enter="getProductList(keyword)"
         ></v-text-field>
 
-        <b-card no-body style="height:1000px;">
+        <b-card no-body style="">
+          <div class="text-center">
+            <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
+          </div>
           <v-tabs
             dark
             background-color="darken-3"
@@ -46,7 +46,7 @@
               {{tab.title}}
             </v-tab>
           </v-tabs>
-
+        
           <ProductList 
                 :products="products"
                 :pages="pages" 
@@ -141,7 +141,9 @@ export default {
    this.getProductList(this.keyword)
  },
  computed : {
-   
+   mountedProduct() {
+     this.getProductList(this.keyword)
+   }
  },
 
   methods: {
@@ -157,6 +159,7 @@ export default {
       }
 
       this.allLength = this.pagingProduct.length
+      console.log("allLength : " + this.allLength)
       if (this.allLength % this.productPerPage === 0) {
         this.pagingLength = parseInt(this.allLength / this.productPerPage)
       } else {
@@ -164,10 +167,7 @@ export default {
       }
       this.pages = 1
     },
-    selectTab: function(title) {
-      this.category = title;
-      this.pages = 1;
-    },
+
     // selectTab: function(title) {
     //   console.log(title)
     //   if (title !== "전체") {
@@ -205,6 +205,11 @@ export default {
         .then(response => {         
           this.products = response.data;         
           console.log(this.products);
+          if (this.products.length % this.productPerPage === 0) {
+            this.pagingLength = parseInt(this.products.length / this.productPerPage)
+          } else{
+            this.pagingLength = parseInt(this.products.length / this.productPerPage) + 1
+          }
         })
         .catch(() => {
           this.errored = true;          
@@ -216,6 +221,11 @@ export default {
         .get("/product/" + this.keyword)
         .then(response => {        
           this.products = response.data;
+           if (this.products.length % this.productPerPage === 0) {
+            this.pagingLength = parseInt(this.products.length / this.productPerPage)
+          } else{
+            this.pagingLength = parseInt(this.products.length / this.productPerPage) + 1
+          }
           return this.products;
         })
         .catch(() => {

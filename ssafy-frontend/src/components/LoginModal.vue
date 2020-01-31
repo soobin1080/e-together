@@ -6,7 +6,7 @@
         <div class="partition" id="partition-register">
           <div class="partition-title">LOGIN</div>
           <div class="partition-form">
-            <form action="" method="post">
+            <!-- <form action="" method="post"> -->
               <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
               <input id="n-email" name="username" type="text" placeholder="Email" v-model="username">
               <input id="n-password2" type="password" name="password" placeholder="Password" v-model="password">
@@ -18,7 +18,7 @@
                 </router-link>
                 <button id="register-btn" @click="login">Login</button>
               </div>
-            </form>
+            <!-- </form> -->
 
             <button class="large-btn google-btn" @click="loginWithGoogle">connect with <span>google</span></button>
             <button class="large-btn facebook-btn" @click="loginWithFackbook">connect with
@@ -35,13 +35,13 @@
 </template>
 <script>
   import FirebaseService from '@/services/FirebaseService'
+  import http from "../http-common";
   import axios from 'axios'
   const MODAL_WIDTH = 656
   export default {
     name: 'LoginModal',
     data() {
       return {
-
         modalWidth: MODAL_WIDTH,
         username: "",
         password: "",
@@ -77,13 +77,30 @@
         }
       },
       login() {
-        axios.post('http://localhost:8080/api/auth/signin/', {
-            email: this.username,
-            pwd: this.password
-          })
-          .then(response => {
-            console.log(response)
-            })
+        let formData = new FormData()
+        formData.append('email', this.username)
+        formData.append('pwd', this.password)
+
+        http
+        .post("auth/signin", {
+          headers: {
+            'Accept' : 'application/json',
+            'tokenType': 'Bearer',
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmppQHRlc3QuY29tIiwiaWF0IjoxNTgwNDM5NTk1LCJleHAiOjE1ODA1MjU5OTV9.3FT_bA-B6KTxMwNpUHVVAgZdGUbdwTjbsAH1TBUickTJWlRllhW0wsbk8mA6HPv4jjw8scFKnhZlsIILmoueGg"
+          },
+          auth : {
+          "email": this.username,
+          "pwd" : this.pwd,
+          }
+        })
+        .then(response => {         
+          console.log(response)
+        })
+        .catch(() => {
+          this.errored = true;          
+        })
+        .finally(() => (this.loading = false));
       },
 
       // //  http

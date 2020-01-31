@@ -120,11 +120,9 @@
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline">제목</v-card-title>
-        
+
         <v-col>
-          <v-text-field autocomplete="nope"
-            label="제목"
-          ></v-text-field>
+          <v-text-field autocomplete="nope" label="제목"></v-text-field>
         </v-col>
 
         <v-card-actions>
@@ -143,34 +141,45 @@
   </div>
 </template>
 <script>
-export default {
-  data: () => ({
-    total: "",
-    people: "",
-    money: "",
-    quantity: 0,
-    price: 0
-  }),
-  created() {
-    this.people = this.people;
-    this.money = this.money;
-  },
-  mounted() {
-    this.people = this.$store.state.people;
-    this.money = this.$store.state.money;
-  },
-  computed: {
-    mul: function() {
-      this.quantity = this.$store.state.quantity;
-      this.price = this.stringNumberToInt(this.$store.state.price);
-      return this.quantity * this.price;
-    }
-  },
-  methods: {
-    triggerEvent() {
-      this.$store.state.people = this.people;
-      this.$store.state.money = this.money;
+  export default {
+    data: () => ({
+      total: "",
+      people: "",
+      money: "",
+      quantity: 0,
+      price: 0,
+      dialog: false,
+    }),
+    created() {
+      this.people = this.people;
+      this.money = this.money;
     },
+
+      methods: {
+        triggerEvent() {
+          this.$store.state.people = this.people;
+          this.$store.state.money = this.money;
+        },
+        cal() {
+          this.total += Number(this.mul);
+        },
+        list_submit() {
+          // DB에 저장(Sub III때 구현)
+        },
+        stringNumberToInt(stringNumber) {
+          console.log(parseInt(stringNumber.replace(/,/g, "")));
+          return parseInt(stringNumber.replace(/,/g, ""));
+        },
+        budgetSave(bool) {
+          if (bool === true) {
+
+            const result = confirm("hello")
+            if (result) {
+              router.push("/mylist")
+            }
+          }
+        }
+      },
     mounted() {
       this.people = this.$store.state.people;
       this.money = this.$store.state.money;
@@ -180,35 +189,8 @@ export default {
         this.quantity = this.$store.state.quantity;
         this.price = this.stringNumberToInt(this.$store.state.price);
         return this.quantity * this.price;
-      }
-    },
-    methods: {
-      triggerEvent() {
-        this.$store.state.people = this.people;
-        this.$store.state.money = this.money;
       },
-      cal() {
-        this.total += Number(this.mul);
-      },
-      list_submit() {
-        // DB에 저장(Sub III때 구현)
-      },
-      stringNumberToInt(stringNumber) {
-        console.log(parseInt(stringNumber.replace(/,/g, "")));
-        return parseInt(stringNumber.replace(/,/g, ""));
-      },
-      budgetSave(bool) {
-        if (bool === true) {
-
-          const result = confirm("hello")
-          if (result) {
-            router.push("/mylist")
-          }
-        }
-      }
-    },
-
-
+    }
   };
 </script>
 <style>
