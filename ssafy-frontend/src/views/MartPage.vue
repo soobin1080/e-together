@@ -9,13 +9,7 @@
       >Mart</div>
     </ImgBanner>
 
-    <!-- page navigation-->
-    <div class="text-center">
-      {{pages}}
-      <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
-    </div>
-
-    <v-row class="main" style="padding-top:120px">
+    <v-row class="main" style="padding-top:80px">
       <v-col lg="8">
         <!-- search box -->
         <v-text-field
@@ -30,7 +24,7 @@
           v-on:keyup.enter="getProductList(keyword)"
         ></v-text-field>
 
-        <b-card no-body style="height:1000px;">
+        <b-card no-body >
           <v-tabs
             dark
             background-color="darken-3"
@@ -45,8 +39,13 @@
             >
               {{tab.title}}
             </v-tab>
+            
           </v-tabs>
-
+ <!-- page navigation-->
+    <br>
+    <div class="text-center">     
+      <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
+    </div>
           <ProductList 
                 :products="products"
                 :pages="pages" 
@@ -67,14 +66,14 @@
 
           <!-- modal 플로팅 버튼-->
           <v-btn
-            absolute
+            fixed
             dark
             fab
             bottom
             right
             color="#ffd900"
             v-b-modal.modal-1
-            class="hidden-lg-only"
+            class="hidden-lg-only"            
           >
             <i class="material-icons">shopping_cart</i>
           </v-btn>

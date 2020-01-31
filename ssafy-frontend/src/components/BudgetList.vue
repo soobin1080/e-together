@@ -32,8 +32,14 @@
             <strong>인원</strong>
           </td>
           <td width="80%" style="text-align:right">
-            <input type="number" :step="10" id="people" v-model="people" @input="triggerEvent"
-              style="text-align:right" />명
+            <input
+              type="number"
+              :step="10"
+              id="people"
+              v-model="people"
+              @input="triggerEvent"
+              style="text-align:right"
+            />명
           </td>
         </tr>
       </table>
@@ -45,8 +51,14 @@
             <strong>예산</strong>
           </td>
           <td width="80%" style="text-align:right">
-            <input type="number" :step="10000" id="money" v-model="money" @input="triggerEvent"
-              style="text-align:right" />원
+            <input
+              type="number"
+              :step="10000"
+              id="money"
+              v-model="money"
+              @input="triggerEvent"
+              style="text-align:right"
+            />원
           </td>
         </tr>
       </table>
@@ -58,7 +70,9 @@
             <strong>차트</strong>
           </td>
           <td width="80%" style="text-align:right">
-            <table style="radius:2; width:100%; margin:auto; text-align:center; background-color:#d9eeff">
+            <table
+              style="radius:2; width:100%; margin:auto; text-align:center; background-color:#d9eeff"
+            >
               <col width="80px" />
               <col width="100px" />
               <thead>
@@ -120,23 +134,17 @@
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline">제목</v-card-title>
-        
+
         <v-col>
-          <v-text-field autocomplete="nope"
-            label="제목"
-          ></v-text-field>
+          <v-text-field autocomplete="nope" label="제목"></v-text-field>
         </v-col>
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn color="green darken-1" text @click="budgetSave(true)">
-            저장
-          </v-btn>
+          <v-btn color="green darken-1" text @click="budgetSave(true)">저장</v-btn>
 
-          <v-btn color="green darken-1" text @click="budgetSave(false)">
-            취소
-          </v-btn>
+          <v-btn color="green darken-1" text @click="budgetSave(false)">취소</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -166,62 +174,44 @@ export default {
       return this.quantity * this.price;
     }
   },
+
   methods: {
     triggerEvent() {
       this.$store.state.people = this.people;
       this.$store.state.money = this.money;
     },
-    mounted() {
-      this.people = this.$store.state.people;
-      this.money = this.$store.state.money;
+    cal() {
+      this.total += Number(this.mul);
     },
-    computed: {
-      mul: function () {
-        this.quantity = this.$store.state.quantity;
-        this.price = this.stringNumberToInt(this.$store.state.price);
-        return this.quantity * this.price;
-      }
+    list_submit() {
+      // DB에 저장(Sub III때 구현)
     },
-    methods: {
-      triggerEvent() {
-        this.$store.state.people = this.people;
-        this.$store.state.money = this.money;
-      },
-      cal() {
-        this.total += Number(this.mul);
-      },
-      list_submit() {
-        // DB에 저장(Sub III때 구현)
-      },
-      stringNumberToInt(stringNumber) {
-        console.log(parseInt(stringNumber.replace(/,/g, "")));
-        return parseInt(stringNumber.replace(/,/g, ""));
-      },
-      budgetSave(bool) {
-        if (bool === true) {
-
-          const result = confirm("hello")
-          if (result) {
-            router.push("/mylist")
-          }
+    stringNumberToInt(stringNumber) {
+      console.log(parseInt(stringNumber.replace(/,/g, "")));
+      return parseInt(stringNumber.replace(/,/g, ""));
+    },
+    budgetSave(bool) {
+      if (bool === true) {
+        const result = confirm("hello");
+        if (result) {
+          router.push("/mylist");
         }
       }
-    },
-
-
-  };
+    }
+  }
+};
 </script>
 <style>
-  .product {
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.product {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .product_table {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    width: 100%;
-  }
+.product_table {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+}
 </style>
