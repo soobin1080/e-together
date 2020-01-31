@@ -3,7 +3,6 @@ package com.ssafy.edu.springjwt.payload.request;
 public class LoginRequest {
 	
 	private String email;
-	
 	private String pwd;
 	
 	public LoginRequest() {
