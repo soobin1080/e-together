@@ -4,11 +4,15 @@
     <v-navigation-drawer v-model="sidebar" fixed temporary>
       <v-list>
         <h5 class="ml-5">hello</h5>
+        <v-list-item @click="pwdCheck">
+          <v-list-item-action></v-list-item-action>
+              {{setUserName}}
+        </v-list-item>
         <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path">
           <v-list-item-action></v-list-item-action>
           <v-list-item-content>{{ item.title }}</v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="this.$store.state.user" @click="$modal.show('login-modal')">
+        <v-list-item v-if="setUserName" @click="$modal.show('login-modal')">
           <v-list-item-action></v-list-item-action>
           <v-list-item-content class="text-center">Logout</v-list-item-content>
         </v-list-item>
@@ -32,6 +36,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
+        <v-btn text @click="pwdCheck">{{setUserName}}</v-btn>
         <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">{{ item.title }}</v-btn>
         <v-btn text @click="$modal.show('login-modal')">Login</v-btn>
       </v-toolbar-items>
@@ -49,6 +54,10 @@ export default {
   methods: {
     getImgUrl(img) {
       return require("../assets/" + img);
+    },
+    pwdCheck() {
+      console.log('pwdCheck')
+      this.$router.push('/pwdcheck')
     }
   },
   data() {
@@ -58,12 +67,20 @@ export default {
       menuItems: [
         { title: "Home", path: "/" },
         { title: "Mart", path: "/product" },
-        { title: "MyList", path: "/mylist" },
-        { title: "Review", path: "/portfolio" },
+        { title: "My Budget", path: "/mybudget" },
+        { title: "Review", path: "/review" },
         { title: "UserInfo", path: "/userinfo" },
         
-      ]
+      ],
+      username : "",
     };
+  },
+
+  computed: {
+    setUserName() {
+      this.username = this.$store.state.getuser
+      return this.username
+    }
   }
 };
 </script>

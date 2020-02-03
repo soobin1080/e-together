@@ -1,92 +1,101 @@
 <template>
-  <v-list two-line subheader>
-    <v-list-item v-for="budget in computedPagingBudgets" :key="budget.created_at">
-      <MyBudget 
-        :date="budget.created_at.seconds" 
-        :title="budget.title" 
-        :body="budget.body"
-        >
-      </MyBudget>
-
-    </v-list-item>
-    <!-- <v-divider></v-divider> -->
-    <!-- <i class="fas fa-chevron-circle-down"></i> -->
-  </v-list>
+  <table width="100%">
+    <colgroup>
+      <col width="30%" />
+      <col width="10%" />
+      <col width="10%" />
+      <col width="20%" />
+      <col width="15%" />
+      <col width="15%" />
+    </colgroup>
+    <tr style="text-align:center" height="50px">
+      <th>제목</th>
+      <th>인원</th>
+      <th>예산</th>
+      <th>날짜</th>
+      <th>적/부</th>
+      <th>다운로드</th>
+    </tr>
+    <template v-if="this.allLength==0 || this.allLength==undefined">
+      <tr>
+        <td colspan="6" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
+      </tr>
+    </template>
+    <tr v-for="budget in computedPagingBudgets" :key="budget.created_at">
+      <td v-html="budget.title"
+      @click="show_detail(budget.num)"
+      style="text-align:center"></td>
+      <td v-html="budget.people"></td>
+      <td v-html="budget.money"></td>
+      <td v-html="budget.date"></td>
+      <td v-html="budget.fitness"></td>
+      <td><v-btn >pdf로 저장</v-btn></td>
+    </tr>
+  </table>
 </template>
 
 <script>
-  import FirebaseService from "@/services/FirebaseService";
-  import MyBudget from "./MyBudget";
-  export default {
-    name: "MyBudgetList",
+import FirebaseService from "@/services/FirebaseService";
+export default {
+  name: "MyBudgetList",
 
-    components: {
-      MyBudget
+  components: {},
+
+  props: {
+    limits: {
+      type: Number,
+      default: 6
     },
-
-    props: {
-      limits: {
-        type: Number,
-        default: 6
-      },
-      loadMore: {
-        type: Boolean,
-        default: false
-      },
-      pages : {
-        type: Number
-      },
-      pagingList: {
-        type: Array,
-        required: true
-      },
-      allLength: {
-        type: Number,
-        required: true
-      }
-    
+    loadMore: {
+      type: Boolean,
+      default: false
     },
-
-
-    data() {
-      return {
-        pagingbudgets: [],
-      }
+    pages: {
+      type: Number
     },
-
-    methods: {
-      // async getMyBudgets() {
-      //   this.mybudgets = await FirebaseService.getMyBudgets();
-      // }
-
+    pagingList: {
+      type: Array,
+      required: true
     },
-    computed : {
-      computedPagingBudgets: function(){
-        this.pagingBudgets = []
-        let tmp = 0;
-        for (let i = (this.pages*5)-5; i < this.pages*5; i++) {
-          console.log("i : "+i)
-          if (i === (this.allLength)) {
-            this.limits = tmp
-            console.log(tmp)
-            break
-            }
-          else {
-            this.pagingBudgets.push(this.pagingList[i])
-          }
-          tmp++
-        }
-        console.log(this.pagingBudgets)
-        return this.pagingBudgets
-      }
-    },
-    mounted() {
-
+    allLength: {
+      type: Number,
+      required: true
     }
+  },
 
-  }
+  data() {
+    return {
+      pagingbudgets: []
+    };
+  },
+
+  methods: {
+    // async getMyBudgets() {
+    //   this.mybudgets = await FirebaseService.getMyBudgets();
+    // }
+  },
+  computed: {
+    computedPagingBudgets: function() {
+      this.pagingBudgets = [];
+      let tmp = 0;
+      for (let i = this.pages * 5 - 5; i < this.pages * 5; i++) {
+        console.log("i : " + i);
+        if (i === this.allLength) {
+          this.limits = tmp;
+          console.log(tmp);
+          break;
+        } else {
+          this.pagingBudgets.push(this.pagingList[i]);
+        }
+        tmp++;
+      }
+      console.log(this.pagingBudgets);
+      return this.pagingBudgets;
+    }
+  },
+  mounted() {}
+};
 </script>
 
 <style scoped>
-
 </style>

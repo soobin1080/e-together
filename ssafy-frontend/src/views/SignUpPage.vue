@@ -14,7 +14,7 @@
         <h2 class="text-center mt-5">회원가입</h2>
         <br />
         <v-text-field
-          v-model="name"
+          v-model="credentials.name"
           :rules="nameRules"
           label="nickname"
           counter="20,"
@@ -22,10 +22,10 @@
           autocomplete="name"
         ></v-text-field>
 
-        <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+        <v-text-field v-model="credentials.email" :rules="emailRules" label="E-mail" required></v-text-field>
 
         <v-text-field
-          v-model="password"
+          v-model="credentials.pwd"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[rules.required, rules.min_8]"
           :type="show1 ? 'text' : 'password'"
@@ -37,7 +37,7 @@
         ></v-text-field>
 
         <v-text-field
-          v-model="phone"
+          v-model="credentials.phone"
           label="phone"
           :rules="[rules.required, rules.is_num]"
           required
@@ -56,6 +56,7 @@
 <script>
 import ImgBanner from "../components/ImgBanner";
 import ResizeText from "vue-resize-text";
+import http from "../http-common";
 export default {
   name: "SignUpPage",
   components: {
@@ -65,13 +66,17 @@ export default {
     ResizeText
   },
   data: () => ({
-    name: "",
-    email: "",
-    nickname: "",
-    phone: "",
+    credentials: {
+      name: "",
+      email: "",
+      phone: "",
+      pwd: "",
+    },
+
+   // nickname: "",
     show1: false,
     valid: true,
-    password: "",
+    pwd: "",
     rules: {
       required: value => !!value || "Required.",
       min_8: v => v.length >= 8 || "Min 8 characters",
@@ -91,6 +96,19 @@ export default {
   methods: {
     validate() {
       if (this.$refs.form.validate()) {
+        // let formData = new formData()
+        // formData.append('email', this.email)
+        // formData.append('pwd', this.pwd)
+        // formData.append('phone', this.phone)
+        http
+          .post('auth/signup', this.credentials)
+          .then(res => {
+            console.log(res)
+            this.$router.push("/")
+          })
+          .catch (err => {
+            console.log(err)
+          })
         this.snackbar = true;
       }
     },
