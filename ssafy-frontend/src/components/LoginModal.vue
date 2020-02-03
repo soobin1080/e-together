@@ -8,8 +8,8 @@
           <div class="partition-form">
             <!-- <form action="" method="post"> -->
               <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
-              <input id="n-email" name="username" type="text" placeholder="Email" v-model="username">
-              <input id="n-password2" type="password" name="password" placeholder="Password" v-model="password">
+              <input id="n-email" name="email" type="text" placeholder="Email" v-model="credentials.email">
+              <input id="n-password2" type="password" name="pwd" placeholder="Password" v-model="credentials.pwd">
               <div style="margin-top: 42px">
               </div>
               <div class="button-set">
@@ -43,8 +43,11 @@
     data() {
       return {
         modalWidth: MODAL_WIDTH,
-        username: "",
-        password: "",
+        credentials : {
+          email: "",
+          pwd: "",
+        }
+        
       }
     },
     created() {
@@ -77,43 +80,53 @@
         }
       },
       login() {
-        let formData = new FormData()
-        formData.append('email', this.username)
-        formData.append('pwd', this.password)
-
+        console.log('login active')
         http
-        .post("auth/signin", {
-          headers: {
-            'Accept' : 'application/json',
-            'tokenType': 'Bearer',
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmppQHRlc3QuY29tIiwiaWF0IjoxNTgwNDM5NTk1LCJleHAiOjE1ODA1MjU5OTV9.3FT_bA-B6KTxMwNpUHVVAgZdGUbdwTjbsAH1TBUickTJWlRllhW0wsbk8mA6HPv4jjw8scFKnhZlsIILmoueGg"
-          },
-          auth : {
-          "email": this.username,
-          "pwd" : this.pwd,
-          }
-        })
-        .then(response => {         
-          console.log(response)
-        })
-        .catch(() => {
-          this.errored = true;          
-        })
-        .finally(() => (this.loading = false));
+        .post('auth/signin', this.credentials)
+          .then(res => {
+            console.log(res)
+            this.$store.dispatch('login', res.data.accessToken)
+            // let tokenType = res.data.tokenType
+            // let accessToken = res.data.accessToken
+            // console.log(res.data)
+            // //console.log(res.data.accessToken)
+            // // localStorag
+            // this.$store.state.accessToken = accessToken
+            // this.$store.state.tokenType = "Bearer"
+            // this.$store.state.user = res.data.username
+            // // localStorage.accessToken = accessToken
+            // // localStorage.user = res.data.username
+            // // localStorage.tokenType = tokenType
+            // // this.$store.state.user = res.data.username
+            // // this.$store.state.tokenType = accessToken
+            // // this.$store.state.Authentication = "Bearer" + accessToken
+            // console.log(this.$store.state)
+            // this.$modal.hide('login-modal')
+          })
+          .catch(error => {
+            alert('로그인 에러')
+            console.log(error)
+          })
+        // let formData = new FormData()
+        // formData.append('email', this.username)
+        // formData.append('pwd', this.password)
+
+        // http
+        // .post("auth/signin", {
+        //   headers: {
+        //     'Accept' : 'application/json',
+        //     'tokenType' : 'Bearer',
+        //     'Content-Type' : 'application/json',
+        //     'Authorization' : "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmppQHRlc3QuY29tIiwiaWF0IjoxNTgwNDM5NTk1LCJleHAiOjE1ODA1MjU5OTV9.3FT_bA-B6KTxMwNpUHVVAgZdGUbdwTjbsAH1TBUickTJWlRllhW0wsbk8mA6HPv4jjw8scFKnhZlsIILmoueGg"
+        //   },
+        //   auth : {
+        //   "email": this.username,
+        //   "pwd": this.pwd,
+        //   }
+        // })
+       
       },
 
-      // //  http
-      // //   .post("/user/login", {
-      // //       username: this.username,
-      // //       password: this.password
-
-      // //   })
-      // //   .then(response => {
-      // //     console.log(response)
-      // //   })
-
-      // })
     },
 
   }

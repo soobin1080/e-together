@@ -18,7 +18,7 @@ import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import '@mdi/font/css/materialdesignicons.css'
-
+import VueSession from 'vue-session'
 
 import VuetifyNumberInput from '@jzolago/vuetify-number-input'
 
@@ -36,6 +36,7 @@ Vue.use(VModal)
 Vue.use(VueCsrf);
 Vue.use(VueAxios, axios)
 Vue.use(VuetifyNumberInput);
+Vue.use(VueSession)
 
 export const eventBus = new Vue()
 
