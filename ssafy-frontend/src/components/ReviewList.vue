@@ -1,24 +1,26 @@
 <template>
   <table width="100%">
     <colgroup>
-      <col width="30%" />
+      <col width="20%" />
       <col width="10%" />
       <col width="10%" />
       <col width="20%" />
-      <col width="15%" />
-      <col width="15%" />
+      <col width="20%" />
+       <col width="10%" />
+        <col width="10%" />
     </colgroup>
     <tr style="text-align:center" height="50px">
       <th>제목</th>
       <th>인원</th>
       <th>예산</th>
+      <th>작성자</th>
       <th>날짜</th>
       <th>적/부</th>
-      <th>다운로드</th>
+      <th>좋아요</th>
     </tr>
     <template v-if="this.allLength==0 || this.allLength==undefined">
       <tr>
-        <td colspan="6" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
+        <td colspan="7" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
       </tr>
     </template>
     <tr v-for="budget in computedPagingBudgets" :key="budget.created_at">
@@ -27,9 +29,10 @@
       style="text-align:center"></td>
       <td v-html="budget.people"></td>
       <td v-html="budget.money"></td>
+      <td v-html="buget.nickname"></td>
       <td v-html="budget.date"></td>
       <td v-html="budget.fitness"></td>
-      <td><v-btn >pdf로 저장</v-btn></td>
+       <td v-html="budget.likecount"></td>
     </tr>
   </table>
 </template>
@@ -37,7 +40,7 @@
 <script>
 import FirebaseService from "@/services/FirebaseService";
 export default {
-  name: "MyBudgetList",
+  name: "ReviewList",
 
   components: {},
 
@@ -73,6 +76,9 @@ export default {
     // async getMyBudgets() {
     //   this.mybudgets = await FirebaseService.getMyBudgets();
     // }
+    show_detail(num) {
+      
+    }
   },
   computed: {
     computedPagingBudgets: function() {

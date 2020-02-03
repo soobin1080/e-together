@@ -1,13 +1,7 @@
 <template>
   <v-layout mt-5 wrap>
-    <v-flex v-for="product in computedPagingProducts" xs12 sm6 lg4 :key="product.pro_name">
-      <Product class="ma-3" :pro_name="product.pro_name" :price="product.price" :img="product.img"></Product>
-    </v-flex>
-
-    <v-flex xs12 text-xs-center round my-5 v-if="loadMore">
-      <v-btn color="info" dark v-on:click="loadMoreProducts">
-        <v-icon size="25" class="mr-2">fa-plus</v-icon>더 보기
-      </v-btn>
+    <v-flex v-for="product in computedPagingProducts" xs6 sm4 lg3 :key="product.pro_name">
+      <Product class="ma-2" :pro_name="product.pro_name" :price="product.price" :img="product.img"></Product>
     </v-flex>
   </v-layout>
 </template>
@@ -23,8 +17,6 @@ export default {
     };
   },
   props: {
-    limits: { type: Number, default: 454 },
-    loadMore: { type: Boolean, default: false },
     product: { type: Object },
     productPerPage: {
       type: Number
@@ -50,13 +42,6 @@ export default {
   methods: {
     all() {
       product = this.$attrs.product;
-    },
-
-    loadMoreProducts() {
-      this.limits = this.limits + 4;
-      if (this.limits >= this.products.length) {
-        this.loadMore = false;
-      }
     }
   },
   computed: {
