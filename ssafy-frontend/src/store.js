@@ -12,9 +12,12 @@ export default new Vuex.Store({
     money: '', // 예산
 
     // productlist: [{ pro_name: '', price: '', quantity: '' }]
-    pro_name: '', // 상품명
-    price: '', // 가격
-    quantity: '' // 수량
+    list:{
+      pro_name: '', // 상품명
+      price: '', // 가격
+      quantity: '' // 수량
+    }
+    
 
   },
   computed: {

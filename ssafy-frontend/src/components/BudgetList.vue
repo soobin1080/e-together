@@ -5,20 +5,20 @@
     </b-list-group-item>
     <b-list-group-item class="product_table" style="height:350px">
       <table style="width:100%; margin:auto">
-        <col width="50%" />
+        <col width="55%" />
         <col width="15%" />
-        <col width="35%" />
+        <col width="30%" />
         <thead>
-          <tr style="text-align:center">
+          <tr style="font-size:10pt; text-align:center">
             <th>항목</th>
             <th>수량</th>
-            <th>가격</th>
+            <th style="text-align:right">가격</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="product" style="font-size:9pt">{{this.$store.state.pro_name}}</td>
-            <td class="quantity" style="text-align:right">{{this.$store.state.quantity}}</td>
+          <tr v-for="num in list" class="nicecolor" :key="num">           
+            <td v-html="num.pro_name" class="product" style="font-size:11pt"></td>
+            <td v-html="num.quantity" class="quantity" style="text-align:right"></td>
             <td class="pro_price" style="text-align:right">{{mul}}원</td>
           </tr>
         </tbody>
@@ -159,6 +159,8 @@
       quantity: 0,
       price: 0,
       dialog: false,
+
+      list: []
     }),
     created() {
       this.people = this.people;
@@ -177,7 +179,7 @@
           // DB에 저장(Sub III때 구현)
         },
         stringNumberToInt(stringNumber) {
-          console.log(parseInt(stringNumber.replace(/,/g, "")));
+          //console.log(parseInt(stringNumber.replace(/,/g, "")));
           return parseInt(stringNumber.replace(/,/g, ""));
         },
         budgetSave(bool) {
@@ -196,24 +198,29 @@
     },
     computed: {
       mul: function () {
-        this.quantity = this.$store.state.quantity;
-        this.price = this.stringNumberToInt(this.$store.state.price);
+        alert(this.$store.state.list.pro_name);
+        this.list=this.$store.state.list;
+        
+        this.quantity = this.$store.state.list.quantity;
+        this.price = this.stringNumberToInt(this.$store.state.list.price);
         return this.quantity * this.price;
       },
     }
   };
 </script>
 <style>
-.product {
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .product_table {
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
+}
+
+.product {
+  font-size: 12pt;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 190px;
 }
 </style>
