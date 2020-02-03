@@ -10,6 +10,9 @@ import TeamPage from './views/TeamPage.vue'
 import UserInfoPage from './views/UserInfoPage.vue'
 import MyBudgetListPage from './views/MyBudgetListPage.vue'
 import PwdCheckPage from './views/PwdCheckPage.vue'
+import MyBudgetPage from './views/MyBudgetPage.vue'
+import ReviewPage from './views/ReviewPage.vue'
+
 
 Vue.use(Router)
 
@@ -55,9 +58,14 @@ export default new Router({
 
 		},
 		{
-			path: '/mylist',
-			name: 'mylist',
-			component: MyBudgetListPage
+			path: '/mybudget',
+			name: 'mybudget',
+			component: MyBudgetPage
+		},
+		{
+			path: '/review',
+			name: 'review',
+			component: ReviewPage
 		},
 		{
 			path: '/pwdcheck',

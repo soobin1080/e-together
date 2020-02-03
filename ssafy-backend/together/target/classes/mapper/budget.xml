@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssafy.budget">
+
+	<!-- budget_num, user_email,budget_title,personnel, budget, fitness, date, 
+		pro_id, pro_name,quantity, price, like_count -->
+
+	<!-- 내 전체 예산안 보기 -->
+	<select id="getBudgetList" parameterType="java.lang.String"
+		resultType="com.ssafy.edu.model.BudgetList">
+		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
+		FROM PRODUCT
+	</select>
+
+	<!-- 내 예산안 자세히 보기 -->
+	<select id="getOneBudget"
+		parameterType="com.ssafy.edu.model.Budget"
+		resultType="com.ssafy.edu.model.BudgetInfo">
+		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
+		FROM PRODUCT WHERE PRO_NAME LIKE CONCAT('%',#{keyword},'%')
+	</select>
+
+	<!-- 내 예산안 저장하기 -->
+<!-- 	<insert id="insertOneBudget" -->
+<!-- 		parameterType="com.ssafy.edu.model.Budget"> -->
+<!-- 		INSERT INTO BUDGET_LIST(USER_EMAIL, -->
+<!-- 		PRO_ID,PRO_NAME, -->
+<!-- 		QUANTITY, PRICE) -->
+<!-- 		VALUES(#{budget_num}, -->
+<!-- 		#{user_email},#{pro_id}, -->
+<!-- 		#{pro_name},#{quantity},#{price}); -->
+
+<!-- 		INSERT INTO BUDGET_INFO(USER_EMAIL, -->
+<!-- 		BUDGET_TITLE,PERSONNEL, -->
+<!-- 		BUDGET, FITNESS,DATE,LIKE_COUNT) -->
+<!-- 		VALUES(#{budget_num}, -->
+<!-- 		#{user_email},#{budget_title}, -->
+<!-- 		#{personnel},#{budget},#{fitness},date(now()),#{like_count}); -->
+<!-- 	</insert> -->
+
+	<insert id="insertBudgetList"
+		parameterType="com.ssafy.edu.model.BudgetList">
+		INSERT INTO BUDGET_LIST(USER_EMAIL, PRO_ID,PRO_NAME, QUANTITY, PRICE)
+		VALUES(	#{user_email},#{pro_id},#{pro_name},#{quantity},#{price});
+	</insert>
+
+	<insert id="insertBudgetInfo"
+		parameterType="com.ssafy.edu.model.BudgetInfo">
+		INSERT INTO BUDGET_INFO(BUDGET_NUM,USER_EMAIL, BUDGET_TITLE,PERSONNEL,
+		BUDGET,	FITNESS,DATE,LIKE_COUNT)
+		VALUES(#{budget_num},#{user_email},#{budget_title},	#{personnel},#{budget},#{fitness},date(now()),#{like_count});
+	</insert>
+
+</mapper>
+

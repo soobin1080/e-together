@@ -51,7 +51,6 @@ public class ProductController {
 	public ResponseEntity<List<Product>> searchProduct(@PathVariable String keyword) throws Exception {
 		logger.info("2-------------searchProduct-----------------------------" + new Date());
 		
-//		FoodPage foodPage = productservice.searchfood(nowPage,option, keyword);
 		List<Product> products = productservice.searchProduct(keyword);
 		
 		System.out.println("---------검색결과: "+products);
@@ -67,7 +66,6 @@ public class ProductController {
 	public ResponseEntity<List<Product>> getProductCategory(@PathVariable String category) throws Exception {
 		logger.info("3-------------searchProduct-----------------------------" + new Date());
 		
-//		FoodPage foodPage = productservice.searchfood(nowPage,option, keyword);
 		List<Product> products = productservice.getProductCategory(category);
 		
 		System.out.println("---------검색결과: "+products);
@@ -83,7 +81,6 @@ public class ProductController {
 	public ResponseEntity<List<Product>> getProductCategoryKeword(@PathVariable String category,@PathVariable String keyword) throws Exception {
 		logger.info("4-------------getProductCategoryKeword-----------------------------" + new Date());
 		
-//		FoodPage foodPage = productservice.searchfood(nowPage,option, keyword);
 		List<Product> products = productservice.getProductCategoryKeword(category,keyword);
 		
 		System.out.println("---------검색결과: "+products);

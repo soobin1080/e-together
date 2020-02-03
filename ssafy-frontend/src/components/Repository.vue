@@ -28,14 +28,14 @@ export default {
       stats: {}
     };
   },
-  mounted() {
-    this.drawStatGraph();
-  },
-  methods: {
-    async drawStatGraph() {
-      this.commits = await GitlabService.getCommits(this.repos.id);
-    }
-  }
+  // mounted() {
+  //   this.drawStatGraph();
+  // },
+  // methods: {
+  //   async drawStatGraph() {
+  //     this.commits = await GitlabService.getCommits(this.repos.id);
+  //   }
+  // }
 };
 </script>
 

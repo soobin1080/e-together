@@ -14,6 +14,12 @@ export default new Vuex.Store({
     price: '', // 가격
     quantity: '', // 수량
     tokenType: ''
+    
+    list:{
+      pro_name: '', // 상품명
+      price: '', // 가격
+      quantity: '' // 수량
+    }
 
   },
   getters : {
@@ -39,6 +45,8 @@ export default new Vuex.Store({
       //state.tokenType = 'Bearer'
     },
   },
+
+
 
   actions : {
  
