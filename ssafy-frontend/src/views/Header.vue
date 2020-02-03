@@ -58,8 +58,8 @@ export default {
       menuItems: [
         { title: "Home", path: "/" },
         { title: "Mart", path: "/product" },
-        { title: "MyList", path: "/mylist" },
-        { title: "Review", path: "/portfolio" },
+        { title: "My Budget", path: "/mybudget" },
+        { title: "Review", path: "/review" },
         { title: "UserInfo", path: "/userinfo" },
         
       ]
