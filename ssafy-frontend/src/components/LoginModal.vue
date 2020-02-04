@@ -40,16 +40,18 @@
   const MODAL_WIDTH = 656
   export default {
     name: 'LoginModal',
+    
     data() {
+
       return {
         modalWidth: MODAL_WIDTH,
         credentials : {
           email: "",
           pwd: "",
         }
-        
       }
     },
+
     created() {
       this.modalWidth = window.innerWidth < MODAL_WIDTH ?
         MODAL_WIDTH / 2 :
@@ -84,24 +86,13 @@
         http
         .post('auth/signin', this.credentials)
           .then(res => {
-            console.log(res)
-            this.$store.dispatch('login', res.data.accessToken)
-            // let tokenType = res.data.tokenType
-            // let accessToken = res.data.accessToken
-            // console.log(res.data)
-            // //console.log(res.data.accessToken)
-            // // localStorag
-            // this.$store.state.accessToken = accessToken
-            // this.$store.state.tokenType = "Bearer"
+            console.log(res.data.accessToken)
+            localStorage.setItem('accessToken', res.data.accessToken)
+            localStorage.setItem('user', res.data.username)
+            // this.$store.state.accessToken = res.data.accessToken
             // this.$store.state.user = res.data.username
-            // // localStorage.accessToken = accessToken
-            // // localStorage.user = res.data.username
-            // // localStorage.tokenType = tokenType
-            // // this.$store.state.user = res.data.username
-            // // this.$store.state.tokenType = accessToken
-            // // this.$store.state.Authentication = "Bearer" + accessToken
-            // console.log(this.$store.state)
-            // this.$modal.hide('login-modal')
+            // this.$store.state.tokenType = 'Bearer'
+            this.$modal.hide('login-modal')
           })
           .catch(error => {
             alert('로그인 에러')
