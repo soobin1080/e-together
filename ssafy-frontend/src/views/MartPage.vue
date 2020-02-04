@@ -9,10 +9,7 @@
       >Mart</div>
     </ImgBanner>
 
-    <!-- page navigation-->
-    
-
-    <v-row class="main" style="padding-top:120px">
+    <v-row class="main" style="padding-top:80px">
       <v-col lg="8">
         <!-- search box -->
         <v-text-field
@@ -27,33 +24,29 @@
           v-on:keyup.enter="getProductList(keyword)"
         ></v-text-field>
 
-        <b-card no-body style="">
-          <div class="text-center">
-            <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
-          </div>
-          <v-tabs
-            dark
-            background-color="darken-3"
-            show-arrows
-          >
-          <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
+        <b-card no-body style>
+          <v-tabs dark background-color="darken-3" show-arrows>
+            <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
             <v-tab
               v-for="tab in tabs"
               :key="tab.title"
               @click="clickTab(tab.title)"
               v-model="category"
-            >
-              {{tab.title}}
-            </v-tab>
-            
+            >{{tab.title}}</v-tab>
           </v-tabs>
-        
-          <ProductList 
-                :products="products"
-                :pages="pages" 
-                :category="category"
-                :productPerPage="productPerPage"
-                ></ProductList>
+
+          <!-- page navigation-->
+          <br />
+          <div class="text-center">
+            <v-pagination v-model="pages" :length="pagingLength" total-visible="12"></v-pagination>
+          </div>
+
+          <ProductList
+            :products="products"
+            :pages="pages"
+            :category="category"
+            :productPerPage="productPerPage"
+          ></ProductList>
           <!-- 카테고리 탭 -->
           <!-- <b-tabs small card :tabs="tabs">
               <b-tab v-for="tab in tabs" :key="tab.title" :title="tab.title" @click="clickTab">
@@ -64,7 +57,7 @@
                 :category="category"
                 :productPerPage="productPerPage"></ProductList>
               
-          </b-tabs> -->
+          </b-tabs>-->
 
           <!-- modal 플로팅 버튼-->
           <v-btn
@@ -75,7 +68,7 @@
             right
             color="#ffd900"
             v-b-modal.modal-1
-            class="hidden-lg-only"            
+            class="hidden-lg-only"
           >
             <i class="material-icons">shopping_cart</i>
           </v-btn>
@@ -131,42 +124,42 @@ export default {
       ],
       pagingProduct: [],
       pages: 1,
-      productPerPage: 9,
+      productPerPage: 12,
       pagingLength: 10,
       category: "전체",
       allLegnth: 0,
-      pagingLength: 0,
+      pagingLength: 0
     };
   },
- mounted(){
-   this.getProductList(this.keyword)
- },
- computed : {
-   mountedProduct() {
-     this.getProductList(this.keyword)
-   }
- },
+  mounted() {
+    this.getProductList(this.keyword);
+  },
+  computed: {
+    mountedProduct() {
+      this.getProductList(this.keyword);
+    }
+  },
 
   methods: {
-    clickTab : function(title) {
-      console.log(title)
-      this.category = title
+    clickTab: function(title) {
+      console.log(title);
+      this.category = title;
       if (this.category !== "전체") {
-      this.pagingProduct = this.products.filter(product => {
-        return product.main_category === this.category
-        })
+        this.pagingProduct = this.products.filter(product => {
+          return product.main_category === this.category;
+        });
       } else {
-      this.pagingProduct = this.products
+        this.pagingProduct = this.products;
       }
 
-      this.allLength = this.pagingProduct.length
-      console.log("allLength : " + this.allLength)
+      this.allLength = this.pagingProduct.length;
+      console.log("allLength : " + this.allLength);
       if (this.allLength % this.productPerPage === 0) {
-        this.pagingLength = parseInt(this.allLength / this.productPerPage)
+        this.pagingLength = parseInt(this.allLength / this.productPerPage);
       } else {
-        this.pagingLength = parseInt(this.allLength / this.productPerPage) + 1
+        this.pagingLength = parseInt(this.allLength / this.productPerPage) + 1;
       }
-      this.pages = 1
+      this.pages = 1;
     },
 
     // selectTab: function(title) {
@@ -203,34 +196,40 @@ export default {
     all() {
       http
         .get("/product")
-        .then(response => {         
-          this.products = response.data;         
+        .then(response => {
+          this.products = response.data;
           console.log(this.products);
           if (this.products.length % this.productPerPage === 0) {
-            this.pagingLength = parseInt(this.products.length / this.productPerPage)
-          } else{
-            this.pagingLength = parseInt(this.products.length / this.productPerPage) + 1
+            this.pagingLength = parseInt(
+              this.products.length / this.productPerPage
+            );
+          } else {
+            this.pagingLength =
+              parseInt(this.products.length / this.productPerPage) + 1;
           }
         })
         .catch(() => {
-          this.errored = true;          
+          this.errored = true;
         })
         .finally(() => (this.loading = false));
     },
     search() {
       http
         .get("/product/" + this.keyword)
-        .then(response => {        
+        .then(response => {
           this.products = response.data;
-           if (this.products.length % this.productPerPage === 0) {
-            this.pagingLength = parseInt(this.products.length / this.productPerPage)
-          } else{
-            this.pagingLength = parseInt(this.products.length / this.productPerPage) + 1
+          if (this.products.length % this.productPerPage === 0) {
+            this.pagingLength = parseInt(
+              this.products.length / this.productPerPage
+            );
+          } else {
+            this.pagingLength =
+              parseInt(this.products.length / this.productPerPage) + 1;
           }
           return this.products;
         })
         .catch(() => {
-          this.errored = true;        
+          this.errored = true;
         })
         .finally(() => (this.loading = false));
     }
@@ -240,7 +239,7 @@ export default {
 
 <style scoped>
 .main {
-  padding-bottom: 120px;
+  padding-bottom: 80px;
   margin: auto;
   width: 80%;
 }

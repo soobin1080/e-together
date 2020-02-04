@@ -8,7 +8,7 @@ import com.ssafy.edu.dao.ProductDaoImpl;
 import com.ssafy.edu.model.Product;
 
 @Service
-public class ProductServiceImpl implements IProductService {
+public class ProductService implements IProductService {
 
 	@Autowired
 	private ProductDaoImpl productdao;

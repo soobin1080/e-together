@@ -9,6 +9,7 @@
 		WHERE EMAIL = #{email} AND PWD = #{pwd}
 	</select>
 
+	<!-- 회원가입 -->
 	<!-- 회원가입 탈퇴여부 withdraw = 0, 일반 사용자 auth = 1 -->
 	<insert id="regi" parameterType="com.ssafy.edu.model.User">
 		INSERT INTO USER(EMAIL, PWD, NAME, WITHDRAW, AUTH, PHONE)

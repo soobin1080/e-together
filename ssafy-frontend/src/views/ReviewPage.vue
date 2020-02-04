@@ -2,28 +2,24 @@
   <div>
     <!-- <input type="text" name="title" v-model="title" />
     <input type="text" name="body" v-model="body" />
-    <v-btn @click="postMyBudgets(title, body)">add</v-btn> -->
+    <v-btn @click="postMyBudgets(title, body)">add</v-btn>-->
     <ImgBanner>
       <div
         class="text-center text-white"
         style="line-height:1.2em;font-size:2.5em;"
         slot="text"
         v-resize-text
-      >My Budget</div>
+      >Budget Review</div>
     </ImgBanner>
-    <v-card style="width:80%;" class="mx-auto my-5">
-      <MyBudgetList
-        :pages="pages"
-        :loadMore="true"
-        :pagingList="pagingList"
-        :allLength="allLength"
-        ref="mybudgetlist"
-      ></MyBudgetList>
-    </v-card>
+    <div class="main">
+      <v-card style="width:80%;" class="mx-auto my-5 flat">
+        <ReviewList></ReviewList>
+      </v-card>
 
-    <div class="text-center">
-      {{pages}}
-      <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
+      <div class="text-center">
+        {{pages}}
+        <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -31,15 +27,14 @@
 <script>
 import FirebaseService from "@/services/FirebaseService";
 import ImgBanner from "../components/ImgBanner";
-import MyBudgetList from "../components/MyBudgetList";
+import ReviewList from "../components/ReviewList";
 import ResizeText from "vue-resize-text";
 export default {
   name: "MyListPage",
 
   components: {
     ImgBanner,
-    MyBudgetList
-    //PortfolioList,
+    ReviewList
   },
   directives: {
     ResizeText
@@ -87,7 +82,7 @@ export default {
     async getMyBudgets() {
       console.log("active");
       this.pagingList = await FirebaseService.getMyBudgets();
-      this.pagingLength = parseInt(this.pagingList / 5)+1
+      this.pagingLength = parseInt(this.pagingList / 5) + 1;
       return this.pagingList;
     }
   },
@@ -123,4 +118,8 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
 </style>
