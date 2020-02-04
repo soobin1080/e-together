@@ -43,9 +43,6 @@
 	</classpathentry>
 <<<<<<< HEAD
 =======
-<<<<<<< HEAD
-=======
->>>>>>> 245ccae831d3238ab5ca83f805009526793c9319
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
@@ -53,12 +50,6 @@
 	</classpathentry>
 	<classpathentry kind="src" output="target/test-classes" path=".apt_generated_tests">
 		<attributes>
-<<<<<<< HEAD
-			<attribute name="optional" value="true"/>
-			<attribute name="test" value="true"/>
-		</attributes>
-	</classpathentry>
-=======
 			<attribute name="test" value="true"/>
 			<attribute name="optional" value="true"/>
 		</attributes>
@@ -66,6 +57,5 @@
 >>>>>>> f98fa79314375414ffa9c973713d5c9322dde01f
 	<classpathentry kind="lib" path="C:/Users/multicampus/Desktop/s02p12b109/jsoup-1.12.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/multicampus/Desktop/s02p12b109/mysql-connector-java-8.0.19.jar"/>
->>>>>>> 245ccae831d3238ab5ca83f805009526793c9319
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
