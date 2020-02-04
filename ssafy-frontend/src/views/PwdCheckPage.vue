@@ -12,15 +12,9 @@
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-container>
       <v-text-field
-          v-model="credentials.pwd"
+          v-model="user.pwd"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[rules.required, rules.min_8]"
-          :type="show1 ? 'text' : 'password'"
-          name="input-10-1"
-          label="비밀번호를 입력해주세요"
-          hint="At least 8 characters"
-          counter="16"
-          @click:append="show1 = !show1"
+          type="password"
         ></v-text-field>
       <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">비밀번호 체크</v-btn>
       </v-container>
@@ -43,30 +37,40 @@ export default {
     }
   },
 
-  data: () => ({
-    credentials: {
-      email: this.$store.state.user,
-      pwd: "",
-    },
-    show1: false,
-    valid: true,
-    rules: {
-      required: value => !!value || "Required.",
-      min_8: v => v.length >= 8 || "Min 8 characters",
-      min_4: v => v.length >= 4 || "Min 8 characters",
-      is_num: v => !isNaN(v) || "Please input number",
-      emailMatch: () => "The email and password you entered don't match"
-    },
-    
-  }),
+  data() {
+    return {
+      user: {
+        email: this.$store.state.user,
+        pwd: "",
+        //Authorization : 'Bearer '+this.$store.state.accessToken
+
+      },
+      show1: false,
+      valid: true,
+      rules: {
+        required: value => !!value || "Required.",
+        min_8: v => v.length >= 8 || "Min 8 characters",
+        min_4: v => v.length >= 4 || "Min 8 characters",
+        is_num: v => !isNaN(v) || "Please input number",
+        emailMatch: () => "The email and password you entered don't match"
+      },
+    }
+  },
   methods: {
     validate() {
       if (this.$refs.form.validate()) {
-        console.log(this.$store.state.accessToken)
+        // console.log(this.requestHeader)
+        // console.log(this.credentials.email)
+        // console.log(this.credentials.pwd)
+        let form = new FormData()
+        form.append('email', this.email)
+        form.append('pwd', this.pwd)
         http
-          .post('/pwdCheck',  this.credentials, {
-          
-          })
+          .post('/pwdCheck',{
+            email: this.user.email,
+            pwd : this.user.pwd,
+            // Authorization: 'bearer ' + this.$store.state.accessToken
+          }, this.$store.getters.requestHeader)
           .then(res => {
             console.log(res)
           })
