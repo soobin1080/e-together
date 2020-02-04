@@ -2,6 +2,9 @@
 # Created by https://www.gitignore.io/api/git,vue,java,vuejs,python,eclipse,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=git,vue,java,vuejs,python,eclipse,visualstudiocode
 
+<<<<<<< HEAD
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
+=======
 >>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 ### Eclipse ###
 .metadata
@@ -16,7 +19,10 @@ local.properties
 .loadpath
 .recommenders
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 # External tool builders
 .externalToolBuilders/
 
@@ -56,7 +62,10 @@ local.properties
 # Annotation Processing
 .apt_generated/
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 # Scala IDE specific (Scala & Java development for Eclipse)
 .cache-main
 .scala_dependencies
@@ -74,7 +83,10 @@ local.properties
 
 .sts4-cache/
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 ### Git ###
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false
@@ -90,6 +102,7 @@ local.properties
 *_LOCAL_*.txt
 *_REMOTE_*.txt
 <<<<<<< HEAD
+<<<<<<< HEAD
 ### Java ###
 # Compiled class file
 *.class
@@ -100,6 +113,8 @@ local.properties
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 
 ### Java ###
 # Compiled class file
@@ -114,7 +129,10 @@ local.properties
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 # Package Files #
 *.jar
 *.war
@@ -133,7 +151,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 # C extensions
 *.so
 
@@ -164,12 +185,18 @@ MANIFEST
 *.manifest
 *.spec
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -206,7 +233,10 @@ target/
 #   install all needed dependencies.
 #Pipfile.lock
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 # celery beat schedule file
 celerybeat-schedule
 
@@ -227,17 +257,26 @@ celerybeat-schedule
 # mkdocs documentation
 /site
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 # mypy
 .mypy_cache/
 .dmypy.json
 dmypy.json
 
+<<<<<<< HEAD
 
 # Pyre type checker
 .pyre/
 
 
+=======
+# Pyre type checker
+.pyre/
+
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -249,7 +288,10 @@ dmypy.json
 # Ignore all local history of files
 .history
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf918eb4a3a39011f15e2ff8667051a9374064e
 ### Vue ###
 .DS_*
 logs
