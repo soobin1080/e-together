@@ -41,44 +41,36 @@ public class BudgetController {
 	public ResponseEntity<List<BudgetList>> getBudgetList(@PathVariable String user_email) throws Exception {
 		logger.info("1-------------getBudgetList-----------------------------" + new Date());
 		List<BudgetList> mybudgetlist = budgetservice.getBudgetList(user_email);
-		
+
 		System.out.println(mybudgetlist);
 		if (mybudgetlist.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<BudgetList>>(mybudgetlist, HttpStatus.OK);
 	}
-	
-	@ApiOperation(value = "내 예산안 품목 상세보기", response = List.class)
-	@RequestMapping(value = "/budget/{user_email}/{budget_num}", method = RequestMethod.GET)
-	public ResponseEntity<Budget> getOneBudget(@PathVariable String user_email,@PathVariable String budget_num) throws Exception {
+
+	@ApiOperation(value = "내 예산안 품목 상세보기", response = Budget.class)
+	@RequestMapping(value = "/budget/{user_email}/{budget_title}", method = RequestMethod.GET)
+	public ResponseEntity<Budget> getOneBudget(@PathVariable String user_email, @PathVariable String budget_title)
+			throws Exception {
 		logger.info("2-------------getOneBudget-----------------------------" + new Date());
-		Budget budget = budgetservice.getOneBudget(user_email,budget_num);
-		
+		Budget budget = budgetservice.getOneBudget(user_email, budget_title);
+
 		System.out.println(budget);
-		if (budget==null) {
+		if (budget == null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<Budget>(budget, HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "내 예산안 저장하기", response = List.class)
 	@RequestMapping(value = "/budget", method = RequestMethod.POST)
 	public ResponseEntity<Budget> insertOneBudget(@RequestBody Budget budget) throws Exception {
 		logger.info("3-------------insertOneBudget-----------------------------" + new Date());
-		
+
 		System.out.println(budget);
-		
-		BudgetList budgetlist=new BudgetList();
-		budgetlist.setPrice(budget.getBudget());
-		budgetlist.setPro_id(budget.getPro_id());
-		budgetlist.setPro_name(budget.getPro_name());
-		budgetlist.setQuantity(budget.getQuantity());
-		budgetlist.setUser_email(budget.getUser_email());
-		budgetservice.insertBudgetList(budgetlist);
-		
-		BudgetInfo budgetinfo=new BudgetInfo();
-		budgetinfo.setBudget_num(budget.getBudget_num());
+
+		BudgetInfo budgetinfo = new BudgetInfo();
 		budgetinfo.setUser_email(budget.getUser_email());
 		budgetinfo.setBudget_title(budget.getBudget_title());
 		budgetinfo.setPersonnel(budget.getPersonnel());
@@ -86,11 +78,38 @@ public class BudgetController {
 		budgetinfo.setFitness(budget.getFitness());
 		budgetinfo.setLike_count(budget.getLike_count());
 		budgetservice.insertBudgetInfo(budgetinfo);
-		
-		System.out.println("----------insert 성공-----------");
-		
-		if (budget==null) {
+
+		System.out.println(budgetinfo.toString());
+
+		List<BudgetList> budgetlist = budget.getBudgetlist();
+
+		for (int i = 0; i < budgetlist.size(); i++) {
+			budgetservice.insertBudgetList(budgetlist.get(i));
+			System.out.println(i + "번째 상품 : " + budgetlist.get(i).toString());
+		}
+
+		if (budget == null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Budget>(budget, HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "내 예산안 지우기", response = Budget.class)
+	@RequestMapping(value = "/budget", method = RequestMethod.DELETE)
+	public ResponseEntity<Budget> deleteOneBudget(@RequestBody Budget budget) throws Exception {
+		logger.info("6-------------deleteOneBudget-----------------------------" + new Date());
+
+		budgetservice.deleteBudgetInfo(budget.getUser_email(), budget.getBudget_title());
+
+		List<BudgetList> budgetlist = budget.getBudgetlist();
+
+		for (int i = 0; i < budgetlist.size(); i++) {
+			budgetservice.deleteBudgetList(budget.getUser_email(), budget.getBudget_title(), budgetlist.get(i).getPro_id());
+			System.out.println(i + "번째 상품 삭제-----------------");
+		}
+
+		if (budget == null) {
+			return new ResponseEntity<Budget>(budget, HttpStatus.OK);
 		}
 		return new ResponseEntity<Budget>(budget, HttpStatus.OK);
 	}

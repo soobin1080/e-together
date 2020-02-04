@@ -128,6 +128,11 @@ public class UserController {
 	@ApiOperation(value = "내 정보 확인할 때 비밀번호를 체크한다.", response = UserseqResult.class)
 	@RequestMapping(value = "/pwdCheck", method = RequestMethod.POST)
 	public ResponseEntity<NumberResult> pwdCheck(@RequestBody User dto) throws Exception {
+
+		logger.info("3-------------pwdCheck-----------------------------" + dto);
+		System.out.println("----------------------------------------" + dto);
+		int total = userService.pwdCheck(dto);
+
 		logger.info("Start pwdCheck ");
 
 		NumberResult nr = new NumberResult();
@@ -136,7 +141,6 @@ public class UserController {
 			// db에 있는지 확인
 			Authentication authentication = authenticationManager
 					.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPwd()));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			nr.setCount(userService.pwdCheck(dto));
 			nr.setName("pwdCheck");

@@ -32,21 +32,37 @@
   </v-card>
 </template>
 <script>
+import EventBus from "../event-bus.js";
 export default {
   name: "Product",
   props: {
+    pro_id: { type: String },
     pro_name: { type: String },
     price: { type: String },
-    img: { type: String }
+    img: { type: String },
+    main_category: { type: String },
+    product: { type: Object }
   },
   data: () => ({
     quantity: 1
   }),
   methods: {
+    stringNumberToInt(stringNumber) {
+      //console.log(parseInt(stringNumber.replace(/,/g, "")));
+      return parseInt(stringNumber.replace(/,/g, ""));
+    },
     addcart() {
-      this.$store.state.list.pro_name = this.pro_name;
-      this.$store.state.list.price = this.price;
-      this.$store.state.list.quantity = this.quantity;
+      console.log(this.product);
+      console.log(
+        "/////////////" + this.pro_id + "             " + this.main_category
+      );
+      let product = {
+        pro_name: this.pro_name,
+        price: this.stringNumberToInt(this.price) * this.quantity,
+        quantity: this.quantity
+      };
+
+      EventBus.$emit("addCart", product);
     }
   }
 };
