@@ -136,7 +136,6 @@ public class UserController {
 			// db에 있는지 확인
 			Authentication authentication = authenticationManager
 					.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPwd()));
-			SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			nr.setCount(userService.pwdCheck(dto));
 			nr.setName("pwdCheck");
