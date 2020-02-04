@@ -1,6 +1,79 @@
 
-# Created by https://www.gitignore.io/api/git,vue,java,venv,vuejs,python,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=git,vue,java,venv,vuejs,python,visualstudiocode
+# Created by https://www.gitignore.io/api/git,vue,java,vuejs,python,eclipse,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=git,vue,java,vuejs,python,eclipse,visualstudiocode
+
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# PyDev specific (Python IDE for Eclipse)
+*.pydevproject
+
+# CDT-specific (C/C++ Development Tooling)
+.cproject
+
+# CDT- autotools
+.autotools
+
+# Java annotation processor (APT)
+.factorypath
+
+# PDT-specific (PHP Development Tools)
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# Tern plugin
+.tern-project
+
+# TeXlipse plugin
+.texlipse
+
+# STS (Spring Tool Suite)
+.springBeans
+
+# Code Recommenders
+.recommenders/
+
+# Annotation Processing
+.apt_generated/
+
+
+# Scala IDE specific (Scala & Java development for Eclipse)
+.cache-main
+.scala_dependencies
+.worksheet
+
+### Eclipse Patch ###
+# Eclipse Core
+.project
+
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+# Annotation Processing
+.apt_generated
+
+.sts4-cache/
+
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
@@ -16,6 +89,16 @@
 *_BASE_*.txt
 *_LOCAL_*.txt
 *_REMOTE_*.txt
+
+### Java ###
+# Compiled class file
+*.class
+# Log file
+*.log
+# BlueJ files
+*.ctxt
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
 
 ### Java ###
 # Compiled class file
@@ -133,32 +216,20 @@ celerybeat-schedule
 
 # Mr Developer
 .mr.developer.cfg
-.project
 .pydevproject
 
 # mkdocs documentation
 /site
+
 
 # mypy
 .mypy_cache/
 .dmypy.json
 dmypy.json
 
+
 # Pyre type checker
 .pyre/
-
-### venv ###
-# Virtualenv
-# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
-pyvenv.cfg
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-pip-selfcheck.json
 
 ### VisualStudioCode ###
 .vscode/*
@@ -193,4 +264,4 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# End of https://www.gitignore.io/api/git,vue,java,venv,vuejs,python,visualstudiocode
+# End of https://www.gitignore.io/api/git,vue,java,vuejs,python,eclipse,visualstudiocode
