@@ -89,7 +89,7 @@
             console.log(res.data.accessToken)
             localStorage.setItem('accessToken', res.data.accessToken)
             localStorage.setItem('user', res.data.username)
-            // this.$store.state.accessToken = res.data.accessToken
+            this.$store.state.accessToken = res.data.accessToken
             // this.$store.state.user = res.data.username
             // this.$store.state.tokenType = 'Bearer'
             this.$modal.hide('login-modal')
