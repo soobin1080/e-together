@@ -114,6 +114,7 @@ public class UserController {
 	@RequestMapping(value = "/pwdCheck", method = RequestMethod.POST)
 	public ResponseEntity<NumberResult> pwdCheck(@RequestBody User dto) throws Exception {
 		logger.info("3-------------pwdCheck-----------------------------" + dto);
+		System.out.println("----------------------------------------" + dto);
 		int total = userService.pwdCheck(dto);
 		NumberResult nr = new NumberResult();
 		nr.setCount(total);
