@@ -1,4 +1,4 @@
-git checkoutpackage com.ssafy.edu.service;
+package com.ssafy.edu.service;
 
 import java.util.List;
 

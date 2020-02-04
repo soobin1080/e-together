@@ -1,6 +1,7 @@
 
-# Created by https://www.gitignore.io/api/vue,java,venv,vuejs,eclipse,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=vue,java,venv,vuejs,eclipse,visualstudiocode
+# Created by https://www.gitignore.io/api/git,vue,java,vuejs,python,eclipse,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=git,vue,java,vuejs,python,eclipse,visualstudiocode
+
 
 ### Eclipse ###
 .metadata
@@ -71,6 +72,34 @@ local.properties
 
 .sts4-cache/
 
+
+### Git ###
+# Created by git for backups. To disable backups in Git:
+# $ git config --global mergetool.keepBackup false
+*.orig
+
+# Created by git when using merge tools for conflicts
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
+
+### Java ###
+# Compiled class file
+*.class
+# Log file
+*.log
+# BlueJ files
+*.ctxt
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+
+
 ### Java ###
 # Compiled class file
 *.class
@@ -83,6 +112,7 @@ local.properties
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+
 
 # Package Files #
 *.jar
@@ -120,6 +150,7 @@ pip-selfcheck.json
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+
 
 ### Vue ###
 .DS_*

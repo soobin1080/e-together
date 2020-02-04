@@ -24,16 +24,15 @@ export default new Vuex.Store({
     requestHeader : function(state) {
       return {
       headers: {
-          Authorization: 'Bearer ' + state.accessToken
+          'Authorization': 'Bearer ' + state.accessToken
         }
       }
     },
     userId: function(state) {
-      
+      return state.user ? user : ""
     }
   },
   mutations : {
-
     setToken: function(state, token){
       state.accessToken = token
      // state.user = user
