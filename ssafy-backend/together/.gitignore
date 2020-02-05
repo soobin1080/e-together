@@ -15,6 +15,7 @@ local.properties
 .loadpath
 .recommenders
 
+
 # External tool builders
 .externalToolBuilders/
 
@@ -71,10 +72,12 @@ local.properties
 
 .sts4-cache/
 
+
 ### Git ###
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false
 *.orig
+
 # Created by git when using merge tools for conflicts
 *.BACKUP.*
 *.BASE.*
@@ -84,6 +87,7 @@ local.properties
 *_BASE_*.txt
 *_LOCAL_*.txt
 *_REMOTE_*.txt
+
 ### Java ###
 # Compiled class file
 *.class
@@ -93,6 +97,24 @@ local.properties
 *.ctxt
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+
+### Java ###
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+<<<<<<< ssafy-backend/together/.gitignore
+=======
+
+>>>>>>> ssafy-backend/together/.gitignore
 # Package Files #
 *.jar
 *.war
@@ -101,15 +123,38 @@ local.properties
 *.zip
 *.tar.gz
 *.rar
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+<<<<<<< ssafy-backend/together/.gitignore
+
+### venv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+.Python
+pyvenv.cfg
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pip-selfcheck.json
+
+=======
+<<<<<<< HEAD
+>>>>>>> ssafy-backend/together/.gitignore
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
 # C extensions
 *.so
+
 # Distribution / packaging
 .Python
 build/
@@ -130,14 +175,17 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -150,43 +198,74 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
+
 # Translations
 *.mo
 *.pot
+
 # Scrapy stuff:
 .scrapy
+
 # Sphinx documentation
 docs/_build/
+
 # PyBuilder
 target/
+
 # pyenv
 .python-version
+
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
 #   However, in case of collaboration, if having platform-specific dependencies or dependencies
 #   having no cross-platform support, pipenv may install dependencies that don't work, or not
 #   install all needed dependencies.
 #Pipfile.lock
+
 # celery beat schedule file
 celerybeat-schedule
+
 # SageMath parsed files
 *.sage.py
+
 # Spyder project settings
 .spyderproject
 .spyproject
+
 # Rope project settings
 .ropeproject
+
 # Mr Developer
 .mr.developer.cfg
 .pydevproject
+
 # mkdocs documentation
 /site
+
+
 # mypy
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+
 # Pyre type checker
 .pyre/
+=======
+### venv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+.Python
+pyvenv.cfg
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pip-selfcheck.json
+>>>>>>> 9d1b6a549646bdd94de1a2c62294c59f0660f1bb
 
 ### VisualStudioCode ###
 .vscode/*
@@ -194,24 +273,36 @@ dmypy.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+
+
 ### Vue ###
 .DS_*
 logs
 **/*.backup.*
 **/*.back.*
+
 node_modules
 bower_components
+
 *.sublime*
+
 psd
 thumb
 sketch
+
 ### Vuejs ###
 # Recommended template: Node.gitignore
+
 node_modules/
+dist/
 npm-debug.log
 yarn-error.log
 
-# End of https://www.gitignore.io/api/git,vue,java,vuejs,python,eclipse,visualstudiocode
+<<<<<<< ssafy-backend/together/.gitignore
+=======
+# End of https://www.gitignore.io/api/vue,java,venv,vuejs,eclipse,visualstudiocode
+>>>>>>> ssafy-backend/together/.gitignore

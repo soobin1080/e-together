@@ -38,7 +38,9 @@
       <v-toolbar-items class="hidden-xs-only">
         <v-btn text @click="pwdCheck">{{setUserName}}</v-btn>
         <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">{{ item.title }}</v-btn>
-        <v-btn text @click="$modal.show('login-modal')">Login</v-btn>
+
+        <v-btn v-if="setUserName" text @click="">Logout</v-btn>
+        <v-btn else text @click="$modal.show('login-modal')">Login</v-btn>
       </v-toolbar-items>
     </v-app-bar>
   </div>
@@ -78,8 +80,8 @@ export default {
 
   computed: {
     setUserName() {
-      this.username = this.$store.state.getuser
-      return this.username
+      //this.username = this.$store.state.user
+      return this.$store.state.user
     }
   }
 };
