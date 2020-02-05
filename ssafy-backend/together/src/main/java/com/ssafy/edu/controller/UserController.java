@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/api")
-@Api(value = "SSAFY", description = "SSAFY Resouces Management 2019")
+@Api(value = "SSAFY", description = "SSAFY 2020")
 public class UserController {
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 

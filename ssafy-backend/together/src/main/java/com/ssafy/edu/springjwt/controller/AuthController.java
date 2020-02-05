@@ -56,7 +56,7 @@ public class AuthController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 		logger.info("Start signin");
-		
+
 		// db에 있는지 확인
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPwd()));
@@ -65,7 +65,6 @@ public class AuthController {
 
 		// 지금 로그인된 정보를 userDetails에 넣는다.
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
 		return ResponseEntity
 				.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()));
 	}
@@ -83,10 +82,10 @@ public class AuthController {
 				signUpRequest.getName(), 0, 1, signUpRequest.getPhone());
 
 		int result = userService.regi(user);
-		
-		if(result!=1) {
+
+		if (result != 1) {
 			System.out.println("Signup fail");
-		}else {
+		} else {
 			System.out.println("Signup Success");
 		}
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

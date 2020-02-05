@@ -27,12 +27,6 @@ public class BudgetService implements IBudgetService {
 		return budgetdao.getOneBudget(budget_num, budget_title);
 	}
 
-//	@Override
-//	public int insertOneBudget(Budget budget) {
-//		// TODO Auto-generated method stub
-//		return budgetdao.insertOneBudget(budget);
-//	}
-
 	//내 예산안 보기, 예산안 간략한 형태로 보여주기
 	@Override
 	public void insertBudgetList(BudgetList budgetlist) {

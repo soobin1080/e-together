@@ -1,6 +1,5 @@
 package com.ssafy.edu.controller;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.edu.model.Budget;
@@ -29,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/api")
-@Api(value = "SSAFY", description = "SSAFY Resouces Management 2019")
+@Api(value = "SSAFY", description = "SSAFY 2020")
 public class BudgetController {
 	public static final Logger logger = LoggerFactory.getLogger(BudgetController.class);
 
@@ -97,7 +95,7 @@ public class BudgetController {
 	@ApiOperation(value = "내 예산안 지우기", response = Budget.class)
 	@RequestMapping(value = "/budget", method = RequestMethod.DELETE)
 	public ResponseEntity<Budget> deleteOneBudget(@RequestBody Budget budget) throws Exception {
-		logger.info("6-------------deleteOneBudget-----------------------------" + new Date());
+		logger.info("4-------------deleteOneBudget-----------------------------" + new Date());
 
 		budgetservice.deleteBudgetInfo(budget.getUser_email(), budget.getBudget_title());
 
