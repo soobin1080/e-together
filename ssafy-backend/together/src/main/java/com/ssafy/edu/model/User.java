@@ -17,11 +17,9 @@ public class User implements Serializable{
 		super();
 	}
 	
-	
 	public int getCount() {
 		return count;
 	}
-
 
 	public void setCount(int count) {
 		this.count = count;
@@ -41,7 +39,6 @@ public class User implements Serializable{
 		this.pwd = pwd;
 	}
 	
-	
 	public String getTemp_pwd() {
 		return temp_pwd;
 	}
@@ -50,7 +47,6 @@ public class User implements Serializable{
 	public void setTemp_pwd(String temp_pwd) {
 		this.temp_pwd = temp_pwd;
 	}
-
 
 	public String getName() {
 		return name;
@@ -90,7 +86,6 @@ public class User implements Serializable{
 		this.auth = auth;
 		this.phone = phone;
 	}
-
 
 	@Override
 	public String toString() {
