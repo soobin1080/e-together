@@ -20,7 +20,7 @@
       </v-container>
     </v-form>
 
-    <UserInfo v-if="isPwdRight" :isPwdRight="isPwdRight" :userDetail="userDetail"></UserInfo>
+    <!-- <UserInfo v-if="isPwdRight" :isPwdRight="isPwdRight" :userDetail="userDetail"></UserInfo> -->
   </div>
 </template>
 
@@ -51,12 +51,6 @@ export default {
         //Authorization : 'Bearer '+this.$store.state.accessToken
       },
 
-      userDetail : {
-        name : "",
-        email : "",
-        phone: "",
-      },
-
       show1: false,
       valid: true,
       rules: {
@@ -69,30 +63,28 @@ export default {
     }
   },
   methods: {
-    getUserDetail() {
-      console.log('getUserDetail active')
-      let myEmail = this.$store.state.email
-      http
-        .post(`/myselfDetail/${myEmail}`)
-          .then(res => {
-            // console.log(res)
-            this.userDetail.email = res.data.email
-            this.userDetail.name = res.data.name
-            this.userDetail.phone = res.data.phone
-          })
-          .catch(err => {
-            console.log(err)
-          })
+    // getUserDetail() {
+    //   console.log('getUserDetail active')
+    //   let myEmail = this.$store.state.email
+    //   http
+    //     .post(`/myselfDetail/${myEmail}`)
+    //       .then(res => {
+    //         // console.log(res)
+    //         this.userDetail.email = res.data.email
+    //         this.userDetail.name = res.data.name
+    //         this.userDetail.phone = res.data.phone
+    //       })
+    //       .catch(err => {
+    //         console.log(err)
+    //       })
 
-    },
+    // },
     validate() {
       if (this.$refs.form.validate()) {
         // console.log(this.requestHeader)
         // console.log(this.credentials.email)
         // console.log(this.credentials.pwd)
-        let form = new FormData()
-        form.append('email', this.email)
-        form.append('pwd', this.pwd)
+        
         http
           .post('/pwdCheck',{
             email: this.user.email,
@@ -101,9 +93,8 @@ export default {
           }, this.$store.getters.requestHeader)
           .then(res => {
             console.log(res)
-            if (res.data.state == 'succ') {
-            this.getUserDetail()
-            this.isPwdRight = true
+            if (res.data.state == 'succ' && this.$store.getters.isLoggedIn == true) {
+              this.$router.push('/userinfo')
             } else {
               alert('비밀번호 오류입니다.')
             }

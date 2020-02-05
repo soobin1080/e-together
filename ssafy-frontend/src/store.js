@@ -11,6 +11,7 @@ export default new Vuex.Store({
     personnel: '', // 인원
     budget: '', // 예산 
     tokenType: '',
+    //isLogin: false,
     
   
 
