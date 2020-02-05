@@ -1,20 +1,18 @@
 <template>
   <div>
-    <LoginModal @checkLogIn="loggedIn"></LoginModal>
+    <LoginModal @checkLogIn="getUserName"></LoginModal>
     <v-navigation-drawer v-model="sidebar" fixed temporary>
       <v-list>
         <h5 class="ml-5">hello</h5>
-
-        <v-list-item v-if="username" @click="pwdCheck">
-          {{username}}
-          <!-- <v-list-item-action></v-list-item-action> -->
-            <!-- <v-list-item-content class="text-center" v-model="username">{{username}}</v-list-item-content> -->
+        <v-list-item @click="pwdCheck">
+          <v-list-item-action></v-list-item-action>
+              {{setUserName}}
         </v-list-item>
         <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path">
           <v-list-item-action></v-list-item-action>
           <v-list-item-content>{{ item.title }}</v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="username" @click="$modal.show('login-modal')">
+        <v-list-item v-if="setUserName" @click="$modal.show('login-modal')">
           <v-list-item-action></v-list-item-action>
           <v-list-item-content class="text-center">Logout</v-list-item-content>
         </v-list-item>
@@ -38,25 +36,57 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn text @click="pwdCheck">{{ username }}</v-btn>
+        <v-btn text @click="pwdCheck">{{setUserName}}</v-btn>
         <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">{{ item.title }}</v-btn>
 
-        <v-btn v-if="username" text @click="">Logout</v-btn>
+        <v-btn v-if="username" text @click="logout">Logout</v-btn>
         <v-btn v-else text @click="$modal.show('login-modal')">Login</v-btn>
       </v-toolbar-items>
     </v-app-bar>
-    
   </div>
 </template>
 
 <script>
 import LoginModal from "../components/LoginModal";
+import http from "../http-common";
 export default {
   name: "Header",
   components: {
     LoginModal
   },
-   data() {
+  methods: {
+    getImgUrl(img) {
+      return require("../assets/" + img);
+    },
+    pwdCheck() {
+      console.log('pwdCheck')
+      this.$router.push('/pwdcheck')
+    },
+    getUserName(){
+      console.log('emit!')
+      console.log('getUserName')
+      console.log(localStorage.getItem('user')) 
+      this.username = localStorage.getItem('user')
+      this.isLoggedIn = this.$store.getters.isLoggedIn
+    },
+    logout() {
+      http
+        .post('/logout', {
+          email : localStorage.getItem('email')
+        }, this.$store.getters.requestHeader)
+          .then(res => {
+            console.log(res)
+            if (res.data.state === 'succ' && res.data.count > 0) {
+              
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    }
+  },
+
+  data() {
     return {
       appTitle: "Blog",
       sidebar: false,
@@ -69,29 +99,9 @@ export default {
         
       ],
       username : "",
-      isLoggedIn: false,
     };
   },
 
-  methods: {
-    getImgUrl(img) {
-      return require("../assets/" + img);
-    },
-    pwdCheck() {
-      console.log('pwdCheck')
-      this.$router.push('/pwdcheck')
-    },
-    loggedIn() {
-      console.log('emit!')
-      this.getUserName()
-    },
-    getUserName(){
-      console.log('getUserName')
-      console.log(localStorage.getItem('user')) 
-      this.username = localStorage.getItem('user')
-      this.isLoggedIn = this.$store.getters.isLoggedIn
-    },
-  },
   computed: {
     setUserName() {
       console.log('setUserName')
@@ -99,7 +109,6 @@ export default {
       console.log(this.username)
       return this.username
     },
-
     checkLoggedIn() {
       return this.isLoggedIn
     }
@@ -108,5 +117,6 @@ export default {
     this.getUserName()
     //this.checkLoggedIn()
   }
+
 };
 </script>
