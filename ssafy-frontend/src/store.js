@@ -5,13 +5,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    accessToken: '',
-    user: '',
+    accessToken: localStorage.getItem('accessToken'),
+    user: localStorage.getItem('user'),
+    email: localStorage.getItem('email'),
     personnel: '', // 인원
-    budget: '', // 예산
-    
-   
-    
+    budget: '', // 예산 
     tokenType: '',
     
   
@@ -29,7 +27,7 @@ export default new Vuex.Store({
       }
     },
     userId: function(state) {
-      return state.user ? user : ""
+      return state.user ? state.user : ""
     }
   },
   mutations : {

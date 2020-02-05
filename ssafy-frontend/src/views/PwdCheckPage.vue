@@ -8,8 +8,8 @@
         v-resize-text
       >Pwd Check</div>
     </ImgBanner>
-
-    <v-form ref="form" v-model="valid" lazy-validation>
+    
+    <v-form ref="form" v-if="pwdCheck" v-model="valid" lazy-validation>
       <v-container>
       <v-text-field
           v-model="user.pwd"
@@ -18,17 +18,21 @@
         ></v-text-field>
       <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">비밀번호 체크</v-btn>
       </v-container>
-    </v-form> 
+    </v-form>
+
+    <UserInfo v-if="isPwdRight" :isPwdRight="isPwdRight" :userDetail="userDetail"></UserInfo>
   </div>
 </template>
 
 <script>
 import ImgBanner from "../components/ImgBanner";
 import http from "../http-common";
+import UserInfo from "../components/UserInfo";
 export default {
   name: "PwdCheckPage",
   components: {
-    ImgBanner
+    ImgBanner,
+    UserInfo
   },
 
   computed: {
@@ -39,12 +43,20 @@ export default {
 
   data() {
     return {
+      pwdCheck : true,
+      isPwdRight: false,
       user: {
-        email: this.$store.state.user,
+        email: localStorage.getItem('email'),
         pwd: "",
         //Authorization : 'Bearer '+this.$store.state.accessToken
-
       },
+
+      userDetail : {
+        name : "",
+        email : "",
+        phone: "",
+      },
+
       show1: false,
       valid: true,
       rules: {
@@ -57,6 +69,22 @@ export default {
     }
   },
   methods: {
+    getUserDetail() {
+      console.log('getUserDetail active')
+      let myEmail = this.$store.state.email
+      http
+        .post(`/myselfDetail/${myEmail}`)
+          .then(res => {
+            // console.log(res)
+            this.userDetail.email = res.data.email
+            this.userDetail.name = res.data.name
+            this.userDetail.phone = res.data.phone
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
+    },
     validate() {
       if (this.$refs.form.validate()) {
         // console.log(this.requestHeader)
@@ -73,10 +101,18 @@ export default {
           }, this.$store.getters.requestHeader)
           .then(res => {
             console.log(res)
+            if (res.data.state == 'succ') {
+            this.getUserDetail()
+            this.isPwdRight = true
+            } else {
+              alert('비밀번호 오류입니다.')
+            }
           })
           .catch(err => {
+            alert('비밀번호 오류입니다.')
             console.log(err)
           })
+          this.pwdCheck = false
       }
     }
   },

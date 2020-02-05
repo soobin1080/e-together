@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.edu.service.IUserService;
@@ -65,7 +66,7 @@ public class AuthController {
 
 		// 지금 로그인된 정보를 userDetails에 넣는다.
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
+		
 		return ResponseEntity
 				.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()));
 	}
