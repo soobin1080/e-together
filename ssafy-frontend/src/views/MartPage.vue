@@ -81,6 +81,8 @@
           <BudgetList></BudgetList>
         </v-flex>
       </v-col>
+      
+      
     </v-row>
     <!-- modal 창 -->
     <b-modal id="modal-1" scrollable>
