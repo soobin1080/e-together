@@ -38,6 +38,15 @@ Vue.use(VueAxios, axios)
 Vue.use(VuetifyNumberInput);
 Vue.use(VueSession)
 
+
+// Require dependencies
+
+var VueCookie = require('vue-cookie');
+// Tell Vue to use the plugin
+Vue.use(VueCookie);
+
+
+
 export const eventBus = new Vue()
 
 new Vue({

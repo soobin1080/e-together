@@ -4,8 +4,8 @@
   <v-container class="main">
    
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-text-field type="number" v-model="personnel" :step="10" label="인원" required :rules="[v => !!v || '인원을 입력해 주세요']"></v-text-field>
-      <v-text-field type="number" v-model="budget" :step="10000" label="예산" required :rules="[v => !!v || '예산은 입력해 주세요']"></v-text-field>
+      <v-text-field type="number" v-model="personnel" :step="10" min="10" label="인원" required :rules="[v => !!v || '인원을 입력해 주세요']"></v-text-field>
+      <v-text-field type="number" v-model="budget" :step="10000" min="10000" label="예산" required :rules="[v => !!v || '예산을 입력해 주세요']"></v-text-field>
 
       <!-- <v-select
         v-model="select"

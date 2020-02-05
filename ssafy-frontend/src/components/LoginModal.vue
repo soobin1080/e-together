@@ -86,36 +86,27 @@
         http
         .post('auth/signin', this.credentials)
           .then(res => {
+            console.log(res)
             console.log(res.data.accessToken)
-            localStorage.setItem('accessToken', res.data.accessToken)
-            localStorage.setItem('user', res.data.username)
-            this.$store.state.accessToken = res.data.accessToken
+            if (res.data.username !== "") {
+              localStorage.setItem('accessToken', res.data.accessToken)
+              localStorage.setItem('user', res.data.username)
+              localStorage.setItem('email', res.data.email)
+              this.$emit('checkLogIn')
+            }
+            // this.$store.state.accessToken = res.data.accessToken
             // this.$store.state.user = res.data.username
             // this.$store.state.tokenType = 'Bearer'
+            else {
+              alert('로그인 오류!')
+            
+            }
             this.$modal.hide('login-modal')
           })
           .catch(error => {
             alert('로그인 에러')
             console.log(error)
           })
-        // let formData = new FormData()
-        // formData.append('email', this.username)
-        // formData.append('pwd', this.password)
-
-        // http
-        // .post("auth/signin", {
-        //   headers: {
-        //     'Accept' : 'application/json',
-        //     'tokenType' : 'Bearer',
-        //     'Content-Type' : 'application/json',
-        //     'Authorization' : "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmppQHRlc3QuY29tIiwiaWF0IjoxNTgwNDM5NTk1LCJleHAiOjE1ODA1MjU5OTV9.3FT_bA-B6KTxMwNpUHVVAgZdGUbdwTjbsAH1TBUickTJWlRllhW0wsbk8mA6HPv4jjw8scFKnhZlsIILmoueGg"
-        //   },
-        //   auth : {
-        //   "email": this.username,
-        //   "pwd": this.pwd,
-        //   }
-        // })
-       
       },
 
     },
