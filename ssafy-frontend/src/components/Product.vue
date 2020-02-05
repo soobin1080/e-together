@@ -58,8 +58,9 @@ export default {
       );
       let product = {
         pro_name: this.pro_name,
-        price: this.stringNumberToInt(this.price) * this.quantity,
-        quantity: this.quantity
+        price: this.stringNumberToInt(this.price),
+        quantity: this.quantity,
+        pro_price:this.stringNumberToInt(this.price)
       };
 
       EventBus.$emit("addCart", product);
