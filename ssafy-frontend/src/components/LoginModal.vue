@@ -92,6 +92,7 @@
               localStorage.setItem('accessToken', res.data.accessToken)
               localStorage.setItem('user', res.data.username)
               localStorage.setItem('email', res.data.email)
+              localStorage.setItem('phone', res.data.phone)
               this.$emit('checkLogIn')
             }
             // this.$store.state.accessToken = res.data.accessToken

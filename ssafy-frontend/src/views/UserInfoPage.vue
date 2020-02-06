@@ -14,59 +14,33 @@
         <h2 class="text-center mt-5">회원 정보</h2>
 
         <v-text-field
-          v-model="nickname"
-          :rules="nameRules"
-          label="nickname"
-          counter="20,"
-          required
+          v-model="user.name"
+          label="name"
           readonly
         ></v-text-field>
 
-        <v-text-field v-model="email" :rules="emailRules" label="E-mail" required readonly></v-text-field>
+        <v-text-field 
+          v-model="user.email"
+          label="E-mail" 
+          readonly
+        ></v-text-field>
+
 
         <v-text-field
-          v-model="password"
-          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[rules.required, rules.min_8]"
-          :type="show1 ? 'text' : 'password'"
-          name="input-10-1"
-          label="password"
-          hint="At least 8 characters"
-          counter="16"
-          @click:append="show1 = !show1"
+          v-model="user.phone"
+          label="Phone"
           readonly
         ></v-text-field>
-
-        <v-col class="d-flex" style="padding-left:0;">
-          <v-select
-            style=" width: 20%;"
-            :items="phoneNumbers"
-            label="phone"
-            :rules="[rules.required]"
-            readonly
-          ></v-select>
-
-          <v-text-field
-            v-model="num_2"
-            style="width: 39%; padding-left:1%;"
-            :rules="[rules.required, rules.min_4, rules.is_num]"
-            readonly
-          ></v-text-field>
-          <v-text-field
-            v-model="num_3"
-            style="width: 39%; padding-left:1%;"
-            :rules="[rules.required, rules.min_4, rules.is_num]"
-            readonly
-          ></v-text-field>
-        </v-col>
-
+       
         <v-btn
-          :disabled="!valid"
+          v-if="isLogin"
           color="success"
           class="mr-4"
-          @click="validate"
+          to="/userinfomodify"
           style="float:right"
-        >수정하기</v-btn>
+        >
+        수정하기
+        </v-btn>
       </v-container>
     </v-form>
   </div>
@@ -75,6 +49,7 @@
 <script>
 import ImgBanner from "../components/ImgBanner";
 import ResizeText from "vue-resize-text";
+import http from "../http-common";
 export default {
   name: "UserInfoPage",
   components: {
@@ -86,12 +61,11 @@ export default {
   data: () => ({
     show1: false,
     valid: true,
+    isLogin: false,
     user: {
       name: "",
       email: "",
-      nickname: "",
       phone: "",
-      password: ""
     },
     rules: {
       required: value => !!value || "Required.",
@@ -120,17 +94,30 @@ export default {
       this.$refs.form.resetValidation();
     },
     getUserInfo(UserEmail) {
-      getUserInfoUrl = `/login/${UserEmail}/`; // 유저 정보 가져올 url
-      axios.post(getUserInfoUrl).then(response => {
-        this.user = response.data; // 가져온
-      });
+      let myemail = localStorage.getItem('email')
+      console.log(this.$store.getters.isLoggedIn)
+      http
+        .post(`/myselfDetail/${myemail}`, this.$store.getters.requestHeader)
+          .then(res => {
+            console.log(res)
+            if (this.$store.getters.isLoggedIn) {
+              this.user.email = res.data.email
+              this.user.name = res.data.name
+              this.user.phone = res.data.phone
+              this.isLogin = this.$store.getters.isLoggedIn
+            }
+          })
+          .catch(err => {
+            consloe.log(err)
+          })
+      // this.user.name = localStorage.getItem('user')
+      // this.user.email = localStorage.getItem('email')
+      // this.user.phone = localStorage.getItem('phone')
     }
   },
 
   mounted() {
-    this.$modal.hide("login-modal");
-    this.email = sessionStorage.getItem("email");
-    this.getUserInfo(this.email);
+    this.getUserInfo();
   }
 };
 </script>

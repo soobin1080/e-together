@@ -84,7 +84,7 @@ export default {
   methods: {
     getUserDetail() {
       console.log('getUserDetail active')
-      let myEmail = this.$store.state.user
+      let myEmail = localStorage.getItem('email')
       http
         .post(`/myselfDetail/${myEmail}`)
           .then(res => {
@@ -105,10 +105,15 @@ export default {
         // formData.append('pwd', this.pwd)
         // formData.append('phone', this.phone)
         http
-          .post('/updateMyself', this.user)
+          .post('/updateMyself', this.user, this.$store.getters.requestHeader)
           .then(res => {
             console.log(res)
-            // this.$router.push("/")
+            if (res.data.state == 'succ' && this.$store.getters.isLoggedIn == true) {
+              alert('수정 성공')
+            } else {
+              alert('수정 오류입니다.')
+            }
+            this.$router.push("/userinfo")
           })
           .catch (err => {
             console.log(err)
@@ -130,7 +135,11 @@ export default {
   computed: {
     computedUser: function() {
       return this.user
-    }
+    },
+
+    requestHeader: function(){
+      
+     }
   }
 };
 </script>
