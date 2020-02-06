@@ -67,27 +67,35 @@
             bottom
             right
             color="#ffd900"
-            v-b-modal.modal-1
+            @click="modalAppear"
             class="hidden-lg-only"
           >
             <i class="material-icons">shopping_cart</i>
           </v-btn>
         </b-card>
       </v-col>
-
+      <!-- v-b-modal.modal-1 -->
       <!-- 장보기 내역 -->
       <v-col>
         <v-flex d-none d-lg-flex>
-          <BudgetList></BudgetList>
+          <BudgetList id="budgetList">
+          </BudgetList>
         </v-flex>
       </v-col>
       
       
     </v-row>
     <!-- modal 창 -->
-    <b-modal id="modal-1" scrollable>
-      <BudgetList @modalList="modalList" :list="modalList"></BudgetList>
-    </b-modal>
+    <v-row justify="center">
+      <v-dialog v-model="budgetDialog" scrollable max-width="300px">
+        <BudgetList></BudgetList>
+      </v-dialog> 
+    </v-row>
+    
+
+    <!-- <BudgetModal id="budgetModal">
+
+    </BudgetModal> -->
   </div>
 </template>
 <script>
@@ -96,12 +104,14 @@ import http from "../http-common";
 import BudgetList from "../components/BudgetList";
 import ProductList from "../components/ProductList";
 import ResizeText from "vue-resize-text";
+import BudgetModal from "../components/BudgetModal";
 
 export default {
   components: {
     ImgBanner,
     BudgetList,
-    ProductList
+    ProductList,
+    BudgetModal,
   },
   directives: {
     ResizeText
@@ -131,7 +141,8 @@ export default {
       category: "전체",
       allLegnth: 0,
       pagingLength: 0,
-      modalList : [],
+      budgetDialog: false,
+      budgetList: [],
     };
   },
   mounted() {
@@ -236,8 +247,22 @@ export default {
         })
         .finally(() => (this.loading = false));
     },
-    modalList() {
-      console.log('emit!')
+    modalAppear() {
+      this.budgetDialog = true
+      // const budgetList = document.querySelector('#budgetList')
+      // const cloneBudgetList = budgetList.cloneNode(true)
+      // const budgetModal = document.querySelector('#budgetModal')
+      // console.log(budgetModal)
+      // budgetModal.innerHTML = ''
+      // while (budgetModal.firstChild) {
+      //   budgetModal.removeChild(budgetModal.firstChild);
+      // }
+
+      // budgetModal.appendChild(cloneBudgetList)
+      // console.log(budgetList)
+      // console.log(budgetModal)
+      // this.$modal.show('budget-modal')
+      
     }
   }
 };

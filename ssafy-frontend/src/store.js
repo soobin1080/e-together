@@ -11,7 +11,9 @@ export default new Vuex.Store({
     personnel: '', // 인원
     budget: '', // 예산 
     tokenType: '',
-    //isLogin: false,
+    budgetlist : [],
+    total: 0,
+
     
   
 
@@ -34,8 +36,31 @@ export default new Vuex.Store({
   mutations : {
     setToken: function(state, token){
       state.accessToken = token
-     // state.user = user
-      //state.tokenType = 'Bearer'
+    },
+    deleteProduct: function(state, idx) {
+      var i = state.budgetlist.indexOf(idx)
+      // state.total -= state.budgetlist[i].price;
+      state.budgetlist.splice(i,1);  
+      this.budgetalert();
+    },
+    addCart: function(state, product) {
+      const idx = state.budgetlist.findIndex(function (budget) {
+        return budget.pro_name === product.pro_name
+      })
+      console.log(idx)
+      if (idx === -1) {
+          state.budgetlist.push(product)
+
+      }
+      else {
+        state.budgetlist[idx].quantity += 1
+
+      }
+      state.total += (product.price*=product.quantity);
+      console.log(state.budgetlist)
+    },
+    cartClear: function(state) {
+      state.budgetlist = []
     }
 
   },
@@ -49,7 +74,15 @@ export default new Vuex.Store({
   logout: function(options) {
     options.commit('setToken')
   },
- 
+  
+  addCartAsync: function(options, product) {
+    console.log('addCartAsync')
+    options.commit('addCart', product)
+  },
+
+  deleteProductAsync: function(options, idx) {
+    options.commit('deleteProduct', idx)
+  }
 
 }
 })
