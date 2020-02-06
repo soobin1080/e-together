@@ -16,25 +16,25 @@
         <v-text-field
           v-model="credentials.name"
           :rules="nameRules"
-          label="nickname"
+          label="Name"
           counter="20,"
           required
           autocomplete="name"
         ></v-text-field>
 
         <div>
-        <v-text-field v-model="credentials.email" :rules="emailRules" label="E-mail" required ></v-text-field>
-        <v-btn @click="emailcheck" small color="blue" style="float:right; color:white">중복 확인</v-btn>
+          <v-text-field v-model="credentials.email" :rules="emailRules" label="E-mail" required></v-text-field>
+          <v-btn @click="emailcheck" small color="blue" style="float:right; color:white">중복 확인</v-btn>
         </div>
 
-        <br>
+        <br />
         <v-text-field
           v-model="credentials.pwd"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[rules.required, rules.min_8]"
           :type="show1 ? 'text' : 'password'"
           name="input-10-1"
-          label="password"
+          label="Password"
           hint="At least 8 characters"
           counter="16"
           @click:append="show1 = !show1"
@@ -42,8 +42,8 @@
 
         <v-text-field
           v-model="credentials.phone"
-          label="phone"
-          :rules="[rules.required, rules.is_num]"
+          label="Phone number"
+          :rules="[rules.required, rules.is_num, rules.min_11]"
           required
           autocomplete="tel"
         ></v-text-field>
@@ -74,17 +74,18 @@ export default {
       name: "",
       email: "",
       phone: "",
-      pwd: "",
+      pwd: ""
     },
-
-   // nickname: "",
+    duplicate: false,
+    // nickname: "",
     show1: false,
     valid: true,
     pwd: "",
     rules: {
       required: value => !!value || "Required.",
       min_8: v => v.length >= 8 || "Min 8 characters",
-      min_4: v => v.length >= 4 || "Min 8 characters",
+      min_4: v => v.length >= 4 || "Min 4 characters",
+      min_11: v => v.length == 11 || "휴대폰번호 형식에 맞게 입력해주세요!",
       is_num: v => !isNaN(v) || "Please input number",
       emailMatch: () => "The email and password you entered don't match"
     },
@@ -105,32 +106,42 @@ export default {
         // formData.append('pwd', this.pwd)
         // formData.append('phone', this.phone)
         http
-          .post('auth/signup', this.credentials)
+          .post("auth/signup", this.credentials)
           .then(res => {
-            console.log(res)
-            this.$router.push("/")
+            console.log(res);
+            this.$router.push("/");
           })
-          .catch (err => {
-            console.log(err)
-          })
+          .catch(err => {            
+              console.log(err);
+              alert("회원가입 오류!");            
+          });
         this.snackbar = true;
       }
     },
     resetValidation() {
       this.$refs.form.resetValidation();
     },
-     reset() {
+    reset() {
       this.$refs.form.reset();
     },
-    emailcheck(){
+    emailcheck() {
       http
-        .post('/emailCheck')
-        .then(respone =>{
-          console.log(respone)
+        .post("/emailCheck", {
+          email: this.credentials.email
         })
-        .catch(error =>{
-          console.log(error)
+        .then(respone => {
+          console.log(respone);
+          if (respone.data.state == "succ") {
+            alert("중복된 E-mail입니다. 다른 E-mail을 입력해주세요.");
+            this.credentials.email = "";
+          } else {
+            alert("사용 가능합니다.");
+            this.duplicate = true;
+          }
         })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   mounted() {

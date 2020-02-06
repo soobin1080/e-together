@@ -86,7 +86,7 @@
     </v-row>
     <!-- modal 창 -->
     <b-modal id="modal-1" scrollable>
-      <BudgetList></BudgetList>
+      <BudgetList @modalList="modalList" :list="modalList"></BudgetList>
     </b-modal>
   </div>
 </template>
@@ -130,7 +130,8 @@ export default {
       pagingLength: 10,
       category: "전체",
       allLegnth: 0,
-      pagingLength: 0
+      pagingLength: 0,
+      modalList : [],
     };
   },
   mounted() {
@@ -234,6 +235,9 @@ export default {
           this.errored = true;
         })
         .finally(() => (this.loading = false));
+    },
+    modalList() {
+      console.log('emit!')
     }
   }
 };
