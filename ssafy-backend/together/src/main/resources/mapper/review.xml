@@ -14,13 +14,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 		USER.EMAIL=#{user_email} AND USER.EMAIL=BUDGET_INFO.USER_EMAIL AND
 		BUDGET_INFO.BUDGET_TITLE=#{budget_title});
-
 	</select>
 
 	<insert id="insertReview"
 		parameterType="com.ssafy.edu.model.ReviewResult">
 		INSERT INTO REVIEW(USER_EMAIL,BUDGET_TITLE, IMG,CONTENT)
-		VALUES(USER_EAMIL=#{user_email},BUDGET_TITLE=#{budget_title},IMG=#{img},CONTENT=#{content});
+		VALUES(USER_EMAIL=#{user_email},BUDGET_TITLE=#{budget_title},IMG=#{img},CONTENT=#{content});
 	</insert>
 
 	<update id="updateReview"
