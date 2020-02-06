@@ -12,6 +12,7 @@ import PwdCheckPage from './views/PwdCheckPage.vue'
 import MyBudgetPage from './views/MyBudgetPage.vue'
 import ReviewPage from './views/ReviewPage.vue'
 import UserInfoModifyPage from './views/UserInfoModifyPage.vue'
+import FindPwdPage from './views/FindPwdPage.vue'
 
 
 Vue.use(Router)
@@ -76,6 +77,11 @@ export default new Router({
 			path: '/userinfomodify',
 			name: 'userinfomodify',
 			component: UserInfoModifyPage
+		},
+		{
+			path: '/findpwd',
+			name :'findpwd',
+			component: FindPwdPage
 		}
   ]
 })
