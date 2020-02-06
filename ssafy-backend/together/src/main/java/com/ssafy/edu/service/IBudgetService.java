@@ -7,7 +7,7 @@ import com.ssafy.edu.model.BudgetInfo;
 import com.ssafy.edu.model.BudgetList;
 
 public interface IBudgetService {
-	List<BudgetList> getBudgetList(String user_email);
+	List<BudgetInfo> getMyBudgetList(String user_email);
 	
 	Budget getOneBudget(String budget_num,String budget_title);
 	

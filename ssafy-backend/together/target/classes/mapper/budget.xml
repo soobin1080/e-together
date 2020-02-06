@@ -9,9 +9,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 내 전체 예산안 보기 -->
 	<select id="getBudgetList" parameterType="java.lang.String"
-		resultType="com.ssafy.edu.model.BudgetList">
-		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
-		FROM PRODUCT
+		resultType="com.ssafy.edu.model.BudgetInfo">
+		SELECT BUDGET_TITLE, PERSONNEL,BUDGET,FITNESS, DATE,LIKE_COUNT
+		FROM BUDGET_INFO
+		WHERE USER_EMAIL=#{user_email}
 	</select>
 
 	<!-- 내 예산안 상세 보기 -->
@@ -53,8 +54,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		DELETE FROM BUDGET_LIST WHERE USER_EMAIL=#{user_email} and
 		BUDGET_TITLE=#{budget_title} and PRO_ID=#{pro_id};
 	</delete>
-
-
 
 </mapper>
 

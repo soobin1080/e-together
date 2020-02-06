@@ -66,7 +66,7 @@ public class ReviewController {
 	@ApiOperation(value = "review 삭제하기", response = ReviewResult.class)
 	@RequestMapping(value = "/review", method = RequestMethod.DELETE)
 	public ResponseEntity<ReviewResult> deleteReview(@RequestBody ReviewResult reviewresult) throws Exception {
-		logger.info("3-------------deleteReview-----------------------------" + new Date());
+		logger.info("4-------------deleteReview-----------------------------" + new Date());
 
 		reviewservice.deleteReview(reviewresult.getUser_email(),reviewresult.getBudget_title());
 		

@@ -16,9 +16,9 @@ public class BudgetService implements IBudgetService {
 	private BudgetDaoImpl budgetdao;
 
 	@Override
-	public List<BudgetList> getBudgetList(String user_email) {
+	public List<BudgetInfo> getMyBudgetList(String user_email) {
 		// TODO Auto-generated method stub
-		return budgetdao.getBudgetList(user_email);
+		return budgetdao.getMyBudgetList(user_email);
 	}
 
 	@Override
