@@ -4,8 +4,8 @@
     <v-navigation-drawer v-model="sidebar" fixed temporary>
       <v-list>
         <h5 class="ml-5">hello</h5>
-        <v-list-item @click="pwdCheck">
-          <v-list-item-action></v-list-item-action>
+        <v-list-item v-if="serUserName" @click="pwdCheck">
+          <!-- <v-list-item-action></v-list-item-action> -->
               {{setUserName}}
         </v-list-item>
         <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path">
@@ -41,6 +41,7 @@
 
         <v-btn v-if="username" text @click="logout">Logout</v-btn>
         <v-btn v-else text @click="$modal.show('login-modal')">Login</v-btn>
+        <v-btn v-if="!username" text to="/findpwd">비밀번호 찾기</v-btn>
       </v-toolbar-items>
     </v-app-bar>
   </div>
@@ -59,8 +60,9 @@ export default {
       return require("../assets/" + img);
     },
     pwdCheck() {
-      console.log('pwdCheck')
-      this.$router.push('/pwdcheck')
+      if (this.username) {
+        this.$router.push('/pwdcheck')
+      }
     },
     getUserName(){
       console.log('emit!')
@@ -70,21 +72,26 @@ export default {
       this.isLoggedIn = this.$store.getters.isLoggedIn
     },
     logout() {
-      http
-        .post('/logout', {
-          email : localStorage.getItem('email')
-        }, this.$store.getters.requestHeader)
-          .then(res => {
-            console.log(res)
-            if (res.data.state === 'succ' && res.data.count > 0) {
-              
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
-    }
-  },
+      let conf = confirm('로그아웃 하시겠습니까?')
+      if (conf == true) {
+        http
+          .post('/logout', {
+            email : localStorage.getItem('email')
+          }, this.$store.getters.requestHeader)
+            .then(res => {
+              console.log(res)
+              if (res.data.state === 'succ' && res.data.count == 1) {
+                localStorage.clear()
+                this.getUserName()
+                this.$router.push('/')
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+      }
+    },
 
   data() {
     return {
@@ -96,6 +103,7 @@ export default {
         { title: "My Budget", path: "/mybudget" },
         { title: "Review", path: "/review" },
         { title: "UserInfo", path: "/userinfo" },
+        // { title: "비밀번호 찾기", path:"/findpwd"}
         
       ],
       username : "",
