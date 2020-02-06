@@ -93,15 +93,18 @@ export default {
           }, this.$store.getters.requestHeader)
           .then(res => {
             console.log(res)
+            console.log(this.$store.getters.isLoggedIn)
             if (res.data.state == 'succ' && this.$store.getters.isLoggedIn == true) {
               this.$router.push('/userinfo')
             } else {
               alert('비밀번호 오류입니다.')
+              this.$router.push('/pwdcheck')
             }
           })
           .catch(err => {
             alert('비밀번호 오류입니다.')
             console.log(err)
+            this.$router.push('/pwdcheck')
           })
           this.pwdCheck = false
       }

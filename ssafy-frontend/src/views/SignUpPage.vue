@@ -22,8 +22,12 @@
           autocomplete="name"
         ></v-text-field>
 
-        <v-text-field v-model="credentials.email" :rules="emailRules" label="E-mail" required></v-text-field>
+        <div>
+        <v-text-field v-model="credentials.email" :rules="emailRules" label="E-mail" required ></v-text-field>
+        <v-btn @click="emailcheck" small color="blue" style="float:right; color:white">중복 확인</v-btn>
+        </div>
 
+        <br>
         <v-text-field
           v-model="credentials.pwd"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -118,6 +122,16 @@ export default {
      reset() {
       this.$refs.form.reset();
     },
+    emailcheck(){
+      http
+        .post('/emailCheck')
+        .then(respone =>{
+          console.log(respone)
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+    }
   },
   mounted() {
     this.$modal.hide("login-modal");
