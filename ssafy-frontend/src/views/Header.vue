@@ -43,6 +43,7 @@
 
         <v-btn v-if="username" text @click="">Logout</v-btn>
         <v-btn v-else text @click="$modal.show('login-modal')">Login</v-btn>
+        <v-btn v-if="!username" text to="/findpwd">비밀번호 찾기</v-btn>
       </v-toolbar-items>
     </v-app-bar>
     

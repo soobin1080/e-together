@@ -13,12 +13,19 @@
     </ImgBanner>
     <div class="main">
       <v-card style="width:80%;" class="mx-auto my-5 flat">
-        <MyBudgetList></MyBudgetList>
+        <MyBudgetList 
+          :allBudgets="allBudgets"
+          :budgetPerPage="budgetPerPage"
+          :pages="pages"></MyBudgetList>
       </v-card>
 
       <div class="text-center">
         {{pages}}
-        <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
+        <v-pagination 
+          v-model="pages" 
+          :length="pagingLength" 
+          total-visible="9" 
+          ></v-pagination>
       </div>
     </div>
   </div>
@@ -29,6 +36,7 @@ import FirebaseService from "@/services/FirebaseService";
 import ImgBanner from "../components/ImgBanner";
 import MyBudgetList from "../components/MyBudgetList";
 import ResizeText from "vue-resize-text";
+import http from "../http-common";
 export default {
   name: "MyListPage",
 
@@ -43,7 +51,7 @@ export default {
     title: "",
     body: "",
     pages: 1,
-    allPages: [],
+    allBudgets: [],
     pagingList: [],
     pagingLength: 0,
     allLength: 0,
@@ -73,45 +81,59 @@ export default {
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-    postMyBudgets(title, body) {
-      title = this.title;
-      body = this.body;
-      FirebaseService.postMyBudgets(title, body);
-      this.getMyBudgets();
-    },
-    async getMyBudgets() {
-      console.log("active");
-      this.pagingList = await FirebaseService.getMyBudgets();
-      this.pagingLength = parseInt(this.pagingList / 5) + 1;
-      return this.pagingList;
+    // postMyBudgets(title, body) {
+    //   title = this.title;
+    //   body = this.body;
+    //   FirebaseService.postMyBudgets(title, body);
+    //   this.getMyBudgets();
+    // },
+    // async getMyBudgets() {
+    //   console.log("active");
+    //   this.pagingList = await FirebaseService.getMyBudgets();
+    //   this.pagingLength = parseInt(this.pagingList / 5) + 1;
+    //   return this.pagingList;
+    // },
+    getMyBudgets() {
+      let myEmail = localStorage.getItem('email')
+      http
+        .get(`/budget/${myEmail}`, {
+          user_email : myEmail
+        }, this.$store.getters.RequestHeader)
+        .then(res => {
+          console.log(res)
+          return res.data
+
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
+
+
   },
   computed: {
-    // computedPagingList : () => ({
-    //   async getMyBudget() {
-    //     console.log("active")
-    //     this.pagingList= await FirebaseService.getMyBudgets();
-    //     return this.paginList
-    //   }
-    // })
-  },
-  async mounted() {
-    this.allPages = await FirebaseService.getMyBudgets();
-    this.allLength = this.allPages.length;
-    console.log("allLength : " + this.allPages.length);
-    this.pagingList = await FirebaseService.getMyBudgetPaging(
-      (this.pages - 1) * 5,
-      (this.pages - 1) * 5 + 5,
-      this.allLength
-    );
-    console.log(this.pagingList);
-
-    if (this.allLength % this.budgetPerPage === 0) {
-      this.pagingLength = parseInt(this.allLength / 5);
-    } else {
-      this.pagingLength = parseInt(this.allLength / 5 + 1);
+    mountedBudget() {
+      this.getMyBudgets();
     }
-    console.log("pagingLength : " + this.pagingLength);
+  },
+  mounted() {
+    this.allBudgets = this.getMyBudgets()
+    // this.allPages = await FirebaseService.getMyBudgets();
+    // this.allLength = this.allPages.length;
+    // console.log("allLength : " + this.allPages.length);
+    // this.pagingList = await FirebaseService.getMyBudgetPaging(
+    //   (this.pages - 1) * 5,
+    //   (this.pages - 1) * 5 + 5,
+    //   this.allLength
+    // );
+    // console.log(this.pagingList);
+
+    // if (this.allLength % this.budgetPerPage === 0) {
+    //   this.pagingLength = parseInt(this.allLength / 5);
+    // } else {
+    //   this.pagingLength = parseInt(this.allLength / 5 + 1);
+    // }
+    // console.log("pagingLength : " + this.pagingLength);
     //this.getMyBudgets()
   }
 };

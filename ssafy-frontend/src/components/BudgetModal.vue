@@ -1,5 +1,6 @@
 <template>
-  <div style="width:100%">
+  <modal name="budget-modal" transition="pop-out" height="650">
+    <div style="width:100%">
     <b-list-group-item style="text-align:center; background-color:lightgrey">
       <strong>장보기 내역</strong>
     </b-list-group-item>
@@ -20,11 +21,11 @@
         </thead>
         <tbody >          
            <tr v-for="i in computedBudgetList.length" :key="i"  style="font-size:10pt;">
-            <td v-html="list[i-1].pro_name" class="product"></td>
+            <td v-html="computedBudgetList[i-1].pro_name" class="product"></td>
             <!-- <td v-html="list[i-1].quantity" class="quantity" style="text-align:center"></td> -->
             <td class="quantity" style="text-align:center"><input
               type="number"   
-              v-model="list[i-1].quantity"
+              v-model="computedBudgetList[i-1].quantity"
               @input="newquantity(i-1)"
               style="text-align:right; width:50px"
               autofocus
@@ -118,7 +119,7 @@
         <v-card-title class="headline">리스트 저장</v-card-title>
 
         <v-col>
-          <v-text-field autocomplete="nope" label="제목을 입력해주세요" v-model="budgetTitle"></v-text-field>
+          <v-text-field autocomplete="nope" label="제목을 입력해주세요"></v-text-field>
         </v-col>
 
         <v-card-actions>
@@ -129,10 +130,11 @@
       </v-card>
     </v-dialog>
   </div>
+  </modal>
 </template>
+
 <script>
 import EventBus from "../event-bus.js";
-import http from "../http-common";
 export default {
   data(){    
     return{
@@ -142,7 +144,7 @@ export default {
     price: 0,
     dialog: false,
     total: 0,
-    budgetTitle: "",
+    
     list: []
     }
   },
@@ -195,22 +197,20 @@ export default {
         if (this.budget == "") {
           alert("예산을 입력해주세요.");
         }
-        http
+        httpCommon
           .post("/budget", {
-            user_email: localStorage.getItem('email'),
-            budget_title: this.budgetTitle,
+            budget_title: this.budget_title,
             personnel: this.personnel,
             budget: this.budget,
-            budgetlist: this.list
-          }, this.$store.getters.requestHeader)
+            list: this.list
+          })
           .then(response => {
-            console.log(response)
-            // this.result = response.;
+            this.result = response.data;
           })
           .catch(ex => {
             console.warn("ERROR! :", ex);
           });
-        this.$router.push("/mylist");
+        router.push("/mylist");
       } else {        
         this.dialog=false;
       }
@@ -226,12 +226,10 @@ export default {
       return this.total;
     },
     del_pro(i){
-
-      // var index = this.list.indexOf(i)
-      // this.total -= this.computedBudgetList[i].price;
-      this.$store.dispatch('deleteProductAsync', i)
-      // this.list.splice(i,1);  
-      // this.budgetalert();  
+      var index = this.list.indexOf(i)
+      this.total -= this.list[i].price;
+      this.list.splice(i,1);  
+      this.budgetalert();  
     },
     newquantity(i){
       if(isNaN(this.list[i].quantity)){
@@ -252,7 +250,6 @@ export default {
   },
   computed: {
     computedBudgetList() {
-      this.list = this.$store.state.budgetlist
       return this.$store.state.budgetlist
     }
   }

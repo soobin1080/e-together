@@ -170,7 +170,7 @@ public class UserController {
 		System.out.println("memdetail : " + userdetail);
 		return new ResponseEntity<User>(userdetail, HttpStatus.OK);
 	}
-
+	
 	@ApiOperation(value = "이메일을 잊었을 때 이메일을 찾을 수 있다.", response = User.class)
 	@RequestMapping(value = "/findEmail", method = RequestMethod.POST)
 	public ResponseEntity<User> findEmail(@RequestBody User dto) throws Exception {

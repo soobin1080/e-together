@@ -23,7 +23,6 @@ import VueSession from 'vue-session'
 import VuetifyNumberInput from '@jzolago/vuetify-number-input'
 
 
-
 Vue.config.productionTip = false
 
 Vue.use(VueSimplemde)
