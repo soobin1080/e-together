@@ -1,3 +1,4 @@
+ 
 <template>
   <div>
     <ImgBanner>
@@ -28,12 +29,11 @@
 <script>
 import ImgBanner from "../components/ImgBanner";
 import http from "../http-common";
-import UserInfo from "../components/UserInfo";
+
 export default {
-  name: "PwdCheckPage",
+  name: "FindPwdPage",
   components: {
     ImgBanner,
-    UserInfo
   },
 
   computed: {

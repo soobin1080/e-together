@@ -82,6 +82,7 @@ export default new Router({
 			path: '/findpwd',
 			name :'findpwd',
 			component: FindPwdPage
-		}
+		},
+
   ]
 })
