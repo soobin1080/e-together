@@ -10,13 +10,14 @@
     </ImgBanner>
     
     <v-form ref="form" v-if="pwdCheck" v-model="valid" lazy-validation>
-      <v-container>
+      <v-container  fluid style="width:700px; padding-top:80px; padding-bottom:120px">
+        <h6 style="color:darkred">회원 정보를 확인하려면 비밀번호 확인가 필요합니다!</h6>
       <v-text-field
           v-model="user.pwd"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           type="password"
         ></v-text-field>
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">비밀번호 체크</v-btn>
+      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate" style="float:right">비밀번호 확인</v-btn>
       </v-container>
     </v-form>
 
@@ -27,6 +28,7 @@
 <script>
 import ImgBanner from "../components/ImgBanner";
 import http from "../http-common";
+import ResizeText from "vue-resize-text";
 import UserInfo from "../components/UserInfo";
 export default {
   name: "PwdCheckPage",
@@ -34,7 +36,9 @@ export default {
     ImgBanner,
     UserInfo
   },
-
+directives: {
+    ResizeText
+  },
   computed: {
     requestHeader: function() {
       return this.$store.getters.requestHeader
@@ -63,38 +67,20 @@ export default {
     }
   },
   methods: {
-    // getUserDetail() {
-    //   console.log('getUserDetail active')
-    //   let myEmail = this.$store.state.email
-    //   http
-    //     .post(`/myselfDetail/${myEmail}`)
-    //       .then(res => {
-    //         // console.log(res)
-    //         this.userDetail.email = res.data.email
-    //         this.userDetail.name = res.data.name
-    //         this.userDetail.phone = res.data.phone
-    //       })
-    //       .catch(err => {
-    //         console.log(err)
-    //       })
-
-    // },
+    
     validate() {
       if (this.$refs.form.validate()) {
-        // console.log(this.requestHeader)
-        // console.log(this.credentials.email)
-        // console.log(this.credentials.pwd)
-        
+      
         http
           .post('/pwdCheck',{
             email: this.user.email,
             pwd : this.user.pwd,
-            // Authorization: 'bearer ' + this.$store.state.accessToken
+            
           }, this.$store.getters.requestHeader)
           .then(res => {
             console.log(res)
             console.log(this.$store.getters.isLoggedIn)
-            if (res.data.state == 'succ' && this.$store.getters.isLoggedIn == true) {
+            if (res.data.state == 'succ') {
               this.$router.push('/userinfo')
             } else {
               alert('비밀번호 오류입니다.')
@@ -102,7 +88,7 @@ export default {
             }
           })
           .catch(err => {
-            alert('비밀번호 오류입니다.')
+            alert('비밀번호 에러입니다.')
             console.log(err)
             this.$router.push('/pwdcheck')
           })

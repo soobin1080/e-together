@@ -6,7 +6,7 @@
         <h5 class="ml-5">hello</h5>
         <v-list-item v-if="serUserName" @click="pwdCheck">
           <!-- <v-list-item-action></v-list-item-action> -->
-              {{setUserName}}
+          {{setUserName}}
         </v-list-item>
         <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path">
           <v-list-item-action></v-list-item-action>
@@ -35,13 +35,35 @@
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn text @click="pwdCheck">{{setUserName}}</v-btn>
-        <v-btn text v-for="item in menuItems" :key="item.title" :to="item.path">{{ item.title }}</v-btn>
-
-        <v-btn v-if="username" text @click="logout">Logout</v-btn>
+        <div class="menu" style="height:20px">       
+       <v-btn text @click="clickproduct" style="height:64px" >Mart</v-btn>             
+        <v-btn text v-if="username"  @click="clickmybudget" style="height:64px">My Budget</v-btn>
+       
+        
+        <v-btn text @click="clickreview" style="height:64px">Review</v-btn>
+        
+        </div>
+        <div  v-if="username"  class="text-center" style="padding-top:21px; padding-left:10px">
+          <v-menu offset-y open-on-hover>
+            <template v-slot:activator="{ on }">
+              <span text v-on="on" style="padding-bottom:22px; font-weight:bold; color:darkblue" >{{setUserName}}</span>님, 환영합니다.
+            </template>
+            <v-list dense shaped>
+              <v-list-item>
+                <v-list-item-title @click="pwdCheck" style="font-weight:bold; color:dimgrey">내 정보 보기</v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-title @click="logout" style="font-weight:bold; color:dimgrey">LOGOUT</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+        <!-- <v-btn v-if="username" text @click="logout">Logout</v-btn> -->
         <v-btn v-else text @click="$modal.show('login-modal')">Login</v-btn>
-        <v-btn v-if="!username" text to="/findpwd">비밀번호 찾기</v-btn>
+        <!-- <v-btn v-if="!username" text to="/findpwd">비밀번호 찾기</v-btn> -->
+        
       </v-toolbar-items>
     </v-app-bar>
   </div>
@@ -61,70 +83,84 @@ export default {
     },
     pwdCheck() {
       if (this.username) {
-        this.$router.push('/pwdcheck')
+        this.$router.push("/pwdcheck");
       }
     },
-    getUserName(){
-      console.log('emit!')
-      console.log('getUserName')
-      console.log(localStorage.getItem('user')) 
-      this.username = localStorage.getItem('user')
-      this.isLoggedIn = this.$store.getters.isLoggedIn
+    getUserName() {
+      console.log("emit!");
+      console.log("getUserName");
+      console.log(localStorage.getItem("user"));
+      this.username = localStorage.getItem("user");
+      this.isLoggedIn = this.$store.getters.isLoggedIn;
     },
     logout() {
-      let conf = confirm('로그아웃 하시겠습니까?')
+      let conf = confirm("로그아웃 하시겠습니까?");
       if (conf == true) {
         http
-          .post('/logout', {
-            email : localStorage.getItem('email')
-          }, this.$store.getters.requestHeader)
-            .then(res => {
-              console.log(res)
-              if (res.data.state === 'succ' && res.data.count == 1) {
-                localStorage.clear()
-                this.getUserName()
-                this.$router.push('/')
-              }
-            })
-            .catch(err => {
-              console.log(err)
-            })
-        }
+          .post(
+            "/logout",
+            {
+              email: localStorage.getItem("email")
+            },
+            this.$store.getters.requestHeader
+          )
+          .then(res => {
+            console.log(res);
+            if (res.data.state === "succ" && res.data.count == 1) {
+              localStorage.clear();
+              this.getUserName();
+              this.$router.push("/");
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     },
+    clickproduct(){
+      this.$router.push("/product");
+    },
+    clickmybudget(){
+      this.$router.push("/mybudget");
+    },
+    clickreview(){
+      this.$router.push("/review");
+    }
+  },
 
   data() {
     return {
       appTitle: "Blog",
       sidebar: false,
-      menuItems: [
-        { title: "Home", path: "/" },
+      menuItems: [        
         { title: "Mart", path: "/product" },
         { title: "My Budget", path: "/mybudget" },
         { title: "Review", path: "/review" },
-        { title: "UserInfo", path: "/userinfo" },
+        // { title: "UserInfo", path: "/userinfo" }
         // { title: "비밀번호 찾기", path:"/findpwd"}
-        
       ],
-      username : "",
+      username: ""
     };
   },
 
   computed: {
     setUserName() {
-      console.log('setUserName')
+      console.log("setUserName");
       // this.username = this.$store.state.user
-      console.log(this.username)
-      return this.username
+      console.log(this.username);
+      return this.username;
     },
     checkLoggedIn() {
-      return this.isLoggedIn
+      return this.isLoggedIn;
     }
   },
   mounted() {
-    this.getUserName()
+    this.getUserName();
     //this.checkLoggedIn()
   }
-
 };
 </script>
+<style>
+
+
+</style>

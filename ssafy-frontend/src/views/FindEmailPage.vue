@@ -1,4 +1,3 @@
- 
 <template>
   <div>
     <ImgBanner>
@@ -12,10 +11,10 @@
 
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-container fluid style="width:500px; padding-top:80px; padding-bottom:80px">
-        <h2 style="text-align:center;">비밀번호 찾기</h2>
-        <br>
-         <v-text-field label="Name" v-model="name" type="text" required :rules="[v => !!v || '이름을 입력해주세요!']"></v-text-field>
-        <v-text-field label="E-mail" v-model="email" type="text" :rules="emailRules"></v-text-field>
+        <h2 style="text-align:center;">E-mail 찾기</h2>
+        <br>        
+        <v-text-field label="Name" v-model="name" type="text" required :rules="[v => !!v || '이름을 입력해주세요!']"></v-text-field>
+        <v-text-field label="Phone number" v-model="phone"  autocomplete="tel" :rules="[rules.required, rules.is_num]"></v-text-field>
         <div style="text-align:center; margin:auto; padding-top:20px">
         <v-btn
           :disabled="!valid"
@@ -23,7 +22,7 @@
           outlined
           class="mr-4"
           @click="validate"          
-        >이메일로 비밀번호 전송</v-btn>
+        >이메일 찾기</v-btn>
         </div>
       </v-container>
     </v-form>
@@ -35,11 +34,13 @@
 <script>
 import ImgBanner from "../components/ImgBanner";
 import http from "../http-common";
-
+import ResizeText from "vue-resize-text";
+import UserInfo from "../components/UserInfo";
 export default {
   name: "FindPwdPage",
   components: {
     ImgBanner,
+    UserInfo
   },
   directives: {
     ResizeText
@@ -56,8 +57,8 @@ export default {
       valid: false,
       emailCheck: true,
 
-      email: "",
       name: "",
+      phone:"",
 
       rules: {
         required: value => !!value || "Required.",
@@ -76,24 +77,18 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         http
-          .post("/findPwd", {
-            email: this.email,
-            name: this.name
+          .post("/findEmail", {           
+            name: this.name,
+            phone: this.phone
           })
           .then(res => {
             console.log(res);
-             if (res.data.temp_pwd != null) {
-            alert("E-mail로 임시 비밀번호가 전송되었습니다. E-mail을 확인해주세요!")
+             if (res.data.email != null) {
+            alert("회원님이 가입하신 E-mail는 " + res.data.email + " 입니다." );
             this.$router.push("/");
           }else{
             alert("정보를 찾을 수 없습니다. 다시 입력해주세요." );
           } 
-            
-            // if (res.data.state == 'succ') {
-            //   this.$router.push('/userinfo')
-            // } else {
-            //   alert('비밀번호 오류입니다.')
-            // }
           })
           .catch(err => {
             // alert('비밀번호 오류입니다.')
