@@ -2,11 +2,11 @@
   <table width="100%">
     <colgroup>
       <col width="30%" />
-      <col width="10%" />
-      <col width="10%" />
-      <col width="20%" />
       <col width="15%" />
       <col width="15%" />
+      <col width="25%" />
+      <col width="15%" />
+      <!-- <col width="15%" /> -->
     </colgroup>
     <tr style="text-align:center" height="50px">
       <th>제목</th>
@@ -14,22 +14,22 @@
       <th>예산</th>
       <th>날짜</th>
       <th>적/부</th>
-      <th>다운로드</th>
+      <!-- <th>다운로드</th> -->
     </tr>
     <template v-if="this.allBudgets.length==0 || this.allBudgets.length==undefined">
       <tr>
-        <td colspan="6" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
+        <td colspan="5" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
       </tr>
     </template>
     <tr v-for="budget in computedPagingBudgets" :key="budget.created_at">
       <td v-html="budget.budget_title"
       @click="show_detail(budget.num)"
       style="text-align:center"></td>
-      <td v-html="budget.personnel"></td>
-      <td v-html="budget.budget"></td>
+      <td  style="text-align:center">{{budget.personnel}}명</td>
+      <td style="text-align:center">{{budget.budget}}원</td>
       <td v-html="budget.date"></td>
       <td v-html="budget.fitness"></td>
-      <td><v-btn >pdf로 저장</v-btn></td>
+      <!-- <td><v-btn >pdf로 저장</v-btn></td> -->
     </tr>
   </table>
 </template>
@@ -75,7 +75,8 @@ export default {
   methods: {
     // async getMyBudgets() {
     //   this.mybudgets = await FirebaseService.getMyBudgets();
-    // }
+    // }  
+    
   },
   computed: {
     computedPagingBudgets: function() {
@@ -115,6 +116,7 @@ export default {
   },
   mounted() {
     console.log(this.pagingList)
+    date_ymd();
   }
 };
 </script>

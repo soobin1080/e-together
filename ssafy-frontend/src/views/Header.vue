@@ -3,10 +3,10 @@
     <LoginModal @checkLogIn="getUserName"></LoginModal>
     <v-navigation-drawer v-model="sidebar" fixed temporary>
       <v-list>
-        <h5 class="ml-5">hello</h5>
+        <h5 class="ml-5">hello</h5>        
         <v-list-item v-if="setUserName" @click="pwdCheck">
-          <!-- <v-list-item-action></v-list-item-action> -->
-          {{setUserName}}
+          <!-- <v-list-item-action></v-list-item-action> -->        
+         <i class="material-icons">account_circle</i> {{setUserName}}         
         </v-list-item>
         <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path">
           <v-list-item-action></v-list-item-action>
@@ -48,7 +48,7 @@
         <div  v-if="username"  class="text-center" style="padding-top:20px; padding-left:10px">
           <v-menu offset-y open-on-hover>
             <template v-slot:activator="{ on }">
-              <span text v-on="on" style="padding-bottom:17px; font-weight:bold; color:darkblue" >  <i v-on="on" class="material-icons">account_circle</i> {{setUserName}}</span>님, 환영합니다.
+              <span text v-on="on" style="padding-bottom:17px; font-weight:bold; color:darkblue" >  <i class="material-icons">account_circle</i> {{setUserName}}</span>님, 환영합니다.
             </template>
             <v-list dense shaped>
               <v-list-item>
