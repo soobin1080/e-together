@@ -98,9 +98,31 @@ export default {
       v => /.+@.+\..+/.test(v) || "E-mail must be valid"
     ]
   }),
+  watch: {
+    credentials:{      
+      email(newVal) {
+      fetch(`/${newVal}`).then((data) => {
+      this.email = data;
+      this.duplicate=false;      
+    });
+    },
+
+  //   movie(movie) {
+  //   // Fetch data about the movie
+  //   fetch(`/${movie}`).then((data) => {
+  //     this.movieData = data;
+  //   });
+  // }
+    deep : true,
+    immediate : true
+    }
+  },
   methods: {
     validate() {
-      if (this.$refs.form.validate()) {
+      if(this.duplicate==false){
+        alert("E-mail 중복 확인을 해주세요!");
+      }
+     else if (this.$refs.form.validate()) {
         // let formData = new formData()
         // formData.append('email', this.email)
         // formData.append('pwd', this.pwd)
@@ -125,6 +147,7 @@ export default {
       this.$refs.form.reset();
     },
     emailcheck() {
+      this.duplicate=true;
       http
         .post("/emailCheck", {
           email: this.credentials.email
@@ -133,6 +156,7 @@ export default {
           console.log(respone);
           if (respone.data.state == "succ") {
             alert("중복된 E-mail입니다. 다른 E-mail을 입력해주세요.");
+            this.duplicate=false;
             this.credentials.email = "";
           } else {
             alert("사용 가능합니다.");

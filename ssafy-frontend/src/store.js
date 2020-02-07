@@ -53,7 +53,10 @@ export default new Vuex.Store({
 
       }
       else {
-        state.budgetlist[idx].quantity += 1
+      
+        state.budgetlist[idx].quantity += product.quantity
+        console.log(typeof state.budgetlist[idx].quantity)
+        console.log(typeof product.quantity)
 
       }
       state.total += (product.price*=product.quantity);

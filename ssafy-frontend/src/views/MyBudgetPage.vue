@@ -3,16 +3,24 @@
     <!-- <input type="text" name="title" v-model="title" />
     <input type="text" name="body" v-model="body" />
     <v-btn @click="postMyBudgets(title, body)">add</v-btn>-->
-    <ImgBanner>
-      <div
+    <v-img :src="getImgUrl('budgetlist.jpg')" aspect-ratio="5.5">
+      <v-layout align-center justify-center row fill-height>
+        <v-flex text-xs-center>
+          <span class="text-shadow display-2 font-weight-light">
+            <slot name="text" />
+            <div
         class="text-center text-white"
-        style="line-height:1.2em;font-size:2.5em;"
+        style="line-height:1.2em; font-size:2.5em;"
         slot="text"
         v-resize-text
       >My Budget</div>
-    </ImgBanner>
+          </span>
+        </v-flex>
+      </v-layout>       
+    </v-img>
+   
     <div class="main">
-      <v-card style="width:80%;" class="mx-auto my-5 flat">
+      <v-card style="width:80%; height: 100%;" class="mx-auto my-5 flat">
         <MyBudgetList 
           :allBudgets="allBudgets"
           :budgetPerPage="budgetPerPage"
@@ -20,7 +28,6 @@
       </v-card>
 
       <div class="text-center">
-        {{pages}}
         <v-pagination 
           v-model="pages" 
           :length="pagingLength" 
@@ -100,8 +107,20 @@ export default {
           user_email : myEmail
         }, this.$store.getters.RequestHeader)
         .then(res => {
-          console.log(res)
-          return res.data
+          console.log('getMyBudget')
+          this.allBudgets = res.data
+          this.allLength = res.data.length
+          this.pagingList = this.allBudgets
+
+          this.allLength = this.pagingList.length
+          if (this.allLength % this.budgetPerPage === 0) {
+            this.pagingLength = parseInt(this.allLength / this.budgetPerPage);
+          } else {
+            this.pagingLength = parseInt(this.allLength / this.budgetPerPage) + 1;
+          }
+          this.pages = 1;
+          // console.log(res)
+          // return res.data
 
         })
         .catch(err => {
@@ -113,11 +132,15 @@ export default {
   },
   computed: {
     mountedBudget() {
-      this.getMyBudgets();
+      console.log('mountedBudget')
+      this.allBudgets = this.getMyBudgets()
+      this.allLength = this.allBudgets.length
+      return this.getMyBudgets();
     }
   },
   mounted() {
-    this.allBudgets = this.getMyBudgets()
+    this.getMyBudgets();
+    // this.allBudgets = this.getMyBudgets()
     // this.allPages = await FirebaseService.getMyBudgets();
     // this.allLength = this.allPages.length;
     // console.log("allLength : " + this.allPages.length);

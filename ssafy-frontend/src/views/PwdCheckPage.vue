@@ -11,7 +11,7 @@
     
     <v-form ref="form" v-if="pwdCheck" v-model="valid" lazy-validation>
       <v-container  fluid style="width:700px; padding-top:80px; padding-bottom:120px">
-        <h6 style="color:darkred">회원 정보를 확인하려면 비밀번호 확인가 필요합니다!</h6>
+        <h6 style="color:darkred">회원 정보를 확인하려면 비밀번호 확인이 필요합니다!</h6>
       <v-text-field
           v-model="user.pwd"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -97,7 +97,16 @@ directives: {
     }
   },
 
-  
+  mounted(){
+    console.log('mountedFindpwd')
+    var ref = document.referrer;
+    let tkn = localStorage.getItem('accessToken')
+    console.log(tkn)
+    if (typeof tkn === undefined || !tkn) {
+      alert('잘못된 접근입니다.')
+      this.$router.push('/')
+    }   
+  } 
 }
 
 </script>
