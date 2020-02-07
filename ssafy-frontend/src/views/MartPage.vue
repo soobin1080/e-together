@@ -8,6 +8,16 @@
         v-resize-text
       >Mart</div>
     </ImgBanner>
+    <v-tooltip left>
+    <template v-slot:activator="{ on }">
+      <div class="lightgrey--text" v-on="on">비슷한 조건의 예산비율입니다.</div>
+    </template>
+    <div class="progress text-center mx-auto mt-5" style="width: 70%;" v-on="on">
+      <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-info" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    </v-tooltip>
 
     <v-row class="main" style="padding-top:80px">
       <v-col lg="8" style="padding-top:0px;">
