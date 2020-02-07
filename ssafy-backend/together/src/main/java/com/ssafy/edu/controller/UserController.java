@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.edu.dao.UserDaoImpl;
 import com.ssafy.edu.model.BoolResult;
 import com.ssafy.edu.model.MailUtil;
+import org.apache.commons.mail.HtmlEmail;
 import com.ssafy.edu.model.NumberResult;
 import com.ssafy.edu.model.RandomPassword;
 import com.ssafy.edu.model.User;
@@ -46,10 +47,9 @@ public class UserController {
 
 	@Autowired
 	private IUserService userService;
-	
+
 	@Autowired
 	PasswordEncoder encoder;
-
 
 	@ApiOperation(value = "회원가입을 한다. ", response = UserseqResult.class)
 	@RequestMapping(value = "/regi", method = RequestMethod.POST)
@@ -138,32 +138,34 @@ public class UserController {
 
 		logger.info("3-------------pwdCheck-----------------------------" + dto);
 		System.out.println("----------------------------------------" + dto);
-		int total = userService.pwdCheck(dto);
+		if (dto.getEmail() != null) {
+			int total = userService.pwdCheck(dto);
 
-		logger.info("Start pwdCheck ");
+			logger.info("Start pwdCheck ");
 
-		NumberResult nr = new NumberResult();
+			NumberResult nr = new NumberResult();
 
-		try {
-			// db에 있는지 확인
-			Authentication authentication = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPwd()));
+			try {
+				// db에 있는지 확인
+				Authentication authentication = authenticationManager
+						.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPwd()));
 
-			nr.setCount(userService.pwdCheck(dto));
-			nr.setName("pwdCheck");
-			nr.setState("succ");
-			
-			logger.info("pwdCheck Result : Succ");
-			
-		} catch (Exception e) {
-			nr.setCount(-1);
-			nr.setName("pwdCheck");
-			nr.setState("fail");
+				nr.setCount(userService.pwdCheck(dto));
+				nr.setName("pwdCheck");
+				nr.setState("succ");
 
-			logger.info("pwdCheck Result : Fail");
+				logger.info("pwdCheck Result : Succ");
+
+			} catch (Exception e) {
+				nr.setCount(-1);
+				nr.setName("pwdCheck");
+				nr.setState("fail");
+
+				logger.info("pwdCheck Result : Fail");
+			}
+			return new ResponseEntity<NumberResult>(nr, HttpStatus.OK);
 		}
-
-		return new ResponseEntity<NumberResult>(nr, HttpStatus.OK);
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 
 	@ApiOperation(value = "현재 로그인 되어있는 이메일의 상세 정보를 볼 수 있다.", response = User.class)
@@ -172,12 +174,12 @@ public class UserController {
 		logger.info("2-------------myselfDetail-----------------------------" + new Date());
 		User userdetail = userService.myselfDetail(email);
 		if (userdetail.equals("") || userdetail == null || email.equals("")) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
+
 		}
 		System.out.println("memdetail : " + userdetail);
 		return new ResponseEntity<User>(userdetail, HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "이메일을 잊었을 때 이메일을 찾을 수 있다.", response = User.class)
 	@RequestMapping(value = "/findEmail", method = RequestMethod.POST)
 	public ResponseEntity<User> findEmail(@RequestBody User dto) throws Exception {
@@ -189,39 +191,39 @@ public class UserController {
 		return new ResponseEntity<User>(finduser, HttpStatus.OK);
 	}
 
-	
 	@ApiOperation(value = "비밀번호를 잊었을 때 비밀번호를 찾기 위한 임시 비밀번호를 발급한다.", response = User.class)
 	@RequestMapping(value = "/findPwd", method = RequestMethod.POST)
 	public ResponseEntity<User> findPwd(@RequestBody User dto) throws Exception {
 		logger.info("2-------------findPwd dto-----------------------------" + dto);
 		User finduserinfo = userService.findUserInfo(dto);
 		if (finduserinfo.getEmail() != null && finduserinfo.getName() != null) {
-			
+
 			String temp_pwd = RandomPassword.getRandomPassword();
 			System.out.println("temp_pwd : " + temp_pwd);
-			String encode_temp_pwd=encoder.encode(temp_pwd);
+			String encode_temp_pwd = encoder.encode(temp_pwd);
 			finduserinfo.setPwd(encode_temp_pwd);
 			finduserinfo.setTemp_pwd(encode_temp_pwd);
-//			System.out.println("임시 비밀번호 " + temp_pwd);
-			
+			System.out.println("임시 비밀번호 " + temp_pwd);
+
 			userService.findPwd(finduserinfo); // 임시 비밀번호 로 변경
-//			System.out.println("db에 임시비밀번호로 바뀜");
-			
+			System.out.println("db에 임시비밀번호로 바뀜");
+
 			String subject = "[E-Together] 임시 비밀번호 발급 안내";
 			String msg = "";
 			msg += "<div align='center' style='border:1px solid black; font-family:verdana>";
-			msg += "<h3 style='color:blue;'><strong>"+dto.getName();
+			msg += "<h3 style='color:blue;'><strong>" + dto.getName();
 			msg += "님</strong>의 임시 비밀번호 입니다. 로그인 후 비밀번호를 변경하세요.</h3>";
 			msg += "<p>임시 비밀번호 : <strong>" + temp_pwd + "</strong></p></div>";
 			MailUtil.sendMail(dto.getEmail(), subject, msg);
-			
+
 			logger.info("2-------------finduserinfo-----------------------------" + finduserinfo);
 			return new ResponseEntity<User>(finduserinfo, HttpStatus.OK);
 		} else {
+			System.out.println("뭐가 문제야아아아아!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 	}
-   
+
 	@ApiOperation(value = "현재 로그인되어있는 이메일의 정보를 수정한다.", response = BoolResult.class)
 	@RequestMapping(value = "/updateMyself", method = RequestMethod.POST)
 	public ResponseEntity<UserseqResult> updateMyself(@RequestBody User dto) throws Exception {
@@ -245,8 +247,8 @@ public class UserController {
 	@RequestMapping(value = "/updatePwd", method = RequestMethod.POST)
 	public ResponseEntity<UserseqResult> updatePwd(@RequestBody User dto) throws Exception {
 		logger.info("5-------------updatePwd-----------------------------" + dto);
-		
-		String newpwd=encoder.encode(dto.getPwd());
+
+		String newpwd = encoder.encode(dto.getPwd());
 		dto.setPwd(newpwd);
 		userService.updatePwd(dto);
 		User ans = userService.findUserByEmail(dto.getEmail());
