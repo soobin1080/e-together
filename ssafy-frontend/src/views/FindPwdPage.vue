@@ -42,7 +42,7 @@ export default {
     ImgBanner,
   },
   directives: {
-    ResizeText
+    // ResizeText
   },
 
   computed: {

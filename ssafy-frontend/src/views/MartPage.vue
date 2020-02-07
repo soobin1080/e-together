@@ -10,7 +10,7 @@
     </ImgBanner>
 
     <v-row class="main" style="padding-top:80px">
-      <v-col lg="8">
+      <v-col lg="8" style="padding-top:0px;">
         <!-- search box -->
         <v-text-field
           width="100px"
@@ -76,12 +76,12 @@
       </v-col>
       <!-- v-b-modal.modal-1 -->
       <!-- 장보기 내역 -->
-      <v-col>
+      <!-- <v-col> -->
         <v-flex d-none d-lg-flex>
           <BudgetList id="budgetList">
           </BudgetList>
         </v-flex>
-      </v-col>
+      <!-- </v-col> -->
       
       
     </v-row>
@@ -151,6 +151,7 @@ export default {
   computed: {
     mountedProduct() {
       this.getProductList(this.keyword);
+      return true
     }
   },
 

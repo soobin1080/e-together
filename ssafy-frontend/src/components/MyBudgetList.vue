@@ -16,7 +16,7 @@
       <th>적/부</th>
       <th>다운로드</th>
     </tr>
-    <template v-if="this.allLength==0 || this.allLength==undefined">
+    <template v-if="this.allBudgets.length==0 || this.allBudgets.length==undefined">
       <tr>
         <td colspan="6" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
       </tr>
@@ -55,12 +55,11 @@ export default {
     },
     allBudgets: {
       type: Array,
-      required: true
+      // required: true
     },
-    allLength: {
+    budgetPerPage : {
       type: Number,
-      required: true
-    },
+     },
     budgetPerPage: {
       type: Number,
       required: true
@@ -80,18 +79,20 @@ export default {
   },
   computed: {
     computedPagingBudgets: function() {
+      console.log('computedPagingBudget')
+      console.log(this.allBudgets)
       this.pagingBudgets = []
       let start = (this.pages - 1) * this.budgetPerPage
       let end =  (this.pages - 1) * this.budgetPerPage + this.budgetPerPage;
 
-      if (end > allBudgets.length) {
-        end = allBudgets.length;
+      if (end > this.allBudgets.length) {
+        end = this.allBudgets.length;
       }
 
       for (let i = start; i < end; i++) {
-        this.pagingBudgets.push(allBudgets[i]);
+        this.pagingBudgets.push(this.allBudgets[i]);
       }
-
+      console.log(this.pagingBudgets)
       return this.pagingBudgets;
 
       // console.log('computedPagingBudget')
