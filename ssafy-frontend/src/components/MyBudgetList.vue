@@ -2,11 +2,11 @@
   <table width="100%">
     <colgroup>
       <col width="30%" />
-      <col width="10%" />
-      <col width="10%" />
-      <col width="20%" />
       <col width="15%" />
       <col width="15%" />
+      <col width="25%" />
+      <col width="15%" />
+      <!-- <col width="15%" /> -->
     </colgroup>
     <tr style="text-align:center" height="50px">
       <th>제목</th>
@@ -14,11 +14,11 @@
       <th>예산</th>
       <th>날짜</th>
       <th>적/부</th>
-      <th>다운로드</th>
+      <!-- <th>다운로드</th> -->
     </tr>
     <template v-if="this.allBudgets.length==0 || this.allBudgets.length==undefined">
       <tr>
-        <td colspan="6" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
+        <td colspan="5" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
       </tr>
     </template>
     <tr v-for="budget in computedPagingBudgets" :key="budget.created_at" @click="say(budget.budget_title)">
@@ -102,7 +102,8 @@ export default {
 
     // async getMyBudgets() {
     //   this.mybudgets = await FirebaseService.getMyBudgets();
-    // }
+    // }  
+    
   },
   computed: {
     computedPagingBudgets: function() {
@@ -142,6 +143,7 @@ export default {
   },
   mounted() {
     console.log(this.pagingList)
+    date_ymd();
   }
 };
 </script>

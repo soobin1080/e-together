@@ -213,7 +213,7 @@ export default {
           .catch(ex => {
             console.warn("ERROR! :", ex);
           });
-        this.$router.push("/mylist");
+        this.$router.push("/mybudget");
       } else {        
         this.dialog=false;
       }
