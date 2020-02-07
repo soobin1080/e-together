@@ -3,14 +3,22 @@
     <!-- <input type="text" name="title" v-model="title" />
     <input type="text" name="body" v-model="body" />
     <v-btn @click="postMyBudgets(title, body)">add</v-btn>-->
-    <ImgBanner>
-      <div
+    <v-img :src="getImgUrl('budgetlist.jpg')" aspect-ratio="5.5">
+      <v-layout align-center justify-center row fill-height>
+        <v-flex text-xs-center>
+          <span class="text-shadow display-2 font-weight-light">
+            <slot name="text" />
+            <div
         class="text-center text-white"
-        style="line-height:1.2em;font-size:2.5em;"
+        style="line-height:1.2em; font-size:2.5em;"
         slot="text"
         v-resize-text
       >My Budget</div>
-    </ImgBanner>
+          </span>
+        </v-flex>
+      </v-layout>       
+    </v-img>
+   
     <div class="main">
       <v-card style="width:80%;" class="mx-auto my-5 flat">
         <MyBudgetList 

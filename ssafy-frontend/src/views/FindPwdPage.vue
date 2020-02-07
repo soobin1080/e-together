@@ -41,9 +41,7 @@ export default {
   components: {
     ImgBanner,
   },
-  directives: {
-    ResizeText
-  },
+  
 
   computed: {
     requestHeader: function() {
