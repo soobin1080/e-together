@@ -100,8 +100,20 @@ export default {
           user_email : myEmail
         }, this.$store.getters.RequestHeader)
         .then(res => {
-          console.log(res)
-          return res.data
+          console.log('getMyBudget')
+          this.allBudgets = res.data
+          this.allLength = res.data.length
+          this.pagingList = this.allBudgets
+
+          this.allLength = this.pagingList.length
+          if (this.allLength % this.budgetPerPage === 0) {
+            this.pagingLength = parseInt(this.allLength / this.budgetPerPage);
+          } else {
+            this.pagingLength = parseInt(this.allLength / this.budgetPerPage) + 1;
+          }
+          this.pages = 1;
+          // console.log(res)
+          // return res.data
 
         })
         .catch(err => {
@@ -113,11 +125,15 @@ export default {
   },
   computed: {
     mountedBudget() {
-      this.getMyBudgets();
+      console.log('mountedBudget')
+      this.allBudgets = this.getMyBudgets()
+      this.allLength = this.allBudgets.length
+      return this.getMyBudgets();
     }
   },
   mounted() {
-    this.allBudgets = this.getMyBudgets()
+    this.getMyBudgets();
+    // this.allBudgets = this.getMyBudgets()
     // this.allPages = await FirebaseService.getMyBudgets();
     // this.allLength = this.allPages.length;
     // console.log("allLength : " + this.allPages.length);

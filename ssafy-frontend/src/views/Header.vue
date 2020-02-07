@@ -4,7 +4,7 @@
     <v-navigation-drawer v-model="sidebar" fixed temporary>
       <v-list>
         <h5 class="ml-5">hello</h5>
-        <v-list-item v-if="serUserName" @click="pwdCheck">
+        <v-list-item v-if="setUserName" @click="pwdCheck">
           <!-- <v-list-item-action></v-list-item-action> -->
           {{setUserName}}
         </v-list-item>
