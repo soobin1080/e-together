@@ -25,10 +25,10 @@
       <td v-html="budget.budget_title"
       @click="show_detail(budget.num)"
       style="text-align:center"></td>
-      <td v-html="budget.personnel"></td>
-      <td v-html="budget.budget"></td>
-      <td v-html="dateParsing(budget.date)"></td>
-      <td v-html="budget.fitness"></td>
+      <td style="text-align:center">{{budget.personnel}}</td>
+      <td style="text-align:center">{{budget.budget}}</td>
+      <td style="text-align:center">{{dateParsing(budget.date)}}</td>
+      <td style="text-align:center">{{budget.fitness}}</td>
       <td><v-btn >pdf로 저장</v-btn></td>
     </tr>
   </table>
