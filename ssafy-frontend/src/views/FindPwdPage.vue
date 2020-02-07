@@ -41,7 +41,7 @@ export default {
   components: {
     ImgBanner,
   },
-  
+
 
   computed: {
     requestHeader: function() {

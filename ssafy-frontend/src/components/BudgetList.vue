@@ -255,7 +255,7 @@ export default {
   computed: {
     computedBudgetList() {
       this.list = this.$store.state.budgetlist
-      return this.$store.state.budgetlist
+      return this.list
     }
   }
 };
