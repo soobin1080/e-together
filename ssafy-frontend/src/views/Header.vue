@@ -82,8 +82,10 @@ export default {
       return require("../assets/" + img);
     },
     pwdCheck() {
-      if (this.username) {
-        this.$router.push("/pwdcheck");
+      if (localStorage.getItem !== "" && typeof localStorage.getItem !== undefined) {
+        this.$router.push("/pwdcheck"); 
+      } else {
+        alert('잘못된 접근입니다.')
       }
     },
     getUserName() {

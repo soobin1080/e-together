@@ -100,6 +100,10 @@ export default {
         this.emailCheck = false;
       }
     }
+  },
+
+  mounted() {
+    
   }
 };
 </script>

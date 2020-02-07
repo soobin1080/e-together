@@ -97,7 +97,16 @@ directives: {
     }
   },
 
-  
+  mounted(){
+    console.log('mountedFindpwd')
+    var ref = document.referrer;
+    let tkn = localStorage.getItem('accessToken')
+    console.log(tkn)
+    if (typeof tkn === undefined || !tkn) {
+      alert('잘못된 접근입니다.')
+      this.$router.push('/')
+    }   
+  } 
 }
 
 </script>

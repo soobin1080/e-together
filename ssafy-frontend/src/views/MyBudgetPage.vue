@@ -20,7 +20,7 @@
     </v-img>
    
     <div class="main">
-      <v-card style="width:60%;" class="mx-auto my-5 flat">
+      <v-card style="width:80%; height: 100%;" class="mx-auto my-5 flat">
         <MyBudgetList 
           :allBudgets="allBudgets"
           :budgetPerPage="budgetPerPage"
@@ -28,7 +28,6 @@
       </v-card>
 
       <div class="text-center">
-        {{pages}}
         <v-pagination 
           v-model="pages" 
           :length="pagingLength" 

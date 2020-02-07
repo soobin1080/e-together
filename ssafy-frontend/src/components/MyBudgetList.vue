@@ -21,13 +21,13 @@
         <td colspan="5" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
       </tr>
     </template>
-    <tr v-for="budget in computedPagingBudgets" :key="budget.created_at">
+    <tr v-for="budget in computedPagingBudgets" :key="budget.created_at" @click="say(budget.budget_title)">
       <td v-html="budget.budget_title"
       @click="show_detail(budget.num)"
       style="text-align:center"></td>
-      <td  style="text-align:center">{{budget.personnel}}명</td>
-      <td style="text-align:center">{{budget.budget}}원</td>
-      <td v-html="budget.date"></td>
+      <td v-html="budget.personnel"></td>
+      <td v-html="budget.budget"></td>
+      <td v-html="dateParsing(budget.date)"></td>
       <td v-html="budget.fitness"></td>
       <!-- <td><v-btn >pdf로 저장</v-btn></td> -->
     </tr>
@@ -36,6 +36,7 @@
 
 <script>
 import FirebaseService from "@/services/FirebaseService";
+import http from "../http-common";
 export default {
   name: "MyBudgetList",
 
@@ -68,11 +69,37 @@ export default {
 
   data() {
     return {
-      pagingbudgets: []
+      pagingbudgets: [],
     };
   },
 
   methods: {
+    dateParsing(beforeParsing) {
+      const t = beforeParsing.indexOf('T')
+      const afterParsing = beforeParsing.substring(0, t)
+      console.log(afterParsing)
+      return afterParsing
+    },
+
+    say(mytitle) {
+      let myEmail = localStorage.getItem('email')
+      http
+        .get(`/budget/${myEmail}/${mytitle}`, {
+          user_email : myEmail,
+          budget_title : mytitle
+        },
+          this.$store.getters.RequestHeader
+        )
+          .then (res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      
+    }
+
+
     // async getMyBudgets() {
     //   this.mybudgets = await FirebaseService.getMyBudgets();
     // }  
