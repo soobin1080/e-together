@@ -11,7 +11,7 @@ public class Budget {
 	private String fitness;
 	private Date date;
 	private int like_count;
-	private List<BudgetList> budgetlist;
+	private List<BudgetListResult> budgetlist;
 
 	public Budget() {
 		super();
@@ -19,7 +19,7 @@ public class Budget {
 	}
 
 	public Budget(String user_email, String budget_title, String personnel, String budget, String fitness, Date date,
-			int like_count, List<BudgetList> budgetlist) {
+			int like_count, List<BudgetListResult> budgetlist) {
 		super();
 		this.user_email = user_email;
 		this.budget_title = budget_title;
@@ -87,11 +87,11 @@ public class Budget {
 		this.like_count = like_count;
 	}
 
-	public List<BudgetList> getBudgetlist() {
+	public List<BudgetListResult> getBudgetlist() {
 		return budgetlist;
 	}
 
-	public void setBudgetlist(List<BudgetList> budgetlist) {
+	public void setBudgetlist(List<BudgetListResult> budgetlist) {
 		this.budgetlist = budgetlist;
 	}
 

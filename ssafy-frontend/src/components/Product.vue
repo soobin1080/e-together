@@ -53,17 +53,20 @@ export default {
     },
     addcart() {
       console.log(this.product);
-      console.log(
-        "/////////////" + this.pro_id + "             " + this.main_category
-      );
+
+      // console.log(
+      //   "/////////////" + this.pro_id + "             " + this.main_category
+      // );
+      // console.log(this.product)
       let product = {
+        pro_id : this.product.pro_id,
         pro_name: this.pro_name,
         price: this.stringNumberToInt(this.price),
         quantity: this.quantity,
         pro_price:this.stringNumberToInt(this.price)
       };
-
-      EventBus.$emit("addCart", product);
+      this.$store.dispatch('addCartAsync', product)
+      // EventBus.$emit("addCart", product);
     }
   }
 };

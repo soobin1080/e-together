@@ -1,23 +1,30 @@
+ 
 <template>
   <div>
     <ImgBanner>
-      <div
+      <!-- <div
         class="text-center text-white"
         style="line-height:1.2em;font-size:2.0em;"
         slot="text"
         v-resize-text
-      >임시 비밀번호 발급</div>
+      >비밀번호 찾기</div> -->
     </ImgBanner>
-    
+
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-container>
-      <v-text-field
-          label="가입한 이메일을 입력해주세요"
-          v-model="email"
-          type="text"
-          :rules="emailRules"
-        ></v-text-field>
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">비밀번호 체크</v-btn>
+      <v-container fluid style="width:500px; padding-top:80px; padding-bottom:80px">
+        <h2 style="text-align:center;">비밀번호 찾기</h2>
+        <br>
+         <v-text-field label="Name" v-model="name" type="text" required :rules="[v => !!v || '이름을 입력해주세요!']"></v-text-field>
+        <v-text-field label="E-mail" v-model="email" type="text" :rules="emailRules"></v-text-field>
+        <div style="text-align:center; margin:auto; padding-top:20px">
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          outlined
+          class="mr-4"
+          @click="validate"          
+        >이메일로 비밀번호 전송</v-btn>
+        </div>
       </v-container>
     </v-form>
 
@@ -28,26 +35,29 @@
 <script>
 import ImgBanner from "../components/ImgBanner";
 import http from "../http-common";
-import UserInfo from "../components/UserInfo";
+
 export default {
-  name: "PwdCheckPage",
+  name: "FindPwdPage",
   components: {
     ImgBanner,
-    UserInfo
+  },
+  directives: {
+    ResizeText
   },
 
   computed: {
     requestHeader: function() {
-      return this.$store.getters.requestHeader
+      return this.$store.getters.requestHeader;
     }
   },
 
   data() {
     return {
-      valid : false,
-      emailCheck : true,
+      valid: false,
+      emailCheck: true,
 
-      email : "",
+      email: "",
+      name: "",
 
       rules: {
         required: value => !!value || "Required.",
@@ -57,23 +67,28 @@ export default {
         emailMatch: () => "The email and password you entered don't match"
       },
       emailRules: [
-      v => !!v || "E-mail is required",
-      v => /.+@.+\..+/.test(v) || "E-mail must be valid"
-    ]
-    }
+        v => !!v || "가입한 E-mail을 입력해주세요!",
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+      ]
+    };
   },
   methods: {
-    
     validate() {
       if (this.$refs.form.validate()) {
-      
         http
-          .post('/findPwd',{
+          .post("/findPwd", {
             email: this.email,
-            name: localStorage.getItem('name')
+            name: this.name
           })
           .then(res => {
-            console.log(res)
+            console.log(res);
+             if (res.data.temp_pwd != null) {
+            alert("E-mail로 임시 비밀번호가 전송되었습니다. E-mail을 확인해주세요!")
+            this.$router.push("/");
+          }else{
+            alert("정보를 찾을 수 없습니다. 다시 입력해주세요." );
+          } 
+            
             // if (res.data.state == 'succ') {
             //   this.$router.push('/userinfo')
             // } else {
@@ -82,17 +97,13 @@ export default {
           })
           .catch(err => {
             // alert('비밀번호 오류입니다.')
-            console.log(err)
-          })
-          this.pwdCheck = false
+            console.log(err);
+          });
+        this.emailCheck = false;
       }
     }
-  },
-
-  
-}
-
+  }
+};
 </script>
 <style scoped>
-
 </style>

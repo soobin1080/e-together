@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.edu.model.Budget;
 import com.ssafy.edu.model.BudgetInfo;
 import com.ssafy.edu.model.BudgetList;
+import com.ssafy.edu.model.BudgetListResult;
 import com.ssafy.edu.service.IBudgetService;
 
 import io.swagger.annotations.Api;
@@ -36,15 +37,15 @@ public class BudgetController {
 
 	@ApiOperation(value = "내 예산안 가져오기", response = List.class)
 	@RequestMapping(value = "/budget/{user_email}", method = RequestMethod.GET)
-	public ResponseEntity<List<BudgetList>> getBudgetList(@PathVariable String user_email) throws Exception {
+	public ResponseEntity<List<BudgetInfo>> getBudgetList(@PathVariable String user_email) throws Exception {
 		logger.info("1-------------getBudgetList-----------------------------" + new Date());
-		List<BudgetList> mybudgetlist = budgetservice.getBudgetList(user_email);
+		List<BudgetInfo> mybudgetlist = budgetservice.getMyBudgetList(user_email);
 
 		System.out.println(mybudgetlist);
 		if (mybudgetlist.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<BudgetList>>(mybudgetlist, HttpStatus.OK);
+		return new ResponseEntity<List<BudgetInfo>>(mybudgetlist, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "내 예산안 품목 상세보기", response = Budget.class)
@@ -79,11 +80,19 @@ public class BudgetController {
 
 		System.out.println(budgetinfo.toString());
 
-		List<BudgetList> budgetlist = budget.getBudgetlist();
-
-		for (int i = 0; i < budgetlist.size(); i++) {
-			budgetservice.insertBudgetList(budgetlist.get(i));
-			System.out.println(i + "번째 상품 : " + budgetlist.get(i).toString());
+		List<BudgetListResult> budgetlistresult = budget.getBudgetlist(); //이메일, 에산안 제목 없이 날아옴.
+				
+		for (int i = 0; i < budgetlistresult.size(); i++) {
+			
+			BudgetList budgetlist=new BudgetList();
+			budgetlist.setUser_email(budget.getUser_email());
+			budgetlist.setBudget_title(budget.getBudget_title());
+			budgetlist.setPro_id(budgetlistresult.get(i).getPro_id());
+			budgetlist.setPro_name(budgetlistresult.get(i).getPro_name());
+			budgetlist.setQuantity(budgetlistresult.get(i).getQuantity());
+			budgetlist.setPrice(budgetlistresult.get(i).getPrice());
+			budgetservice.insertBudgetList(budgetlist);
+			System.out.println(i + "번째 상품 : " + budgetlist.toString());
 		}
 
 		if (budget == null) {
@@ -99,7 +108,7 @@ public class BudgetController {
 
 		budgetservice.deleteBudgetInfo(budget.getUser_email(), budget.getBudget_title());
 
-		List<BudgetList> budgetlist = budget.getBudgetlist();
+		List<BudgetListResult> budgetlist = budget.getBudgetlist();
 
 		for (int i = 0; i < budgetlist.size(); i++) {
 			budgetservice.deleteBudgetList(budget.getUser_email(), budget.getBudget_title(), budgetlist.get(i).getPro_id());

@@ -82,6 +82,10 @@ public class AuthController {
 		User user = new User(0, signUpRequest.getEmail(), encoder.encode(signUpRequest.getPwd()), null,
 				signUpRequest.getName(), 0, 1, signUpRequest.getPhone());
 
+//		String phone = user.getPhone();
+//		String newphone = phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7, 11);
+//		user.setPhone(newphone);
+
 		int result = userService.regi(user);
 
 		if (result != 1) {

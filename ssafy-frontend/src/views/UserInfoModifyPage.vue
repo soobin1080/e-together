@@ -1,39 +1,42 @@
 <template>
   <div>
     <ImgBanner>
-      <div
+      <!-- <div
         class="text-center text-white"
         style="line-height:1.2em;font-size:2.5em;"
         slot="text"
         v-resize-text
-      >회원정보 수정</div>
+      ></div>-->
     </ImgBanner>
 
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-container fluid style="width:700px; padding-bottom:80px">
-        <h2 class="text-center mt-5">수정</h2>
+        <h2 class="text-center mt-5">내 정보 수정</h2>
         <br />
         <v-text-field
           v-model="computedUser.name"
           :rules="nameRules"
-          label="nickname"
+          label="Name"
           counter="20,"
           required
           autocomplete="name"
         ></v-text-field>
 
-        <v-text-field v-model="computedUser.email" :rules="emailRules" label="E-mail" required></v-text-field>
+        <!-- <div style="padding-bottom:30px">
+          <v-text-field v-model="computedUser.email" :rules="emailRules" label="E-mail" required></v-text-field>
+          <v-btn @click="emailcheck" small color="blue" style="float:right; color:white">중복 확인</v-btn>
+        </div> -->
 
         <v-text-field
           v-model="computedUser.phone"
-          label="phone"
-          :rules="[rules.required, rules.is_num]"
+          label="Phone number"
+          :rules="[rules.required, rules.is_num, rules.min_11]"
           required
           autocomplete="tel"
         ></v-text-field>
 
         <div class="btn" style="float:right">
-          <v-btn color="primary" class="mr-4">비밀번호 수정</v-btn>
+          <!-- <v-btn color="primary" class="mr-4"  @click="pwdmodi">비밀번호 수정</v-btn> -->
           <v-btn color="error" class="mr-4" @click="reset">Reset</v-btn>
           <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">수정!</v-btn>
         </div>
@@ -41,6 +44,8 @@
     </v-form>
   </div>
 </template>
+
+
 
 <script>
 import ImgBanner from "../components/ImgBanner";
@@ -55,20 +60,21 @@ export default {
     ResizeText
   },
   data: () => ({
-    user : {
+    user: {
       name: "",
       email: "",
-      phone: "",
+      phone: ""
     },
+    dialog: false,
 
-   // nickname: "",
     show1: false,
     valid: true,
-    pwd: "",
+
     rules: {
       required: value => !!value || "Required.",
       min_8: v => v.length >= 8 || "Min 8 characters",
-      min_4: v => v.length >= 4 || "Min 8 characters",
+      min_4: v => v.length >= 4 || "Min 4 characters",
+      min_11: v => v.length == 11 || "휴대폰번호 형식에 맞게 입력해주세요!",
       is_num: v => !isNaN(v) || "Please input number",
       emailMatch: () => "The email and password you entered don't match"
     },
@@ -83,20 +89,19 @@ export default {
   }),
   methods: {
     getUserDetail() {
-      console.log('getUserDetail active')
-      let myEmail = localStorage.getItem('email')
+      console.log("getUserDetail active");
+      let myEmail = localStorage.getItem("email");
       http
         .post(`/myselfDetail/${myEmail}`)
-          .then(res => {
-            // console.log(res)
-            this.user.email = res.data.email
-            this.user.name = res.data.name
-            this.user.phone = res.data.phone
-          })
-          .catch(err => {
-            console.log(err)
-          })
-
+        .then(res => {
+          // console.log(res)
+          this.user.email = res.data.email;
+          this.user.name = res.data.name;
+          this.user.phone = res.data.phone;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     validate() {
       if (this.$refs.form.validate()) {
@@ -105,41 +110,60 @@ export default {
         // formData.append('pwd', this.pwd)
         // formData.append('phone', this.phone)
         http
-          .post('/updateMyself', this.user, this.$store.getters.requestHeader)
+          .post("/updateMyself", this.user, this.$store.getters.requestHeader)
           .then(res => {
-            console.log(res)
-            if (res.data.state == 'succ' && this.$store.getters.isLoggedIn == true) {
-              alert('수정 성공')
+            console.log(res);
+            if (
+              res.data.state == "succ" &&
+              this.$store.getters.isLoggedIn == true
+            ) {
+              alert("수정 성공");
             } else {
-              alert('수정 오류입니다.')
+              alert("수정 오류입니다.");
             }
-            this.$router.push("/userinfo")
+            this.$router.push("/userinfo");
           })
-          .catch (err => {
-            console.log(err)
-          })
+          .catch(err => {
+            console.log(err);
+          });
         this.snackbar = true;
       }
+    },
+    emailcheck() {
+      http
+        .post("/emailCheck", {
+          email: this.credentials.email
+        })
+        .then(respone => {
+          console.log(respone);
+          if (respone.data.state == "succ") {
+            alert("중복된 E-mail입니다. 다른 E-mail을 입력해주세요.");
+            this.credentials.email = "";
+          } else {
+            alert("사용 가능합니다.");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     resetValidation() {
       this.$refs.form.resetValidation();
     },
-     reset() {
+    reset() {
       this.$refs.form.reset();
-    },
+    }
   },
   mounted() {
-    this.getUserDetail()
+    this.getUserDetail();
   },
 
   computed: {
     computedUser: function() {
-      return this.user
+      return this.user;
     },
 
-    requestHeader: function(){
-      
-     }
+    requestHeader: function() {}
   }
 };
 </script>
