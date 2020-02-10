@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.ssafy.edu.model.Budget;
 import com.ssafy.edu.model.BudgetInfo;
 import com.ssafy.edu.model.BudgetList;
+import com.ssafy.edu.model.BudgetListResult;
 
 @Repository
 public class BudgetDaoImpl {
@@ -24,12 +25,20 @@ public class BudgetDaoImpl {
 		return sqlSession.selectList(ns + "getBudgetList", user_email);
 	}
 
-	public Budget getOneBudget(String budget_num, String budget_title) {
+	public BudgetInfo getOneBudget(String user_email, String budget_title) {
 		// TODO Auto-generated method stub
 		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("budget_num", budget_num);
-		paramMap.put("user_email", budget_title);
+		paramMap.put("user_email", user_email);
+		paramMap.put("budget_title", budget_title);
 		return sqlSession.selectOne(ns + "getOneBudget", paramMap);
+	}
+	
+	public List<BudgetListResult> getOneBudgetProductList(String user_email, String budget_title) {
+		// TODO Auto-generated method stub
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("user_email", user_email);
+		paramMap.put("budget_title", budget_title);
+		return sqlSession.selectList(ns + "getOneBudgetProductList", paramMap);
 	}
 
 	public int insertOneBudget(Budget budget) {
@@ -66,4 +75,11 @@ public class BudgetDaoImpl {
 		sqlSession.delete(ns + "deleteBudgetList", paramMap);
 
 	}
+
+	public void updateBudgetFitness(BudgetInfo budgetinfo) {
+		// TODO Auto-generated method stub
+		sqlSession.update(ns + "updateBudgetFitness", budgetinfo);
+	}
+
+	
 }

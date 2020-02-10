@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.edu.model.Reply;
+import com.ssafy.edu.model.ReviewResult;
+import com.ssafy.edu.service.IReplyService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -24,10 +28,50 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/api")
 @Api(value = "SSAFY", description = "SSAFY 2020")
 public class ReplyController {
-	public static final Logger logger = LoggerFactory.getLogger(BudgetController.class);
+	public static final Logger logger = LoggerFactory.getLogger(ReplyController.class);
 
-//	@Autowired
-//	private IReplyService replyservice;
+	@Autowired
+	private IReplyService replyservice;
+	
+	@ApiOperation(value = "전체 댓글 뿌리주기", response = List.class)
+	@RequestMapping(value = "/reply", method = RequestMethod.GET)
+	public ResponseEntity<List<Reply>> getAllReply(@PathVariable String budget_email, @PathVariable String budget_title) throws Exception {
+		logger.info("1-------------getAllReview-----------------------------" + new Date());
+
+		List<Reply> reviewlist = replyservice.getAllReply(budget_email,budget_title);
+
+		return new ResponseEntity<List<Reply>>(HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "댓글 작성하기", response = Reply.class)
+	@RequestMapping(value = "/reply", method = RequestMethod.POST)
+	public ResponseEntity<Reply> insertReply(@RequestBody Reply reply) throws Exception {
+		logger.info("2-------------insertReply-----------------------------" + new Date());
+
+		replyservice.insertReply(reply);
+
+		return new ResponseEntity<Reply>(reply, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "댓글 삭제하기", response = Reply.class)
+	@RequestMapping(value = "/reply", method = RequestMethod.DELETE)
+	public ResponseEntity<Reply> deleteReply(@RequestBody Reply reply) throws Exception {
+		logger.info("3-------------deleteReply-----------------------------" + new Date());
+
+		replyservice.deleteReply(reply);
+
+		return new ResponseEntity<Reply>(reply, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "댓글 수정하기", response = Reply.class)
+	@RequestMapping(value = "/reply/{budget_email}/{budget_title}/{wrtier_email}", method = RequestMethod.POST)
+	public ResponseEntity<Reply> updateReply(@RequestBody Reply reply) throws Exception {
+		logger.info("4-------------updateReply-----------------------------" + new Date());
+
+		replyservice.updateReply(reply);
+
+		return new ResponseEntity<Reply>(reply, HttpStatus.OK);
+	}
 
 	
 }

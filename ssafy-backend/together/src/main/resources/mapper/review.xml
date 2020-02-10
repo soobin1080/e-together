@@ -6,32 +6,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getAllReview"
 		resultType="com.ssafy.edu.model.ReviewResult">
+	SELECT B.USER_EMAIL, B.BUDGET_TITLE, R.IMG, B.PERSONNEL, B.BUDGET, B.FITNESS, B.DATE, B.LIKE_COUNT
+	FROM REVIEW R, BUDGET_INFO B
+	WHERE R.USER_EMAIL=B.USER_EMAIL AND R.BUDGET_TITLE=B.BUDGET_TITLE;
+	</select>
+
+	<select id="getOneReview"
+		parameterType="com.ssafy.edu.model.Review"
+		resultType="com.ssafy.edu.model.ReviewResult">
 		SELECT USER_EMAIL, BUDGET_TITLE, NAME,PERSONNEL,BUDGET,
-		FITNESS,LIKE_COUNT, IMG
-		FROM (SELECT USER_EMAIL, BUDGET_TITLE ,NAME
-		,PERSONNEL,BUDGET, FITNESS, LIKE_COUNT,IMG
-		FROM USER, BUDGET_INFO
+		FITNESS,LIKE_COUNT, IMG,CONTENT
+		FROM (SELECT USER_EMAIL, BUDGET_TITLE
+		,NAME,PERSONNEL,BUDGET, FITNESS, LIKE_COUNT,IMG,CONTENT
+		FROM
+		USER,BUDGET_INFO
 		WHERE
-		USER.EMAIL=#{user_email} AND USER.EMAIL=BUDGET_INFO.USER_EMAIL AND
+		USER.EMAIL=#{user_email} AND
+		USER.EMAIL=BUDGET_INFO.USER_EMAIL AND
 		BUDGET_INFO.BUDGET_TITLE=#{budget_title});
 	</select>
 
 	<insert id="insertReview"
 		parameterType="com.ssafy.edu.model.ReviewResult">
 		INSERT INTO REVIEW(USER_EMAIL,BUDGET_TITLE, IMG,CONTENT)
-		VALUES(USER_EMAIL=#{user_email},BUDGET_TITLE=#{budget_title},IMG=#{img},CONTENT=#{content});
+		VALUES(#{user_email},#{budget_title},#{img},#{content});
 	</insert>
 
 	<update id="updateReview"
 		parameterType="com.ssafy.edu.model.ReviewResult">
-		 UPDATE REVIEW
-     SET USER_EMAIL=#{user_email},BUDGET_TITLE=#{budget_title}, IMG=#{img},CONTENT=#{content}
-     WHERE USER_EMAIL=#{user_email} AND BUDGET_TITLE=#{budget_title}
+		UPDATE REVIEW
+		SET BUDGET_TITLE=#{budget_title},
+		IMG=#{img},CONTENT=#{content}
+		WHERE USER_EMAIL=#{user_email} AND
+		BUDGET_TITLE=#{budget_title}
 	</update>
-	
+
 	<delete id="deleteReview"
 		parameterType="com.ssafy.edu.model.ReviewResult">
-		DELETE FROM REVIEW WHERE USER_EMAIL=#{user_email} aND BUDGET_TITLE=#{budget_title}
+		DELETE FROM REVIEW WHERE USER_EMAIL=#{user_email} AND
+		BUDGET_TITLE=#{budget_title}
 	</delete>
 </mapper>
 

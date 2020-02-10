@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.edu.model.Budget;
@@ -53,9 +54,26 @@ public class BudgetController {
 	public ResponseEntity<Budget> getOneBudget(@PathVariable String user_email, @PathVariable String budget_title)
 			throws Exception {
 		logger.info("2-------------getOneBudget-----------------------------" + new Date());
-		Budget budget = budgetservice.getOneBudget(user_email, budget_title);
 
+		BudgetInfo budgetinfo = budgetservice.getOneBudget(user_email, budget_title);
+		List<BudgetListResult> budgetlist = budgetservice.getOneBudgetProductList(user_email, budget_title);
+		
+		Budget budget = new Budget();
+		
 		System.out.println(budget);
+
+		budget.setUser_email(budgetinfo.getUser_email());
+		budget.setBudget_title(budgetinfo.getBudget_title());
+		budget.setPersonnel(budgetinfo.getPersonnel());
+		budget.setBudget(budgetinfo.getBudget());
+		budget.setFitness(budgetinfo.getFitness());
+		budget.setDate(budgetinfo.getDate());
+		budget.setLike_count(budgetinfo.getLike_count());
+		
+		System.out.println("budgetlist : "+budgetlist);
+		budget.setBudgetlist(budgetlist);
+		
+		
 		if (budget == null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
@@ -80,11 +98,11 @@ public class BudgetController {
 
 		System.out.println(budgetinfo.toString());
 
-		List<BudgetListResult> budgetlistresult = budget.getBudgetlist(); //이메일, 에산안 제목 없이 날아옴.
-				
+		List<BudgetListResult> budgetlistresult = budget.getBudgetlist(); // 이메일, 에산안 제목 없이 날아옴.
+
 		for (int i = 0; i < budgetlistresult.size(); i++) {
-			
-			BudgetList budgetlist=new BudgetList();
+
+			BudgetList budgetlist = new BudgetList();
 			budgetlist.setUser_email(budget.getUser_email());
 			budgetlist.setBudget_title(budget.getBudget_title());
 			budgetlist.setPro_id(budgetlistresult.get(i).getPro_id());
@@ -111,13 +129,25 @@ public class BudgetController {
 		List<BudgetListResult> budgetlist = budget.getBudgetlist();
 
 		for (int i = 0; i < budgetlist.size(); i++) {
-			budgetservice.deleteBudgetList(budget.getUser_email(), budget.getBudget_title(), budgetlist.get(i).getPro_id());
+			budgetservice.deleteBudgetList(budget.getUser_email(), budget.getBudget_title(),
+					budgetlist.get(i).getPro_id());
 			System.out.println(i + "번째 상품 삭제-----------------");
 		}
 
 		if (budget == null) {
-			return new ResponseEntity<Budget>(budget, HttpStatus.OK);
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<Budget>(budget, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "내 예산안 적합/부적합 표시하기", response = Budget.class)
+	@RequestMapping(value = "/budget/{user_email}/{budget_title}", method = RequestMethod.POST)
+	public ResponseEntity<BudgetInfo> updateBudgetFitness(@RequestBody BudgetInfo budgetinfo) throws Exception {
+		logger.info("4-------------isBudgetFitness-----------------------------" + new Date());
+
+		budgetservice.updateBudgetFitness(budgetinfo);
+		
+		return new ResponseEntity<BudgetInfo>(budgetinfo,HttpStatus.OK);
+	}
+	
 }

@@ -16,7 +16,7 @@ public class ReviewService implements IReviewService {
 	private ReviewDaoImpl reviewdao;
 
 	@Override
-	public List<Review> getAllReview() {
+	public List<ReviewResult> getAllReview() {
 		// TODO Auto-generated method stub
 		return reviewdao.getAllReview();
 	}
@@ -37,6 +37,12 @@ public class ReviewService implements IReviewService {
 	public void deleteReview(String user_email, String budget_title) {
 		// TODO Auto-generated method stub
 		reviewdao.deleteReview(user_email, budget_title);
+	}
+
+	@Override
+	public ReviewResult getOneReview(String user_email, String budget_title) {
+		// TODO Auto-generated method stub
+		return reviewdao.getOneReview(user_email,budget_title);
 	}
 
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssafy.reply">
+
+	<select id="getAllReply"
+		parameterType="com.ssafy.edu.model.Reply"
+		resultType="com.ssafy.edu.model.Reply">
+		SELECT BUDGET_EMAIL, BUDGET_TITLE, WRITER_EMAIL, CONTENT
+		FROM REPLY WHERE BUDGET_EMAIL=#{budget_email} AND
+		BUDGET_TITLE=#{budget_title}
+	</select>
+
+	<insert id="insertReply"
+		parameterType="com.ssafy.edu.model.Reply">
+		INSERT INTO REPLY VALUES(#{budget_email},
+		#{budget_title},#{writer_email},#{content});
+	</insert>
+
+
+	<update id="updateReply"
+		parameterType="com.ssafy.edu.model.Reply">
+		UPDATE REPLY SET CONTENT=#{content} WHERE BUDGET_EMAIL=#{budget_email} AND BUDGET_TITLE=#{budget_title} AND WRITER_EMAIL=#{writer_email};
+	</update>
+	
+	<delete id= "deleteReply" parameterType="com.ssafy.edu.model.Reply">
+	DELETE FROM REPLY WHERE BUDGET_EMAIL=#{budget_email} AND BUDGET_TITLE=#{budget_title} AND WRITER_EMAIL=#{writer_email};
+	</delete>
+</mapper>
+
