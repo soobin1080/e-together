@@ -44,7 +44,8 @@ export default {
     product: { type: Object }
   },
   data: () => ({
-    quantity: 1
+    quantity: 1,
+    ETC: ['수산물/해산물', '쌀/잡곡', '즉석식품', '과일', '스낵', '견과/건해산물'],
   }),
   methods: {
     stringNumberToInt(stringNumber) {
@@ -52,7 +53,7 @@ export default {
       return parseInt(stringNumber.replace(/,/g, ""));
     },
     addcart() {
-      console.log(this.product);
+      // console.log(this.product);
 
       // console.log(
       //   "/////////////" + this.pro_id + "             " + this.main_category
@@ -63,9 +64,13 @@ export default {
         pro_name: this.pro_name,
         price: this.stringNumberToInt(this.price),
         quantity: Number(this.quantity),
-        pro_price:this.stringNumberToInt(this.price)
+        pro_price:this.stringNumberToInt(this.price),
+        category: this.product.main_category,
+        isETC: this.ETC.includes(this.product.main_category)
       };
+      console.log(product)
       this.$store.dispatch('addCartAsync', product)
+      this.$store.dispatch('addBudgetBarAsync', product)
       // EventBus.$emit("addCart", product);
     }
   }
