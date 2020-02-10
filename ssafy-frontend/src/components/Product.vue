@@ -62,7 +62,7 @@ export default {
         pro_id : this.product.pro_id,
         pro_name: this.pro_name,
         price: this.stringNumberToInt(this.price),
-        quantity: this.quantity,
+        quantity: Number(this.quantity),
         pro_price:this.stringNumberToInt(this.price)
       };
       this.$store.dispatch('addCartAsync', product)

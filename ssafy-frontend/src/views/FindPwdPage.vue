@@ -41,9 +41,7 @@ export default {
   components: {
     ImgBanner,
   },
-  directives: {
-    ResizeText
-  },
+
 
   computed: {
     requestHeader: function() {
@@ -102,6 +100,10 @@ export default {
         this.emailCheck = false;
       }
     }
+  },
+
+  mounted() {
+    
   }
 };
 </script>

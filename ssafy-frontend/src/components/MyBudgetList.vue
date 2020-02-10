@@ -2,11 +2,11 @@
   <table width="100%">
     <colgroup>
       <col width="30%" />
-      <col width="10%" />
-      <col width="10%" />
-      <col width="20%" />
       <col width="15%" />
       <col width="15%" />
+      <col width="25%" />
+      <col width="15%" />
+      <!-- <col width="15%" /> -->
     </colgroup>
     <tr style="text-align:center" height="50px">
       <th>제목</th>
@@ -14,21 +14,21 @@
       <th>예산</th>
       <th>날짜</th>
       <th>적/부</th>
-      <th>다운로드</th>
+      <!-- <th>다운로드</th> -->
     </tr>
-    <template v-if="this.allLength==0 || this.allLength==undefined">
+    <template v-if="this.allBudgets.length==0 || this.allBudgets.length==undefined">
       <tr>
-        <td colspan="6" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
+        <td colspan="5" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
       </tr>
     </template>
-    <tr v-for="budget in computedPagingBudgets" :key="budget.created_at">
+    <tr v-for="budget in computedPagingBudgets" :key="budget.created_at" @click="say(budget.budget_title)">
       <td v-html="budget.budget_title"
       @click="show_detail(budget.num)"
       style="text-align:center"></td>
-      <td v-html="budget.personnel"></td>
-      <td v-html="budget.budget"></td>
-      <td v-html="budget.date"></td>
-      <td v-html="budget.fitness"></td>
+      <td style="text-align:center">{{budget.personnel}}</td>
+      <td style="text-align:center">{{budget.budget}}</td>
+      <td style="text-align:center">{{dateParsing(budget.date)}}</td>
+      <td style="text-align:center">{{budget.fitness}}</td>
       <td><v-btn >pdf로 저장</v-btn></td>
     </tr>
   </table>
@@ -36,6 +36,7 @@
 
 <script>
 import FirebaseService from "@/services/FirebaseService";
+import http from "../http-common";
 export default {
   name: "MyBudgetList",
 
@@ -55,12 +56,11 @@ export default {
     },
     allBudgets: {
       type: Array,
-      required: true
+      // required: true
     },
-    allLength: {
+    budgetPerPage : {
       type: Number,
-      required: true
-    },
+     },
     budgetPerPage: {
       type: Number,
       required: true
@@ -69,29 +69,58 @@ export default {
 
   data() {
     return {
-      pagingbudgets: []
+      pagingbudgets: [],
     };
   },
 
   methods: {
+    dateParsing(beforeParsing) {
+      const t = beforeParsing.indexOf('T')
+      const afterParsing = beforeParsing.substring(0, t)
+      console.log(afterParsing)
+      return afterParsing
+    },
+
+    say(mytitle) {
+      let myEmail = localStorage.getItem('email')
+      http
+        .get(`/budget/${myEmail}/${mytitle}`, {
+          user_email : myEmail,
+          budget_title : mytitle
+        },
+          this.$store.getters.RequestHeader
+        )
+          .then (res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      
+    }
+
+
     // async getMyBudgets() {
     //   this.mybudgets = await FirebaseService.getMyBudgets();
-    // }
+    // }  
+    
   },
   computed: {
     computedPagingBudgets: function() {
+      console.log('computedPagingBudget')
+      console.log(this.allBudgets)
       this.pagingBudgets = []
       let start = (this.pages - 1) * this.budgetPerPage
       let end =  (this.pages - 1) * this.budgetPerPage + this.budgetPerPage;
 
-      if (end > allBudgets.length) {
-        end = allBudgets.length;
+      if (end > this.allBudgets.length) {
+        end = this.allBudgets.length;
       }
 
       for (let i = start; i < end; i++) {
-        this.pagingBudgets.push(allBudgets[i]);
+        this.pagingBudgets.push(this.allBudgets[i]);
       }
-
+      console.log(this.pagingBudgets)
       return this.pagingBudgets;
 
       // console.log('computedPagingBudget')
@@ -114,6 +143,7 @@ export default {
   },
   mounted() {
     console.log(this.pagingList)
+    date_ymd();
   }
 };
 </script>

@@ -3,10 +3,10 @@
     <LoginModal @checkLogIn="getUserName"></LoginModal>
     <v-navigation-drawer v-model="sidebar" fixed temporary>
       <v-list>
-        <h5 class="ml-5">hello</h5>
-        <v-list-item v-if="serUserName" @click="pwdCheck">
-          <!-- <v-list-item-action></v-list-item-action> -->
-          {{setUserName}}
+        <h5 class="ml-5">hello</h5>        
+        <v-list-item v-if="setUserName" @click="pwdCheck">
+          <!-- <v-list-item-action></v-list-item-action> -->        
+         <i class="material-icons">account_circle</i> {{setUserName}}         
         </v-list-item>
         <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path">
           <v-list-item-action></v-list-item-action>
@@ -45,10 +45,10 @@
         <v-btn text @click="clickreview" style="height:64px">Review</v-btn>
         
         </div>
-        <div  v-if="username"  class="text-center" style="padding-top:21px; padding-left:10px">
+        <div  v-if="username"  class="text-center" style="padding-top:20px; padding-left:10px">
           <v-menu offset-y open-on-hover>
             <template v-slot:activator="{ on }">
-              <span text v-on="on" style="padding-bottom:22px; font-weight:bold; color:darkblue" >{{setUserName}}</span>님, 환영합니다.
+              <span text v-on="on" style="padding-bottom:17px; font-weight:bold; color:darkblue" >  <i class="material-icons">account_circle</i> {{setUserName}}</span>님, 환영합니다.
             </template>
             <v-list dense shaped>
               <v-list-item>
@@ -82,8 +82,10 @@ export default {
       return require("../assets/" + img);
     },
     pwdCheck() {
-      if (this.username) {
-        this.$router.push("/pwdcheck");
+      if (localStorage.getItem !== "" && typeof localStorage.getItem !== undefined) {
+        this.$router.push("/pwdcheck"); 
+      } else {
+        alert('잘못된 접근입니다.')
       }
     },
     getUserName() {

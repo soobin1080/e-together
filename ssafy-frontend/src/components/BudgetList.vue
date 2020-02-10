@@ -213,7 +213,7 @@ export default {
           .catch(ex => {
             console.warn("ERROR! :", ex);
           });
-        this.$router.push("/mylist");
+        this.$router.push("/mybudget");
       } else {        
         this.dialog=false;
       }
@@ -255,7 +255,7 @@ export default {
   computed: {
     computedBudgetList() {
       this.list = this.$store.state.budgetlist
-      return this.$store.state.budgetlist
+      return this.list
     }
   }
 };
