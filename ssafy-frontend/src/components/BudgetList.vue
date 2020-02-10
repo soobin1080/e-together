@@ -188,7 +188,7 @@ export default {
     },
    budgetSave(bool) {
       if (bool === true) {
-        if (this.budget_title == "") {
+        if (this.budgetTitle == "") {
           alert("제목을 입력해주세요.");
           return;
         }
@@ -260,7 +260,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .product_table {
   overflow-y: scroll;
   overflow-x: hidden;
