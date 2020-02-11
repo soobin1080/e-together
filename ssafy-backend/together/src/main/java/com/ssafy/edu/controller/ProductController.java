@@ -35,9 +35,9 @@ public class ProductController {
 
 	@ApiOperation(value = "전체 상품 보기", response = List.class)
 	@RequestMapping(value = "/product", method = RequestMethod.GET)
-	public ResponseEntity<List<Product>> getProductList() throws Exception {
-		logger.info("1-------------getProductList-----------------------------" + new Date());
-		List<Product> products = productservice.getProductList();
+	public ResponseEntity<List<Product>> getAllProduct() throws Exception {
+		logger.info("1-------------getAllProduct-----------------------------" + new Date());
+		List<Product> products = productservice.getAllProduct();
 		
 		System.out.println(products);
 		if (products.isEmpty()) {
@@ -47,11 +47,11 @@ public class ProductController {
 	}
 	
 	@ApiOperation(value = "전체에서 상품 검색", response = List.class)
-	@RequestMapping(value = { "/product/{keyword}" }, method = RequestMethod.GET)
-	public ResponseEntity<List<Product>> searchProduct(@PathVariable String keyword) throws Exception {
-		logger.info("2-------------searchProduct-----------------------------" + new Date());
+	@RequestMapping(value = { "/product/category/{keyword}" }, method = RequestMethod.GET)
+	public ResponseEntity<List<Product>> keywordSearchProduct(@PathVariable String keyword) throws Exception {
+		logger.info("2-------------keywordSearchProduct-----------------------------" + new Date());
 		
-		List<Product> products = productservice.searchProduct(keyword);
+		List<Product> products = productservice.keywordSearchProduct(keyword);
 		
 		System.out.println("---------검색결과: "+products);
 		
@@ -62,11 +62,11 @@ public class ProductController {
 	}
 	
 	@ApiOperation(value = "카테고리 별 상품 보기", response = List.class)
-	@RequestMapping(value = { "/product_ctg/{category}" }, method = RequestMethod.GET)
-	public ResponseEntity<List<Product>> getProductCategory(@PathVariable String category) throws Exception {
-		logger.info("3-------------searchProduct-----------------------------" + new Date());
+	@RequestMapping(value = { "/product/{category}" }, method = RequestMethod.GET)
+	public ResponseEntity<List<Product>> categorySearchProduct(@PathVariable String category) throws Exception {
+		logger.info("3-------------categorySearchProduct-----------------------------" + new Date());
 		
-		List<Product> products = productservice.getProductCategory(category);
+		List<Product> products = productservice.categorySearchProduct(category);
 		
 		System.out.println("---------검색결과: "+products);
 		
@@ -77,11 +77,11 @@ public class ProductController {
 	}
 	
 	@ApiOperation(value = "카테고리 별 상품 검색", response = List.class)
-	@RequestMapping(value = { "/product_ctg/{category}/{keyword}" }, method = RequestMethod.GET)
-	public ResponseEntity<List<Product>> getProductCategoryKeword(@PathVariable String category,@PathVariable String keyword) throws Exception {
-		logger.info("4-------------getProductCategoryKeword-----------------------------" + new Date());
+	@RequestMapping(value = { "/product/{category}/{keyword}" }, method = RequestMethod.GET)
+	public ResponseEntity<List<Product>> categoryKeywordSearchProduct(@PathVariable String category,@PathVariable String keyword) throws Exception {
+		logger.info("4-------------categoryKeywordSearchProduct-----------------------------" + new Date());
 		
-		List<Product> products = productservice.getProductCategoryKeword(category,keyword);
+		List<Product> products = productservice.categoryKeywordSearchProduct(category,keyword);
 		
 		System.out.println("---------검색결과: "+products);
 		
