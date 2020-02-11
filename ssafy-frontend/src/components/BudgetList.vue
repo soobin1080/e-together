@@ -22,16 +22,16 @@
            <tr v-for="i in computedBudgetList.length" :key="i"  style="font-size:10pt;">
             <td v-html="computedBudgetList[i-1].pro_name" class="product"></td>
             <!-- <td v-html="list[i-1].quantity" class="quantity" style="text-align:center"></td> -->
-            <td class="quantity" style="text-align:center"><input
+            <td class="" style="text-align:center"><input
+              class="quantity"
               type="number"   
-              v-model="computedBudgetList[i-1].quantity"
-              @input="newquantity(i-1)"
               style="text-align:right; width:50px"
-              autofocus
+              @change="changeQuantity(computedBudgetList[i-1], i-1, $event)"
+              :value="computedBudgetList[i-1].quantity"
               min="1"
             /></td>
             
-            <td class="pro_price" style="text-align:center;">{{computedBudgetList[i-1].price}} 원</td>
+            <td class="pro_price" style="text-align:center;">{{computedBudgetList[i-1].pro_price}} 원</td>
             <td style="text-align:center;">
               <v-btn text icon color="red" @click="del_pro(i-1)">
                 <v-icon>close</v-icon>
@@ -150,6 +150,10 @@ export default {
     }
   },
 
+  render() {
+    // window.addEventListener("storage", this.changeQuantity);
+  },
+
   created() {
     // EventBus.$on("addCart", product => {
     //   // this.list.push(product);
@@ -159,6 +163,7 @@ export default {
   watch: {
     list: {
       handler: function(newVal) {
+        // this.list = this.$store.state.budgetlist
         console.log(newVal);
         console.log("dddddddddd");
         console.log(this.list);
@@ -175,15 +180,6 @@ export default {
     }
   },
   methods: {
-    event() {
-      const btns = document.quertSelectorAll('.quantity')
-      btns.forEach(btn => {
-        btn.addEventListener('click', function(event) {
-          console.log(event)
-        })
-      });
-
-    },
     cookie() {
       this.$cookie.set("test", this.personnel, 1);
     },
@@ -228,9 +224,9 @@ export default {
       }
     },
     budgetalert() {
-      if (this.total > this.budget) {
-        alert("예산을 초과하였습니다!");
-      }
+      // if (this.total > this.budget) {
+      //   alert("예산을 초과하였습니다!");
+      // }
     },
     total_sum(val) {
       this.total += val;
@@ -238,29 +234,65 @@ export default {
       return this.total;
     },
     del_pro(i){
-      
       this.$store.dispatch('deleteProductAsync', i)
     },
-    newquantity(i) {
-      console.log('newquantity')
-      if (isNaN(this.list[i].quantity)) {
-        this.list[i].quantity = 1;
+    
+    changeQuantity(budget, idx, event) {
+      console.log('change')
+      const oldvalue = this.computedBudgetList[idx].quantity
+      const newvalue = event.target.value
+      // console.log(budget)
+      let ope = ""
+      if (oldvalue > newvalue) { // 감소
+        // this.$store.dispatch('changeQuantityAsync', budget, idx)
+        ope = "m"
+      } else if (oldvalue < newvalue) { // 증가
+        // this.$store.dispatch('changeQuantityAsync', budget, idx)
+        ope = "p"
       }
-      const etc = false
-      if (this.$store.state.ETC.includes(this.computedBudgetList[i].category)) {
-        etc = true
+      let changeInfo = {
+        isETC : budget.isETC,
+        ope: ope,
+        idx: idx,
+        price: budget.price,
+        id : budget.pro_id,
+        category: budget.category,
+        changeQuantity: newvalue
       }
-      const productInfo = {
-        quantity : this.computedBudgetList[i].quantity,
-        isETC: etc,
-        product_id: this.computedBudgetList[i].pro_id
-      }
+      console.log(budget)
+      console.log(changeInfo)
+      this.$store.dispatch('changeQuantityAsync', changeInfo)
+      this.$store.state.budgetlist[idx].quantity = oldvalue
+      // const quantities = document.querySelectorAll('.quantity')
+      // console.log(quantities[idx].value)
+    },
 
-      this.$store.dispatch('changeQuantityAsync', productInfo)
-      this.list[i].price = this.list[i].quantity * this.list[i].pro_price;
-      // console.log(this.list[i].price);
-      this.budgetalert();
-    }
+      // console.log(quantities.length)
+      // quantities.forEach(btn => {
+      //   btn.addEventListener('input', function(event) {
+      //     console.log('numberInput')
+      //     console.log(event)
+      //   })
+        
+      // });
+      // console.log('newquantity')
+      // if (isNaN(this.list[i].quantity)) {
+      //   this.list[i].quantity = 1;
+      // }
+      // const etc = false
+      // if (this.$store.state.ETC.includes(this.computedBudgetList[i].category)) {
+      //   etc = true
+      // }
+      // const productInfo = {
+      //   quantity : this.computedBudgetList[i].quantity,
+      //   isETC: etc,
+      //   product_id: this.computedBudgetList[i].pro_id
+      // }
+
+      // this.$store.dispatch('changeQuantityAsync', productInfo)
+      // this.list[i].price = this.list[i].quantity * this.list[i].pro_price;
+      // // console.log(this.list[i].price);
+      // this.budgetalert();
   },
   mounted() {
     this.personnel = this.$store.state.personnel;
@@ -271,8 +303,9 @@ export default {
   },
   computed: {
     computedBudgetList() {
-      this.list = this.$store.state.budgetlist
-      return this.list
+      // console.log(typeof this.$store.state.budgetlist[0])
+      // this.list = this.$store.state.budgetlist
+      return this.$store.state.budgetlist
     }
   }
 };
