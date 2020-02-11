@@ -44,13 +44,30 @@ export default new Vuex.Store({
       console.log(product)
       if (state.ETC.includes(product.category)) {
         console.log(`기타에서 ${product.price * product.quantity}원 차감`)
-        state.etcTotal -= (product.price)
+        const barIdx = state.budgetListBarETC.findIndex(category => {
+          return category === product.category
+        })
+        state.budgetListBarETC[barIdx].price -= product.price
+        if (budgetListBarETC[barIdx].price === 0) {
+          state.budgetListBarETC.splice(barIdx, 0)
+        }
+        state.etcTotal -= (product.price * product.quantity)
+
       } else {
         console.log(`${product.category}에서 ${product.price * product.quantity}원 차감`)
-        state.mainTotal -= (product.price)
+        const barIdx = state.budgetListBar.findIndex(category => {
+          return category === product.category
+        })
+        state.budgetListBar[barIdx].price -= product.price
+        if (budgetListBar[barIdx].price === 0) {
+          state.budgetListBar.splice(barIdx, 0)
+        }
+        state.mainTotal -= (product.price* product.quantity)
       }
       // state.total -= state.budgetlist[i].price;
       state.budgetlist.splice(idx,1);
+
+
 
       // this.budgetalert();
     },
@@ -66,8 +83,8 @@ export default new Vuex.Store({
           state.budgetlist.push(product)
       }
       else {
-        state.budgetlist[idx].quantity += product.quantity
-        state.budgetlist[idx].price += (product.quantity * product.price)
+        state.budgetlist[idx].quantity += Number(product.quantity)
+        state.budgetlist[idx].pro_price += (product.quantity * product.price)
       }
 
       if (state.ETC.includes(product.category)) {
@@ -99,7 +116,7 @@ export default new Vuex.Store({
         } else {
             state.budgetListBarETC[barIdx].price += (product.price * product.quantity)
           }
-          state.etcTotal += (product.price*product.quantity);
+          // state.etcTotal += (product.price*product.quantity);
 
       } else {
         const barIdx = state.budgetListBar.findIndex( budget => {
@@ -112,7 +129,7 @@ export default new Vuex.Store({
             price : (product.price * product.quantity)
           })
         } else {
-            // state.budgetListBar[barIdx].price += (product.price *product.quantity)
+            state.budgetListBar[barIdx].price += (product.price *product.quantity)
           }
         // state.mainTotal += (product.price*product.quantity);
       }
@@ -121,13 +138,58 @@ export default new Vuex.Store({
       console.log(state.budgetListBarETC)
     },
 
-    changeQuantity : function(state, productInfo) {
-      // if 
-      const idx = state.budgetlist.findIndex( budget => {
-        return budget.pro_id === productInfo.product_id
-      })
-      
+    changeQuantity : function(state, changeInfo) {
+      console.log('changeQuantity')
+      console.log(changeInfo)
+      if (changeInfo.isETC === false) { // 메인일때
+        const barIdx = state.budgetListBarETC.findIndex(category => {
+          return category === changeInfo.category
+        })
+        if (changeInfo.ope === 'p') {
+          state.mainTotal += changeInfo.price
+          state.budgetListBar[barIdx].price += changeInfo.price
+        } else {
+          state.mainTotal -= changeInfo.price
+          state.budgetListBar[barIdx].price -= changeInfo.price
+        }
+
+        if (state.budgetListBar[barIdx].price === 0) {
+          state.budgetListBar.splice(barIdx, 0)
+        }
+      } else { // 기타일때
+        const barIdx = state.budgetListBar.findIndex(category => {
+          return category === changeInfo.category
+        })
+        if (changeInfo.ope === 'p') {
+          state.etcTotal += changeInfo.price
+          state.budgetListBarETC[barIdx].price += changeInfo.price
+        } else {
+          state.etcTotal -= changeInfo.price
+          state.budgetListBarETC[barIdx].price -= changeInfo.price
+        }
+        if (state.budgetListBarETC[barIdx].price === 0) {
+          state.budgetListBarETC.splice(barIdx, 0)
+        }
+        
       }
+
+      const idx = changeInfo.idx
+
+      if (changeInfo.ope == 'p') {
+        state.budgetlist[idx].quantity += 1
+        state.budgetlist[idx].pro_price += changeInfo.price
+      } else {
+        state.budgetlist[idx].quantity -= 1
+        state.budgetlist[idx].pro_price -= changeInfo.price
+      }
+
+      const category = changeInfo.category
+      // if (state.ETC.includes(category)) {
+
+      // }
+
+
+    }
 
   },
 
@@ -154,19 +216,20 @@ export default new Vuex.Store({
     console.log('addBudgetBarAsync')
     console.log(product)
     options.commit('addBudgetBar', product)
-    // if (product.isETC == true) { // 기타 품목에 들어가는 경우
-    //   options.commit('addBudgetBar', product, state.budgetListBarETC)
-    // } else {
-    //   options.commit('addBudgetBar', product, state.budgetListBar)
-    // }
   },
 
   deleteBudgetBarAsync: function(options, product) {
     options.commit('deleteBudgetBar', product)
   },
 
-  changeQuantityAsync: function(options, productInfo) {
-    options.commit('changeQuantity', productInfo)
+  changeQuantityAsync: function(options, changeInfo) {
+    console.log('changeQuantityAsync')
+    console.log(changeInfo)
+    options.commit('changeQuantity', changeInfo)
   },
+
+  changeBarAsync: function(options, changeInfo) {
+
+  }
 }
 })

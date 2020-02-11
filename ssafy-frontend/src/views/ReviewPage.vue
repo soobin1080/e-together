@@ -1,8 +1,5 @@
-<template>
+<template v-resize-text>
   <div>
-    <!-- <input type="text" name="title" v-model="title" />
-    <input type="text" name="body" v-model="body" />
-    <v-btn @click="postMyBudgets(title, body)">add</v-btn>-->
     <ImgBanner>
       <div
         class="text-center text-white"
@@ -11,36 +8,31 @@
         v-resize-text
       >Budget Review</div>
     </ImgBanner>
-    <div class="main">
-      <v-card style="width:80%;" class="mx-auto my-5 flat">
-        <ReviewList :allReviews="allReviews"></ReviewList>
-      </v-card>
-
-      <div class="text-center">
-        {{pages}}
-        <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
-      </div>
-    </div>
+    
+    <ReviewList :allReviews="allReviews"></ReviewList>
+    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
   </div>
 </template>
 
 <script>
-import FirebaseService from "@/services/FirebaseService";
 import ImgBanner from "../components/ImgBanner";
 import ReviewList from "../components/ReviewList";
 import ResizeText from "vue-resize-text";
 import http from "../http-common";
+import InfiniteLoading from 'vue-infinite-loading';
 export default {
   name: "MyListPage",
 
   components: {
     ImgBanner,
-    ReviewList
+    ReviewList,
+    InfiniteLoading,
   },
   directives: {
     ResizeText
   },
   data: () => ({
+    limit: 0,
     title: "",
     body: "",
     pages: 1,
@@ -71,16 +63,26 @@ export default {
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-    getAllReviews() {
+    infiniteHandler($state) {
       http
-        .get('/review')
-          .then(res => {
-            console.log(res)
-
-          })
-          .catch(err => {
-            console.log(err)
-          })
+        .get('/review') //api에 url 삽입
+        .then(response => {
+          console.log(response)
+            setTimeout(() => { //스크롤 페이징을 띄우기 위한 시간 지연(1초)
+              if (response.data.length) {
+                this.allReviews = this.allReviews.concat(response.data);
+                $state.loaded(); //데이터 로딩
+                this.limit += 10 
+                if (this.allReviews.length == response.data.length) {
+                  $state.complete(); //데이터가 없으면 로딩 끝
+                }
+              } else {
+                $state.complete();
+              }
+            }, 1000)
+          }).catch(error => {
+            console.error(error);
+        })
     }
   },
   computed: {
@@ -93,14 +95,11 @@ export default {
     // })
   },
   mounted() {
-    this.getAllReviews()
+    this.infiniteHandler($state)
   }
 };
 </script>
 
 <style scoped>
-.main {
-  padding-top: 80px;
-  padding-bottom: 80px;
-}
+
 </style>
