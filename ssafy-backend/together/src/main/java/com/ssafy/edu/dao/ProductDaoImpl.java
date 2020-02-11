@@ -18,29 +18,29 @@ public class ProductDaoImpl {
 	private SqlSession sqlSession;
 
 
-	public List<Product> getProductList() {
-		return sqlSession.selectList(ns + "getProductList");
+	public List<Product> getAllProduct() {
+		return sqlSession.selectList(ns + "getAllProduct");
 	}
 
 
-	public List<Product> searchProduct(String keyword) {
+	public List<Product> keywordSearchProduct(String keyword) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(ns + "searchProduct",keyword);
+		return sqlSession.selectList(ns + "keywordSearchProduct",keyword);
 	}
 
 
-	public List<Product> getProductCategory(String category) {
+	public List<Product> categorySearchProduct(String category) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(ns + "getProductCategory",category);
+		return sqlSession.selectList(ns + "categorySearchProduct",category);
 	}
 
 
-	public List<Product> getProductCategoryKeword(String category, String keyword) {
+	public List<Product> categoryKeywordSearchProduct(String category, String keyword) {
 		// TODO Auto-generated method stub
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("category", category);
 		paramMap.put("keyword", keyword);
-		return sqlSession.selectList(ns + "getProductCategoryKeword",paramMap);
+		return sqlSession.selectList(ns + "categoryKeywordSearchProduct",paramMap);
 	}
 
 }
