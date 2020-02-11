@@ -16,7 +16,7 @@
       </v-layout>
     </v-img>
 
-    <div class="main">
+    <div class="main" fluid>
       <div style="width:60%; height: 100%;" class="mx-auto my-5 flat">
         <MyBudgetList
           :allBudgets="allBudgets"
@@ -27,7 +27,7 @@
       </div>
      
 
-      <div class="text-center">
+      <div class="text-center" fluid>
         <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
       </div>
     </div>

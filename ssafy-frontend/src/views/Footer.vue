@@ -1,7 +1,7 @@
 <template>
   <v-footer dark padless>
     <v-card flat tile class="lightgray lighten-1 white--text text-center" width="100%">
-      <div class="hidden-md-and-down">
+      <!-- <div class="hidden-md-and-down">
         <v-card-text></v-card-text>
 
         <v-card-text class="white--text pt-0" style="padding-left:100px; padding-right:100px">
@@ -9,7 +9,7 @@
           <br />선택한 상품의 가격을 계산해주고, 장보기 리스트를 저장할 수 있습니다. e-투계더 서비스로 합리적인 장보기를 해보세요.
         </v-card-text>
         <v-divider></v-divider>
-      </div>
+      </div> -->
 
       <v-card-text class="white--text">
         <Repository :repos="repositories[0]"></Repository>

@@ -63,6 +63,9 @@ export default {
     allLength: {
       type: Number,
       required: true
+    },
+    allReviews:{
+      type: Array
     }
   },
 
