@@ -20,11 +20,11 @@
         </thead>
         <tbody >          
            <tr v-for="i in computedBudgetList.length" :key="i"  style="font-size:10pt;">
-            <td v-html="list[i-1].pro_name" class="product"></td>
+            <td v-html="computedBudgetList[i-1].pro_name" class="product"></td>
             <!-- <td v-html="list[i-1].quantity" class="quantity" style="text-align:center"></td> -->
             <td class="quantity" style="text-align:center"><input
               type="number"   
-              v-model="list[i-1].quantity"
+              v-model="computedBudgetList[i-1].quantity"
               @input="newquantity(i-1)"
               style="text-align:right; width:50px"
               autofocus
@@ -96,7 +96,7 @@
           <td
             width="80%"
             style="text-align:right; font-weight:bold; color:darkblue"
-          >{{this.total}} 원</td>
+          >{{this.$store.state.mainTotal + this.$store.state.etcTotal}} 원</td>
         </tr>
       </table>
     </b-list-group-item>
@@ -109,7 +109,7 @@
           <td
             width="80%"
             style="text-align:right; font-weight:bold; color:darkred"
-          >{{this.budget-this.total}} 원</td>
+          >{{this.budget - (this.$store.state.mainTotal + this.$store.state.etcTotal)}} 원</td>
         </tr>
       </table>
     </b-list-group-item>
@@ -151,10 +151,10 @@ export default {
   },
 
   created() {
-    EventBus.$on("addCart", product => {
-      this.list.push(product);
-      this.total_sum(product.price*=product.quantity);
-    });
+    // EventBus.$on("addCart", product => {
+    //   // this.list.push(product);
+    //   this.total_sum(product.price*=product.quantity);
+    // });
   },
   watch: {
     list: {
@@ -175,6 +175,15 @@ export default {
     }
   },
   methods: {
+    event() {
+      const btns = document.quertSelectorAll('.quantity')
+      btns.forEach(btn => {
+        btn.addEventListener('click', function(event) {
+          console.log(event)
+        })
+      });
+
+    },
     cookie() {
       this.$cookie.set("test", this.personnel, 1);
     },
@@ -188,7 +197,7 @@ export default {
     },
    budgetSave(bool) {
       if (bool === true) {
-        if (this.budget_title == "") {
+        if (this.budgetTitle == "") {
           alert("제목을 입력해주세요.");
           return;
         }
@@ -229,17 +238,25 @@ export default {
       return this.total;
     },
     del_pro(i){
-
-      // var index = this.list.indexOf(i)
-      // this.total -= this.computedBudgetList[i].price;
+      
       this.$store.dispatch('deleteProductAsync', i)
-      // this.list.splice(i,1);  
-      // this.budgetalert();  
     },
     newquantity(i) {
+      console.log('newquantity')
       if (isNaN(this.list[i].quantity)) {
         this.list[i].quantity = 1;
       }
+      const etc = false
+      if (this.$store.state.ETC.includes(this.computedBudgetList[i].category)) {
+        etc = true
+      }
+      const productInfo = {
+        quantity : this.computedBudgetList[i].quantity,
+        isETC: etc,
+        product_id: this.computedBudgetList[i].pro_id
+      }
+
+      this.$store.dispatch('changeQuantityAsync', productInfo)
       this.list[i].price = this.list[i].quantity * this.list[i].pro_price;
       // console.log(this.list[i].price);
       this.budgetalert();
@@ -260,7 +277,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .product_table {
   overflow-y: scroll;
   overflow-x: hidden;

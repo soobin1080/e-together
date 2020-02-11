@@ -13,7 +13,7 @@
     </ImgBanner>
     <div class="main">
       <v-card style="width:80%;" class="mx-auto my-5 flat">
-        <ReviewList></ReviewList>
+        <ReviewList :allReviews="allReviews"></ReviewList>
       </v-card>
 
       <div class="text-center">
@@ -29,6 +29,7 @@ import FirebaseService from "@/services/FirebaseService";
 import ImgBanner from "../components/ImgBanner";
 import ReviewList from "../components/ReviewList";
 import ResizeText from "vue-resize-text";
+import http from "../http-common";
 export default {
   name: "MyListPage",
 
@@ -43,11 +44,8 @@ export default {
     title: "",
     body: "",
     pages: 1,
-    allPages: [],
-    pagingList: [],
-    pagingLength: 0,
-    allLength: 0,
-    budgetPerPage: 5,
+    allReviews: [],
+    reviewPerPage: 5,
     items: [
       {
         icon: "folder",
@@ -73,17 +71,16 @@ export default {
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-    postMyBudgets(title, body) {
-      title = this.title;
-      body = this.body;
-      FirebaseService.postMyBudgets(title, body);
-      this.getMyBudgets();
-    },
-    async getMyBudgets() {
-      console.log("active");
-      this.pagingList = await FirebaseService.getMyBudgets();
-      this.pagingLength = parseInt(this.pagingList / 5) + 1;
-      return this.pagingList;
+    getAllReviews() {
+      http
+        .get('/review')
+          .then(res => {
+            console.log(res)
+
+          })
+          .catch(err => {
+            console.log(err)
+          })
     }
   },
   computed: {
@@ -95,24 +92,8 @@ export default {
     //   }
     // })
   },
-  async mounted() {
-    this.allPages = await FirebaseService.getMyBudgets();
-    this.allLength = this.allPages.length;
-    console.log("allLength : " + this.allPages.length);
-    this.pagingList = await FirebaseService.getMyBudgetPaging(
-      (this.pages - 1) * 5,
-      (this.pages - 1) * 5 + 5,
-      this.allLength
-    );
-    console.log(this.pagingList);
-
-    if (this.allLength % this.budgetPerPage === 0) {
-      this.pagingLength = parseInt(this.allLength / 5);
-    } else {
-      this.pagingLength = parseInt(this.allLength / 5 + 1);
-    }
-    console.log("pagingLength : " + this.pagingLength);
-    //this.getMyBudgets()
+  mounted() {
+    this.getAllReviews()
   }
 };
 </script>

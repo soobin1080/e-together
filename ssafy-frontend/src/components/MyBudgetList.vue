@@ -1,4 +1,6 @@
 <template>
+<div>
+<h5 style="text-align:center">목록</h5><br>
   <table width="100%">
     <colgroup>
       <col width="30%" />
@@ -6,32 +8,41 @@
       <col width="15%" />
       <col width="25%" />
       <col width="15%" />
-      <!-- <col width="15%" /> -->
+     
     </colgroup>
-    <tr style="text-align:center" height="50px">
+    <tr style="text-align:center" height="35px">
       <th>제목</th>
       <th>인원</th>
       <th>예산</th>
       <th>날짜</th>
       <th>적/부</th>
-      <!-- <th>다운로드</th> -->
+     
     </tr>
     <template v-if="this.allBudgets.length==0 || this.allBudgets.length==undefined">
       <tr>
-        <td colspan="5" style="text-align:center" height="50px">장보기 내역이 없습니다.</td>
+        <td colspan="5" style="text-align:center" height="30px">장보기 내역이 없습니다.</td>
       </tr>
     </template>
-    <tr v-for="budget in computedPagingBudgets" :key="budget.created_at" @click="say(budget.budget_title)">
+    <tr v-for="budget in computedPagingBudgets" :key="budget.created_at">
       <td v-html="budget.budget_title"
-      @click="show_detail(budget.num)"
+      @click="show_detail(budget.budget_title)"
       style="text-align:center"></td>
-      <td style="text-align:center">{{budget.personnel}}</td>
-      <td style="text-align:center">{{budget.budget}}</td>
+      <td style="text-align:center">{{budget.personnel}} 명</td>
+      <td style="text-align:center">{{budget.budget}} 원</td>
       <td style="text-align:center">{{dateParsing(budget.date)}}</td>
-      <td style="text-align:center">{{budget.fitness}}</td>
-      <td><v-btn >pdf로 저장</v-btn></td>
+      <td style="text-align:center">{{budget.fitness}}  <div>
+      <v-btn class="ma-2" text icon color="blue lighten-2">
+        <v-icon small>mdi-thumb-up</v-icon>
+      </v-btn>
+
+      <v-btn class="ma-2" text icon color="red lighten-2">
+        <v-icon small>mdi-thumb-down</v-icon>
+      </v-btn>
+    </div></td>
+     
     </tr>
   </table>
+</div>
 </template>
 
 <script>
@@ -42,15 +53,7 @@ export default {
 
   components: {},
 
-  props: {
-    limits: {
-      type: Number,
-      default: 6
-    },
-    loadMore: {
-      type: Boolean,
-      default: false
-    },
+  props: {    
     pages: {
       type: Number
     },
@@ -81,29 +84,10 @@ export default {
       return afterParsing
     },
 
-    say(mytitle) {
-      let myEmail = localStorage.getItem('email')
-      http
-        .get(`/budget/${myEmail}/${mytitle}`, {
-          user_email : myEmail,
-          budget_title : mytitle
-        },
-          this.$store.getters.RequestHeader
-        )
-          .then (res => {
-            console.log(res)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      
+    show_detail(title){
+      this.$emit('showdetail', title)
+      console.log("--Child (showdetail) : "+title)
     }
-
-
-    // async getMyBudgets() {
-    //   this.mybudgets = await FirebaseService.getMyBudgets();
-    // }  
-    
   },
   computed: {
     computedPagingBudgets: function() {
@@ -143,10 +127,24 @@ export default {
   },
   mounted() {
     console.log(this.pagingList)
-    date_ymd();
+    
   }
 };
 </script>
 
 <style scoped>
+table {
+    width: 100%;
+    border-top: 1px solid lightgray;
+    border-collapse: collapse;
+  }
+  th, td {
+    font-size:15px;
+    border-bottom: 1px solid lightgray;
+    padding: 1px;
+  }
+  th {
+  color:dimgray;
+  background-color: lightgray;
+}
 </style>

@@ -19,7 +19,7 @@ public class ReviewDaoImpl {
 	@Autowired
 	private SqlSession sqlSession;
 
-	public List<Review> getAllReview() {
+	public List<ReviewResult> getAllReview() {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(ns+"getAllReview");
 	}
@@ -40,6 +40,14 @@ public class ReviewDaoImpl {
 		paramMap.put("user_email", user_email);
 		paramMap.put("budget_title", budget_title);
 		sqlSession.delete(ns+"deleteReview",paramMap);
+	}
+
+	public ReviewResult getOneReview(String user_email, String budget_title) {
+		// TODO Auto-generated method stub
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("user_email", user_email);
+		paramMap.put("budget_title", budget_title);
+		return sqlSession.selectOne(ns+"getOneReview",paramMap);
 	}
 	
 	

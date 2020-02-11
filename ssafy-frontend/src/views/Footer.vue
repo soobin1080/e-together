@@ -13,7 +13,7 @@
 
       <v-card-text class="white--text">
         <Repository :repos="repositories[0]"></Repository>
-        &copy; {{ new Date().getFullYear()+"."+new Date().getMonth()+"."+new Date().getDate()+"."}} —
+        &copy; {{ new Date().getFullYear()}} —
         <strong
           @click="team"
         >e-together</strong>

@@ -10,23 +10,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 내 전체 예산안 보기 -->
 	<select id="getBudgetList" parameterType="java.lang.String"
 		resultType="com.ssafy.edu.model.BudgetInfo">
-		SELECT BUDGET_TITLE, PERSONNEL,BUDGET,FITNESS, DATE,LIKE_COUNT
+		SELECT BUDGET_TITLE, PERSONNEL,BUDGET,FITNESS,
+		DATE,LIKE_COUNT
 		FROM BUDGET_INFO
 		WHERE USER_EMAIL=#{user_email}
 	</select>
 
 	<!-- 내 예산안 상세 보기 -->
 	<select id="getOneBudget"
-		parameterType="com.ssafy.edu.model.Budget"
-		resultType="com.ssafy.edu.model.Budget">
-		SELECT
-		I.USER_EMAIL,I.BUDGET_TITLE,I.PERSONNEL,I.BUDGET,I.FITNESS,I.DATE,I.LIKE_COUNT,L.PRO_ID,L.PRO_NAME,L.QUANTITY,L.PRICE
-		FROM BUDGET_INFO I, BUDGET_LIST L
-		WHERE I.USER_EMAIL=#{user_email} AND
-		I.BUDGET_TITLE=#{budget_title} AND L.USER_EMAIL=I.USER_EMAIL AND
-		L.USER_EMAIL=I.USER_EMAIL;
+		parameterType="com.ssafy.edu.model.BudgetInfo"
+		resultType="com.ssafy.edu.model.BudgetInfo">
+		SELECT BUDGET_TITLE, PERSONNEL,BUDGET,FITNESS,
+		DATE,LIKE_COUNT
+		FROM BUDGET_INFO
+		WHERE USER_EMAIL=#{user_email} AND
+		BUDGET_TITLE=#{budget_title};
 	</select>
-
+	
+	<!-- 내 예산안 상세보기 품목리스트 -->
+	<select id="getOneBudgetProductList"
+		parameterType="com.ssafy.edu.model.Budget"
+		resultType="com.ssafy.edu.model.BudgetListResult">
+		SELECT PRO_ID,PRO_NAME, QUANTITY, PRICE FROM BUDGET_LIST WHERE USER_EMAIL=#{user_email} AND BUDGET_TITLE=#{budget_title};
+	</select>
+	
 	<insert id="insertBudgetInfo"
 		parameterType="com.ssafy.edu.model.BudgetInfo">
 		INSERT INTO BUDGET_INFO(USER_EMAIL,
@@ -45,15 +52,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!--DELETE FROM 테이블명 WHERE = 조건 -->
 	<delete id="deleteBudgetInfo"
 		parameterType="com.ssafy.edu.model.Budget">
-		DELETE FROM BUDGET_INFO WHERE USER_EMAIL=#{user_email} and
+		DELETE FROM BUDGET_INFO WHERE USER_EMAIL=#{user_email} AND
 		BUDGET_TITLE=#{budget_title};
 	</delete>
-	
+
 	<delete id="deleteBudgetList"
 		parameterType="com.ssafy.edu.model.Budget">
-		DELETE FROM BUDGET_LIST WHERE USER_EMAIL=#{user_email} and
+		DELETE FROM BUDGET_LIST WHERE USER_EMAIL=#{user_email}
+		and
 		BUDGET_TITLE=#{budget_title} and PRO_ID=#{pro_id};
 	</delete>
+	
+	<update id="updateBudgetFitness" parameterType="com.ssafy.edu.model.BudgetInfo">
+	UPDATE BUDGET_INFO SET FITNESS=#{fitness} WHERE USER_EMAIL=#{user_email} AND BUDGET_TITLE=#{budget_title}
+	</update>
 
 </mapper>
 

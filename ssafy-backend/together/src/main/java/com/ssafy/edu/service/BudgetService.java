@@ -8,6 +8,7 @@ import com.ssafy.edu.dao.BudgetDaoImpl;
 import com.ssafy.edu.model.Budget;
 import com.ssafy.edu.model.BudgetInfo;
 import com.ssafy.edu.model.BudgetList;
+import com.ssafy.edu.model.BudgetListResult;
 
 @Service
 public class BudgetService implements IBudgetService {
@@ -22,9 +23,15 @@ public class BudgetService implements IBudgetService {
 	}
 
 	@Override
-	public Budget getOneBudget(String budget_num, String budget_title) {
+	public BudgetInfo getOneBudget(String user_email, String budget_title) {
 		// TODO Auto-generated method stub
-		return budgetdao.getOneBudget(budget_num, budget_title);
+		return budgetdao.getOneBudget(user_email, budget_title);
+	}
+	
+	@Override
+	public List<BudgetListResult> getOneBudgetProductList(String user_email, String budget_title) {
+		// TODO Auto-generated method stub
+		return budgetdao.getOneBudgetProductList(user_email, budget_title);
 	}
 
 	//내 예산안 보기, 예산안 간략한 형태로 보여주기
@@ -51,5 +58,13 @@ public class BudgetService implements IBudgetService {
 		// TODO Auto-generated method stub
 		budgetdao.deleteBudgetList(user_email,budget_title,pro_id);
 	}
+
+	@Override
+	public void updateBudgetFitness(BudgetInfo budgetinfo) {
+		// TODO Auto-generated method stub
+		budgetdao.updateBudgetFitness(budgetinfo);
+	}
+
+	
 
 }

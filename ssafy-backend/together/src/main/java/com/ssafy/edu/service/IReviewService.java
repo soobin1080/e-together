@@ -7,12 +7,14 @@ import com.ssafy.edu.model.ReviewResult;
 
 public interface IReviewService {
 
-	List<Review> getAllReview();
+	List<ReviewResult> getAllReview();
 
 	void insertReview(ReviewResult reviewresult);
 
 	void updateReview(ReviewResult reviewresult);
 
 	void deleteReview(String user_email, String budget_title);
+
+	ReviewResult getOneReview(String user_email, String budget_title);
 
 }
