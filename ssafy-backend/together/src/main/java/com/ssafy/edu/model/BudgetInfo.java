@@ -1,33 +1,34 @@
 package com.ssafy.edu.model;
 
-import java.util.Date;
-
-//예산한 간략하게 보기 위한 정보들
 public class BudgetInfo {
-
+	private int budget_num;
 	private String user_email;
-	private String budget_title;
-	private String personnel;
-	private String budget;
-	private String fitness;
-	private Date date;
-	private int like_count;
+	private int personnel;
+	private int budget;
+	private int suitability;
+	private int budget_date;
 
 	public BudgetInfo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public BudgetInfo(String user_email, String budget_title, String personnel, String budget, String fitness,
-			Date date, int like_count) {
+	public BudgetInfo(int budget_num, String user_email, int personnel, int budget, int suitability, int budget_date) {
 		super();
+		this.budget_num = budget_num;
 		this.user_email = user_email;
-		this.budget_title = budget_title;
 		this.personnel = personnel;
 		this.budget = budget;
-		this.fitness = fitness;
-		this.date = date;
-		this.like_count = like_count;
+		this.suitability = suitability;
+		this.budget_date = budget_date;
+	}
+
+	public int getBudget_num() {
+		return budget_num;
+	}
+
+	public void setBudget_num(int budget_num) {
+		this.budget_num = budget_num;
 	}
 
 	public String getUser_email() {
@@ -38,58 +39,42 @@ public class BudgetInfo {
 		this.user_email = user_email;
 	}
 
-	public String getBudget_title() {
-		return budget_title;
-	}
-
-	public void setBudget_title(String budget_title) {
-		this.budget_title = budget_title;
-	}
-
-	public String getPersonnel() {
+	public int getPersonnel() {
 		return personnel;
 	}
 
-	public void setPersonnel(String personnel) {
+	public void setPersonnel(int personnel) {
 		this.personnel = personnel;
 	}
 
-	public String getBudget() {
+	public int getBudget() {
 		return budget;
 	}
 
-	public void setBudget(String budget) {
+	public void setBudget(int budget) {
 		this.budget = budget;
 	}
 
-	public String getFitness() {
-		return fitness;
+	public int getSuitability() {
+		return suitability;
 	}
 
-	public void setFitness(String fitness) {
-		this.fitness = fitness;
+	public void setSuitability(int suitability) {
+		this.suitability = suitability;
 	}
 
-	public Date getDate() {
-		return date;
+	public int getBudget_date() {
+		return budget_date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public int getLike_count() {
-		return like_count;
-	}
-
-	public void setLike_count(int like_count) {
-		this.like_count = like_count;
+	public void setBudget_date(int budget_date) {
+		this.budget_date = budget_date;
 	}
 
 	@Override
 	public String toString() {
-		return "BudgetInfo [user_email=" + user_email + ", budget_title=" + budget_title + ", personnel=" + personnel
-				+ ", budget=" + budget + ", fitness=" + fitness + ", date=" + date + ", like_count=" + like_count + "]";
+		return "BudgetInfo [budget_num=" + budget_num + ", user_email=" + user_email + ", personnel=" + personnel
+				+ ", budget=" + budget + ", suitability=" + suitability + ", budget_date=" + budget_date + "]";
 	}
 
 }

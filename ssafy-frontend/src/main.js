@@ -7,7 +7,7 @@ import 'simplemde/dist/simplemde.min.css'
 import 'font-awesome/css/font-awesome.min.css'
 import VModal from 'vue-js-modal'
 import VueAxios from 'vue-axios'
-
+import InfiniteLoading from 'vue-infinite-loading';
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -36,7 +36,7 @@ Vue.use(VueCsrf);
 Vue.use(VueAxios, axios)
 Vue.use(VuetifyNumberInput);
 Vue.use(VueSession)
-
+Vue.use(InfiniteLoading, { /* options */ });
 
 // Require dependencies
 

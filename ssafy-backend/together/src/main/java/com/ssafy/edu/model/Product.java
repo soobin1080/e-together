@@ -5,33 +5,33 @@ public class Product {
 	private String pro_name;
 	private String price; 
 	private String main_category; 
-	private String gram; 
+	private String weight; 
 	private Double capacity;
 	private String img;
 	public Product() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Product(String pro_id, String pro_name, String price, String main_category, String gram, Double capacity,
+	public Product(String pro_id, String pro_name, String price, String main_category, String weight, Double capacity,
 			String img) {
 		super();
 		this.pro_id = pro_id;
 		this.pro_name = pro_name;
 		this.price = price;
 		this.main_category = main_category;
-		this.gram = gram;
+		this.weight = weight;
 		this.capacity = capacity;
 		this.img = img;
 	}
 	
 	
-	public Product(String pro_id, String pro_name, String price, String main_category, String gram, String img) {
+	public Product(String pro_id, String pro_name, String price, String main_category, String weight, String img) {
 		super();
 		this.pro_id = pro_id;
 		this.pro_name = pro_name;
 		this.price = price;
 		this.main_category = main_category;
-		this.gram = gram;
+		this.weight = weight;
 		this.img = img;
 	}
 	public String getPro_id() {
@@ -58,11 +58,11 @@ public class Product {
 	public void setMain_category(String main_category) {
 		this.main_category = main_category;
 	}
-	public String getGram() {
-		return gram;
+	public String getWeight() {
+		return weight;
 	}
-	public void setGram(String gram) {
-		this.gram = gram;
+	public void setWeight(String weight) {
+		this.weight = weight;
 	}
 	public Double getCapacity() {
 		return capacity;
@@ -80,7 +80,7 @@ public class Product {
 	@Override
 	public String toString() {
 		return "Product [pro_id=" + pro_id + ", pro_name=" + pro_name + ", price=" + price + ", main_category="
-				+ main_category + ", gram=" + gram + ", capacity=" + capacity + ", img=" + img + "]";
+				+ main_category + ", weight=" + weight + ", capacity=" + capacity + ", img=" + img + "]";
 	}
 	
 	

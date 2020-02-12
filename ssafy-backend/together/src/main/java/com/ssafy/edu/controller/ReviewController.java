@@ -46,16 +46,16 @@ public class ReviewController {
 		return new ResponseEntity<List<ReviewResult>>(reviewlist, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "review 상세보기", response = ReviewResult.class)
-	@RequestMapping(value = "/review/{user_email}/{budget_title}", method = RequestMethod.GET)
-	public ResponseEntity<ReviewResult> getOneReview(@RequestBody Review review) throws Exception {
-		logger.info("2-------------getOneReview-----------------------------" + new Date());
-
-		// name, personnel, like_count 도 반환하도록 고치자.
-		ReviewResult onereview = reviewservice.getOneReview(review.getUser_email(), review.getBudget_title());
-
-		return new ResponseEntity<ReviewResult>(onereview, HttpStatus.OK);
-	}
+//	@ApiOperation(value = "review 상세보기", response = ReviewResult.class)
+//	@RequestMapping(value = "/review/{user_email}/{budget_title}", method = RequestMethod.GET)
+//	public ResponseEntity<ReviewResult> getOneReview(@RequestBody Review review) throws Exception {
+//		logger.info("2-------------getOneReview-----------------------------" + new Date());
+//
+//		// name, personnel, like_count 도 반환하도록 고치자.
+//		ReviewResult onereview = reviewservice.getOneReview(review.getUser_email(), review.getBudget_title());
+//
+//		return new ResponseEntity<ReviewResult>(onereview, HttpStatus.OK);
+//	}
 
 	@ApiOperation(value = "review 작성하기", response = ReviewResult.class)
 	@RequestMapping(value = "/review", method = RequestMethod.POST)

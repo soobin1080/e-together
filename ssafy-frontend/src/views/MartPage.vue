@@ -8,12 +8,26 @@
         v-resize-text
       >Mart</div>
     </ImgBanner>
-
+    
+    {{getMainTotal}}
+    {{getETCTotal}}
     <div class="progress text-center mx-auto mt-5" style="width: 70%;" v-on="on">
-      <div v-for="category in computedBudgetListBar" class="progress-bar" style="width: {{}}">{{category.category}}</div>
-      <div class="progress-bar" role="progressbar" style="width: 15%"></div>
-      <div class="progress-bar" role="progressbar" style="width: 30%"></div>
-      <div class="progress-bar bg-info" role="progressbar" style="width: 20%"></div>
+      <!-- <div v-for="category in computedBudgetListBar" class="progress-bar">{{category.category}}</div> -->
+      <div
+        v-for="bar in getMainBar"
+        class="progress-bar"
+        >
+          {{bar.price}}
+      </div>
+
+      <div
+        v-for="bar in getETCBar"
+        class="progress-bar bg-info"
+      >
+        {{bar.price}}
+      </div>
+      <!-- <div class="progress-bar" role="progressbar" style="width: 30%"></div>
+      <div class="progress-bar bg-info" role="progressbar" style="width: 20%"></div> -->
     </div>
 
     <v-row class="main" style="padding-top:80px">
@@ -150,8 +164,8 @@ export default {
       pagingLength: 0,
       budgetDialog: false,
       budgetList: [],
-      budgetListBar: [],
-      budgetListBarETC: [],
+      etcTotal : 0,
+      mainTotal: 0,
       colorByCategory: [
         {'정육/계란류' : 'bg-danger'},
         {'생수/음료' : 'bg-primary'},
@@ -168,7 +182,31 @@ export default {
     mountedProduct() {
       this.getProductList(this.keyword);
       return true
+    },
+
+    getMainBar() {
+      // this.mainTotal = this.$store.state.budgetListBar.reduce((total, budget) => total += budget.price, 0)
+      return this.$store.state.budgetListBar
+    },
+
+    getETCBar() {
+      // this.etcTotal = this.$store.state.budgetListBarETC.reduce((total, budget) => total += budget.price, 0)
+      // console.log(this.etcTotal)
+      return this.$store.state.budgetListBarETC
+    },
+
+    getMainTotal() {
+      return this.$store.state.mainTotal
+    },
+
+    getETCTotal() {
+      return this.$store.state.etcTotal
+    },
+
+    getTotal() {
+      return this.$store.state.mainTotal + this.$store.state.etcTotal
     }
+
   },
 
   methods: {

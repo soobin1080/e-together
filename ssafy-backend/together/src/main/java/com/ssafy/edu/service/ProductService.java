@@ -14,27 +14,27 @@ public class ProductService implements IProductService {
 	private ProductDaoImpl productdao;
 	
 	@Override
-	public List<Product> getProductList() {
+	public List<Product> getAllProduct() {
 		// TODO Auto-generated method stub
-		return productdao.getProductList();
+		return productdao.getAllProduct();
 	}
 
 	@Override
-	public List<Product> searchProduct(String keyword) {
+	public List<Product> keywordSearchProduct(String keyword) {
 		// TODO Auto-generated method stub
-		return productdao.searchProduct(keyword);
+		return productdao.keywordSearchProduct(keyword);
 	}
 
 	@Override
-	public List<Product> getProductCategory(String category) {
+	public List<Product> categorySearchProduct(String category) {
 		// TODO Auto-generated method stub
-		return productdao.getProductCategory(category);
+		return productdao.categorySearchProduct(category);
 	}
 
 	@Override
-	public List<Product> getProductCategoryKeword(String category, String keyword) {
+	public List<Product> categoryKeywordSearchProduct(String category, String keyword) {
 		// TODO Auto-generated method stub
-		return productdao.getProductCategoryKeword(category,keyword);
+		return productdao.categoryKeywordSearchProduct(category,keyword);
 	}
 	
 

@@ -1,63 +1,70 @@
 package com.ssafy.edu.model;
 
-import java.io.Serializable;
-
-public class Review implements Serializable {
-
-	private String user_email;
-	private String budget_title;
-	private String img;
-	private String content;
+public class Review {
+	private int review_num;
+	private int budget_num;
+	private String review_img;
+	private String review_content;
+	private int like_count;
 
 	public Review() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Review(String user_email, String budget_title, String img, String content) {
+	public Review(int review_num, int budget_num, String review_img, String review_content, int like_count) {
 		super();
-		this.user_email = user_email;
-		this.budget_title = budget_title;
-		this.img = img;
-		this.content = content;
+		this.review_num = review_num;
+		this.budget_num = budget_num;
+		this.review_img = review_img;
+		this.review_content = review_content;
+		this.like_count = like_count;
 	}
 
-	public String getUser_email() {
-		return user_email;
+	public int getReview_num() {
+		return review_num;
 	}
 
-	public void setUser_email(String user_email) {
-		this.user_email = user_email;
+	public void setReview_num(int review_num) {
+		this.review_num = review_num;
 	}
 
-	public String getBudget_title() {
-		return budget_title;
+	public int getBudget_num() {
+		return budget_num;
 	}
 
-	public void setBudget_title(String budget_title) {
-		this.budget_title = budget_title;
+	public void setBudget_num(int budget_num) {
+		this.budget_num = budget_num;
 	}
 
-	public String getImg() {
-		return img;
+	public String getReview_img() {
+		return review_img;
 	}
 
-	public void setImg(String img) {
-		this.img = img;
+	public void setReview_img(String review_img) {
+		this.review_img = review_img;
 	}
 
-	public String getContent() {
-		return content;
+	public String getReview_content() {
+		return review_content;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setReview_content(String review_content) {
+		this.review_content = review_content;
+	}
+
+	public int getLike_count() {
+		return like_count;
+	}
+
+	public void setLike_count(int like_count) {
+		this.like_count = like_count;
 	}
 
 	@Override
 	public String toString() {
-		return "Review [user_email=" + user_email + ", budget_title=" + budget_title + ", img=" + img + ", content="
-				+ content + "]";
+		return "Review [review_num=" + review_num + ", budget_num=" + budget_num + ", review_img=" + review_img
+				+ ", review_content=" + review_content + ", like_count=" + like_count + "]";
 	}
 
 }
