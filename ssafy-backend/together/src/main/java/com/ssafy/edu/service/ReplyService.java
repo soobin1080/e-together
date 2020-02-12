@@ -14,14 +14,12 @@ public class ReplyService implements IReplyService {
 	@Autowired
 	private ReplyDaoImpl replydao;
 
-	
 	@Override
-	public List<Reply> getAllReply(String budget_email, String budget_title) {
+	public List<Reply> getAllReply(int review_num) {
 		// TODO Auto-generated method stub
-		return replydao.getAllReply(budget_email,budget_title);
+		return replydao.getAllReply(review_num);
 	}
-
-
+	
 	@Override
 	public void insertReply(Reply reply) {
 		// TODO Auto-generated method stub
@@ -42,5 +40,8 @@ public class ReplyService implements IReplyService {
 		// TODO Auto-generated method stub
 		replydao.updateReply(reply);
 	}
+
+
+	
 
 }

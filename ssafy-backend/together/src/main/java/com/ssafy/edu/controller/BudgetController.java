@@ -38,12 +38,12 @@ public class BudgetController {
 
 	@ApiOperation(value = "내 예산안 가져오기", response = List.class)
 	@RequestMapping(value = "/budget/{user_email}", method = RequestMethod.GET)
-	public ResponseEntity<List<BudgetInfo>> getBudgetList(@PathVariable String user_email) throws Exception {
+	public ResponseEntity<List<BudgetInfo>> getMyBudgetList(@PathVariable String user_email) throws Exception {
 		logger.info("1-------------getBudgetList-----------------------------" + new Date());
 		
 		List<BudgetInfo> mybudgetinfo = budgetservice.getMyBudgetList(user_email);
 
-		System.out.println(mybudgetinfo);
+//		System.out.println("내 전체 예산안"+mybudgetinfo);
 		if (mybudgetinfo.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
@@ -51,21 +51,20 @@ public class BudgetController {
 	}
 
 	@ApiOperation(value = "내 예산안 품목 상세보기", response = Budget.class)
-	@RequestMapping(value = "/budget/{budget_num}", method = RequestMethod.GET)
+	@RequestMapping(value = "/budget/detail/{budget_num}", method = RequestMethod.GET)
 	public ResponseEntity<Budget> getOneBudget(@PathVariable int budget_num)
 			throws Exception {
 		logger.info("2-------------getOneBudget-----------------------------" + new Date());
 
 		BudgetInfo budgetinfo = budgetservice.getOneBudgetInfo(budget_num);
+		
 		List<BudgetListResult> budgetlist = budgetservice.getOneBudgetList(budget_num);
 		
 		Budget budget = new Budget();
+		budget.setBudgetinfo(budgetinfo);
+		budget.setBudgetlist(budgetlist);
 		
 		System.out.println(budget);
-
-		budget.setBudgetinfo(budgetinfo);
-		
-		budget.setBudgetlist(budgetlist);
 		
 		if (budget == null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -78,21 +77,25 @@ public class BudgetController {
 	public ResponseEntity<Budget> insertOneBudget(@RequestBody Budget budget) throws Exception {
 		logger.info("3-------------insertOneBudget-----------------------------" + new Date());
 
+		
 		budgetservice.insertBudgetInfo(budget.getBudgetinfo());
-//		budgetservice.getInsertBudgetNum(budget.getNum());
-		List<BudgetListResult> budgetlistresult = budget.getBudgetlist(); // 이메일, 에산안 제목 없이 날아옴.
+		//한 사용자가 저장한 예산안 중에 제일 미지막에 들어간 num번호 가져오기!!
+		int budget_num=budgetservice.getLastInsertBudgetNum(budget.getBudgetinfo().getUser_email());
+
+		List<BudgetListResult> budgetlistresult = budget.getBudgetlist();
 
 		for (int i = 0; i < budgetlistresult.size(); i++) {
 
-//			BudgetList budgetlist = new BudgetList();
-//			budgetlist.setUser_email(budget.getUser_email());
-//			budgetlist.setBudget_title(budget.getBudget_title());
-//			budgetlist.setPro_id(budgetlistresult.get(i).getPro_id());
-//			budgetlist.setPro_name(budgetlistresult.get(i).getPro_name());
-//			budgetlist.setQuantity(budgetlistresult.get(i).getQuantity());
-//			budgetlist.setPrice(budgetlistresult.get(i).getPrice());
-//			budgetservice.insertBudgetList(budgetlist);
-//			System.out.println(i + "번째 상품 : " + budgetlist.toString());
+			BudgetList budgetlist = new BudgetList();
+			budgetlist.setBudget_num(budget_num);
+			budgetlist.setPro_id(budgetlistresult.get(i).getPro_id());
+			budgetlist.setPro_name(budgetlistresult.get(i).getPro_name());
+			budgetlist.setQuantity(budgetlistresult.get(i).getQuantity());
+			budgetlist.setPrice(budgetlistresult.get(i).getPrice());
+			
+			budgetservice.insertBudgetList(budgetlist);
+			
+			System.out.println(i + "번째 상품 : " + budgetlist.toString());
 		}
 
 		if (budget == null) {
@@ -123,12 +126,14 @@ public class BudgetController {
 		return new ResponseEntity<Budget>(HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "내 예산안 적합/부적합 표시하기", response = Budget.class)
-	@RequestMapping(value = "/budget/{budget_num}", method = RequestMethod.POST)
-	public ResponseEntity<BudgetInfo> updateBudgetFitness(@PathVariable int budget_num) throws Exception {
-		logger.info("4-------------isBudgetFitness-----------------------------" + new Date());
+	@ApiOperation(value = "내 예산안 적합/부적합 표시하기", response = BudgetInfo.class)
+	@RequestMapping(value = "/budget/{budget_num}/{suitability}", method = RequestMethod.POST)
+	public ResponseEntity<BudgetInfo> updateBudget(@PathVariable int budget_num,@PathVariable int suitability) throws Exception {
+		logger.info("5-------------isBudgetFitness-----------------------------" + new Date());
 
-		budgetservice.updateBudget(budget_num);
+		System.out.println("budget_num : "+ budget_num +" // "+"suitability : "+ suitability );
+		
+		budgetservice.updateBudget(budget_num,suitability);
 		
 		return new ResponseEntity<BudgetInfo>(HttpStatus.OK);
 	}

@@ -33,12 +33,12 @@ public class ReplyController {
 	@Autowired
 	private IReplyService replyservice;
 	
-	@ApiOperation(value = "전체 댓글 뿌리주기", response = List.class)
-	@RequestMapping(value = "/reply", method = RequestMethod.GET)
-	public ResponseEntity<List<Reply>> getAllReply(@PathVariable String budget_email, @PathVariable String budget_title) throws Exception {
+	@ApiOperation(value = "후기 전체 댓글 뿌리주기", response = List.class)
+	@RequestMapping(value = "/reply/{review_num}", method = RequestMethod.GET)
+	public ResponseEntity<List<Reply>> getAllReply(@PathVariable int review_num) throws Exception {
 		logger.info("1-------------getAllReview-----------------------------" + new Date());
 
-		List<Reply> reviewlist = replyservice.getAllReply(budget_email,budget_title);
+		List<Reply> reviewlist = replyservice.getAllReply(review_num);
 
 		return new ResponseEntity<List<Reply>>(HttpStatus.OK);
 	}
@@ -54,17 +54,17 @@ public class ReplyController {
 	}
 	
 	@ApiOperation(value = "댓글 삭제하기", response = Reply.class)
-	@RequestMapping(value = "/reply", method = RequestMethod.DELETE)
-	public ResponseEntity<Reply> deleteReply(@RequestBody Reply reply) throws Exception {
+	@RequestMapping(value = "/reply/{review_num}", method = RequestMethod.DELETE)
+	public ResponseEntity<Reply> deleteReply(@PathVariable int review_num) throws Exception {
 		logger.info("3-------------deleteReply-----------------------------" + new Date());
 
-		replyservice.deleteReply(reply);
+//		replyservice.deleteReply(review_num);
 
-		return new ResponseEntity<Reply>(reply, HttpStatus.OK);
+		return new ResponseEntity<Reply>(HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "댓글 수정하기", response = Reply.class)
-	@RequestMapping(value = "/reply/{budget_email}/{budget_title}/{wrtier_email}", method = RequestMethod.POST)
+	@RequestMapping(value = "/reply/{review_num}/{wrtier_email}", method = RequestMethod.POST)
 	public ResponseEntity<Reply> updateReply(@RequestBody Reply reply) throws Exception {
 		logger.info("4-------------updateReply-----------------------------" + new Date());
 

@@ -1,24 +1,29 @@
 package com.ssafy.edu.model;
 
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class Review {
 	private int review_num;
 	private int budget_num;
-	private String review_img;
 	private String review_content;
 	private int like_count;
+	private Date review_date;
 
 	public Review() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Review(int review_num, int budget_num, String review_img, String review_content, int like_count) {
+	public Review(int review_num, int budget_num, String review_content, int like_count, Date review_date) {
 		super();
 		this.review_num = review_num;
 		this.budget_num = budget_num;
-		this.review_img = review_img;
 		this.review_content = review_content;
 		this.like_count = like_count;
+		this.review_date = review_date;
 	}
 
 	public int getReview_num() {
@@ -37,14 +42,6 @@ public class Review {
 		this.budget_num = budget_num;
 	}
 
-	public String getReview_img() {
-		return review_img;
-	}
-
-	public void setReview_img(String review_img) {
-		this.review_img = review_img;
-	}
-
 	public String getReview_content() {
 		return review_content;
 	}
@@ -61,10 +58,18 @@ public class Review {
 		this.like_count = like_count;
 	}
 
+	public Date getReview_date() {
+		return review_date;
+	}
+
+	public void setReview_date(Date review_date) {
+		this.review_date = review_date;
+	}
+
 	@Override
 	public String toString() {
-		return "Review [review_num=" + review_num + ", budget_num=" + budget_num + ", review_img=" + review_img
-				+ ", review_content=" + review_content + ", like_count=" + like_count + "]";
+		return "Review [review_num=" + review_num + ", budget_num=" + budget_num + ", review_content=" + review_content
+				+ ", like_count=" + like_count + ", review_date=" + review_date + "]";
 	}
 
 }
