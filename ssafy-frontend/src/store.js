@@ -1,18 +1,29 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VueSession from 'vue-session'
 
 Vue.use(Vuex)
-
+Vue.use(VueSession)
+// Vue.use(VueSessionStorage)
 export default new Vuex.Store({
   state: {
-    accessToken: localStorage.getItem('accessToken'),
-    user: localStorage.getItem('user'),
-    email: localStorage.getItem('email'),
+    accessToken: sessionStorage.getItem("accessToken"),
+    // accessToken: this.$session.get("accessToken"),
+    user:  sessionStorage.getItem("user"),
+    email: sessionStorage.getItem("email"),
+    phone: sessionStorage.getItem("phone"),
     personnel: '', // 인원
     budget: '', // 예산 
     tokenType: '',
     budgetlist : [],
     budgetListBar: [],
+    colorByCategory: {
+      '정육/계란류': 'bg-danger',
+      '생수/음료' : 'bg-primary',
+      '채소' : 'bg-success',
+      '라면' : 'bg-warning',
+      '기타' : 'bg-secondary'
+    },
     budgetListBarETC: [],
     ETC: ['수산물/해산물', '쌀/잡곡', '즉석식품', '과일', '스낵', '견과/건해산물'],
     mainTotal: 0,
@@ -44,22 +55,22 @@ export default new Vuex.Store({
       console.log(product)
       if (state.ETC.includes(product.category)) {
         console.log(`기타에서 ${product.price * product.quantity}원 차감`)
-        const barIdx = state.budgetListBarETC.findIndex(category => {
-          return category === product.category
+        const barIdx = state.budgetListBarETC.findIndex(budget => {
+          return budget.category === product.category
         })
-        state.budgetListBarETC[barIdx].price -= product.price
-        if (budgetListBarETC[barIdx].price === 0) {
+        state.budgetListBarETC[barIdx].price -= (product.price * product.quantity)
+        if (state.budgetListBarETC[barIdx].price <= 0) {
           state.budgetListBarETC.splice(barIdx, 0)
         }
         state.etcTotal -= (product.price * product.quantity)
 
       } else {
         console.log(`${product.category}에서 ${product.price * product.quantity}원 차감`)
-        const barIdx = state.budgetListBar.findIndex(category => {
-          return category === product.category
+        const barIdx = state.budgetListBar.findIndex(budget => {
+          return budget.category === product.category
         })
-        state.budgetListBar[barIdx].price -= product.price
-        if (budgetListBar[barIdx].price === 0) {
+        state.budgetListBar[barIdx].price -= (product.price * product.quantity)
+        if (state.budgetListBar[barIdx].price <= 0) {
           state.budgetListBar.splice(barIdx, 0)
         }
         state.mainTotal -= (product.price* product.quantity)
@@ -111,7 +122,8 @@ export default new Vuex.Store({
         if (barIdx === -1) {
           state.budgetListBarETC.push({
             category: product.category,
-            price : (product.price * product.quantity)
+            price : (product.price * product.quantity),
+            className: 'progress-bar bg-secondary'
           })
         } else {
             state.budgetListBarETC[barIdx].price += (product.price * product.quantity)
@@ -123,13 +135,18 @@ export default new Vuex.Store({
           return budget.category === product.category
         })
 
+        // const className = state.budgetListBarClass.find(budget => {
+        //   return budget.
+        // })
+        // console.log(state.budgetListBarClass['정육/계란류'])
         if (barIdx === -1) {
           state.budgetListBar.push({
             category: product.category,
-            price : (product.price * product.quantity)
+            price : (product.price * product.quantity),
+            className: "progess-bar " + state.colorByCategory[product.category] 
           })
         } else {
-            state.budgetListBar[barIdx].price += (product.price *product.quantity)
+            state.budgetListBar[barIdx].price += (product.price * product.quantity)
           }
         // state.mainTotal += (product.price*product.quantity);
       }
@@ -142,11 +159,12 @@ export default new Vuex.Store({
       console.log('changeQuantity')
       console.log(changeInfo)
       if (changeInfo.isETC === false) { // 메인일때
-        const barIdx = state.budgetListBarETC.findIndex(category => {
-          return category === changeInfo.category
+        const barIdx = state.budgetListBar.findIndex(budget => {
+          return budget.category === changeInfo.category
         })
         if (changeInfo.ope === 'p') {
           state.mainTotal += changeInfo.price
+          console.log(state.budgetListBar[barIdx])
           state.budgetListBar[barIdx].price += changeInfo.price
         } else {
           state.mainTotal -= changeInfo.price
@@ -157,8 +175,8 @@ export default new Vuex.Store({
           state.budgetListBar.splice(barIdx, 0)
         }
       } else { // 기타일때
-        const barIdx = state.budgetListBar.findIndex(category => {
-          return category === changeInfo.category
+        const barIdx = state.budgetListBarETC.findIndex(budget => {
+          return budget.category === changeInfo.category
         })
         if (changeInfo.ope === 'p') {
           state.etcTotal += changeInfo.price
@@ -176,10 +194,10 @@ export default new Vuex.Store({
       const idx = changeInfo.idx
 
       if (changeInfo.ope == 'p') {
-        state.budgetlist[idx].quantity += 1
+        state.budgetlist[idx].quantity = Number(changeInfo.changeQuantity)
         state.budgetlist[idx].pro_price += changeInfo.price
       } else {
-        state.budgetlist[idx].quantity -= 1
+        state.budgetlist[idx].quantity = Number(changeInfo.changeQuantity)
         state.budgetlist[idx].pro_price -= changeInfo.price
       }
 

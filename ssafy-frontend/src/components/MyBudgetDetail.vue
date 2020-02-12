@@ -3,29 +3,25 @@
     <table width="100%" style="font-size:15px">
       <tr style="text-align:center;">
         <th>제목</th>
-        <td v-html="computedBudgetDetail.budget_title" style="text-align:center"></td>
+        <td v-html="computedBudgetInfo.budget_title" style="text-align:center"></td>
 
         <th>인원</th>
-        <td style="text-align:center">{{detail.personnel}} 명</td>
+        <td style="text-align:center">{{computedBudgetInfo.personnel}} 명</td>
 
         <th>예산</th>
-        <td style="text-align:center">{{detail.budget}} 원</td>
+        <td style="text-align:center">{{computedBudgetInfo.budget}} 원</td>
 
         <th>날짜</th>
-        <td style="text-align:center">{{dateParsing(detail.date)}}</td>
+        <td style="text-align:center">{{dateParsing(computedBudgetInfo.budget_date)}}</td>
 
         <th>적/부</th>
         <td style="text-align:center">
-         
+         <!-- 적 / 부 -->
           <div>
-            <v-btn class="ma-2" text icon color="blue lighten-2" @click="suitable(1)">
-              <v-icon small>mdi-thumb-up</v-icon>
-            </v-btn>
-
-            <v-btn class="ma-2" text icon color="red lighten-2" @click="suitable(2)">
-              <v-icon small>mdi-thumb-down</v-icon>
-            </v-btn>
-             {{detail.fitness}}
+            <i :class="likeClass" style="color:blue; margin-right: 5px;" @click="changeLikeStatus(1)"></i>
+            <!-- <i class="fas fa-thumbs-up"></i> -->
+            <i :class="dislikeClass" style="color:red" @click="changeLikeStatus(2)"></i>
+            <!-- <i class="fas fa-thumbs-down"></i> -->
           </div>
         
           
@@ -45,12 +41,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="i in detail.budgetlist.length" :key="i" >
-          <td v-html="detail.budgetlist[i-1].pro_name"></td>
+        <tr v-for="i in computedBudgetList.length" :key="i" >
+          <td v-html="computedBudgetList[i-1].pro_name"></td>
 
-          <td v-html="detail.budgetlist[i-1].quantity"></td>
+          <td v-html="computedBudgetList[i-1].quantity"></td>
 
-          <td class="pro_price">{{detail.budgetlist[i-1].price}} 원</td>
+          <td class="pro_price">{{computedBudgetList[i-1].price}} 원</td>
         </tr>
 
         <tr >
@@ -59,7 +55,7 @@
         </tr>
           <tr >
           <th colspan="2">잔액</th>
-         <td>{{this.detail.budget-this.total}} 원</td>
+         <td>{{computedBudgetInfo.budget-this.total}} 원</td>
         </tr>
       </tbody>
     </table>
@@ -110,12 +106,15 @@ import jsPDF from 'jspdf'
 export default {
   name: "MyBudgetDetail",
   props: {
-    budgetDetail: {
-      type: Array
+    budgetInfo: {
+      type: Object
     },
-    title :{ 
-      type : String
+    budgetList: {
+      type: Array
     }
+    // title :{ 
+    //   type : String
+    // }
   },
 
   data() {
@@ -127,7 +126,9 @@ export default {
       dialog : false,
       content :"",
       image:"",  
-      propTitle:'mypdf'    
+      propTitle:'mypdf',
+      likeClass: "far fa-thumbs-up",
+      dislikeClass: "far fa-thumbs-down",    
     };
   },
 
@@ -151,37 +152,7 @@ export default {
     removeImage: function (e) {
       this.image = '';
     },
-    getMyBudgetDetail(budgetDetail) {
-      let myEmail = localStorage.getItem("email");
-      console.log("!myEmail :" + myEmail);
-      let mytitle = budgetDetail.budget_title;
-      console.log("!mytitle :" + mytitle);
-      http
-        .get(
-          "/budget/" + myEmail + "/" + mytitle,
-          {
-            user_email: myEmail,
-            budget_title: mytitle
-          },
-          this.$store.getters.RequestHeader
-        )
-        .then(res => {
-          console.log("getMyBudgetDetail");
-          console.log(res)
-          this.detail = res.data;
-          console.log("데이터 : " + this.detail);
-          console.log("항목 : " + this.detail.budgetlist);
-          console.log("항목 : " + this.detail.budgetlist.length);
-          this.budgetlength=this.detail.budgetlist.length;
-          for (let index = 0; index < this.budgetlength; index++) {
-         this.total += Number(this.detail.budgetlist[index].price);          
-       }  
-      return this.total;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
+    
     dateParsing(beforeParsing) {
       const t = beforeParsing.indexOf("T");
       const afterParsing = beforeParsing.substring(0, t);
@@ -189,9 +160,9 @@ export default {
       return afterParsing;
     },
       total_sum() {  
-       console.log("budgetList 길이!:"+ this.budgetlength); 
-       for (let index = 0; index < this.detail.budgetlist; index++) {
-         this.total += detail.budgetlist[index].price;          
+      //  console.log("budgetList 길이!:"+ this.budgetlength); 
+       for (let index = 0; index < this.computedBudgetDetail.budgetlist.length; index++) {
+         this.total += this.computedBudgetDetail.budgetlist[index].price;          
        }  
       return this.total;
     },
@@ -203,11 +174,12 @@ export default {
           return;
         }       
         http
-          .post("/review", {
-            user_email: localStorage.getItem('email'),
-            budget_title: this.title,
+          .post(`/review`, {
+            budget_num: this.budgetInfo.budget_num,
+            user_email: sessionStorage.getItem('email'),
+            budget_title: this.budgetInfo.budget_title,
             img: this.image,
-            content: this.content            
+            review_content: this.content            
           }, this.$store.getters.requestHeader)
           .then(response => {
             console.log(response)
@@ -221,32 +193,60 @@ export default {
         this.dialog=false;
       }
     },
-    suitable(num){
-      let myEmail = localStorage.getItem("email");
-      console.log("!myEmail :" + myEmail);
-      let mytitle = this.computedBudgetDetail.budget_title;
-      console.log("!mytitle :" + mytitle);
-      if(num==1){
-        this.detail.fitness="적합";
-      }else if(num==2){
-        this.detail.fitness="부적합";
+    checklikeStatus(status) {
+      // const like = document.querySelector('.fa-thumbs-up')
+      // console.log(status)
+      // console.log(like.className)
+      // const dislike = document.querySelector('.fa-thumbs-down')
+      if (status === 0) {
+        this.likeClass = 'far fa-thumbs-up'
+        this.dislikeClass = 'far fa-thumbs-down'
+      } else if (status === 1) {
+        this.likeClass = 'fas fa-thumbs-up'
+        this.dislikeClass = 'far fa-thumbs-down'
+        
+      } else {
+        this.likeClass = 'far fa-thumbs-up'
+        this.dislikeClass = 'fas fa-thumbs-down'
+        
       }
-      http
-      .post( "/budget/" + myEmail + "/" + mytitle,
-          {
-            user_email: myEmail,
-            budget_title: mytitle,
-            fitness:this.detail.fitness
-          },this.$store.getters.requestHeader)
-          .then(response => {
-            console.log(response)
-            // this.result = response.;
-          })
-          .catch(ex => {
-            console.warn("ERROR! :", ex);
-          });
-        this.$router.push("/mybudget");
-      },
+      // if (status == 0) {
+      //   return
+      // } else if (status == 1) {
+      //   like.className = 'fas fa-thumbs-up'
+      //   dislike.className = 'far fa-thumbs-up'
+      // } else {
+      //   like.className = 'far fa-thumbs-up'
+      //   dislike.className = 'fas fa-thumbs-up'
+      // }
+    },
+    changeLikeStatus(num){
+      // console.log(this.computedBudgetInfo.budget_num)
+      console.log('changeLikeStatus')
+      console.log("num : "+num)
+      // console.log("this suit : "+ this.computedBudgetInfo.suitability)
+      // console.log("computedBudgetNum : "+ this.computedBudgetInfo.budget_num)
+      console.log("budget suit : "+ this.budgetInfo.suitability)
+      if (this.computedBudgetInfo.suitability === num) {
+        console.log("same status")
+        return
+      } else {
+        http
+          .post(`/budget/${this.budgetInfo.budget_num}/${num}`, {
+            budget_num: this.budgetInfo.budget_num,
+            suitability: num
+          }, this.$store.getters.requestHeader)
+            if (num === 1) {
+              this.likeClass = "fas fa-thumbs-up"
+              this.dislikeClass = "far fa-thumbs-down"
+              // this.budgetInfo.suitability = 1
+            } else if (num === 2) {
+              this.likeClass = "far fa-thumbs-up"
+              this.dislikeClass = "fas fa-thumbs-down" 
+              // this.budgetInfo.suitability = 2
+            }
+      }
+    },
      makePDF(selector) {
       // console.log(selector);
       window.html2canvas = html2canvas; //Vue.js 특성상 window 객체에 직접 할당해야한다.
@@ -294,7 +294,9 @@ export default {
 		},
     
   
-  mount() {},
+  mount() {
+    
+  },
 
   computed: {
     convertDate() {
@@ -303,16 +305,28 @@ export default {
       console.log(convertDate);
       return this.date;
     },
-    computedBudgetDetail: function() {
-      console.log('computedBudgetDetail')
-      console.log(this.budgetDetail)
-      this.getMyBudgetDetail(this.budgetDetail)
-      return this.budgetDetail
+    computedBudgetInfo: function() {
+      console.log('computedBudgetInfo')
+      console.log(this.budgetInfo)
+      console.log(this.budgetInfo.suitability)
+      this.checklikeStatus(this.budgetInfo.suitability)
+      return this.budgetInfo
+      // this.getMyBudgetDetail(this.budgetDetail)
+      // console.log(this.budgetDetail.budgetlist)
+      // this.total = this.budgetDetail.budgetlist.reduce((total, budget) => total += (budget.price * budget.quantity), 0)
+      // return this.budgetDetail
+    },
+    computedBudgetList: function() {
+      console.log('computedBudgetList')
+      // console.log(this.bungetList)
+      this.total = this.budgetList.reduce((total, budget) => total += (budget.price * budget.quantity), 0)
+      console.log(this.total)
+      return this.budgetList
     }
   },
   created() {
-    this.getMyBudgetDetail(budgetDetail);
-    this.total_sum();
+    // this.getMyBudgetDetail(this.budgetDetail);
+    // this.total_sum();  
   }
 };
 </script>
