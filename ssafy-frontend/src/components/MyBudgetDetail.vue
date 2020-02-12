@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="downloadpdf">
     <table width="100%" style="font-size:15px">
       <tr style="text-align:center;">
         <th>제목</th>
@@ -16,16 +16,19 @@
 
         <th>적/부</th>
         <td style="text-align:center">
-          {{detail.fitness}}
+         
           <div>
-            <v-btn class="ma-2" text icon color="blue lighten-2">
-              <v-icon>mdi-thumb-up</v-icon>
+            <v-btn class="ma-2" text icon color="blue lighten-2" @click="suitable(1)">
+              <v-icon small>mdi-thumb-up</v-icon>
             </v-btn>
 
-            <v-btn class="ma-2" text icon color="red lighten-2">
-              <v-icon>mdi-thumb-down</v-icon>
+            <v-btn class="ma-2" text icon color="red lighten-2" @click="suitable(2)">
+              <v-icon small>mdi-thumb-down</v-icon>
             </v-btn>
+             {{detail.fitness}}
           </div>
+        
+          
         </td>
       </tr>
     </table>
@@ -61,20 +64,33 @@
       </tbody>
     </table>
     <br />
-    <div style="text-align:center">
-      <v-btn outlined color="success">pdf로 저장</v-btn>
+    <div data-html2canvas-ignore="true" style="text-align:center">
+      <v-btn outlined color="success" class="mr-4" @click="makePDF('downloadpdf')">pdf로 저장</v-btn>
       <v-btn outlined color="error" @click.stop="dialog=true">후기 남기기</v-btn>
     </div>
 
 
      <!-- 이미지, 내용 등록 modal -->
-    <v-dialog v-model="dialog" max-width="290">
+    <v-dialog data-html2canvas-ignore="true" v-model="dialog" max-width="600">
       <v-card>
         <v-card-title class="headline">후기 등록</v-card-title>
 
         <v-col>
-          <v-text-field label="이미지를 등록해주세요" v-model="img"></v-text-field>
-          <v-text-field autocomplete="nope" label="내용을 입력해주세요" v-model="content"></v-text-field>
+          <!-- <v-text-field label="이미지를 등록해주세요" v-model="img"></v-text-field> -->
+          <div v-if="!image">
+              <h6 style="color:darkblue; font-weight:bold">이미지를 등록해주세요!</h6>
+              <input type="file" @change="onFileChange">
+            </div>
+            <div v-else>
+              <img :src="image" />
+              <button @click="removeImage">Remove image</button>
+            </div>
+            <v-divider></v-divider>
+
+            <v-textarea v-model="content" background-color="amber lighten-4"
+                color="orange orange-darken-4"
+                outlined shaped placeholder="후기를 작성해주세요!"></v-textarea>
+         
         </v-col>
 
         <v-card-actions>
@@ -89,6 +105,8 @@
 
 <script>
 import http from "../http-common";
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 export default {
   name: "MyBudgetDetail",
   props: {
@@ -108,11 +126,31 @@ export default {
       budgetlength: 0,
       dialog : false,
       content :"",
-      img:""
+      image:"",  
+      propTitle:'mypdf'    
     };
   },
 
   methods: {
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = (e) => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage: function (e) {
+      this.image = '';
+    },
     getMyBudgetDetail(budgetDetail) {
       let myEmail = localStorage.getItem("email");
       console.log("!myEmail :" + myEmail);
@@ -158,6 +196,7 @@ export default {
       return this.total;
     },
     writeReview(bool){
+      console.log("이미지는: "+this.image);
      if (bool === true) {
         if (this.content == "") {
           alert("내용을 입력해주세요.");
@@ -167,7 +206,7 @@ export default {
           .post("/review", {
             user_email: localStorage.getItem('email'),
             budget_title: this.title,
-            img: this.img,
+            img: this.image,
             content: this.content            
           }, this.$store.getters.requestHeader)
           .then(response => {
@@ -181,8 +220,80 @@ export default {
       } else {        
         this.dialog=false;
       }
-    }
-  },
+    },
+    suitable(num){
+      let myEmail = localStorage.getItem("email");
+      console.log("!myEmail :" + myEmail);
+      let mytitle = this.computedBudgetDetail.budget_title;
+      console.log("!mytitle :" + mytitle);
+      if(num==1){
+        this.detail.fitness="적합";
+      }else if(num==2){
+        this.detail.fitness="부적합";
+      }
+      http
+      .post( "/budget/" + myEmail + "/" + mytitle,
+          {
+            user_email: myEmail,
+            budget_title: mytitle,
+            fitness:this.detail.fitness
+          },this.$store.getters.requestHeader)
+          .then(response => {
+            console.log(response)
+            // this.result = response.;
+          })
+          .catch(ex => {
+            console.warn("ERROR! :", ex);
+          });
+        this.$router.push("/mybudget");
+      },
+     makePDF(selector) {
+      // console.log(selector);
+      window.html2canvas = html2canvas; //Vue.js 특성상 window 객체에 직접 할당해야한다.
+      // let that = this;
+      // let pdf = new jsPDF("p", "mm", "a4");
+      // let canvas = pdf.canvas;
+      // const pageWidth = 210; //캔버스 너비 mm
+      // const pageHeight = 295; //캔버스 높이 mm
+      // canvas.width = pageWidth;
+      // let ele = document.getElementById(selector);
+      // let width = ele.offsetWidth; // 셀렉트한 요소의 px 너비
+      // let height = ele.offsetHeight; // 셀렉트한 요소의 px 높이
+      // let imgHeight = (pageWidth * height) / width; // 이미지 높이값 px to mm 변환
+
+// console.log("뭐냐"+selector);
+      
+      // let ele = document.querySelector('body');
+        
+      // if (!ele) {
+      //   console.warn(selector + " is not exist.");
+      //   return false;
+      // }
+      // console.log(canvas);
+      
+    //   var canvasElement = document.createElement("canvas");
+      // html2canvas(ele, { canvaspdf:canvas }).then(function(canvaspdf) {
+      //   ele.appendChild(canvaspdf);
+      //   const img = canvaspdf.toDataURL("image/jpeg", 1.0);
+      //   pdf.addImage(img, "jpeg", 300,1000, pageWidth, imgHeight);
+      //   pdf.save(that.propTitle.toLowerCase() + ".pdf");
+      // });
+
+      html2canvas(document.getElementById(selector), {
+            onrendered: function(canvas) {
+                var imgData = canvas.toDataURL('image/png');
+                console.log('Report Image URL: '+imgData);
+                var doc = new jsPDF('p', 'mm', [297, 210]); //210mm wide and 297mm high
+                doc.addImage(imgData, 'PNG', 10, 10);
+                doc.save(that.propTitle.toLowerCase() + ".pdf");
+            }
+        });
+     
+    }	
+
+		},
+    
+  
   mount() {},
 
   computed: {
@@ -220,5 +331,11 @@ td {
 th {
   color:dimgray;
   background-color: lightgray;
+}
+img {
+  width: 30%;
+  margin: auto;
+  display: block;
+  margin-bottom: 10px;
 }
 </style>

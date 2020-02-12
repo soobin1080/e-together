@@ -22,7 +22,14 @@
         type: Array,
         // required: true
       },
+      allLength: {
+      type: Number,
+      required: true
     },
+
+    },
+  
+
 
     data() {
       return {
