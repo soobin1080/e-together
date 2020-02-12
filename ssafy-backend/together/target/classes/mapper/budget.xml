@@ -8,63 +8,55 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		pro_id, pro_name,quantity, price, like_count -->
 
 	<!-- 내 전체 예산안 보기 -->
-	<select id="getBudgetList" parameterType="java.lang.String"
+	<select id="getMyBudgetList" parameterType="java.lang.String"
 		resultType="com.ssafy.edu.model.BudgetInfo">
-		SELECT BUDGET_TITLE, PERSONNEL,BUDGET,FITNESS,
-		DATE,LIKE_COUNT
+		SELECT BUDGET_NUM, USER_EMAIL, BUDGET_TITLE, PERSONNEL, BUDGET, SUITABILITY, BUDGET_DATE
 		FROM BUDGET_INFO
-		WHERE USER_EMAIL=#{user_email}
+		WHERE USER_EMAIL=(SELECT EMAIL FROM USER WHERE EMAIL=#{user_email})
 	</select>
 
 	<!-- 내 예산안 상세 보기 -->
-	<select id="getOneBudget"
+	<select id="getOneBudgetInfo"
 		parameterType="com.ssafy.edu.model.BudgetInfo"
 		resultType="com.ssafy.edu.model.BudgetInfo">
-		SELECT BUDGET_TITLE, PERSONNEL,BUDGET,FITNESS,
-		DATE,LIKE_COUNT
+		SELECT BUDGET_NUM, USER_EMAIL, BUDGET_TITLE, PERSONNEL, BUDGET, SUITABILITY, BUDGET_DATE
 		FROM BUDGET_INFO
-		WHERE USER_EMAIL=#{user_email} AND
-		BUDGET_TITLE=#{budget_title};
+		WHERE BUDGET_NUM=#{budget_num}
 	</select>
 	
 	<!-- 내 예산안 상세보기 품목리스트 -->
-	<select id="getOneBudgetProductList"
+	<select id="getOneBudgetList"
 		parameterType="com.ssafy.edu.model.Budget"
 		resultType="com.ssafy.edu.model.BudgetListResult">
-		SELECT PRO_ID,PRO_NAME, QUANTITY, PRICE FROM BUDGET_LIST WHERE USER_EMAIL=#{user_email} AND BUDGET_TITLE=#{budget_title};
+		SELECT PRO_ID,PRO_NAME, QUANTITY, PRICE FROM BUDGET_LIST WHERE BUDGET_NUM=#{budget_num};
 	</select>
 	
 	<insert id="insertBudgetInfo"
 		parameterType="com.ssafy.edu.model.BudgetInfo">
-		INSERT INTO BUDGET_INFO(USER_EMAIL,
-		BUDGET_TITLE,PERSONNEL,
-		BUDGET, FITNESS,DATE,LIKE_COUNT)
-		VALUES(#{user_email},#{budget_title},#{personnel},#{budget},#{fitness},date(now()),#{like_count});
+		INSERT INTO BUDGET_INFO(USER_EMAIL, BUDGET_TITLE, PERSONNEL, BUDGET, SUITABILITY, BUDGET_DATE)
+		VALUES(#{user_email},#{budget_title},#{personnel},#{budget},#{suitability},date(now()));
 	</insert>
 
 	<insert id="insertBudgetList"
 		parameterType="com.ssafy.edu.model.BudgetList">
-		INSERT INTO BUDGET_LIST(USER_EMAIL,BUDGET_TITLE,
-		PRO_ID,PRO_NAME, QUANTITY, PRICE)
-		VALUES(#{user_email},#{budget_title},#{pro_id},#{pro_name},#{quantity},#{price});
+		INSERT INTO BUDGET_LIST(BUDGET_NUM,PRO_ID,PRO_NAME, QUANTITY, PRICE)
+		VALUES(#{budget_num},#{pro_id},#{pro_name},#{quantity},#{price});
 	</insert>
 
 	<!--DELETE FROM 테이블명 WHERE = 조건 -->
 	<delete id="deleteBudgetInfo"
-		parameterType="com.ssafy.edu.model.Budget">
-		DELETE FROM BUDGET_INFO WHERE USER_EMAIL=#{user_email} AND
-		BUDGET_TITLE=#{budget_title};
+		parameterType="java.lang.Integer">
+		DELETE FROM BUDGET_INFO WHERE BUDGET_NUM=#{budget_num};
 	</delete>
 
 	<delete id="deleteBudgetList"
-		parameterType="com.ssafy.edu.model.Budget">
-		DELETE FROM BUDGET_LIST WHERE USER_EMAIL=#{user_email}
-		and
-		BUDGET_TITLE=#{budget_title} and PRO_ID=#{pro_id};
+		parameterType="java.lang.Integer">
+		DELETE FROM BUDGET_LIST WHERE BUDGET_NUM=#{budget_num};
 	</delete>
 	
-	<update id="updateBudgetFitness" parameterType="com.ssafy.edu.model.BudgetInfo">
-	UPDATE BUDGET_INFO SET FITNESS=#{fitness} WHERE USER_EMAIL=#{user_email} AND BUDGET_TITLE=#{budget_title}
+	<!-- 적합/부적합  -->
+	<update id="updateBudget" parameterType="java.lang.Integer">
+	UPDATE BUDGET_INFO SET SUITABILITY=#{suitability} WHERE BUDGET_NUM=#{budget_num}
 	</update>
 
 </mapper>

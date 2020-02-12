@@ -30,14 +30,7 @@
       <td style="text-align:center">{{budget.personnel}} 명</td>
       <td style="text-align:center">{{budget.budget}} 원</td>
       <td style="text-align:center">{{dateParsing(budget.date)}}</td>
-      <td style="text-align:center">{{budget.fitness}}  <div>
-      <v-btn class="ma-2" text icon color="blue lighten-2">
-        <v-icon small>mdi-thumb-up</v-icon>
-      </v-btn>
-
-      <v-btn class="ma-2" text icon color="red lighten-2">
-        <v-icon small>mdi-thumb-down</v-icon>
-      </v-btn>
+      <td style="text-align:center">{{budget.fitness}}  <div>      
     </div></td>
      
     </tr>
@@ -141,7 +134,7 @@ table {
   th, td {
     font-size:15px;
     border-bottom: 1px solid lightgray;
-    padding: 1px;
+    padding: 4px;
   }
   th {
   color:dimgray;

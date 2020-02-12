@@ -64,7 +64,7 @@ export default {
         pro_name: this.pro_name,
         price: this.stringNumberToInt(this.price),
         quantity: Number(this.quantity),
-        pro_price:this.stringNumberToInt(this.price),
+        pro_price:this.stringNumberToInt(this.price) * Number(this.quantity),
         category: this.product.main_category,
         isETC: this.ETC.includes(this.product.main_category)
       };

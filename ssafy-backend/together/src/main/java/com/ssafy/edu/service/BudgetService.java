@@ -22,49 +22,49 @@ public class BudgetService implements IBudgetService {
 		return budgetdao.getMyBudgetList(user_email);
 	}
 
-	@Override
-	public BudgetInfo getOneBudget(String user_email, String budget_title) {
-		// TODO Auto-generated method stub
-		return budgetdao.getOneBudget(user_email, budget_title);
-	}
-	
-	@Override
-	public List<BudgetListResult> getOneBudgetProductList(String user_email, String budget_title) {
-		// TODO Auto-generated method stub
-		return budgetdao.getOneBudgetProductList(user_email, budget_title);
-	}
-
-	//내 예산안 보기, 예산안 간략한 형태로 보여주기
+	// 내 예산안 보기, 예산안 간략한 형태로 보여주기
 	@Override
 	public void insertBudgetList(BudgetList budgetlist) {
 		// TODO Auto-generated method stub
 		budgetdao.insertBudgetList(budgetlist);
 	}
-	//예산안 상세보기
+
+	// 예산안 상세보기
 	@Override
 	public void insertBudgetInfo(BudgetInfo budgetinfo) {
 		// TODO Auto-generated method stub
 		budgetdao.insertBudgetInfo(budgetinfo);
 	}
 
+
 	@Override
-	public void deleteBudgetInfo(String user_email, String budget_title) {
+	public List<BudgetListResult> getOneBudgetList(int budget_num) {
 		// TODO Auto-generated method stub
-		budgetdao.deleteBudgetInfo(user_email,budget_title);
+		return null;
 	}
 
 	@Override
-	public void deleteBudgetList(String user_email, String budget_title, String pro_id) {
+	public void deleteBudgetInfo(int budget_num) {
 		// TODO Auto-generated method stub
-		budgetdao.deleteBudgetList(user_email,budget_title,pro_id);
+
+	}
+
+	@Override
+	public void updateBudget(int budget_num) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public BudgetInfo getOneBudgetInfo(int budget_num) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public void updateBudgetFitness(BudgetInfo budgetinfo) {
 		// TODO Auto-generated method stub
-		budgetdao.updateBudgetFitness(budgetinfo);
+		
 	}
-
-	
 
 }

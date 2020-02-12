@@ -25,20 +25,14 @@ public class BudgetDaoImpl {
 		return sqlSession.selectList(ns + "getBudgetList", user_email);
 	}
 
-	public BudgetInfo getOneBudget(String user_email, String budget_title) {
+	public BudgetInfo getOneBudgetInfo(int budget_num) {
 		// TODO Auto-generated method stub
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("user_email", user_email);
-		paramMap.put("budget_title", budget_title);
-		return sqlSession.selectOne(ns + "getOneBudget", paramMap);
+		return sqlSession.selectOne(ns + "getOneBudgetInfo", budget_num);
 	}
 	
-	public List<BudgetListResult> getOneBudgetProductList(String user_email, String budget_title) {
+	public List<BudgetListResult> getOneBudgetList(int budget_num) {
 		// TODO Auto-generated method stub
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("user_email", user_email);
-		paramMap.put("budget_title", budget_title);
-		return sqlSession.selectList(ns + "getOneBudgetProductList", paramMap);
+		return sqlSession.selectList(ns + "getOneBudgetList", budget_num);
 	}
 
 	public int insertOneBudget(Budget budget) {
@@ -58,27 +52,24 @@ public class BudgetDaoImpl {
 		sqlSession.insert(ns + "insertBudgetList", budgetlist);
 	}
 
-	public void deleteBudgetInfo(String user_email, String budget_title) {
+	public void deleteBudgetInfo(int budget_num) {
 		// TODO Auto-generated method stub
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("user_email", user_email);
-		paramMap.put("budget_title", budget_title);
-		sqlSession.delete(ns + "deleteBudgetInfo", paramMap);
+		sqlSession.delete(ns + "deleteBudgetInfo", budget_num);
 	}
 
-	public void deleteBudgetList(String user_email, String budget_title, String pro_id) {
-		// TODO Auto-generated method stub
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("user_email", user_email);
-		paramMap.put("budget_title", budget_title);
-		paramMap.put("pro_id", pro_id);
-		sqlSession.delete(ns + "deleteBudgetList", paramMap);
+//	public void deleteBudgetList(String user_email, String budget_title, String pro_id) {
+//		// TODO Auto-generated method stub
+//		Map<String, Object> paramMap = new HashMap<>();
+//		paramMap.put("user_email", user_email);
+//		paramMap.put("budget_title", budget_title);
+//		paramMap.put("pro_id", pro_id);
+//		sqlSession.delete(ns + "deleteBudgetList", paramMap);
+//
+//	}
 
-	}
-
-	public void updateBudgetFitness(BudgetInfo budgetinfo) {
+	public void updateBudget(int budget_num) {
 		// TODO Auto-generated method stub
-		sqlSession.update(ns + "updateBudgetFitness", budgetinfo);
+		sqlSession.update(ns + "updateBudget", budget_num);
 	}
 
 	

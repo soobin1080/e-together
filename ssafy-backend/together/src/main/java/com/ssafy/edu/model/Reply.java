@@ -1,61 +1,72 @@
 package com.ssafy.edu.model;
 
-public class Reply {
+import java.util.Date;
 
-	private String budget_email;
-	private String budget_title;
-	private String wrtier_email;
-	private String content;
+public class Reply {
+	private int reply_num;
+	private int review_num;
+	private String reply_content;
+	private String writer_email;
+	private Date reply_date;
 
 	public Reply() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Reply(String budget_email, String budget_title, String wrtier_email, String content) {
+	public Reply(int reply_num, int review_num, String reply_content, String writer_email, Date reply_date) {
 		super();
-		this.budget_email = budget_email;
-		this.budget_title = budget_title;
-		this.wrtier_email = wrtier_email;
-		this.content = content;
+		this.reply_num = reply_num;
+		this.review_num = review_num;
+		this.reply_content = reply_content;
+		this.writer_email = writer_email;
+		this.reply_date = reply_date;
 	}
 
-	public String getBudget_email() {
-		return budget_email;
+	public int getReply_num() {
+		return reply_num;
 	}
 
-	public void setBudget_email(String budget_email) {
-		this.budget_email = budget_email;
+	public void setReply_num(int reply_num) {
+		this.reply_num = reply_num;
 	}
 
-	public String getBudget_title() {
-		return budget_title;
+	public int getReview_num() {
+		return review_num;
 	}
 
-	public void setBudget_title(String budget_title) {
-		this.budget_title = budget_title;
+	public void setReview_num(int review_num) {
+		this.review_num = review_num;
 	}
 
-	public String getWrtier_email() {
-		return wrtier_email;
+	public String getReply_content() {
+		return reply_content;
 	}
 
-	public void setWrtier_email(String wrtier_email) {
-		this.wrtier_email = wrtier_email;
+	public void setReply_content(String reply_content) {
+		this.reply_content = reply_content;
 	}
 
-	public String getContent() {
-		return content;
+	public String getWriter_email() {
+		return writer_email;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setWriter_email(String writer_email) {
+		this.writer_email = writer_email;
+	}
+
+	public Date getReply_date() {
+		return reply_date;
+	}
+
+	public void setReply_date(Date reply_date) {
+		this.reply_date = reply_date;
 	}
 
 	@Override
 	public String toString() {
-		return "Reply [budget_email=" + budget_email + ", budget_title=" + budget_title + ", wrtier_email="
-				+ wrtier_email + ", content=" + content + "]";
+		return "Reply [reply_num=" + reply_num + ", review_num=" + review_num + ", reply_content=" + reply_content
+				+ ", writer_email=" + writer_email + ", reply_date=" + reply_date + "]";
 	}
 
 }
