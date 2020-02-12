@@ -25,11 +25,11 @@
     </template>
     <tr v-for="budget in computedPagingBudgets" :key="budget.created_at">
       <td v-html="budget.budget_title"
-      @click="show_detail(budget.budget_title)"
+      @click="show_detail(budget.budget_num)"
       style="text-align:center"></td>
       <td style="text-align:center">{{budget.personnel}} 명</td>
       <td style="text-align:center">{{budget.budget}} 원</td>
-      <td style="text-align:center">{{dateParsing(budget.date)}}</td>
+      <td style="text-align:center">{{dateParsing(budget.budget_date)}}</td>
       <td style="text-align:center">{{budget.fitness}}  <div>      
     </div></td>
      
@@ -40,7 +40,6 @@
 
 <script>
 import FirebaseService from "@/services/FirebaseService";
-import http from "../http-common";
 export default {
   name: "MyBudgetList",
 
@@ -74,12 +73,12 @@ export default {
       const t = beforeParsing.indexOf('T')
       const afterParsing = beforeParsing.substring(0, t)
       console.log(afterParsing)
-      return afterParsing
+      return afterParsing 
     },
 
-    show_detail(title){
-      this.$emit('showdetail', title)
-      console.log("--Child (showdetail) : "+title)
+    show_detail(budgetNum){
+      this.$emit('showdetail', budgetNum)
+      console.log("--Child (showdetail) : "+budgetNum)
     }
   },
   computed: {
@@ -119,7 +118,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.pagingList)
+    //console.log(this.pagingList)
     
   }
 };

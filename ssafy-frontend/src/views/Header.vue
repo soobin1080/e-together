@@ -82,7 +82,7 @@ export default {
       return require("../assets/" + img);
     },
     pwdCheck() {
-      if (localStorage.getItem !== "" && typeof localStorage.getItem !== undefined) {
+      if (this.$session.has("accessToken") && typeof this.$session.get("accessToken") !== undefined) {
         this.$router.push("/pwdcheck"); 
       } else {
         alert('잘못된 접근입니다.')
@@ -91,8 +91,8 @@ export default {
     getUserName() {
       console.log("emit!");
       console.log("getUserName");
-      console.log(localStorage.getItem("user"));
-      this.username = localStorage.getItem("user");
+      console.log(this.$session.get("user"));
+      this.username = sessionStorage.getItem("user");
       this.isLoggedIn = this.$store.getters.isLoggedIn;
     },
     logout() {
@@ -102,14 +102,14 @@ export default {
           .post(
             "/logout",
             {
-              email: localStorage.getItem("email")
+              email: this.$session.get("email")
             },
             this.$store.getters.requestHeader
           )
           .then(res => {
             console.log(res);
             if (res.data.state === "succ" && res.data.count == 1) {
-              localStorage.clear();
+              this.$session.clear()
               this.getUserName();
               this.$router.push("/");
             }

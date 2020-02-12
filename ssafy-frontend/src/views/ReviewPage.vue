@@ -32,7 +32,7 @@ export default {
     ResizeText
   },
   data: () => ({
-    limit: 0,
+    page: 1,
     title: "",
     body: "",
     pages: 1,
@@ -65,15 +65,23 @@ export default {
     },
     infiniteHandler($state) {
       http
-        .get('/review') //api에 url 삽입
+        .get('/review', {
+          // params: {
+          //   page: this.page,
+          // },
+        }) //api에 url 삽입
         .then(response => {
+          console.log('response')
           console.log(response)
+
             setTimeout(() => { //스크롤 페이징을 띄우기 위한 시간 지연(1초)
               if (response.data.length) {
+                // this.page += 1
                 this.allReviews = this.allReviews.concat(response.data);
                 $state.loaded(); //데이터 로딩
-                this.limit += 10 
-                if (this.allReviews.length == response.data.length) {
+                // this.limit += 10
+                // console.log('allreview length : '+this.allreviews.leng) 
+                if (this.allReviews.length > response.data.length) {
                   $state.complete(); //데이터가 없으면 로딩 끝
                 }
               } else {
