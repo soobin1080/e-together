@@ -79,10 +79,10 @@
                 Files
                 <input
                   type="file"
-                  id="file"
-                  ref="file"
-                  multiple="multiple"
-                  v-on:change="handleFilesUploads()"
+                  id="files"
+                  ref="files"
+                  multiple
+                  v-on:change="handleFilesUploads"
                 />
               </label>
               <!-- <button v-on:click="submitFiles()">Submit</button> -->
@@ -138,18 +138,17 @@ export default {
       propTitle: "mypdf",
       likeClass: "far fa-thumbs-up",
       dislikeClass: "far fa-thumbs-down",
-      images: {},
-      files: {}
+      files: {},
       
     };
   },
 
   methods: {
-    /*
-        Handles a change on the file upload
-      */
+    
     handleFilesUploads() {
-      this.file = this.$refs.file.files[0];
+      console.log("1. 이미지는: " + this.$refs.files.files );
+      this.files = this.$refs.files.files;
+      console.log("2. 이미지는: " + this.files );
     },
 
     dateParsing(beforeParsing) {
@@ -170,7 +169,7 @@ export default {
       return this.total;
     },
     writeReview(bool) {
-      console.log("이미지는: " + this.images + JSON.stringify(this.images));
+      console.log("이미지는: " + this.files + JSON.stringify(this.files));
       if (bool === true) {
         if (this.content == "") {
           alert("내용을 입력해주세요.");
@@ -180,7 +179,19 @@ export default {
         /*
           Initialize the form data
         */
-        let files = new FormData();
+        let formData = new FormData();
+
+        /*
+          Iteate over any file sent over appending the files
+          to the form data.
+        */
+        for (var i = 0; i < this.files.length; i++) {
+          let file = this.files[i];
+          console.log("파일 하나: "+file);
+
+          formData.append("files[" + i + "]", file);
+        }
+        console.log("폼데이터: "+formData + JSON.stringify(formData));
 
         // /*
         //   Iteate over any file sent over appending the files
@@ -195,10 +206,10 @@ export default {
           .post(`/review`, {     
               budget_num: this.budgetInfo.budget_num,             
               review_content: this.content,
-            }, files, {
-                  headers: {
-                    "Content-Type": "multipart/form-data"
-                    }
+              files: formData},
+            {
+            headers: {
+              "Content-Type": "multipart/form-data"
             }
           )
           .then(response => {
