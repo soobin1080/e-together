@@ -21,7 +21,7 @@ import ResizeText from "vue-resize-text";
 import http from "../http-common";
 import InfiniteLoading from 'vue-infinite-loading';
 export default {
-  name: "MyListPage",
+  name: "ReviewPage",
 
   components: {
     ImgBanner,
