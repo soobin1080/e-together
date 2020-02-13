@@ -23,6 +23,7 @@
           :budgetPerPage="budgetPerPage"
           :pages="pages"
           v-on:showdetail="showdetail"
+          @getMyBudget="getMyBudgets"
         ></MyBudgetList>
       </div>
      
@@ -92,8 +93,9 @@ export default {
           this.$store.getters.RequestHeader
         )
         .then(res => {
-          // console.log("getMyBudget");
+          console.log("getMyBudget");
           this.allBudgets = res.data;
+          console.log(res.data)
           this.allLength = res.data.length;
           this.pagingList = this.allBudgets;
 
@@ -137,12 +139,12 @@ export default {
     }
   },
   computed: {
-    mountedBudget() {
-      // console.log("mountedBudget");
-      this.allBudgets = this.getMyBudgets();
-      this.allLength = this.allBudgets.length;
-      return this.getMyBudgets();
-    }
+    // mountedBudget() {
+    //   // console.log("mountedBudget");
+    //   this.allBudgets = this.getMyBudgets();
+    //   this.allLength = this.allBudgets.length;
+    //   return this.getMyBudgets();
+    // }
   },
   mounted() {
     this.getMyBudgets();   

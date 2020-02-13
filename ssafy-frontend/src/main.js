@@ -13,6 +13,7 @@ import router from './router'
 import store from './store'
 import VueCsrf from 'vue-csrf';
 import VueSessionStorage from 'vue-sessionstorage'
+import UploadImage from 'vue-upload-image';
 import './registerServiceWorker'
 
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
@@ -41,11 +42,7 @@ Vue.use(InfiniteLoading, { /* options */ });
 Vue.use(VueSessionStorage)
 
 // Require dependencies
-
-var VueCookie = require('vue-cookie');
-// Tell Vue to use the plugin
-Vue.use(VueCookie);
-
+Vue.component('upload-image', UploadImage)
 
 
 export const eventBus = new Vue()
