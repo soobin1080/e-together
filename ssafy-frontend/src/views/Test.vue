@@ -71,23 +71,16 @@
     <v-dialog data-html2canvas-ignore="true" v-model="dialog" max-width="600">
       <v-card>
         <v-card-title class="headline">후기 등록</v-card-title>
-        <p style="padding-left:30px; color:gray">후기를 등록하시면 회원님의 예산 상세 내역이 함께 게시됩니다.!</p>
+
         <v-col>
-          <div class="container">
-            <div class="large-12 medium-12 small-12 cell">
-              <label>
-                Files
-                <input
-                  type="file"
-                  id="images"
-                  ref="images"
-                  multiple
-                  v-on:change="handleFilesUploads()"
-                />
-              </label>
-              <!-- <button v-on:click="submitFiles()">Submit</button> -->
-            </div>
-          </div>
+         <div class="container">
+    <div class="large-12 medium-12 small-12 cell">
+      <label>Files
+        <input type="file" id="files" ref="files" multiple v-on:change="handleFileUploads()"/>
+      </label>
+      <button v-on:click="submitFiles()">Submit</button>
+    </div>
+  </div>
 
           <v-textarea
             v-model="content"
@@ -138,19 +131,53 @@ export default {
       propTitle: "mypdf",
       likeClass: "far fa-thumbs-up",
       dislikeClass: "far fa-thumbs-down",
-      images: {},
-      
+      files:'',
+      review: {}
     };
   },
 
   methods: {
-    /*
+     submitFiles(){
+        /*
+          Initialize the form data
+        */
+        let formData = new FormData();
+
+        /*
+          Iteate over any file sent over appending the files
+          to the form data.
+        */
+        for( var i = 0; i < this.files.length; i++ ){
+          let file = this.files[i];
+
+          formData.append('files[' + i + ']', file);
+        }
+
+        /*
+          Make the request to the POST /multiple-files URL
+        */
+        axios.post( '/multiple-files',
+          formData,
+          {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+          }
+        ).then(function(){
+          console.log('SUCCESS!!');
+        })
+        .catch(function(){
+          console.log('FAILURE!!');
+        });
+      },
+
+      /*
         Handles a change on the file upload
       */
-    handleFilesUploads() {
-      this.images = this.$refs.images.files;
-    },
-
+      handleFilesUpload(){
+        this.files = this.$refs.files.files;
+      },
+    
     dateParsing(beforeParsing) {
       const t = beforeParsing.indexOf("T");
       const afterParsing = beforeParsing.substring(0, t);
@@ -169,38 +196,19 @@ export default {
       return this.total;
     },
     writeReview(bool) {
-      console.log("이미지는: " + this.images + JSON.stringify(this.images));
+      console.log("이미지는: " + this.files);
       if (bool === true) {
         if (this.content == "") {
           alert("내용을 입력해주세요.");
           return;
         }
-
-        /*
-          Initialize the form data
-        */
-        let formData = new FormData();
-
-        /*
-          Iteate over any file sent over appending the files
-          to the form data.
-        */
-        for (var i = 0; i < this.images.length; i++) {
-          let file = this.images[i];
-
-          formData.append("images[" + i + "]", file);
-        }
-        console.log("폼데이터: "+formData + JSON.stringify(formData));
-
         http
-          .post(`/review`, {     
-           
-              budget_num: this.budgetInfo.budget_num,             
-              review_content: this.content,
-              formData},
-            {
-            headers: {
-              "Content-Type": "multipart/form-data"
+          .post(`/review`, {
+            review: {
+              budget_num: this.budgetInfo.budget_num,
+              budget_title: this.budgetInfo.budget_title,
+              files: this.files,
+              review_content: this.content
             }
           })
           .then(response => {
