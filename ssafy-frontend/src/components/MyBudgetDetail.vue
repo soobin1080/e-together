@@ -193,9 +193,17 @@ export default {
         }
         console.log("폼데이터: "+formData + JSON.stringify(formData));
 
+        // /*
+        //   Iteate over any file sent over appending the files
+        //   to the form data.
+        // */
+        // for (var i = 0; i < this.images.length; i++) {
+        //   let file = this.images[i];
+        // }
+        // console.log("폼데이터: "+formData + JSON.stringify(formData));
+        files.append('file', this.files);
         http
           .post(`/review`, {     
-           
               budget_num: this.budgetInfo.budget_num,             
               review_content: this.content,
               files: formData},
@@ -203,8 +211,9 @@ export default {
             headers: {
               "Content-Type": "multipart/form-data"
             }
-          })
+          )
           .then(response => {
+            console.log('image upload response')
             console.log(response);
             // this.result = response.;
           })
@@ -249,8 +258,9 @@ export default {
       // console.log("this suit : "+ this.computedBudgetInfo.suitability)
       // console.log("computedBudgetNum : "+ this.computedBudgetInfo.budget_num)
       console.log("budget suit : " + this.budgetInfo.suitability);
-      if (this.computedBudgetInfo.suitability === num) {
-        console.log("same status");
+      if (this.computedBudgetInfo.suitability === num || num == 0) {
+        // console.log("same status")
+
         return;
       } else {
         http.post(
@@ -261,15 +271,18 @@ export default {
           },
           this.$store.getters.requestHeader
         );
-        if (num === 1) {
-          this.likeClass = "fas fa-thumbs-up";
-          this.dislikeClass = "far fa-thumbs-down";
-          // this.budgetInfo.suitability = 1
-        } else if (num === 2) {
-          this.likeClass = "far fa-thumbs-up";
-          this.dislikeClass = "fas fa-thumbs-down";
-          // this.budgetInfo.suitability = 2
-        }
+        // if (num === 1) {
+        //   this.likeClass = "fas fa-thumbs-up";
+        //   this.dislikeClass = "far fa-thumbs-down";
+        //   // this.budgetInfo.suitability = 1
+        // } else if (num === 2) {
+        //   this.likeClass = "far fa-thumbs-up";
+        //   this.dislikeClass = "fas fa-thumbs-down";
+        //   // this.budgetInfo.suitability = 2
+        // }
+        this.$emit('renewBudgetList')
+        this.$emit('showdetail', this.budgetInfo.budget_num)
+
       }
     },
     makePDF(selector) {
@@ -329,7 +342,7 @@ export default {
       console.log("computedBudgetInfo");
       console.log(this.budgetInfo);
       console.log(this.budgetInfo.suitability);
-      this.checklikeStatus(this.budgetInfo.suitability);
+      this.checklikeStatus();
       return this.budgetInfo;
       // this.getMyBudgetDetail(this.budgetDetail)
       // console.log(this.budgetDetail.budgetlist)

@@ -104,7 +104,7 @@ export default {
             budget_num: budgetNum
           }, this.$store.getters.requestHeader)
           .then( res => {
-            console.log(res)
+            
           })
           .catch( err => {
             console.log(err)
@@ -117,6 +117,7 @@ export default {
   computed: {
     computedPagingBudgets: function() {
       console.log('computedPagingBudget')
+      console.log(this.allBudgets)
       // console.log(this.allBudgets)
       this.pagingBudgets = []
       let start = (this.pages - 1) * this.budgetPerPage
