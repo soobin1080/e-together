@@ -79,10 +79,10 @@
                 Files
                 <input
                   type="file"
-                  id="images"
-                  ref="images"
+                  id="files"
+                  ref="files"
                   multiple
-                  v-on:change="handleFilesUploads()"
+                  v-on:change="handleFilesUploads"
                 />
               </label>
               <!-- <button v-on:click="submitFiles()">Submit</button> -->
@@ -138,17 +138,17 @@ export default {
       propTitle: "mypdf",
       likeClass: "far fa-thumbs-up",
       dislikeClass: "far fa-thumbs-down",
-      images: {},
+      files: {},
       
     };
   },
 
   methods: {
-    /*
-        Handles a change on the file upload
-      */
+    
     handleFilesUploads() {
-      this.images = this.$refs.images.files;
+      console.log("1. 이미지는: " + this.$refs.files.files );
+      this.files = this.$refs.files.files;
+      console.log("2. 이미지는: " + this.files );
     },
 
     dateParsing(beforeParsing) {
@@ -169,7 +169,7 @@ export default {
       return this.total;
     },
     writeReview(bool) {
-      console.log("이미지는: " + this.images + JSON.stringify(this.images));
+      console.log("이미지는: " + this.files + JSON.stringify(this.files));
       if (bool === true) {
         if (this.content == "") {
           alert("내용을 입력해주세요.");
@@ -185,10 +185,11 @@ export default {
           Iteate over any file sent over appending the files
           to the form data.
         */
-        for (var i = 0; i < this.images.length; i++) {
-          let file = this.images[i];
+        for (var i = 0; i < this.files.length; i++) {
+          let file = this.files[i];
+          console.log("파일 하나: "+file);
 
-          formData.append("images[" + i + "]", file);
+          formData.append("files[" + i + "]", file);
         }
         console.log("폼데이터: "+formData + JSON.stringify(formData));
 
@@ -197,7 +198,7 @@ export default {
            
               budget_num: this.budgetInfo.budget_num,             
               review_content: this.content,
-              formData},
+              files: formData},
             {
             headers: {
               "Content-Type": "multipart/form-data"

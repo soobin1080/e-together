@@ -3,11 +3,11 @@
 <h5 style="text-align:center">목록</h5><br>
   <table width="100%">
     <colgroup>
-      <col width="25%" />
+      <col width="40%" />
+      <col width="10%" />
       <col width="15%" />
       <col width="15%" />
-      <col width="25%" />
-      <col width="15%" />
+      <col width="10%" />
       <col width="10%"/>
      
     </colgroup>
@@ -38,12 +38,12 @@
         <span v-else-if="budget.suitability == 1">
           적합
         </span>
-        <span v-else="budget.suitability == 2">
+        <span v-else-if="budget.suitability == 2">
           부적합
         </span>
       </td>
       <td style="text-align:center">
-        <i @click="budgetDelete(budget.budget_num)"class="fas fa-trash-alt" style="color: red; cursor:pointer;"></i>
+        <i @click="budgetDelete(budget.budget_num)" class="fas fa-trash-alt" style="color: red; cursor:pointer;"></i>
       </td>
     </tr>
   </table>
@@ -107,7 +107,7 @@ export default {
             console.log(res)
           })
           .catch( err => {
-            consoel.log(err)
+            console.log(err)
           }) 
       } else {
         return;
