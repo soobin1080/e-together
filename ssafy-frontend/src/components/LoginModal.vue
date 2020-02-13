@@ -112,16 +112,21 @@ export default {
           console.log(res);
           console.log(res.data.accessToken);
           if (res.data.username !== "") {
-            localStorage.setItem("accessToken", res.data.accessToken);
-            localStorage.setItem("user", res.data.username);
-            localStorage.setItem("email", res.data.email);
-            localStorage.setItem("phone", res.data.phone);
+            sessionStorage.setItem("accessToken", res.data.accessToken);
+            sessionStorage.setItem("user", res.data.username);
+            sessionStorage.setItem("email", res.data.email);
+            sessionStorage.setItem("phone", res.data.phone);
+            // this.$session.start()
+            // this.$session.set("accessToken", res.data.accessToken)
+            // this.$session.set("user", res.data.username)
+            // this.$session.set("email", res.data.email)
+            // this.$session.set("phone", res.data.phone)
+
+
             this.$emit("checkLogIn");
             this.$router.push("/");
           }
-          // this.$store.state.accessToken = res.data.accessToken
-          // this.$store.state.user = res.data.username
-          // this.$store.state.tokenType = 'Bearer'
+
           else {
             alert("로그인 오류!");
           }

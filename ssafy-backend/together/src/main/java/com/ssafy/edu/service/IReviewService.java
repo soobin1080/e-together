@@ -9,12 +9,11 @@ public interface IReviewService {
 
 	List<ReviewResult> getAllReview();
 
-	void insertReview(ReviewResult reviewresult);
+	void insertReview(Review review);
 
-	void updateReview(ReviewResult reviewresult);
+	void updateReview(Review review);
 
-	void deleteReview(String user_email, String budget_title);
+	void deleteReview(int review_num);
 
-	ReviewResult getOneReview(String user_email, String budget_title);
-
+	Review getOneReview(int review_num);
 }

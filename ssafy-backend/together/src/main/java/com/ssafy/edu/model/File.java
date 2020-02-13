@@ -1,81 +1,70 @@
 package com.ssafy.edu.model;
 
 public class File {
-	private int fno;
-	private String budget_email;
-	private String budget_title;
-	private String fileName; // 저장할 파일
-	private String fileOriName; // 실제 파일
-	private String fileUrl;
+	private int file_num;
+	private int review_num;
+	private String file_name; // 저장할 파일
+	private String file_ori_name; // 실제 파일
+	private String file_url;
 
 	public File() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public File(int fno, String budget_email, String budget_title, String fileName, String fileOriName,
-			String fileUrl) {
+	public File(int file_num, int review_num, String file_name, String file_ori_name, String file_url) {
 		super();
-		this.fno = fno;
-		this.budget_email = budget_email;
-		this.budget_title = budget_title;
-		this.fileName = fileName;
-		this.fileOriName = fileOriName;
-		this.fileUrl = fileUrl;
+		this.file_num = file_num;
+		this.review_num = review_num;
+		this.file_name = file_name;
+		this.file_ori_name = file_ori_name;
+		this.file_url = file_url;
 	}
 
-	public int getFno() {
-		return fno;
+	public int getFile_num() {
+		return file_num;
 	}
 
-	public void setFno(int fno) {
-		this.fno = fno;
+	public void setFile_num(int file_num) {
+		this.file_num = file_num;
 	}
 
-	public String getBudget_email() {
-		return budget_email;
+	public int getReview_num() {
+		return review_num;
 	}
 
-	public void setBudget_email(String budget_email) {
-		this.budget_email = budget_email;
+	public void setReview_num(int review_num) {
+		this.review_num = review_num;
 	}
 
-	public String getBudget_title() {
-		return budget_title;
+	public String getFile_name() {
+		return file_name;
 	}
 
-	public void setBudget_title(String budget_title) {
-		this.budget_title = budget_title;
+	public void setFile_name(String file_name) {
+		this.file_name = file_name;
 	}
 
-	public String getFileName() {
-		return fileName;
+	public String getFile_ori_name() {
+		return file_ori_name;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFile_ori_name(String file_ori_name) {
+		this.file_ori_name = file_ori_name;
 	}
 
-	public String getFileOriName() {
-		return fileOriName;
+	public String getFile_url() {
+		return file_url;
 	}
 
-	public void setFileOriName(String fileOriName) {
-		this.fileOriName = fileOriName;
-	}
-
-	public String getFileUrl() {
-		return fileUrl;
-	}
-
-	public void setFileUrl(String fileUrl) {
-		this.fileUrl = fileUrl;
+	public void setFile_url(String file_url) {
+		this.file_url = file_url;
 	}
 
 	@Override
 	public String toString() {
-		return "File [fno=" + fno + ", budget_email=" + budget_email + ", budget_title=" + budget_title + ", fileName="
-				+ fileName + ", fileOriName=" + fileOriName + ", fileUrl=" + fileUrl + "]";
+		return "File [file_num=" + file_num + ", review_num=" + review_num + ", file_name=" + file_name
+				+ ", file_ori_name=" + file_ori_name + ", file_url=" + file_url + "]";
 	}
 
 }

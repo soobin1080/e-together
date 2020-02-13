@@ -8,7 +8,6 @@ import com.ssafy.edu.dao.ReviewDaoImpl;
 import com.ssafy.edu.model.Review;
 import com.ssafy.edu.model.ReviewResult;
 
-
 @Service
 public class ReviewService implements IReviewService {
 
@@ -22,29 +21,27 @@ public class ReviewService implements IReviewService {
 	}
 
 	@Override
-	public void insertReview(ReviewResult reviewresult) {
+	public void insertReview(Review review) {
 		// TODO Auto-generated method stub
-		reviewdao.insertReview(reviewresult);
+		reviewdao.insertReview(review);
 	}
 
 	@Override
-	public void updateReview(ReviewResult reviewresult) {
+	public void updateReview(Review review) {
 		// TODO Auto-generated method stub
-		reviewdao.updateReview(reviewresult);
+		reviewdao.updateReview(review);
 	}
 
 	@Override
-	public void deleteReview(String user_email, String budget_title) {
+	public void deleteReview(int review_num) {
 		// TODO Auto-generated method stub
-		reviewdao.deleteReview(user_email, budget_title);
+		reviewdao.deleteReview(review_num);
 	}
 
 	@Override
-	public ReviewResult getOneReview(String user_email, String budget_title) {
+	public Review getOneReview(int review_num) {
 		// TODO Auto-generated method stub
-		return reviewdao.getOneReview(user_email,budget_title);
+		return reviewdao.getOneReview(review_num);
 	}
-
-
 
 }

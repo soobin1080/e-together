@@ -139,14 +139,20 @@ import http from "../http-common";
 export default {
   data(){    
     return{
-    personnel: "",
+    personnel: 0,
     budget: "",
     quantity: 0,
     price: 0,
     dialog: false,
     total: 0,
     budgetTitle: "",
-    list: []
+    list: [],
+    budgetListBarClass: {
+      '정육/계란류' : 'progress-bar bg-danger',
+      '채소': 'progress-bar bg-success',
+      '생수/음료':'progress-bar bg-primary',
+      '라면' : 'progress-bar bg-warning',
+    },
     }
   },
 
@@ -203,13 +209,33 @@ export default {
         if (this.budget == "") {
           alert("예산을 입력해주세요.");
         }
-        http
-          .post("/budget", {
-            user_email: localStorage.getItem('email'),
+        let budget_info = {
+            user_email: sessionStorage.getItem('email'),
             budget_title: this.budgetTitle,
             personnel: this.personnel,
             budget: this.budget,
-            budgetlist: this.list
+        };
+
+        let budget_list = this.list;
+
+        let budget = {
+            user_email: sessionStorage.getItem('email'),
+            budget_title: this.budgetTitle,
+            personnel: this.personnel,
+            budget: this.budget,
+            budget_list : this.list
+          }
+        console.log(budget)
+        // console.log(this.budgetTitle)
+        http
+          .post("/budget", {
+            budgetinfo : {
+              user_email: sessionStorage.getItem('email'),
+              budget_title: this.budgetTitle,
+              personnel: this.personnel,
+              budget: this.budget
+            },
+            budgetlist : this.list
           }, this.$store.getters.requestHeader)
           .then(response => {
             console.log(response)
@@ -241,7 +267,8 @@ export default {
       console.log('change')
       const oldvalue = this.computedBudgetList[idx].quantity
       const newvalue = event.target.value
-      // console.log(budget)
+      console.log(oldvalue)
+      console.log(newvalue)
       let ope = ""
       if (oldvalue > newvalue) { // 감소
         // this.$store.dispatch('changeQuantityAsync', budget, idx)
@@ -262,7 +289,7 @@ export default {
       console.log(budget)
       console.log(changeInfo)
       this.$store.dispatch('changeQuantityAsync', changeInfo)
-      this.$store.state.budgetlist[idx].quantity = oldvalue
+      // this.$store.state.budgetlist[idx].quantity = oldvalue
       // const quantities = document.querySelectorAll('.quantity')
       // console.log(quantities[idx].value)
     },
@@ -304,7 +331,7 @@ export default {
   computed: {
     computedBudgetList() {
       // console.log(typeof this.$store.state.budgetlist[0])
-      // this.list = this.$store.state.budgetlist
+      this.list = this.$store.state.budgetlist
       return this.$store.state.budgetlist
     }
   }

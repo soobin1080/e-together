@@ -1,36 +1,58 @@
 package com.ssafy.edu.model;
 
-public class ReviewResult {
+import java.util.Date;
 
-	private String user_email;
+public class ReviewResult {
+//제목, 작성자,이미지, 예산, 인원, 좋아요수
+	private int review_num;
+	private int budget_num;
+	private String name;
 	private String budget_title;
-	private String user_name;
-	private String img;
-	private String content;
-	private Budget budget;
+	private int personnel;
+	private int budget;
+	private String budget_img;
+	private int like_count;
 
 	public ReviewResult() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReviewResult(String user_email, String budget_title, String user_name, String img, String content,
-			Budget budget) {
+	public ReviewResult(int review_num, int budget_num, String name, String budget_title, int personnel, int budget,
+			String budget_img, int like_count) {
 		super();
-		this.user_email = user_email;
+		this.review_num = review_num;
+		this.budget_num = budget_num;
+		this.name = name;
 		this.budget_title = budget_title;
-		this.user_name = user_name;
-		this.img = img;
-		this.content = content;
+		this.personnel = personnel;
 		this.budget = budget;
+		this.budget_img = budget_img;
+		this.like_count = like_count;
 	}
 
-	public String getUser_email() {
-		return user_email;
+	public int getReview_num() {
+		return review_num;
 	}
 
-	public void setUser_email(String user_email) {
-		this.user_email = user_email;
+	public void setReview_num(int review_num) {
+		this.review_num = review_num;
+	}
+
+	public int getBudget_num() {
+		return budget_num;
+	}
+
+	public void setBudget_num(int budget_num) {
+		this.budget_num = budget_num;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getBudget_title() {
@@ -41,42 +63,43 @@ public class ReviewResult {
 		this.budget_title = budget_title;
 	}
 
-	public String getUser_name() {
-		return user_name;
+	public int getPersonnel() {
+		return personnel;
 	}
 
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
+	public void setPersonnel(int personnel) {
+		this.personnel = personnel;
 	}
 
-	public String getImg() {
-		return img;
-	}
-
-	public void setImg(String img) {
-		this.img = img;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public Budget getBudget() {
+	public int getBudget() {
 		return budget;
 	}
 
-	public void setBudget(Budget budget) {
+	public void setBudget(int budget) {
 		this.budget = budget;
+	}
+
+	public String getBudget_img() {
+		return budget_img;
+	}
+
+	public void setBudget_img(String budget_img) {
+		this.budget_img = budget_img;
+	}
+
+	public int getLike_count() {
+		return like_count;
+	}
+
+	public void setLike_count(int like_count) {
+		this.like_count = like_count;
 	}
 
 	@Override
 	public String toString() {
-		return "ReviewResult [user_email=" + user_email + ", budget_title=" + budget_title + ", user_name=" + user_name
-				+ ", img=" + img + ", content=" + content + ", budget=" + budget + "]";
+		return "ReviewResult [review_num=" + review_num + ", budget_num=" + budget_num + ", name=" + name
+				+ ", budget_title=" + budget_title + ", personnel=" + personnel + ", budget=" + budget + ", budget_img="
+				+ budget_img + ", like_count=" + like_count + "]";
 	}
 
 }

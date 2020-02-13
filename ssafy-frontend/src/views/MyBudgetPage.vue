@@ -33,7 +33,12 @@
     </div>
     <div class="mx-auto my-5 flat" style="width:60%" v-if="showflag==true">
      <MyBudgetDetail
-      :budgetDetail="budgetDetail" :title="title"></MyBudgetDetail>
+     :budgetDetail="budgetDetail" 
+     :budgetList="budgetList" 
+     :budgetInfo="budgetInfo"
+     @getBudgetDetail="showDetail()"
+     >
+     </MyBudgetDetail>
     </div>
 
   </div>  
@@ -64,7 +69,9 @@ export default {
     pagingLength: 0,
     allLength: 0,
     budgetPerPage: 5,
-    budgetDetail: [],
+    budgetList: [],
+    budgetInfo: Object,
+    budgetDetail: Object,
     showflag : false
   }),
   methods: {
@@ -73,7 +80,9 @@ export default {
     },
 
     getMyBudgets() {
-      let myEmail = localStorage.getItem("email");
+      console.log('getMyBudget')
+      let myEmail = sessionStorage.getItem("email");
+      console.log(myEmail)
       http
         .get(
           "/budget/"+myEmail,
@@ -103,14 +112,26 @@ export default {
           console.log(err);
         });
     },
-    showdetail(title) {
-      this.budgetDetail = []
-      this.showflag=true;
-      if(this.showflag==true){
-      console.log("--Parent (showdetail) : " + title);
-      this.budgetDetail.budget_title = title;
-      this.title = title
-      // this.budgetDetail =  
+    showdetail(budgetNum) {
+      this.showflag = true;
+      if(this.showflag === true){
+        console.log("--Parent (showdetail) : " + budgetNum);
+        http
+          .get(`/budget/detail/${budgetNum}`, {
+            budget_num : budgetNum
+          },
+           this.$store.getters.RequestHeader)
+            .then (res => {
+              // console.log(res)
+              this.budgetInfo = res.data.budgetinfo
+              this.budgetList = res.data.budgetlist
+              console.log(this.budgetInfo)
+              console.log(this.budgetList)
+            })
+       // this.budgetDetail.budget_title = title;
+      // this.title = title
+      // // this.budgetDetail =  
+
       }
       // this.showflag=false;      
     }

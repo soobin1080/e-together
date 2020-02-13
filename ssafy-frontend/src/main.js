@@ -12,6 +12,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import VueCsrf from 'vue-csrf';
+import VueSessionStorage from 'vue-sessionstorage'
 import './registerServiceWorker'
 
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
@@ -35,8 +36,9 @@ Vue.use(VModal)
 Vue.use(VueCsrf);
 Vue.use(VueAxios, axios)
 Vue.use(VuetifyNumberInput);
-Vue.use(VueSession)
+Vue.use(VueSession, {persist: true})
 Vue.use(InfiniteLoading, { /* options */ });
+Vue.use(VueSessionStorage)
 
 // Require dependencies
 

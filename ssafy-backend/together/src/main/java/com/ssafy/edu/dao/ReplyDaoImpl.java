@@ -17,12 +17,10 @@ public class ReplyDaoImpl {
 	@Autowired
 	private SqlSession sqlSession;
 
-	public List<Reply> getAllReply(String budget_email, String budget_title) {
+	
+	public List<Reply> getAllReply(int review_num) {
 		// TODO Auto-generated method stub
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("budget_email", budget_email);
-		paramMap.put("budget_title", budget_title);
-		return sqlSession.selectList(ns + "getAllReply", paramMap);
+		return sqlSession.selectList(ns + "getAllReply", review_num);
 	}
 
 	public void insertReply(Reply reply) {
@@ -39,7 +37,7 @@ public class ReplyDaoImpl {
 		// TODO Auto-generated method stub
 		sqlSession.update(ns + "updateReply", reply);
 	}
-	
+
 	
 
 }

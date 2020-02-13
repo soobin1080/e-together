@@ -24,9 +24,11 @@ public interface IBudgetService {
 
 //	void deleteBudgetList(String user_email, String budget_title, String pro_id);
 
-	void updateBudgetFitness(BudgetInfo budgetinfo);
+//	void updateBudget(BudgetInfo budgetinfo);
 
-	void updateBudget(int budget_num);
+	int getLastInsertBudgetNum(String user_email);
+
+	void updateBudget(int budget_num, int suitability);
 
 
 	
