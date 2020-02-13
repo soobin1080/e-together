@@ -74,19 +74,18 @@
         <p style="padding-left:30px; color:gray">후기를 등록하시면 회원님의 예산 상세 내역이 함께 게시됩니다.!</p>
         <v-col>
           <div class="container">
-            <div class="large-12 medium-12 small-12 cell">
+            <form class="large-12 medium-12 small-12 cell" enctype="multipart/form-data">
               <label>
                 Files
                 <input
                   type="file"
-                  id="files"
-                  ref="files"
+                  ref="reviewimage"
                   multiple
-                  v-on:change="handleFilesUploads"
+                  v-on:change="handleFilesUploads()"
                 />
               </label>
               <!-- <button v-on:click="submitFiles()">Submit</button> -->
-            </div>
+            </form>
           </div>
 
           <v-textarea
@@ -139,16 +138,15 @@ export default {
       likeClass: "far fa-thumbs-up",
       dislikeClass: "far fa-thumbs-down",
       files: {},
-      
+      image: ""
     };
   },
 
   methods: {
-    
     handleFilesUploads() {
-      console.log("1. 이미지는: " + this.$refs.files.files );
-      this.files = this.$refs.files.files;
-      console.log("2. 이미지는: " + this.files );
+      console.log(this.$refs);
+      this.image = this.$refs.reviewimage.files;
+      console.log(this.image);
     },
 
     dateParsing(beforeParsing) {
@@ -169,51 +167,49 @@ export default {
       return this.total;
     },
     writeReview(bool) {
-      console.log("이미지는: " + this.files + JSON.stringify(this.files));
       if (bool === true) {
         if (this.content == "") {
           alert("내용을 입력해주세요.");
           return;
         }
 
-        /*
-          Initialize the form data
-        */
-        let formData = new FormData();
-
-        /*
-          Iteate over any file sent over appending the files
-          to the form data.
-        */
-        for (var i = 0; i < this.files.length; i++) {
-          let file = this.files[i];
-          console.log("파일 하나: "+file);
-
-          formData.append("files[" + i + "]", file);
-        }
-        console.log("폼데이터: "+formData + JSON.stringify(formData));
+        // /*
+        //   Initialize the form data
+        // */
+        // const formData = new FormData();
 
         // /*
         //   Iteate over any file sent over appending the files
         //   to the form data.
         // */
-        // for (var i = 0; i < this.images.length; i++) {
-        //   let file = this.images[i];
+        // for (var i = 0; i < this.image.length; i++) {
+        //   let file = this.image[i];
+        //   console.log(file);
+        //   formData.append("files", file);
         // }
-        // console.log("폼데이터: "+formData + JSON.stringify(formData));
-        files.append('file', this.files);
+        // console.log(formData);
+        // console.log(formData._boundary);
+
+        // http
+        // .post('review', formData,{
+        //   headers:{
+        //     'Content-type' : 'multipart/form-data'
+        //   }
+        // }).then((res)=>{
+        //   console.log(res);
+        // }).catch((err) => {
+        //   console.log(err);
+        // });
+
+        this.imageupload();
+
         http
-          .post(`/review`, {     
-              budget_num: this.budgetInfo.budget_num,             
-              review_content: this.content,
-              files: formData},
-            {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          )
+          .post("/review", {
+            budget_num: this.budgetInfo.budget_num,
+            review_content: this.content
+          })
           .then(response => {
-            console.log('image upload response')
+            console.log("content전송!");
             console.log(response);
             // this.result = response.;
           })
@@ -225,8 +221,59 @@ export default {
         this.dialog = false;
       }
     },
+
+    imageupload() {
+      /*
+          Initialize the form data
+        */
+      const formData = new FormData();
+
+      /*
+          Iteate over any file sent over appending the files
+          to the form data.
+        */
+      for (var i = 0; i < this.image.length; i++) {
+        let file = this.image[i];
+        console.log(file);
+        formData.append("files", file);
+      }
+      console.log(formData);
+      for (var key of formData.keys()) {
+        console.log("key");
+  console.log(key);
+
+}
+
+for (var value of formData.values()) {
+console.log("value");
+  console.log(value);
+
+}
+
+      http
+        .post(
+          "/review/upload",
+          {
+            files:formData,
+            budget_num: this.budgetInfo.budget_num
+          },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+        .then(response => {
+          console.log("image upload response");
+          console.log(response);
+          // this.result = response.;
+        })
+        .catch(ex => {
+          console.warn("ERROR! :", ex);
+        });
+    },
     checklikeStatus() {
-      let status = this.budgetInfo.suitability
+      let status = this.budgetInfo.suitability;
       // const like = document.querySelector('.fa-thumbs-up')
       // console.log(status)
       // console.log(like.className)
@@ -280,9 +327,8 @@ export default {
         //   this.dislikeClass = "fas fa-thumbs-down";
         //   // this.budgetInfo.suitability = 2
         // }
-        this.$emit('renewBudgetList')
-        this.$emit('showdetail', this.budgetInfo.budget_num)
-
+        this.$emit("renewBudgetList");
+        this.$emit("showdetail", this.budgetInfo.budget_num);
       }
     },
     makePDF(selector) {
