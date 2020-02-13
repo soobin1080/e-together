@@ -29,5 +29,5 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "SSAFY", description = "SSAFY 2020")
 public class RecommendController {
 	public static final Logger logger = LoggerFactory.getLogger(RecommendController.class);
-
+	
 }

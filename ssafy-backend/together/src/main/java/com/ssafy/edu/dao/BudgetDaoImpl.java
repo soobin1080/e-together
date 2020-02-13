@@ -20,11 +20,13 @@ public class BudgetDaoImpl {
 	@Autowired
 	private SqlSession sqlSession;
 
+	//내 예산안보기
 	public List<BudgetInfo> getMyBudgetList(String user_email) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(ns + "getBudgetList", user_email);
+		return sqlSession.selectList(ns + "getMyBudgetList", user_email);
 	}
 
+	//예산안 상세보기
 	public BudgetInfo getOneBudgetInfo(int budget_num) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(ns + "getOneBudgetInfo", budget_num);
@@ -35,18 +37,11 @@ public class BudgetDaoImpl {
 		return sqlSession.selectList(ns + "getOneBudgetList", budget_num);
 	}
 
-	public int insertOneBudget(Budget budget) {
-		// TODO Auto-generated method stub
-		return sqlSession.insert(ns + "insertOneBudget", budget);
-
-	}
-
 	public void insertBudgetInfo(BudgetInfo budgetinfo) {
 		// TODO Auto-generated method stub
 		sqlSession.insert(ns + "insertBudgetInfo", budgetinfo);
 	}
 
-	// 예산안 하나 상세보기
 	public void insertBudgetList(BudgetList budgetlist) {
 		// TODO Auto-generated method stub
 		sqlSession.insert(ns + "insertBudgetList", budgetlist);
@@ -57,19 +52,22 @@ public class BudgetDaoImpl {
 		sqlSession.delete(ns + "deleteBudgetInfo", budget_num);
 	}
 
-//	public void deleteBudgetList(String user_email, String budget_title, String pro_id) {
+//	public void updateBudget(BudgetInfo budgetinfo) {
 //		// TODO Auto-generated method stub
-//		Map<String, Object> paramMap = new HashMap<>();
-//		paramMap.put("user_email", user_email);
-//		paramMap.put("budget_title", budget_title);
-//		paramMap.put("pro_id", pro_id);
-//		sqlSession.delete(ns + "deleteBudgetList", paramMap);
-//
+//		sqlSession.update(ns + "updateBudget", budgetinfo);
 //	}
 
-	public void updateBudget(int budget_num) {
+	public int getLastInsertBudgetNum(String user_email) {
 		// TODO Auto-generated method stub
-		sqlSession.update(ns + "updateBudget", budget_num);
+		return sqlSession.selectOne(ns+"getLastInsertBudgetNum",user_email);
+	}
+
+	public void updateBudget(int budget_num, int suitability) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("budget_num", budget_num);
+		paramMap.put("suitability", suitability);
+		sqlSession.selectOne(ns+"updateBudget",paramMap);
 	}
 
 	

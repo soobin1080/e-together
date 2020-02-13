@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import com.ssafy.edu.model.Review;
 import com.ssafy.edu.model.ReviewResult;
 
-
 @Repository
 public class ReviewDaoImpl {
 	String ns = "ssafy.review.";
@@ -21,35 +20,29 @@ public class ReviewDaoImpl {
 
 	public List<ReviewResult> getAllReview() {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(ns+"getAllReview");
-	}
-
-	public void insertReview(ReviewResult reviewresult) {
-		// TODO Auto-generated method stub
-		sqlSession.insert(ns+"insertReview",reviewresult);
-	}
-
-	public void updateReview(ReviewResult reviewresult) {
-		// TODO Auto-generated method stub
-		sqlSession.update(ns+"updateReview",reviewresult);		
-	}
-
-	public void deleteReview(String user_email, String budget_title) {
-		// TODO Auto-generated method stub
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("user_email", user_email);
-		paramMap.put("budget_title", budget_title);
-		sqlSession.delete(ns+"deleteReview",paramMap);
-	}
-
-	public ReviewResult getOneReview(String user_email, String budget_title) {
-		// TODO Auto-generated method stub
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("user_email", user_email);
-		paramMap.put("budget_title", budget_title);
-		return sqlSession.selectOne(ns+"getOneReview",paramMap);
+		return sqlSession.selectList(ns + "getAllReview");
 	}
 	
+	public Review getOneReview(int review_num) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(ns + "getOneReview",review_num);
+	}
+
+	public void insertReview(Review review) {
+		// TODO Auto-generated method stub
+		sqlSession.insert(ns + "insertReview", review);
+	}
+
+	public void updateReview(Review review) {
+		// TODO Auto-generated method stub
+		sqlSession.update(ns + "updateReview", review);
+	}
+
+	public void deleteReview(int review_num) {
+		// TODO Auto-generated method stub
+		sqlSession.delete(ns + "deleteReview", review_num);
+	}
+
 	
 
 }
