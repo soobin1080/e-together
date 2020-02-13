@@ -1,16 +1,15 @@
 <template>
-  <div id="downloadpdf">
-    <table width="100%" style="font-size:15px">
+  <div id="downloadpdf" style>
+    <div>
+    </div>
+    <table width="100%" style="font-size:15px" class="table-dark">
       <tr style="text-align:center;">
         <th>제목</th>
         <td v-html="computedBudgetInfo.budget_title" style="text-align:center"></td>
-
         <th>인원</th>
         <td style="text-align:center">{{computedBudgetInfo.personnel}} 명</td>
-
         <th>예산</th>
         <td style="text-align:center">{{computedBudgetInfo.budget}} 원</td>
-
         <th>날짜</th>
         <td style="text-align:center">{{dateParsing(computedBudgetInfo.budget_date)}}</td>
 
@@ -210,8 +209,8 @@ export default {
             {
             headers: {
               "Content-Type": "multipart/form-data"
-            }
-          )
+            },
+          })
           .then(response => {
             console.log('image upload response')
             console.log(response);
