@@ -16,15 +16,19 @@
       <div
         v-for="bar in getMainBar"
         class="progress-bar"
+        :key="bar.price"
+        :class="bar.className"
+        v-bind:style="{width: (bar.price / (getMainTotal + getETCTotal)) * 100+'%'}"
         >
-          {{bar.price}}
+          {{bar.category}}
       </div>
 
       <div
-        v-for="bar in getETCBar"
-        class="progress-bar bg-info"
+        v-if="getETCTotal"
+        class="progress-bar bg-secondary"
+        v-bind:style="{width: (getETCTotal / (getMainTotal + getETCTotal)) * 100+'%'}"
       >
-        {{bar.price}}
+        기타
       </div>
       <!-- <div class="progress-bar" role="progressbar" style="width: 30%"></div>
       <div class="progress-bar bg-info" role="progressbar" style="width: 20%"></div> -->

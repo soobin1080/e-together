@@ -46,6 +46,13 @@ export default {
   data: () => ({
     quantity: 1,
     ETC: ['수산물/해산물', '쌀/잡곡', '즉석식품', '과일', '스낵', '견과/건해산물'],
+    colorByCategory: {
+        '정육/계란류': 'bg-danger',
+        '생수/음료' : 'bg-primary',
+        '채소' : 'bg-success',
+        '라면' : 'bg-warning',
+        '기타' : 'bg-secondary'
+    }
   }),
   methods: {
     stringNumberToInt(stringNumber) {
@@ -59,6 +66,8 @@ export default {
       //   "/////////////" + this.pro_id + "             " + this.main_category
       // );
       // console.log(this.product)
+      console.log(this.colorByCategory['정육/계란류'])
+      
       let product = {
         pro_id : this.product.pro_id,
         pro_name: this.pro_name,
@@ -66,7 +75,7 @@ export default {
         quantity: Number(this.quantity),
         pro_price:this.stringNumberToInt(this.price) * Number(this.quantity),
         category: this.product.main_category,
-        isETC: this.ETC.includes(this.product.main_category)
+        isETC: this.ETC.includes(this.product.main_category),
       };
       console.log(product)
       this.$store.dispatch('addCartAsync', product)

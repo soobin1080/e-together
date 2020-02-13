@@ -135,6 +135,7 @@
 
 <script>
 import EventBus from "../event-bus.js";
+import http from "../http-common";
 export default {
   data(){    
     return{
@@ -197,12 +198,11 @@ export default {
         if (this.budget == "") {
           alert("예산을 입력해주세요.");
         }
-        httpCommon
+
+
+
+        http
           .post("/budget", {
-            budget_title: this.budget_title,
-            personnel: this.personnel,
-            budget: this.budget,
-            list: this.list
           })
           .then(response => {
             this.result = response.data;
