@@ -1,7 +1,5 @@
 package com.ssafy.edu.controller;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,10 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.edu.model.Budget;
 import com.ssafy.edu.model.BudgetInfo;
@@ -34,20 +30,15 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api")
 @Api(value = "SSAFY", description = "SSAFY 2020")
-public class FileController {
-	public static final Logger logger = LoggerFactory.getLogger(FileController.class);
+public class KakaoController {
+	public static final Logger logger = LoggerFactory.getLogger(KakaoController.class);
 
-	@ApiOperation(value = "파일 업로드하기", response = List.class)
-	@RequestMapping(value = "/upload/{review_num}", method = RequestMethod.POST)
-	public List<String> uploadFiles(@RequestPart List<MultipartFile> files) throws Exception {
-		logger.info("1-------------getBudgetList-----------------------------" + new Date());
-		
-		List<String> list = new ArrayList<>();
-		for (MultipartFile file : files) {
-			String originalfileName = file.getOriginalFilename();
-			File dest = new File("C:\\Users\\multicampus\\Desktop\\s02p13b109\\ssafy-backend\\together\\UploadFile" + originalfileName);
-			file.transferTo(dest);
-		}
-		return list;
+	@Autowired
+	private IBudgetService budgetservice;
+
+	@ApiOperation(value = "카카오톡으로 로그인하기", response = List.class)
+	@RequestMapping(value = "/kakaologin", method = RequestMethod.GET)
+	public String kakaoLogin() throws Exception {
+		return null;
 	}
 }

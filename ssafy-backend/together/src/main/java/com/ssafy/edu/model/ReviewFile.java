@@ -1,18 +1,18 @@
 package com.ssafy.edu.model;
 
-public class File {
+public class ReviewFile {
 	private int file_num;
 	private int review_num;
 	private String file_name; // 저장할 파일
 	private String file_ori_name; // 실제 파일
 	private String file_url;
 
-	public File() {
+	public ReviewFile() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public File(int file_num, int review_num, String file_name, String file_ori_name, String file_url) {
+	public ReviewFile(int file_num, int review_num, String file_name, String file_ori_name, String file_url) {
 		super();
 		this.file_num = file_num;
 		this.review_num = review_num;
@@ -68,3 +68,4 @@ public class File {
 	}
 
 }
+
