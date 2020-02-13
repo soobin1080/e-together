@@ -140,7 +140,7 @@ export default {
   data(){    
     return{
     personnel: 0,
-    budget: "",
+    budget: 0,
     quantity: 0,
     price: 0,
     dialog: false,
@@ -239,11 +239,13 @@ export default {
           }, this.$store.getters.requestHeader)
           .then(response => {
             console.log(response)
-            // this.result = response.;
+            this.personnel = 0
+            this.budget = 0
           })
           .catch(ex => {
             console.warn("ERROR! :", ex);
           });
+        this.$store.dispatch('allClearAsync')
         this.$router.push("/mybudget");
       } else {        
         this.dialog=false;

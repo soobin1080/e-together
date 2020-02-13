@@ -32,7 +32,7 @@ export default {
     ResizeText
   },
   data: () => ({
-    page: 1,
+    page: 0,
     title: "",
     body: "",
     pages: 1,
@@ -75,21 +75,26 @@ export default {
           console.log(response)
 
             setTimeout(() => { //스크롤 페이징을 띄우기 위한 시간 지연(1초)
-              if (response.data.length) {
+              if (this.allReviews.length <= response.data.length) {
                 // this.page += 1
-                this.allReviews = this.allReviews.concat(response.data);
+                console.log("response.data.length : " +response.data.length)
+                
+                this.allReviews = this.allReviews.concat(response.data[this.page]);
+                this.page++;
                 $state.loaded(); //데이터 로딩
                 // this.limit += 10
-                // console.log('allreview length : '+this.allreviews.leng) 
-                if (this.allReviews.length > response.data.length) {
-                  $state.complete(); //데이터가 없으면 로딩 끝
-                }
+                console.log('allreview length : '+this.allreviews.leng) 
+                // console.log("")
+                // if (this.allReviews.length > response.data.length) {
+                //   $state.complete(); //데이터가 없으면 로딩 끝
+                // }
               } else {
                 $state.complete();
               }
             }, 1000)
           }).catch(error => {
             console.error(error);
+            $state.complete();
         })
     }
   },
@@ -103,7 +108,7 @@ export default {
     // })
   },
   mounted() {
-    this.infiniteHandler($state)
+    // this.infiniteHandler($state)
   }
 };
 </script>
