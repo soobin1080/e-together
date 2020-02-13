@@ -33,10 +33,10 @@
     </div>
     <div class="mx-auto my-5 flat" style="width:60%" v-if="showflag==true">
      <MyBudgetDetail
-     :budgetDetail="budgetDetail" 
      :budgetList="budgetList" 
      :budgetInfo="budgetInfo"
-     @getBudgetDetail="showDetail()"
+     @renewBudgetList="getMyBudgets"
+     @showdetail="showdetail"
      >
      </MyBudgetDetail>
     </div>
@@ -82,7 +82,7 @@ export default {
     getMyBudgets() {
       console.log('getMyBudget')
       let myEmail = sessionStorage.getItem("email");
-      console.log(myEmail)
+      // console.log(myEmail)
       http
         .get(
           "/budget/"+myEmail,
@@ -92,7 +92,7 @@ export default {
           this.$store.getters.RequestHeader
         )
         .then(res => {
-          console.log("getMyBudget");
+          // console.log("getMyBudget");
           this.allBudgets = res.data;
           this.allLength = res.data.length;
           this.pagingList = this.allBudgets;
@@ -104,7 +104,7 @@ export default {
             this.pagingLength =
               parseInt(this.allLength / this.budgetPerPage) + 1;
           }
-          this.pages = 1;
+          // this.pages = 1;
           // console.log(res)
           // return res.data
         })
@@ -115,7 +115,7 @@ export default {
     showdetail(budgetNum) {
       this.showflag = true;
       if(this.showflag === true){
-        console.log("--Parent (showdetail) : " + budgetNum);
+        // console.log("--Parent (showdetail) : " + budgetNum);
         http
           .get(`/budget/detail/${budgetNum}`, {
             budget_num : budgetNum
@@ -125,8 +125,8 @@ export default {
               // console.log(res)
               this.budgetInfo = res.data.budgetinfo
               this.budgetList = res.data.budgetlist
-              console.log(this.budgetInfo)
-              console.log(this.budgetList)
+              // console.log(this.budgetInfo)
+              // console.log(this.budgetList)
             })
        // this.budgetDetail.budget_title = title;
       // this.title = title
@@ -138,7 +138,7 @@ export default {
   },
   computed: {
     mountedBudget() {
-      console.log("mountedBudget");
+      // console.log("mountedBudget");
       this.allBudgets = this.getMyBudgets();
       this.allLength = this.allBudgets.length;
       return this.getMyBudgets();

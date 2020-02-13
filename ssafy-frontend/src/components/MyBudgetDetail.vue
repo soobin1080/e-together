@@ -215,7 +215,8 @@ export default {
         this.dialog = false;
       }
     },
-    checklikeStatus(status) {
+    checklikeStatus() {
+      let status = this.budgetInfo.suitability
       // const like = document.querySelector('.fa-thumbs-up')
       // console.log(status)
       // console.log(like.className)

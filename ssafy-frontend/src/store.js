@@ -16,15 +16,54 @@ export default new Vuex.Store({
     budget: '', // 예산 
     tokenType: '',
     budgetlist : [],
-    budgetListBar: [],
-    colorByCategory: {
-      '정육/계란류': 'bg-danger',
-      '생수/음료' : 'bg-primary',
-      '채소' : 'bg-success',
-      '라면' : 'bg-warning',
-      '기타' : 'bg-secondary'
-    },
-    budgetListBarETC: [],
+    budgetListBar: [
+      { category : '정육/계란류',
+        price: 0,
+        className: 'progress-bar bg-danger'
+      }, {
+        category : '생수/음료',
+        price: 0,
+        className: 'progress-bar bg-primary'
+      }, {
+        category : '채소',
+        price: 0,
+        className: 'progress-bar bg-success'
+      }, {
+        category : '라면',
+        price: 0,
+        className: 'progress-bar bg-warning'
+      }],
+
+    budgetListBarETC: [
+      {
+        category : '수산물/해산물',
+        price: 0,
+        className: 'progress-bar bg-primary'
+      }, {
+        category : '쌀/잡곡',
+        price: 0,
+        className: 'progress-bar bg-secondary'
+
+      }, {
+        category : '즉석식품',
+        price: 0,
+        className: 'progress-bar bg-dark'
+
+      }, {
+        category : '과일',
+        price: 0,
+        className: 'progress-bar bg-success'
+
+      }, {
+        category : '스낵',
+        price: 0,
+        className: 'progress-bar bg-warning'
+      }, {
+        category : '견과/건해산물',
+        price: 0,
+        className: 'progress-bar bg-info'
+      }
+    ],
     ETC: ['수산물/해산물', '쌀/잡곡', '즉석식품', '과일', '스낵', '견과/건해산물'],
     mainTotal: 0,
     etcTotal: 0,
@@ -120,12 +159,6 @@ export default new Vuex.Store({
         })
 
         if (barIdx === -1) {
-          state.budgetListBarETC.push({
-            category: product.category,
-            price : (product.price * product.quantity),
-            className: 'progress-bar bg-secondary'
-          })
-        } else {
             state.budgetListBarETC[barIdx].price += (product.price * product.quantity)
           }
           // state.etcTotal += (product.price*product.quantity);
@@ -139,15 +172,8 @@ export default new Vuex.Store({
         //   return budget.
         // })
         // console.log(state.budgetListBarClass['정육/계란류'])
-        if (barIdx === -1) {
-          state.budgetListBar.push({
-            category: product.category,
-            price : (product.price * product.quantity),
-            className: "progess-bar " + state.colorByCategory[product.category] 
-          })
-        } else {
+  
             state.budgetListBar[barIdx].price += (product.price * product.quantity)
-          }
         // state.mainTotal += (product.price*product.quantity);
       }
 
@@ -171,9 +197,9 @@ export default new Vuex.Store({
           state.budgetListBar[barIdx].price -= changeInfo.price
         }
 
-        if (state.budgetListBar[barIdx].price === 0) {
-          state.budgetListBar.splice(barIdx, 0)
-        }
+        // if (state.budgetListBar[barIdx].price === 0) {
+        //   state.budgetListBar.splice(barIdx, 0)
+        // }
       } else { // 기타일때
         const barIdx = state.budgetListBarETC.findIndex(budget => {
           return budget.category === changeInfo.category
@@ -185,9 +211,9 @@ export default new Vuex.Store({
           state.etcTotal -= changeInfo.price
           state.budgetListBarETC[barIdx].price -= changeInfo.price
         }
-        if (state.budgetListBarETC[barIdx].price === 0) {
-          state.budgetListBarETC.splice(barIdx, 0)
-        }
+        // if (state.budgetListBarETC[barIdx].price === 0) {
+        //   state.budgetListBarETC.splice(barIdx, 0)
+        // }
         
       }
 
@@ -207,6 +233,19 @@ export default new Vuex.Store({
       // }
 
 
+    },
+
+    allClear: function(state) {
+      console.log('allClear')
+      state.budgetlist = [];
+      for (let budget of state.budgetListBar) {
+        budget.price = 0
+      }
+      for (let budget of state.budgetListBarETC) {
+        budget.price = 0
+      }
+      state.mainTotal = 0;
+      state.etcTotal = 0;
     }
 
   },
@@ -246,8 +285,9 @@ export default new Vuex.Store({
     options.commit('changeQuantity', changeInfo)
   },
 
-  changeBarAsync: function(options, changeInfo) {
-
+  allClearAsync: function(options) {
+    console.log('allClearAsync')
+    options.commit('allClear')
   }
 }
 })
