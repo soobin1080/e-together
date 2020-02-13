@@ -36,7 +36,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       
-      <v-toolbar-items class="hidden-xs-only">
+      <v-toolbar-items class="hidden-xs-only" style="height: 64px;">
         <div class="menu" style="height:20px">       
        <v-btn text @click="clickproduct" style="height:64px" >Mart</v-btn>             
         <v-btn text v-if="username"  @click="clickmybudget" style="height:64px">My Budget</v-btn>

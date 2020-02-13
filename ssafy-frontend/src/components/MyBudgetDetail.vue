@@ -167,22 +167,24 @@ export default {
       return this.total;
     },
     writeReview(bool){
-      console.log("이미지는: "+this.image);
+      // console.log("이미지는: "+this.image);
      if (bool === true) {
         if (this.content == "") {
           alert("내용을 입력해주세요.");
           return;
-        }       
+        }
+     
         http
           .post(`/review`, {
-            budget_num: this.budgetInfo.budget_num,
-            user_email: sessionStorage.getItem('email'),
-            budget_title: this.budgetInfo.budget_title,
-            img: this.image,
-            review_content: this.content            
+            review : {
+              budget_num: this.budgetInfo.budget_num,
+              // user_email: sessionStorage.getItem('email'),
+              // budget_title: this.budgetInfo.budget_title,
+              review_content: this.content,
+            }         
           }, this.$store.getters.requestHeader)
           .then(response => {
-            console.log(response)
+            // console.log(response)
             // this.result = response.;
           })
           .catch(ex => {
@@ -193,7 +195,8 @@ export default {
         this.dialog=false;
       }
     },
-    checklikeStatus(status) {
+    checklikeStatus() {
+      let status = this.budgetInfo.suitability
       // const like = document.querySelector('.fa-thumbs-up')
       // console.log(status)
       // console.log(like.className)
@@ -222,13 +225,14 @@ export default {
     },
     changeLikeStatus(num){
       // console.log(this.computedBudgetInfo.budget_num)
-      console.log('changeLikeStatus')
-      console.log("num : "+num)
+      // console.log('changeLikeStatus')
+      // console.log('budget_num : ' + this.budgetInfo.budget_num)
+      // console.log("num : "+num)
       // console.log("this suit : "+ this.computedBudgetInfo.suitability)
       // console.log("computedBudgetNum : "+ this.computedBudgetInfo.budget_num)
-      console.log("budget suit : "+ this.budgetInfo.suitability)
-      if (this.computedBudgetInfo.suitability === num) {
-        console.log("same status")
+      // console.log("budget suit : "+ this.budgetInfo.suitability)
+      if (this.computedBudgetInfo.suitability === num || num == 0) {
+        // console.log("same status")
         return
       } else {
         http
@@ -236,15 +240,19 @@ export default {
             budget_num: this.budgetInfo.budget_num,
             suitability: num
           }, this.$store.getters.requestHeader)
-            if (num === 1) {
-              this.likeClass = "fas fa-thumbs-up"
-              this.dislikeClass = "far fa-thumbs-down"
-              // this.budgetInfo.suitability = 1
-            } else if (num === 2) {
-              this.likeClass = "far fa-thumbs-up"
-              this.dislikeClass = "fas fa-thumbs-down" 
-              // this.budgetInfo.suitability = 2
-            }
+            // if (num === 1) {
+            //   this.likeClass = "fas fa-thumbs-up"
+            //   this.dislikeClass = "far fa-thumbs-down"
+            //   // this.budgetInfo.suitability = 1
+            // } else if (num === 2) {
+            //   this.likeClass = "far fa-thumbs-up"
+            //   this.dislikeClass = "fas fa-thumbs-down" 
+            //   // this.budgetInfo.suitability = 2
+            // }
+        // this.checklikeStatus(num)
+        this.$emit('renewBudgetList')
+        this.$emit('showdetail', this.budgetInfo.budget_num)
+        
       }
     },
      makePDF(selector) {
@@ -309,7 +317,7 @@ export default {
       console.log('computedBudgetInfo')
       console.log(this.budgetInfo)
       console.log(this.budgetInfo.suitability)
-      this.checklikeStatus(this.budgetInfo.suitability)
+      this.checklikeStatus()
       return this.budgetInfo
       // this.getMyBudgetDetail(this.budgetDetail)
       // console.log(this.budgetDetail.budgetlist)
