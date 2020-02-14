@@ -33,6 +33,9 @@
 	<bean id="authInfo" class="com.google.test.AuthInfo">
 		<constructor-arg value="Your Client Id" />
 		<constructor-arg value="Your Client Secret" />
-
 	</bean>
+	
+	<bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    </bean>
 </beans>
