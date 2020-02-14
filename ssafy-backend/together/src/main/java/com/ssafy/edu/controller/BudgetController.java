@@ -105,7 +105,7 @@ public class BudgetController {
 	}
 
 	@ApiOperation(value = "내 예산안 지우기", response = Budget.class)
-	@RequestMapping(value = "/budget", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/budget/{budget_num}", method = RequestMethod.DELETE)
 	public ResponseEntity<Budget> deleteOneBudget(@PathVariable int budget_num) throws Exception {
 		logger.info("4-------------deleteOneBudget-----------------------------" + new Date());
 

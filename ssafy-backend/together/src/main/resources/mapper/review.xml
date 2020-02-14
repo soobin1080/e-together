@@ -14,11 +14,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE U.EMAIL=B.USER_EMAIL AND
 		B.BUDGET_NUM=R.BUDGET_NUM;
 	</select>
+	
+	<select id="getReviewLikeUser" parameterType="java.lang.Integer"
+		resultType="java.lang.String">
+		SELECT USER_EMAIL FROM REVIEW_LIKECOUNT WHERE REVIEW_NUM=#{review_num}
+	</select>
 
 	<select id="getOneReview" parameterType="java.lang.Integer"
 		resultType="com.ssafy.edu.model.Review">
-		SELECT REVIEW_NUM, BUDGET_NUM, REVIEW_IMG, REVIEW_CONTENT,
-		LIKE_COUNT, REVIEW_DATE
+		SELECT REVIEW_NUM, BUDGET_NUM, REVIEW_CONTENT,
+		LIKE_COUNT,
+		REVIEW_DATE
 		FROM REVIEW
 		WHERE REVIEW_NUM=#{review_num}
 	</select>
@@ -26,25 +32,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 후기 작성하기 -->
 	<insert id="insertReview"
 		parameterType="com.ssafy.edu.model.Review">
-		INSERT INTO REVIEW(BUDGET_NUM,
-		REVIEW_IMG,REVIEW_CONTENT,LIKE_COUNT,REVIEW_DATE)
-		VALUES(#{budget_num},#{review_img},#{review_content},#{like_count},date(now()));
+		INSERT INTO REVIEW(BUDGET_NUM,REVIEW_CONTENT,LIKE_COUNT,REVIEW_DATE)
+		VALUES(#{budget_num},#{review_content},#{like_count},date(now()));
 	</insert>
+	
+	<select id="getLastReviewNumber" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT REVIEW_NUM FROM REVIEW WHERE BUDGET_NUM=#{budget_num} ORDER BY REVIEW_NUM DESC LIMIT 1;
+	</select>
 
 	<!-- 후기 파일 업로드 -->
-	<insert id="insertReview"
-		parameterType="com.ssafy.edu.model.Review">
+	<insert id="insertReviewFile"
+		parameterType="com.ssafy.edu.model.ReviewFile">
 		INSERT INTO REVIEW_FILE(REVIEW_NUM,
 		FILE_NAME,FILE_ORI_NAME,FILE_URL)
 		VALUES(#{review_num},#{file_name},#{file_ori_name},#{file_url});
 	</insert>
-	
+
+	<!-- 후기 좋아요한 사람 -->
+	<insert id="insertReviewLikeCount"
+		parameterType="com.ssafy.edu.model.ReviewCount">
+		INSERT INTO REVIEW_LIKECOUNT(REVIEW_NUM,USER_EMAIL)
+		VALUES(#{review_num},#{user_email});
+	</insert>
+
+	<update id="updateReviewLikeCount"
+		parameterType="java.lang.Integer">
+		UPDATE REVIEW SET LIKE_COUNT=(SELECT COUNT(*) FROM REVIEW_LIKECOUNT WHERE
+		REVIEW_NUM=#{review_num}) WHERE REVIEW_NUM=#{review_num}
+	</update>
+
 	<update id="updateReview"
 		parameterType="com.ssafy.edu.model.Review">
-		UPDATE REVIEW
-		SET
+		UPDATE REVIEW SET
 		REVIEW_IMG=#{review_img},REVIEW_CONTENT=#{review_content},LIKE_COUNT=#{like_count}
-		WHERE reivew_num=#{review_num}
+		WHERE REVIEW_NUM=#{review_num}
 	</update>
 
 	<delete id="deleteReview" parameterType="java.lang.Integer">
