@@ -43,4 +43,10 @@ public class ProductDaoImpl {
 		return sqlSession.selectList(ns + "categoryKeywordSearchProduct",paramMap);
 	}
 
+
+	public void insertProduct(Product product) {
+		// TODO Auto-generated method stub
+		sqlSession.insert(ns+"insertProduct",product);
+	}
+
 }

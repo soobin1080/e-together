@@ -28,4 +28,6 @@ public interface IReviewService {
 	int getLastReviewNumber(int budget_num);
 
 	List<String> getReviewLikeUser(int review_num);
+
+	void deleteReviewLikeCount(ReviewCount reviewcount);
 }
