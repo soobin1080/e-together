@@ -158,9 +158,8 @@ export default new Vuex.Store({
           return budget.category === product.category
         })
 
-        if (barIdx === -1) {
-            state.budgetListBarETC[barIdx].price += (product.price * product.quantity)
-          }
+ 
+        state.budgetListBarETC[barIdx].price += (product.price * product.quantity)
           // state.etcTotal += (product.price*product.quantity);
 
       } else {

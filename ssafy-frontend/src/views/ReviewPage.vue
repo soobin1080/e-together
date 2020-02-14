@@ -13,7 +13,15 @@
         <span class="fa fa-spinner fa-spin"></span> Loading
       </div>
     </transition>
-    <ReviewList id="infinite-list" :allReviews="allReviews"></ReviewList>
+    <div
+      v-infinite-scroll="loadMore" 
+      infinite-scroll-disabled="busy" 
+      :infinite-scroll-distance="reviewPerPage" >
+      <ReviewList  
+        :allReviews="allReviews"
+        >
+    </ReviewList>
+    </div>
   </div>
 </template>
 
@@ -36,9 +44,10 @@ export default {
   data: () => ({
     title: "",
     body: "",
+    busy: false,
     pages: 1,
     allReviews: [],
-    reviewPerPage: 5,
+    reviewPerPage: 6,
     loading: false,
     items: [
       {
@@ -65,54 +74,38 @@ export default {
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-
-    loadMore () {
-      this.loading = true;
-      setTimeout(e => {
+    loadMore() {
+      this.busy = true
+      console.log('loadmore')
+      setTimeout(() => {
         http
           .get('review', this.$store.getters.requestHeader)
-          .then(res => {
-            console.log(res)
-              if (res.data.length < this.allReviews.length) {
-                this.loading = false;
-                return;
-              }
-              else {
-                for (var i = (this.pages-1) * 6 ; i < this.pages*6; i++) {
-                  this.allReviews.push(res.data[i]);
-                  if (i === res.data.length) {
+            .then(res => {
+              console.log(res)
+              if (this.allReviews.length < res.data.length) {
+                console.log('scroll 실행')
+                for (let i = (this.pages-1)*this.reviewPerPage; i < this.pages*this.reviewPerPage; i++ ) {
+                  if (this.allReviews.length === res.data.length) {
+                    console.log('break')
+                    this.busy = true
                     break;
+                  } else {
+                    this.allReviews.push(res.data[i])
                   }
-                }
+                } 
                 this.pages++;
+                this.busy = false
+                // this.busy = false
+                console.log("allReview : " +this.allReviews)
               }
-          })
-        this.loading = false;
-        
-      }, 200);
-      /**************************************/
-  }
-
-  
+            })
+      }, 100);
+      }
   },
   computed: {
-    // computedPagingList : () => ({
-    //   async getMyBudget() {
-    //     console.log("active")
-    //     this.pagingList= await FirebaseService.getMyBudgets();
-    //     return this.paginList
-    //   }
-    // })
-  },
+  },  
   mounted() {
-    const listElm = document.querySelector('#infinite-list');
-    listElm.addEventListener('scroll', e => {
-      if(listElm.scrollTop + listElm.clientHeight >= listElm.scrollHeight) {
-        this.loadMore();
-      }
-    });
-    // Initially load some items.
-    this.loadMore();
+    this.loadMore()
   }
 };
 </script>

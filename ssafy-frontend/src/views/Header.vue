@@ -102,14 +102,14 @@ export default {
           .post(
             "/logout",
             {
-              email: this.$session.get("email")
+              email: sessionStorage.getItem("email")
             },
             this.$store.getters.requestHeader
           )
           .then(res => {
             console.log(res);
             if (res.data.state === "succ" && res.data.count == 1) {
-              this.$session.clear()
+              sessionStorage.clear()
               this.getUserName();
               this.$router.push("/");
             }
