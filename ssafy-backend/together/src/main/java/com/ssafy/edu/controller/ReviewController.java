@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.edu.model.BudgetInfo;
 import com.ssafy.edu.model.BudgetListResult;
-import com.ssafy.edu.model.File;
 import com.ssafy.edu.model.Review;
 import com.ssafy.edu.model.ReviewDetailResult;
 import com.ssafy.edu.model.ReviewResult;
