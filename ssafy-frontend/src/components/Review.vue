@@ -14,8 +14,10 @@
         <div>
           <v-card-actions>
             <v-spacer></v-spacer>
+
             <v-btn icon>
-              <v-icon>mdi-heart</v-icon>
+              <i v-if="isliked == true" class="fas fa-heart" style="color: red;font-size:30px;" @click="like()"></i>
+              <i v-else class="far fa-heart" style="color:black;font-size:30px;" @click="like()"></i>
             </v-btn>
             <v-btn icon>
               <v-icon>mdi-share-variant</v-icon>
@@ -33,7 +35,9 @@ export default {
 
   
   data() {
-    return{}
+    return{
+      isliked : false,
+    }
   },
 
   props: {
@@ -43,7 +47,24 @@ export default {
   },
 
   methods: {
+    like() {
 
+    },
+    getUserEmail() {
+      return sessionStorage.getItem('email')
+    }
+  },
+
+  computed: {
+    computedReview: function(){
+      const loginUser = sessionStorage.getItem('email')
+      const idx = this.Review.like_user.findIndex( user => {
+        return user == loginUser
+      })
+      this.isliked = idx >= 0 ? true : false 
+      
+      return this.Review
+    }
   }
 }
 </script>

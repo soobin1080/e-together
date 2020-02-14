@@ -11,20 +11,25 @@
     
     {{getMainTotal}}
     {{getETCTotal}}
-    <div class="progress text-center mx-auto mt-5" style="width: 70%;" v-on="on">
+    <div class="progress text-center mx-auto mt-5" style="width: 70%; height: 15%;" v-on="on">
       <!-- <div v-for="category in computedBudgetListBar" class="progress-bar">{{category.category}}</div> -->
-      <div
+      
+      <div 
         v-for="bar in getMainBar"
-        class="progress-bar"
+        v-if="bar.price > 0" 
         :key="bar.price"
         :class="bar.className"
-        v-bind:style="{width: (bar.price / (getMainTotal + getETCTotal)) * 100+'%'}"
+        :style="{width: (bar.price / (getMainTotal + getETCTotal)) * 100+'%'}"
+        data-toggle="tooltip"
+        data-placement="bottom" 
+        :title="numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'"
         >
-          {{bar.category}}
-      </div>
 
+          {{bar.category}}
+
+      </div>
       <div
-        v-if="getETCTotal"
+        v-if="getETCTotal > 0"
         class="progress-bar bg-secondary"
         v-bind:style="{width: (getETCTotal / (getMainTotal + getETCTotal)) * 100+'%'}"
       >
@@ -308,6 +313,9 @@ export default {
     },
     modalAppear() {
       this.budgetDialog = true
+    },
+    numberCut(number) {
+      return number.toFixed(2)
     }
   }
 };
@@ -319,4 +327,5 @@ export default {
   margin: auto;
   width: 80%;
 }
+
 </style>

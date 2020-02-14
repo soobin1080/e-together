@@ -3,11 +3,12 @@
 <h5 style="text-align:center">목록</h5><br>
   <table width="100%">
     <colgroup>
-      <col width="30%" />
+      <col width="40%" />
+      <col width="10%" />
       <col width="15%" />
       <col width="15%" />
-      <col width="25%" />
-      <col width="15%" />
+      <col width="10%" />
+      <col width="10%"/>
      
     </colgroup>
     <tr style="text-align:center" height="35px">
@@ -16,7 +17,7 @@
       <th>예산</th>
       <th>날짜</th>
       <th>적/부</th>
-     
+      <th>삭제</th>
     </tr>
     <template v-if="this.allBudgets.length==0 || this.allBudgets.length==undefined">
       <tr>
@@ -26,13 +27,24 @@
     <tr v-for="budget in computedPagingBudgets" :key="budget.created_at">
       <td v-html="budget.budget_title"
       @click="show_detail(budget.budget_num)"
-      style="text-align:center"></td>
+      style="text-align:center; cursor:pointer"></td>
       <td style="text-align:center">{{budget.personnel}} 명</td>
       <td style="text-align:center">{{budget.budget}} 원</td>
       <td style="text-align:center">{{dateParsing(budget.budget_date)}}</td>
-      <td style="text-align:center">{{budget.fitness}}  <div>      
-    </div></td>
-     
+      <td style="text-align:center">
+        <span v-if="budget.suitability == 0">
+          미선택
+        </span>
+        <span v-else-if="budget.suitability == 1">
+          적합
+        </span>
+        <span v-else-if="budget.suitability == 2">
+          부적합
+        </span>
+      </td>
+      <td style="text-align:center">
+        <i @click="budgetDelete(budget.budget_num)" class="fas fa-trash-alt" style="color: red; cursor:pointer;"></i>
+      </td>
     </tr>
   </table>
 </div>
@@ -40,6 +52,7 @@
 
 <script>
 import FirebaseService from "@/services/FirebaseService";
+import http from "../http-common";
 export default {
   name: "MyBudgetList",
 
@@ -72,19 +85,40 @@ export default {
     dateParsing(beforeParsing) {
       const t = beforeParsing.indexOf('T')
       const afterParsing = beforeParsing.substring(0, t)
-      console.log(afterParsing)
+      // console.log(afterParsing)
       return afterParsing 
     },
 
     show_detail(budgetNum){
       this.$emit('showdetail', budgetNum)
       console.log("--Child (showdetail) : "+budgetNum)
+    },
+
+    budgetDelete(budgetNum) {
+      // console.log(budgetNum)
+      let conf = confirm('이 예산안을 삭제하시겠습니까?')
+      // console.log(conf)
+      if (conf) {
+        http
+          .delete(`/budget/${budgetNum}`, {
+            budget_num: budgetNum
+          }, this.$store.getters.requestHeader)
+          .then( res => {
+            
+          })
+          .catch( err => {
+            console.log(err)
+          }) 
+      } else {
+        return;
+      }
     }
   },
   computed: {
     computedPagingBudgets: function() {
       console.log('computedPagingBudget')
       console.log(this.allBudgets)
+      // console.log(this.allBudgets)
       this.pagingBudgets = []
       let start = (this.pages - 1) * this.budgetPerPage
       let end =  (this.pages - 1) * this.budgetPerPage + this.budgetPerPage;
@@ -96,7 +130,7 @@ export default {
       for (let i = start; i < end; i++) {
         this.pagingBudgets.push(this.allBudgets[i]);
       }
-      console.log(this.pagingBudgets)
+      // console.log(this.pagingBudgets)
       return this.pagingBudgets;
 
       // console.log('computedPagingBudget')

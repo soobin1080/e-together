@@ -1,15 +1,16 @@
 <template>
-  <div id="downloadpdf" style>
-    <div>
-    </div>
-    <table width="100%" style="font-size:15px" class="table-dark">
+  <div id="downloadpdf">
+    <table width="100%" style="font-size:15px">
       <tr style="text-align:center;">
         <th>제목</th>
         <td v-html="computedBudgetInfo.budget_title" style="text-align:center"></td>
+
         <th>인원</th>
         <td style="text-align:center">{{computedBudgetInfo.personnel}} 명</td>
+
         <th>예산</th>
         <td style="text-align:center">{{computedBudgetInfo.budget}} 원</td>
+
         <th>날짜</th>
         <td style="text-align:center">{{dateParsing(computedBudgetInfo.budget_date)}}</td>
 
@@ -70,22 +71,16 @@
     <v-dialog data-html2canvas-ignore="true" v-model="dialog" max-width="600">
       <v-card>
         <v-card-title class="headline">후기 등록</v-card-title>
-        <p style="padding-left:30px; color:gray">후기를 등록하시면 회원님의 예산 상세 내역이 함께 게시됩니다.!</p>
+
         <v-col>
-          <div class="container">
-            <form class="large-12 medium-12 small-12 cell" enctype="multipart/form-data">
-              <label>
-                Files
-                <input
-                  type="file"
-                  ref="reviewimage"
-                  multiple
-                  v-on:change="handleFilesUploads()"
-                />
-              </label>
-              <!-- <button v-on:click="submitFiles()">Submit</button> -->
-            </form>
-          </div>
+         <div class="container">
+    <div class="large-12 medium-12 small-12 cell">
+      <label>Files
+        <input type="file" id="files" ref="files" multiple v-on:change="handleFileUploads()"/>
+      </label>
+      <button v-on:click="submitFiles()">Submit</button>
+    </div>
+  </div>
 
           <v-textarea
             v-model="content"
@@ -136,18 +131,53 @@ export default {
       propTitle: "mypdf",
       likeClass: "far fa-thumbs-up",
       dislikeClass: "far fa-thumbs-down",
-      files: {},
-      image: ""
+      files:'',
+      review: {}
     };
   },
 
   methods: {
-    handleFilesUploads() {
-      console.log(this.$refs);
-      this.image = this.$refs.reviewimage.files;
-      console.log(this.image);
-    },
+     submitFiles(){
+        /*
+          Initialize the form data
+        */
+        let formData = new FormData();
 
+        /*
+          Iteate over any file sent over appending the files
+          to the form data.
+        */
+        for( var i = 0; i < this.files.length; i++ ){
+          let file = this.files[i];
+
+          formData.append('files[' + i + ']', file);
+        }
+
+        /*
+          Make the request to the POST /multiple-files URL
+        */
+        axios.post( '/multiple-files',
+          formData,
+          {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+          }
+        ).then(function(){
+          console.log('SUCCESS!!');
+        })
+        .catch(function(){
+          console.log('FAILURE!!');
+        });
+      },
+
+      /*
+        Handles a change on the file upload
+      */
+      handleFilesUpload(){
+        this.files = this.$refs.files.files;
+      },
+    
     dateParsing(beforeParsing) {
       const t = beforeParsing.indexOf("T");
       const afterParsing = beforeParsing.substring(0, t);
@@ -166,49 +196,22 @@ export default {
       return this.total;
     },
     writeReview(bool) {
+      console.log("이미지는: " + this.files);
       if (bool === true) {
         if (this.content == "") {
           alert("내용을 입력해주세요.");
           return;
         }
-
-        // /*
-        //   Initialize the form data
-        // */
-        // const formData = new FormData();
-
-        // /*
-        //   Iteate over any file sent over appending the files
-        //   to the form data.
-        // */
-        // for (var i = 0; i < this.image.length; i++) {
-        //   let file = this.image[i];
-        //   console.log(file);
-        //   formData.append("files", file);
-        // }
-        // console.log(formData);
-        // console.log(formData._boundary);
-
-        // http
-        // .post('review', formData,{
-        //   headers:{
-        //     'Content-type' : 'multipart/form-data'
-        //   }
-        // }).then((res)=>{
-        //   console.log(res);
-        // }).catch((err) => {
-        //   console.log(err);
-        // });
-
-        this.imageupload();
-
         http
-          .post("/review", {
-            budget_num: this.budgetInfo.budget_num,
-            review_content: this.content
+          .post(`/review`, {
+            review: {
+              budget_num: this.budgetInfo.budget_num,
+              budget_title: this.budgetInfo.budget_title,
+              files: this.files,
+              review_content: this.content
+            }
           })
           .then(response => {
-            console.log("content전송!");
             console.log(response);
             // this.result = response.;
           })
@@ -220,59 +223,7 @@ export default {
         this.dialog = false;
       }
     },
-
-    imageupload() {
-      /*
-          Initialize the form data
-        */
-      const formData = new FormData();
-
-      /*
-          Iteate over any file sent over appending the files
-          to the form data.
-        */
-      for (var i = 0; i < this.image.length; i++) {
-        let file = this.image[i];
-        console.log(file);
-        formData.append("files", file);
-      }
-      console.log(formData);
-      for (var key of formData.keys()) {
-        console.log("key");
-  console.log(key);
-
-}
-
-for (var value of formData.values()) {
-console.log("value");
-  console.log(value);
-
-}
-
-      http
-        .post(
-          "/review/upload",
-          {
-            files:formData,
-            budget_num: this.budgetInfo.budget_num
-          },
-          {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          }
-        )
-        .then(response => {
-          console.log("image upload response");
-          console.log(response);
-          // this.result = response.;
-        })
-        .catch(ex => {
-          console.warn("ERROR! :", ex);
-        });
-    },
-    checklikeStatus() {
-      let status = this.budgetInfo.suitability;
+    checklikeStatus(status) {
       // const like = document.querySelector('.fa-thumbs-up')
       // console.log(status)
       // console.log(like.className)
@@ -304,9 +255,8 @@ console.log("value");
       // console.log("this suit : "+ this.computedBudgetInfo.suitability)
       // console.log("computedBudgetNum : "+ this.computedBudgetInfo.budget_num)
       console.log("budget suit : " + this.budgetInfo.suitability);
-      if (this.computedBudgetInfo.suitability === num || num == 0) {
-        // console.log("same status")
-
+      if (this.computedBudgetInfo.suitability === num) {
+        console.log("same status");
         return;
       } else {
         http.post(
@@ -317,17 +267,15 @@ console.log("value");
           },
           this.$store.getters.requestHeader
         );
-        // if (num === 1) {
-        //   this.likeClass = "fas fa-thumbs-up";
-        //   this.dislikeClass = "far fa-thumbs-down";
-        //   // this.budgetInfo.suitability = 1
-        // } else if (num === 2) {
-        //   this.likeClass = "far fa-thumbs-up";
-        //   this.dislikeClass = "fas fa-thumbs-down";
-        //   // this.budgetInfo.suitability = 2
-        // }
-        this.$emit("renewBudgetList");
-        this.$emit("showdetail", this.budgetInfo.budget_num);
+        if (num === 1) {
+          this.likeClass = "fas fa-thumbs-up";
+          this.dislikeClass = "far fa-thumbs-down";
+          // this.budgetInfo.suitability = 1
+        } else if (num === 2) {
+          this.likeClass = "far fa-thumbs-up";
+          this.dislikeClass = "fas fa-thumbs-down";
+          // this.budgetInfo.suitability = 2
+        }
       }
     },
     makePDF(selector) {
@@ -387,7 +335,7 @@ console.log("value");
       console.log("computedBudgetInfo");
       console.log(this.budgetInfo);
       console.log(this.budgetInfo.suitability);
-      this.checklikeStatus();
+      this.checklikeStatus(this.budgetInfo.suitability);
       return this.budgetInfo;
       // this.getMyBudgetDetail(this.budgetDetail)
       // console.log(this.budgetDetail.budgetlist)

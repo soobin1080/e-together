@@ -8,9 +8,12 @@
         v-resize-text
       >Budget Review</div>
     </ImgBanner>
-    
-    <ReviewList :allReviews="allReviews"></ReviewList>
-    <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+    <transition name="fade">
+      <div class="loading" v-show="loading">
+        <span class="fa fa-spinner fa-spin"></span> Loading
+      </div>
+    </transition>
+    <ReviewList id="infinite-list" :allReviews="allReviews"></ReviewList>
   </div>
 </template>
 
@@ -19,25 +22,24 @@ import ImgBanner from "../components/ImgBanner";
 import ReviewList from "../components/ReviewList";
 import ResizeText from "vue-resize-text";
 import http from "../http-common";
-import InfiniteLoading from 'vue-infinite-loading';
+
 export default {
-  name: "MyListPage",
+  name: "ReviewPage",
 
   components: {
     ImgBanner,
     ReviewList,
-    InfiniteLoading,
   },
   directives: {
     ResizeText
   },
   data: () => ({
-    page: 1,
     title: "",
     body: "",
     pages: 1,
     allReviews: [],
     reviewPerPage: 5,
+    loading: false,
     items: [
       {
         icon: "folder",
@@ -63,35 +65,35 @@ export default {
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-    infiniteHandler($state) {
-      http
-        .get('/review', {
-          // params: {
-          //   page: this.page,
-          // },
-        }) //api에 url 삽입
-        .then(response => {
-          console.log('response')
-          console.log(response)
 
-            setTimeout(() => { //스크롤 페이징을 띄우기 위한 시간 지연(1초)
-              if (response.data.length) {
-                // this.page += 1
-                this.allReviews = this.allReviews.concat(response.data);
-                $state.loaded(); //데이터 로딩
-                // this.limit += 10
-                // console.log('allreview length : '+this.allreviews.leng) 
-                if (this.allReviews.length > response.data.length) {
-                  $state.complete(); //데이터가 없으면 로딩 끝
-                }
-              } else {
-                $state.complete();
+    loadMore () {
+      this.loading = true;
+      setTimeout(e => {
+        http
+          .get('review', this.$store.getters.requestHeader)
+          .then(res => {
+            console.log(res)
+              if (res.data.length < this.allReviews.length) {
+                this.loading = false;
+                return;
               }
-            }, 1000)
-          }).catch(error => {
-            console.error(error);
-        })
-    }
+              else {
+                for (var i = (this.pages-1) * 6 ; i < this.pages*6; i++) {
+                  this.allReviews.push(res.data[i]);
+                  if (i === res.data.length) {
+                    break;
+                  }
+                }
+                this.pages++;
+              }
+          })
+        this.loading = false;
+        
+      }, 200);
+      /**************************************/
+  }
+
+  
   },
   computed: {
     // computedPagingList : () => ({
@@ -103,7 +105,14 @@ export default {
     // })
   },
   mounted() {
-    this.infiniteHandler($state)
+    const listElm = document.querySelector('#infinite-list');
+    listElm.addEventListener('scroll', e => {
+      if(listElm.scrollTop + listElm.clientHeight >= listElm.scrollHeight) {
+        this.loadMore();
+      }
+    });
+    // Initially load some items.
+    this.loadMore();
   }
 };
 </script>
