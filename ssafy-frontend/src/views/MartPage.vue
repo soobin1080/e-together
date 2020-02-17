@@ -9,31 +9,41 @@
       >Mart</div>
     </ImgBanner>
     
-    {{getMainTotal}}
-    {{getETCTotal}}
     <div class="progress text-center mx-auto mt-5" style="width: 70%; height: 15%;" v-on="on">
       <!-- <div v-for="category in computedBudgetListBar" class="progress-bar">{{category.category}}</div> -->
       
       <div 
-        v-for="bar in getMainBar"
-        v-if="bar.price > 0" 
+        v-for="bar in getMainBar" 
         :key="bar.price"
         :class="bar.className"
         :style="{width: (bar.price / (getMainTotal + getETCTotal)) * 100+'%'}"
-        data-toggle="tooltip"
-        data-placement="bottom" 
-        :title="numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'"
         >
-
-          {{bar.category}}
-
+        <div v-if="bar.price > 0">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">{{bar.category}}</span>
+            </template>
+            <span>{{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}} / {{bar.price}}원</span>
+          </v-tooltip>
+        </div>
       </div>
       <div
         v-if="getETCTotal > 0"
         class="progress-bar bg-secondary"
         v-bind:style="{width: (getETCTotal / (getMainTotal + getETCTotal)) * 100+'%'}"
       >
-        기타
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <span v-on="on">기타</span>
+          </template>
+          <span v-for="bar in getETCBar">
+            <span v-if="bar.price > 0">
+              {{bar.category}} : {{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}}
+              <br/>
+            </span>
+          </span>
+        </v-tooltip>
       </div>
       <!-- <div class="progress-bar" role="progressbar" style="width: 30%"></div>
       <div class="progress-bar bg-info" role="progressbar" style="width: 20%"></div> -->
@@ -51,7 +61,7 @@
           solo-inverted
           shaped
           v-model="keyword"
-          v-on:keyup.enter="getProductList(keyword)"
+          v-on:keyup="getProductList(keyword)"
         ></v-text-field>
 
         <b-card no-body style>
@@ -199,6 +209,7 @@ export default {
     },
 
     getETCBar() {
+      console.log('getETCBar : ', this.$store.state.budgetListBarETC)
       // this.etcTotal = this.$store.state.budgetListBarETC.reduce((total, budget) => total += budget.price, 0)
       // console.log(this.etcTotal)
       return this.$store.state.budgetListBarETC
@@ -264,6 +275,7 @@ export default {
     getProductList(keyword) {
       // this.$emit('search');
       this.keyword = keyword;
+      console.log(this.keyword)
       console.log("키워드는" + this.keyword);
       if (this.keyword != "" && this.keyword.length > 0) {
         this.search();
@@ -293,8 +305,11 @@ export default {
     },
     search() {
       http
-        .get("/product/" + this.keyword)
+        .get(`/product/category/${this.keyword}`, {
+          keyword : this.keyword
+          })
         .then(response => {
+          console.log('res : '+ response)
           this.products = response.data;
           if (this.products.length % this.productPerPage === 0) {
             this.pagingLength = parseInt(
