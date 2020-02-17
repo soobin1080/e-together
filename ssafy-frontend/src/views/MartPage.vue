@@ -37,7 +37,7 @@
           <template v-slot:activator="{ on }">
             <span v-on="on">기타</span>
           </template>
-          <span v-for="bar in getETCBar">
+          <span v-for="bar in getETCBar" :key="bar">
             <span v-if="bar.price > 0">
               {{bar.category}} : {{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}}
               <br/>

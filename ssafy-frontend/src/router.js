@@ -13,7 +13,7 @@ import ReviewPage from './views/ReviewPage.vue'
 import UserInfoModifyPage from './views/UserInfoModifyPage.vue'
 import FindPwdPage from './views/FindPwdPage.vue'
 import FindEmailPage from './views/FindEmailPage.vue'
-import ReviewDetail from './components/ReviewDetail.vue'
+import ReviewDetailPage from './views/ReviewDetailPage.vue'
 
 
 Vue.use(Router)

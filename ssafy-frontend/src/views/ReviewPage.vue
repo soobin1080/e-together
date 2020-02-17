@@ -1,13 +1,20 @@
-<template v-resize-text>
+<template>
   <div>
-    <ImgBanner>
-      <div
-        class="text-center text-white"
-        style="line-height:1.2em;font-size:2.5em;"
-        slot="text"
-        v-resize-text
-      >Budget Review</div>
-    </ImgBanner>
+     <v-img :src="getImgUrl('shopping-879498_1920.jpg')" aspect-ratio="5.5">
+      <v-layout align-center justify-center row fill-height>
+        <v-flex text-xs-center>
+          <span class="text-shadow display-2 font-weight-light">
+            <slot name="text" />
+            <div
+              class="text-center text-white"
+              style="line-height:1.2em; font-size:2.5em;"
+              slot="text"
+              v-resize-text
+            >Budget Review</div>
+          </span>
+        </v-flex>
+      </v-layout>
+    </v-img>
     <transition name="fade">
       <div class="loading" v-show="loading">
         <span class="fa fa-spinner fa-spin"></span> Loading
