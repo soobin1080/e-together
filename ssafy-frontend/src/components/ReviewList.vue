@@ -1,4 +1,5 @@
 <template>
+<div class="main">
   <v-layout mt-5 wrap style="width: 80%; margin: 0 auto">
     <v-flex v-for="review in computedAllReview" xs12 sm6 lg4 :key="review">
       <Review 
@@ -8,6 +9,7 @@
       
     </v-flex>
   </v-layout>
+</div>
 </template>
 
 
@@ -58,4 +60,10 @@
 </script>
 
 <style scoped>
+.main{
+  padding-top: 80px;
+  padding-bottom: 80px;
+  margin: auto;
+  width: 80%;
+}
 </style>

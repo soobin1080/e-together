@@ -13,7 +13,7 @@ import ReviewPage from './views/ReviewPage.vue'
 import UserInfoModifyPage from './views/UserInfoModifyPage.vue'
 import FindPwdPage from './views/FindPwdPage.vue'
 import FindEmailPage from './views/FindEmailPage.vue'
-import ReviewDetail from './components/ReviewDetail.vue'
+import ReviewDetailPage from './views/ReviewDetailPage.vue'
 
 
 Vue.use(Router)
@@ -90,13 +90,9 @@ export default new Router({
 			component: FindPwdPage
 		},
 		{
-<<<<<<< HEAD
 			path : '/reviewDetail/:reviewNum',
-=======
-			path : '/reviewDetail',
->>>>>>> fbf47f23afdccd7e89fcd4bd26008ff130769443
 			name : 'reviewdetail',
-			component: ReviewDetail
+			component: ReviewDetailPage
 		}
 
   ]
