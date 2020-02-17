@@ -13,7 +13,6 @@ import ReviewPage from './views/ReviewPage.vue'
 import UserInfoModifyPage from './views/UserInfoModifyPage.vue'
 import FindPwdPage from './views/FindPwdPage.vue'
 import FindEmailPage from './views/FindEmailPage.vue'
-import Test from './views/Test.vue'
 import ReviewDetail from './components/ReviewDetail.vue'
 
 
@@ -91,12 +90,7 @@ export default new Router({
 			component: FindPwdPage
 		},
 		{
-			path: '/test',
-			name :'test',
-			component: Test
-		},
-		{
-			path : '/reviewDetail',
+			path : '/reviewDetail/:reviewNum',
 			name : 'reviewdetail',
 			compoenent: ReviewDetail
 		}
