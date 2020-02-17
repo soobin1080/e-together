@@ -156,9 +156,7 @@ export default {
     }
   },
 
-  render() {
-    // window.addEventListener("storage", this.changeQuantity);
-  },
+
 
   created() {
     // EventBus.$on("addCart", product => {
@@ -329,6 +327,8 @@ export default {
     if (this.budget == "" || this.personnel == "") {
       alert("인원과 예산을 입력해주세요!");
     }
+    console.log('mounted : '+this.budget)
+    this.recommendBudgetBar(this.budget)
   },
   computed: {
     computedBudgetList() {

@@ -65,6 +65,18 @@ export default new Vuex.Store({
       }
     ],
     ETC: ['수산물/해산물', '쌀/잡곡', '즉석식품', '과일', '스낵', '견과/건해산물'],
+    recommendDict: {
+      water: '생수/음료',
+      noodle : '라면',
+      rice: '쌀/잡곡',
+      instant: '즉석식품',
+      nuts: '견과/건해산물',
+      vegetable : '채소',
+      seafood: '수산물/해산물',
+      fruits: '과일',
+      snack: '스낵',
+      meat: '정육/계란류'
+    },
     mainTotal: 0,
     etcTotal: 0,
   },

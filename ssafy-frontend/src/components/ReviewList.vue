@@ -4,7 +4,6 @@
       <Review 
         :review="review" 
         class="ma-2"
-        @goToDetail="goToDetail"
         ></Review>
       
     </v-flex>
@@ -44,6 +43,7 @@
     },
 
     methods: {
+
       
     },
     computed: {
