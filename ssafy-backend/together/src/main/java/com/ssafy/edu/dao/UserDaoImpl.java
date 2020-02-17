@@ -50,7 +50,7 @@ public class UserDaoImpl {
 	}
 	
 	public int pwdCheck(User user) {
-		return sqlSession.selectOne(ns="pwdCheck",user);
+		return sqlSession.selectOne(ns+"pwdCheck",user);
 	}
 	
 	public User findEmail(User user) {
@@ -66,7 +66,7 @@ public class UserDaoImpl {
 	}
 
 	public void findPwd(User finduserinfo) {
-		sqlSession.update(ns+"findPwd", finduserinfo);
+		sqlSession.update(ns+"updatePwd", finduserinfo);
 		
 	}
 }

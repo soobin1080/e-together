@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/vue,java,venv,vuejs,eclipse,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=vue,java,venv,vuejs,eclipse,visualstudiocode
+# Created by https://www.gitignore.io/api/git,vue,java,vuejs,python,eclipse,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=git,vue,java,vuejs,python,eclipse,visualstudiocode
 
 ### Eclipse ###
 .metadata
@@ -71,19 +71,28 @@ local.properties
 
 .sts4-cache/
 
+### Git ###
+# Created by git for backups. To disable backups in Git:
+# $ git config --global mergetool.keepBackup false
+*.orig
+# Created by git when using merge tools for conflicts
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
 ### Java ###
 # Compiled class file
 *.class
-
 # Log file
 *.log
-
 # BlueJ files
 *.ctxt
-
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
 # Package Files #
 *.jar
 *.war
@@ -92,23 +101,92 @@ local.properties
 *.zip
 *.tar.gz
 *.rar
-
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-
-### venv ###
-# Virtualenv
-# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+# C extensions
+*.so
+# Distribution / packaging
 .Python
-pyvenv.cfg
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-pip-selfcheck.json
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+# Translations
+*.mo
+*.pot
+# Scrapy stuff:
+.scrapy
+# Sphinx documentation
+docs/_build/
+# PyBuilder
+target/
+# pyenv
+.python-version
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+# celery beat schedule file
+celerybeat-schedule
+# SageMath parsed files
+*.sage.py
+# Spyder project settings
+.spyderproject
+.spyproject
+# Rope project settings
+.ropeproject
+# Mr Developer
+.mr.developer.cfg
+.pydevproject
+# mkdocs documentation
+/site
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+# Pyre type checker
+.pyre/
 
 ### VisualStudioCode ###
 .vscode/*
@@ -116,32 +194,24 @@ pip-selfcheck.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
-
 ### Vue ###
 .DS_*
 logs
 **/*.backup.*
 **/*.back.*
-
 node_modules
 bower_components
-
 *.sublime*
-
 psd
 thumb
 sketch
-
 ### Vuejs ###
 # Recommended template: Node.gitignore
-
 node_modules/
-dist/
 npm-debug.log
 yarn-error.log
 
-# End of https://www.gitignore.io/api/vue,java,venv,vuejs,eclipse,visualstudiocode
+# End of https://www.gitignore.io/api/git,vue,java,vuejs,python,eclipse,visualstudiocode

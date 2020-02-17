@@ -7,11 +7,13 @@ import 'simplemde/dist/simplemde.min.css'
 import 'font-awesome/css/font-awesome.min.css'
 import VModal from 'vue-js-modal'
 import VueAxios from 'vue-axios'
-
+import InfiniteLoading from 'vue-infinite-loading';
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import VueCsrf from 'vue-csrf';
+import VueSessionStorage from 'vue-sessionstorage'
+import UploadImage from 'vue-upload-image';
 import './registerServiceWorker'
 
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
@@ -22,7 +24,8 @@ import VueSession from 'vue-session'
 
 import VuetifyNumberInput from '@jzolago/vuetify-number-input'
 
-
+var infiniteScroll =  require('vue-infinite-scroll');
+Vue.use(infiniteScroll)
 
 Vue.config.productionTip = false
 
@@ -36,7 +39,12 @@ Vue.use(VModal)
 Vue.use(VueCsrf);
 Vue.use(VueAxios, axios)
 Vue.use(VuetifyNumberInput);
-Vue.use(VueSession)
+Vue.use(VueSession, {persist: true})
+Vue.use(VueSessionStorage)
+
+// Require dependencies
+Vue.component('upload-image', UploadImage)
+
 
 export const eventBus = new Vue()
 

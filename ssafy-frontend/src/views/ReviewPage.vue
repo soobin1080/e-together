@@ -1,8 +1,5 @@
-<template>
+<template v-resize-text>
   <div>
-    <!-- <input type="text" name="title" v-model="title" />
-    <input type="text" name="body" v-model="body" />
-    <v-btn @click="postMyBudgets(title, body)">add</v-btn>-->
     <ImgBanner>
       <div
         class="text-center text-white"
@@ -11,30 +8,35 @@
         v-resize-text
       >Budget Review</div>
     </ImgBanner>
-    <div class="main">
-      <v-card style="width:80%;" class="mx-auto my-5 flat">
-        <ReviewList></ReviewList>
-      </v-card>
-
-      <div class="text-center">
-        {{pages}}
-        <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
+    <transition name="fade">
+      <div class="loading" v-show="loading">
+        <span class="fa fa-spinner fa-spin"></span> Loading
       </div>
+    </transition>
+    <div
+      v-infinite-scroll="loadMore" 
+      infinite-scroll-disabled="busy" 
+      :infinite-scroll-distance="reviewPerPage" >
+      <ReviewList  
+        :allReviews="allReviews"
+        >
+    </ReviewList>
     </div>
   </div>
 </template>
 
 <script>
-import FirebaseService from "@/services/FirebaseService";
 import ImgBanner from "../components/ImgBanner";
 import ReviewList from "../components/ReviewList";
 import ResizeText from "vue-resize-text";
+import http from "../http-common";
+
 export default {
-  name: "MyListPage",
+  name: "ReviewPage",
 
   components: {
     ImgBanner,
-    ReviewList
+    ReviewList,
   },
   directives: {
     ResizeText
@@ -42,12 +44,11 @@ export default {
   data: () => ({
     title: "",
     body: "",
+    busy: false,
     pages: 1,
-    allPages: [],
-    pagingList: [],
-    pagingLength: 0,
-    allLength: 0,
-    budgetPerPage: 5,
+    allReviews: [],
+    reviewPerPage: 6,
+    loading: false,
     items: [
       {
         icon: "folder",
@@ -73,53 +74,42 @@ export default {
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-    postMyBudgets(title, body) {
-      title = this.title;
-      body = this.body;
-      FirebaseService.postMyBudgets(title, body);
-      this.getMyBudgets();
-    },
-    async getMyBudgets() {
-      console.log("active");
-      this.pagingList = await FirebaseService.getMyBudgets();
-      this.pagingLength = parseInt(this.pagingList / 5) + 1;
-      return this.pagingList;
-    }
+    loadMore() {
+      this.busy = true
+      console.log('loadmore')
+      setTimeout(() => {
+        http
+          .get('review', this.$store.getters.requestHeader)
+            .then(res => {
+              console.log(res)
+              if (this.allReviews.length < res.data.length) {
+                console.log('scroll 실행')
+                for (let i = (this.pages-1)*this.reviewPerPage; i < this.pages*this.reviewPerPage; i++ ) {
+                  if (this.allReviews.length === res.data.length) {
+                    console.log('break')
+                    this.busy = true
+                    break;
+                  } else {
+                    this.allReviews.push(res.data[i])
+                  }
+                } 
+                this.pages++;
+                this.busy = false
+                // this.busy = false
+                console.log("allReview : " +this.allReviews)
+              }
+            })
+      }, 100);
+      }
   },
   computed: {
-    // computedPagingList : () => ({
-    //   async getMyBudget() {
-    //     console.log("active")
-    //     this.pagingList= await FirebaseService.getMyBudgets();
-    //     return this.paginList
-    //   }
-    // })
-  },
-  async mounted() {
-    this.allPages = await FirebaseService.getMyBudgets();
-    this.allLength = this.allPages.length;
-    console.log("allLength : " + this.allPages.length);
-    this.pagingList = await FirebaseService.getMyBudgetPaging(
-      (this.pages - 1) * 5,
-      (this.pages - 1) * 5 + 5,
-      this.allLength
-    );
-    console.log(this.pagingList);
-
-    if (this.allLength % this.budgetPerPage === 0) {
-      this.pagingLength = parseInt(this.allLength / 5);
-    } else {
-      this.pagingLength = parseInt(this.allLength / 5 + 1);
-    }
-    console.log("pagingLength : " + this.pagingLength);
-    //this.getMyBudgets()
+  },  
+  mounted() {
+    this.loadMore()
   }
 };
 </script>
 
 <style scoped>
-.main {
-  padding-top: 80px;
-  padding-bottom: 80px;
-}
+
 </style>

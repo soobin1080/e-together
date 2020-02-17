@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssafy.reply">
+
+	<select id="getAllReply"
+		parameterType="com.ssafy.edu.model.Reply"
+		resultType="com.ssafy.edu.model.Reply">
+		SELECT REPLY_NUM,REVIEW_NUM, REPLY_CONTENT,WRITER_EMAIL,REPLY_DATE FROM REPLY WHERE REVIEW_NUM=#{review_num}
+	</select>
+
+	<insert id="insertReply"
+		parameterType="com.ssafy.edu.model.Reply">
+		INSERT INTO REPLY(REVIEW_NUM, REPLY_CONTENT,WRITER_EMAIL,REPLY_DATE)
+		VALUES(#{review_num}, #{reply_content},#{writer_email},date(now()));
+	</insert>
+
+	<update id="updateReply"
+		parameterType="com.ssafy.edu.model.Reply">
+		UPDATE REPLY SET CONTENT=#{content} WHERE REVIEW_NUM=#{review_num} AND WRITER_EMAIL=#{writer_email};
+	</update>
+	
+	<delete id= "deleteReply" parameterType="com.ssafy.edu.model.Reply">
+	DELETE FROM REPLY WHERE REVIEW_NUM=#{review_num} AND WRITER_EMAIL=#{writer_email};
+	</delete>
+</mapper>
+

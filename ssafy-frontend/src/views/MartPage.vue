@@ -8,9 +8,49 @@
         v-resize-text
       >Mart</div>
     </ImgBanner>
+    
+    <div class="progress text-center mx-auto mt-5" style="width: 70%; height: 15%;" v-on="on">
+      <!-- <div v-for="category in computedBudgetListBar" class="progress-bar">{{category.category}}</div> -->
+      
+      <div 
+        v-for="bar in getMainBar" 
+        :key="bar.price"
+        :class="bar.className"
+        :style="{width: (bar.price / (getMainTotal + getETCTotal)) * 100+'%'}"
+        >
+        <div v-if="bar.price > 0">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">{{bar.category}}</span>
+            </template>
+            <span>{{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}} / {{bar.price}}원</span>
+          </v-tooltip>
+        </div>
+      </div>
+      <div
+        v-if="getETCTotal > 0"
+        class="progress-bar bg-secondary"
+        v-bind:style="{width: (getETCTotal / (getMainTotal + getETCTotal)) * 100+'%'}"
+      >
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <span v-on="on">기타</span>
+          </template>
+          <span v-for="bar in getETCBar">
+            <span v-if="bar.price > 0">
+              {{bar.category}} : {{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}}
+              <br/>
+            </span>
+          </span>
+        </v-tooltip>
+      </div>
+      <!-- <div class="progress-bar" role="progressbar" style="width: 30%"></div>
+      <div class="progress-bar bg-info" role="progressbar" style="width: 20%"></div> -->
+    </div>
 
     <v-row class="main" style="padding-top:80px">
-      <v-col lg="8">
+      <v-col lg="8" style="padding-top:0px;">
         <!-- search box -->
         <v-text-field
           width="100px"
@@ -21,7 +61,7 @@
           solo-inverted
           shaped
           v-model="keyword"
-          v-on:keyup.enter="getProductList(keyword)"
+          v-on:keyup="getProductList(keyword)"
         ></v-text-field>
 
         <b-card no-body style>
@@ -67,25 +107,35 @@
             bottom
             right
             color="#ffd900"
-            v-b-modal.modal-1
+            @click="modalAppear"
             class="hidden-lg-only"
           >
             <i class="material-icons">shopping_cart</i>
           </v-btn>
         </b-card>
       </v-col>
-
+      <!-- v-b-modal.modal-1 -->
       <!-- 장보기 내역 -->
-      <v-col>
+      <!-- <v-col> -->
         <v-flex d-none d-lg-flex>
-          <BudgetList></BudgetList>
+          <BudgetList id="budgetList">
+          </BudgetList>
         </v-flex>
-      </v-col>
+      <!-- </v-col> -->
+      
+      
     </v-row>
     <!-- modal 창 -->
-    <b-modal id="modal-1" scrollable>
-      <BudgetList></BudgetList>
-    </b-modal>
+    <v-row justify="center">
+      <v-dialog v-model="budgetDialog" scrollable max-width="300px">
+        <BudgetList></BudgetList>
+      </v-dialog> 
+    </v-row>
+    
+
+    <!-- <BudgetModal id="budgetModal">
+
+    </BudgetModal> -->
   </div>
 </template>
 <script>
@@ -94,12 +144,14 @@ import http from "../http-common";
 import BudgetList from "../components/BudgetList";
 import ProductList from "../components/ProductList";
 import ResizeText from "vue-resize-text";
+import BudgetModal from "../components/BudgetModal";
 
 export default {
   components: {
     ImgBanner,
     BudgetList,
-    ProductList
+    ProductList,
+    BudgetModal,
   },
   directives: {
     ResizeText
@@ -128,16 +180,105 @@ export default {
       pagingLength: 10,
       category: "전체",
       allLegnth: 0,
-      pagingLength: 0
+      pagingLength: 0,
+      budgetDialog: false,
+      budgetList: [],
+      etcTotal : 0,
+      mainTotal: 0,
+      recommendBar : [
+        {
+        category : '정육/계란류',
+        price: 0,
+        className: 'progress-bar bg-danger'
+      }, {
+        category : '생수/음료',
+        price: 0,
+        className: 'progress-bar bg-primary'
+      }, {
+        category : '채소',
+        price: 0,
+        className: 'progress-bar bg-success'
+      }, {
+        category : '라면',
+        price: 0,
+        className: 'progress-bar bg-warning'
+      }
+      ],
+      recommendBarETC: [
+         {
+        category : '수산물/해산물',
+        price: 0,
+        className: 'progress-bar bg-primary'
+      }, {
+        category : '쌀/잡곡',
+        price: 0,
+        className: 'progress-bar bg-secondary'
+
+      }, {
+        category : '즉석식품',
+        price: 0,
+        className: 'progress-bar bg-dark'
+
+      }, {
+        category : '과일',
+        price: 0,
+        className: 'progress-bar bg-success'
+
+      }, {
+        category : '스낵',
+        price: 0,
+        className: 'progress-bar bg-warning'
+      }, {
+        category : '견과/건해산물',
+        price: 0,
+        className: 'progress-bar bg-info'
+      }
+      ],
+      recommendTotal: 0,
+      colorByCategory: [
+        {'정육/계란류' : 'bg-danger'},
+        {'생수/음료' : 'bg-primary'},
+        {'채소' : 'bg-success'},
+        {'라면' : 'bg-warning'},
+        {'기타' : 'bg-secondary'}
+      ]
     };
   },
   mounted() {
+    console.log('martpage, budget : '+this.$store.state.budget)
     this.getProductList(this.keyword);
+    this.recommendBudgetBar(this.$store.state.budget)
   },
   computed: {
     mountedProduct() {
       this.getProductList(this.keyword);
+      return true
+    },
+
+    getMainBar() {
+      // this.mainTotal = this.$store.state.budgetListBar.reduce((total, budget) => total += budget.price, 0)
+      return this.$store.state.budgetListBar
+    },
+
+    getETCBar() {
+      console.log('getETCBar : ', this.$store.state.budgetListBarETC)
+      // this.etcTotal = this.$store.state.budgetListBarETC.reduce((total, budget) => total += budget.price, 0)
+      // console.log(this.etcTotal)
+      return this.$store.state.budgetListBarETC
+    },
+
+    getMainTotal() {
+      return this.$store.state.mainTotal
+    },
+
+    getETCTotal() {
+      return this.$store.state.etcTotal
+    },
+
+    getTotal() {
+      return this.$store.state.mainTotal + this.$store.state.etcTotal
     }
+
   },
 
   methods: {
@@ -162,19 +303,32 @@ export default {
       this.pages = 1;
     },
 
-    // selectTab: function(title) {
-    //   console.log(title)
-    //   if (title !== "전체") {
-    //     // console.log("not all")
-    //     this.pagingProduct = this.products.filter(product => {
-    //       console.log("not all")
-    //       return product.main_category == title
-    //     })
-    //   }
-    //   else {
+    recommendBudgetBar(mybudget) {
+      if (mybudget !== null && mybudget !== undefined && mybudget !== 0){
+        console.log("recommendBudgetBar")
+        http
+          .get("/recommend", {
+            params: {
+              budget: mybudget
+            }
+          })
+            .then(res => {
+              this.recommendBar = res.data
+              console.log(this.recommendBar)
+              const keys = Object.keys(this.recommendBar)
+              console.log(keys.length)
+              const categoryDict = this.$store.state.recommendDict
+              // const prices = Object.keys(this.recommendBar)
+              for (let i = 0; i < keys.length; i++) {
+                console.log(categoryDict[keys[i]])
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      }
+    },
 
-    //   }
-    // },
     getImgUrl(img) {
       return require("../assets/" + img);
     },
@@ -186,6 +340,7 @@ export default {
     getProductList(keyword) {
       // this.$emit('search');
       this.keyword = keyword;
+      console.log(this.keyword)
       console.log("키워드는" + this.keyword);
       if (this.keyword != "" && this.keyword.length > 0) {
         this.search();
@@ -198,7 +353,7 @@ export default {
         .get("/product")
         .then(response => {
           this.products = response.data;
-          console.log(this.products);
+          // console.log(this.products);
           if (this.products.length % this.productPerPage === 0) {
             this.pagingLength = parseInt(
               this.products.length / this.productPerPage
@@ -215,8 +370,11 @@ export default {
     },
     search() {
       http
-        .get("/product/" + this.keyword)
+        .get(`/product/category/${this.keyword}`, {
+          keyword : this.keyword
+          })
         .then(response => {
+          console.log('res : '+ response)
           this.products = response.data;
           if (this.products.length % this.productPerPage === 0) {
             this.pagingLength = parseInt(
@@ -232,6 +390,12 @@ export default {
           this.errored = true;
         })
         .finally(() => (this.loading = false));
+    },
+    modalAppear() {
+      this.budgetDialog = true
+    },
+    numberCut(number) {
+      return number.toFixed(2)
     }
   }
 };
@@ -243,4 +407,5 @@ export default {
   margin: auto;
   width: 80%;
 }
+
 </style>

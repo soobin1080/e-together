@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,12 +20,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.edu.service.IUserService;
 import com.ssafy.edu.service.UserService;
 import com.ssafy.edu.springjwt.model.ERole;
 import com.ssafy.edu.springjwt.model.Role;
+import com.ssafy.edu.controller.UserController;
 import com.ssafy.edu.model.User;
 import com.ssafy.edu.springjwt.payload.request.LoginRequest;
 import com.ssafy.edu.springjwt.payload.request.SignupRequest;
@@ -36,6 +40,8 @@ import com.ssafy.edu.springjwt.security.service.UserDetailsImpl;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
 	@Autowired
 	AuthenticationManager authenticationManager;
 
@@ -50,23 +56,16 @@ public class AuthController {
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+		logger.info("Start signin");
 
-		System.out.println(
-				"-----------------------------------1" + loginRequest.getEmail() + "//" + loginRequest.getPwd());
 		// db에 있는지 확인
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPwd()));
-
-		// db에 없으면 try catch.....로
-		System.out.println(authentication);
-
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication); // 토큰을 만들어서 jwt에 넣는다.
-		System.out.println("-----------------------------------3");
+
 		// 지금 로그인된 정보를 userDetails에 넣는다.
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		System.out.println("-----------------------------------4");
-
 		return ResponseEntity
 				.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()));
 	}
@@ -74,18 +73,26 @@ public class AuthController {
 /////////////////내꺼에 맞게 바꾸기
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-		System.out.println("-----------------------------------1");
+
 		if (userService.findUserByEmail(signUpRequest.getEmail()) != null) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
 		}
-		System.out.println("-----------------------------------2");
+
 		// Create new user's account
 		User user = new User(0, signUpRequest.getEmail(), encoder.encode(signUpRequest.getPwd()), null,
 				signUpRequest.getName(), 0, 1, signUpRequest.getPhone());
 
-		System.out.println("-----------------------------------3");
-		userService.regi(user);
-		System.out.println("-----------------------------------4");
+//		String phone = user.getPhone();
+//		String newphone = phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7, 11);
+//		user.setPhone(newphone);
+
+		int result = userService.regi(user);
+
+		if (result != 1) {
+			System.out.println("Signup fail");
+		} else {
+			System.out.println("Signup Success");
+		}
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
 }

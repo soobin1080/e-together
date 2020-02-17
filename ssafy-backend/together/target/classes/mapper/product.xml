@@ -6,29 +6,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- pro_id,pro_name,price ,main_category ,gram ,img -->
 	<!-- 전체 식품 보기 - -->
-	<select id="getProductList"
+	<select id="getAllProduct"
 		resultType="com.ssafy.edu.model.Product">
-		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
-		FROM PRODUCT
+		select pro_id, pro_name, price, main_category, weight,capacity, img
+		from product
 	</select>
 
-	<select id="searchProduct" parameterType="java.lang.String"
+	<select id="keywordSearchProduct" parameterType="java.lang.String"
 		resultType="com.ssafy.edu.model.Product">
-		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
-		FROM PRODUCT WHERE PRO_NAME LIKE CONCAT('%',#{keyword},'%')
+		select pro_id, pro_name, price, main_category, weight,capacity, img
+		from product where pro_name like concat('%',#{keyword},'%')
 	</select>
 	
-	<select id="getProductCategory" parameterType="java.lang.String"
+	<select id="categorySearchProduct" parameterType="java.lang.String"
 		resultType="com.ssafy.edu.model.Product">
-		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
-		FROM PRODUCT WHERE MAIN_CATEGORY= #{category}
+		select pro_id, pro_name, price, main_category, weight,capacity, img
+		from product where main_category= #{category}
 	</select> 
 	
-	<select id="getProductCategoryKeword" parameterType="com.ssafy.edu.model.Product"
+	<select id="categoryKeywordSearchProduct" parameterType="com.ssafy.edu.model.Product"
 		resultType="com.ssafy.edu.model.Product">
-		SELECT PRO_ID, PRO_NAME, PRICE, MAIN_CATEGORY, GRAM, IMG
-		FROM PRODUCT WHERE MAIN_CATEGORY= #{category} AND PRO_NAME LIKE CONCAT('%',#{keyword},'%')
+		select pro_id, pro_name, price, main_category, weight,capacity, img
+		from product where main_category= #{category} and pro_name like concat('%',#{keyword},'%')
 	</select> 
+	
+	<insert id="insertProduct"
+		parameterType="com.ssafy.edu.model.Product">
+		insert ignore into product(pro_id, pro_name,
+		price, main_category, weight, capacity, img)
+		values(#{pro_id},#{pro_name},#{price},#{main_category},#{weight},#{capacity},#{img});
+	</insert>
 
 </mapper>
 

@@ -23,7 +23,7 @@ public class MysqlProductDB {
 		PreparedStatement preparedStatementInsert = null;
 		PreparedStatement preparedStatementUpdate = null;
 
-		String insertTableSQL = "INSERT IGNORE INTO product" + "(pro_id,pro_name,price,main_category,gram,img) VALUES"
+		String insertTableSQL = "INSERT IGNORE INTO product" + "(pro_id,pro_name,price,main_category,weight,img) VALUES"
 				+ "(?,?,?,?,?,?)";
 
 		try {
@@ -56,17 +56,17 @@ public class MysqlProductDB {
 				String pro_id = product.select("a").first().attr("data-info").toString();
 				String pro_name = product.select("em.tx_ko").text();
 				String price = product.select("em.ssg_price").text();
-				String gram = product.select("div.unit").text();
+				String weight = product.select("div.unit").text();
 				String img = product.select("img").attr("src").toString();
 
-				System.out.println(pro_id +"/"+pro_name+"/"+price+"/"+gram+"/"+img+"\t");
+				System.out.println(pro_id +"/"+pro_name+"/"+price+"/"+weight+"/"+img+"\t");
 				
 //				pro_id,pro_name,price,main_category,gram,img
 				preparedStatementInsert.setString(1, pro_id);
 				preparedStatementInsert.setString(2, pro_name);
 				preparedStatementInsert.setString(3, price);
 				preparedStatementInsert.setString(4, "즉석식품");
-				preparedStatementInsert.setString(5, gram);
+				preparedStatementInsert.setString(5, weight);
 				preparedStatementInsert.setString(6, img);
 				preparedStatementInsert.executeUpdate();
 			}

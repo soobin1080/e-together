@@ -8,76 +8,105 @@
         v-resize-text
       >Pwd Check</div>
     </ImgBanner>
-
-    <v-form ref="form" v-model="valid" lazy-validation>
-      <v-container>
+    
+    <v-form ref="form" v-if="pwdCheck" v-model="valid" lazy-validation>
+      <v-container  fluid style="width:700px; padding-top:80px; padding-bottom:120px">
+        <h6 style="color:darkred">회원 정보를 확인하려면 비밀번호 확인이 필요합니다!</h6>
       <v-text-field
-          v-model="credentials.pwd"
+          v-model="user.pwd"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[rules.required, rules.min_8]"
-          :type="show1 ? 'text' : 'password'"
-          name="input-10-1"
-          label="비밀번호를 입력해주세요"
-          hint="At least 8 characters"
-          counter="16"
-          @click:append="show1 = !show1"
+          type="password"
         ></v-text-field>
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">비밀번호 체크</v-btn>
+      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate" style="float:right">비밀번호 확인</v-btn>
       </v-container>
-    </v-form> 
+    </v-form>
+
+    <!-- <UserInfo v-if="isPwdRight" :isPwdRight="isPwdRight" :userDetail="userDetail"></UserInfo> -->
   </div>
 </template>
 
 <script>
 import ImgBanner from "../components/ImgBanner";
 import http from "../http-common";
+import ResizeText from "vue-resize-text";
+import UserInfo from "../components/UserInfo";
 export default {
   name: "PwdCheckPage",
   components: {
-    ImgBanner
+    ImgBanner,
+    UserInfo
   },
-
+directives: {
+    ResizeText
+  },
   computed: {
     requestHeader: function() {
       return this.$store.getters.requestHeader
     }
   },
 
-  data: () => ({
-    credentials: {
-      email: this.$store.state.user,
-      pwd: "",
-    },
-    show1: false,
-    valid: true,
-    rules: {
-      required: value => !!value || "Required.",
-      min_8: v => v.length >= 8 || "Min 8 characters",
-      min_4: v => v.length >= 4 || "Min 8 characters",
-      is_num: v => !isNaN(v) || "Please input number",
-      emailMatch: () => "The email and password you entered don't match"
-    },
-    
-  }),
+  data() {
+    return {
+      pwdCheck : true,
+      isPwdRight: false,
+      user: {
+        email: localStorage.getItem('email'),
+        pwd: "",
+        //Authorization : 'Bearer '+this.$store.state.accessToken
+      },
+
+      show1: false,
+      valid: true,
+      rules: {
+        required: value => !!value || "Required.",
+        min_8: v => v.length >= 8 || "Min 8 characters",
+        min_4: v => v.length >= 4 || "Min 8 characters",
+        is_num: v => !isNaN(v) || "Please input number",
+        emailMatch: () => "The email and password you entered don't match"
+      },
+    }
+  },
   methods: {
+    
     validate() {
       if (this.$refs.form.validate()) {
-        console.log(this.$store.state.accessToken)
+      
         http
-          .post('/pwdCheck',  this.credentials, {
-          
-          })
+          .post('/pwdCheck',{
+            email: this.user.email,
+            pwd : this.user.pwd,
+            
+          }, this.$store.getters.requestHeader)
           .then(res => {
             console.log(res)
+            console.log(this.$store.getters.isLoggedIn)
+            if (res.data.state == 'succ') {
+              this.$router.push('/userinfo')
+            } else {
+              alert('비밀번호 오류입니다.')
+              this.$router.push('/pwdcheck')
+            }
           })
           .catch(err => {
+            alert('비밀번호 에러입니다.')
             console.log(err)
+            this.$router.push('/pwdcheck')
           })
+          this.pwdCheck = false
       }
     }
   },
 
-  
+  mounted(){
+    console.log('mountedFindpwd')
+    var ref = document.referrer;
+    let tkn = localStorage.getItem('accessToken')
+    console.log(tkn)
+    if (typeof tkn === undefined || !tkn) {
+      alert('잘못된 접근입니다.')
+      this.$router.push('/')
+    }   
+  } 
 }
 
 </script>
