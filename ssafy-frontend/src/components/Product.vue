@@ -38,7 +38,7 @@ export default {
   props: {
     pro_id: { type: String },
     pro_name: { type: String },
-    price: { type: String },
+    price: { type: Number },
     img: { type: String },
     main_category: { type: String },
     product: { type: Object }
@@ -55,10 +55,6 @@ export default {
     }
   }),
   methods: {
-    stringNumberToInt(stringNumber) {
-      //console.log(parseInt(stringNumber.replace(/,/g, "")));
-      return parseInt(stringNumber.replace(/,/g, ""));
-    },
     addcart() {
       // console.log(this.product);
 
@@ -71,9 +67,9 @@ export default {
       let product = {
         pro_id : this.product.pro_id,
         pro_name: this.pro_name,
-        price: this.stringNumberToInt(this.price),
+        price: Number(this.price),
         quantity: Number(this.quantity),
-        pro_price:this.stringNumberToInt(this.price) * Number(this.quantity),
+        pro_price:Number(this.price) * Number(this.quantity),
         category: this.product.main_category,
         isETC: this.ETC.includes(this.product.main_category),
       };

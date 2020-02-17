@@ -2310,3 +2310,15 @@ java.io.IOException: Unable to resolve plug-in "platform:/plugin/org.springframe
 
 !ENTRY org.eclipse.m2e.logback.appender 4 0 2020-02-14 09:29:20.161
 !MESSAGE Unexpected URLConnection defaultUseCaches enabled
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2020-02-17 11:31:58.777
+!MESSAGE Unexpected URLConnection defaultUseCaches enabled
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2020-02-17 11:32:03.219
+!MESSAGE Unexpected URLConnection defaultUseCaches enabled
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2020-02-17 11:32:05.720
+!MESSAGE Unexpected URLConnection defaultUseCaches enabled
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2020-02-17 11:32:06.816
+!MESSAGE Unexpected URLConnection defaultUseCaches enabled
