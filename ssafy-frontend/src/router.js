@@ -90,9 +90,13 @@ export default new Router({
 			component: FindPwdPage
 		},
 		{
+<<<<<<< HEAD
 			path : '/reviewDetail/:reviewNum',
+=======
+			path : '/reviewDetail',
+>>>>>>> fbf47f23afdccd7e89fcd4bd26008ff130769443
 			name : 'reviewdetail',
-			compoenent: ReviewDetail
+			component: ReviewDetail
 		}
 
   ]

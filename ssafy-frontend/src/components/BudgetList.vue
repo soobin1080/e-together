@@ -156,9 +156,7 @@ export default {
     }
   },
 
-  render() {
-    // window.addEventListener("storage", this.changeQuantity);
-  },
+
 
   created() {
     // EventBus.$on("addCart", product => {
@@ -264,6 +262,21 @@ export default {
     del_pro(i){
       this.$store.dispatch('deleteProductAsync', i)
     },
+
+    recommendBudgetBar(mybudget) {
+      console.log("recommendBudgetBar")
+      console.log(mybudget)
+      http
+        .get("/recommend", {
+          budget: mybudget
+          })
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
     
     changeQuantity(budget, idx, event) {
       console.log('change')
@@ -329,6 +342,8 @@ export default {
     if (this.budget == "" || this.personnel == "") {
       alert("인원과 예산을 입력해주세요!");
     }
+    console.log('mounted : '+this.budget)
+    this.recommendBudgetBar(this.budget)
   },
   computed: {
     computedBudgetList() {

@@ -82,11 +82,13 @@ export default {
   },
 
   methods: {
-    dateParsing(beforeParsing) {
+    dateParsing(beforeParsing) {      
       const t = beforeParsing.indexOf('T')
-      const afterParsing = beforeParsing.substring(0, t)
+      const afterParsing = beforeParsing.substring(0, t)      
       // console.log(afterParsing)
-      return afterParsing 
+      const realdate=afterParsing.substring(0,4)+"년 "+afterParsing.substring(5,7)+"월 "+(Number(afterParsing.substring(8,11))+1)+"일"
+      console.log("realdate: "+realdate)
+      return realdate 
     },
 
     show_detail(budgetNum){
