@@ -12,4 +12,6 @@ public interface IProductService {
 	List<Product> categorySearchProduct(String category);
 
 	List<Product> categoryKeywordSearchProduct(String category, String keyword);
+
+	void insertProduct(Product product);
 }

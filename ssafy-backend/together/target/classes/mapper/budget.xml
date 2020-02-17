@@ -10,56 +10,56 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 내 전체 예산안 보기 -->
 	<select id="getMyBudgetList" parameterType="java.lang.String"
 		resultType="com.ssafy.edu.model.BudgetInfo">
-		SELECT BUDGET_NUM, USER_EMAIL, BUDGET_TITLE, PERSONNEL,
-		BUDGET, SUITABILITY, BUDGET_DATE
-		FROM BUDGET_INFO
-		WHERE
-		USER_EMAIL=(SELECT EMAIL FROM USER WHERE EMAIL=#{user_email})
+		select budget_num, user_email, budget_title, personnel,
+		budget, suitability, budget_date
+		from budget_info
+		where
+		user_email=(select email from user where email=#{user_email})
 	</select>
 
 	<!-- 내 예산안 상세 보기 -->
 	<select id="getOneBudgetInfo"
 		parameterType="com.ssafy.edu.model.BudgetInfo"
 		resultType="com.ssafy.edu.model.BudgetInfo">
-		SELECT BUDGET_NUM, USER_EMAIL, BUDGET_TITLE, PERSONNEL,
-		BUDGET, SUITABILITY, BUDGET_DATE
-		FROM BUDGET_INFO
-		WHERE
-		BUDGET_NUM=#{budget_num}
+		select budget_num, user_email, budget_title, personnel,
+		budget, suitability, budget_date
+		from budget_info
+		where
+		budget_num=#{budget_num}
 	</select>
 
 	<!-- 내 예산안 상세보기 품목리스트 -->
 	<select id="getOneBudgetList"
 		parameterType="com.ssafy.edu.model.Budget"
 		resultType="com.ssafy.edu.model.BudgetListResult">
-		SELECT PRO_ID,PRO_NAME, QUANTITY, PRICE FROM BUDGET_LIST
-		WHERE BUDGET_NUM=#{budget_num};
+		select pro_id,pro_name, quantity, price from budget_list
+		where budget_num=#{budget_num};
 	</select>
 
 	<!-- 예산안 저장하기 -->
 	<insert id="insertBudgetInfo"
 		parameterType="com.ssafy.edu.model.BudgetInfo">
-		INSERT INTO BUDGET_INFO(USER_EMAIL, BUDGET_TITLE,
-		PERSONNEL, BUDGET, SUITABILITY, BUDGET_DATE)
-		VALUES(#{user_email},#{budget_title},#{personnel},#{budget},#{suitability},date(now()));
+		insert into budget_info(user_email, budget_title,
+		personnel, budget, suitability, budget_date)
+		values(#{user_email},#{budget_title},#{personnel},#{budget},#{suitability},date(now()));
 	</insert>
 
 	<select id="getLastInsertBudgetNum"
 		parameterType="java.lang.String" resultType="java.lang.Integer">
-		SELECT BUDGET_NUM FROM BUDGET_INFO 
-		WHERE USER_EMAIL=#{user_email} ORDER BY BUDGET_NUM DESC LIMIT 1;
+		select budget_num from budget_info 
+		where user_email=#{user_email} order by budget_num desc limit 1;
 	</select>
 
 	<insert id="insertBudgetList"
 		parameterType="com.ssafy.edu.model.BudgetList">
-		INSERT INTO BUDGET_LIST(BUDGET_NUM,PRO_ID,PRO_NAME,	QUANTITY, PRICE)
-		VALUES(#{budget_num},#{pro_id},#{pro_name},#{quantity},#{price});
+		insert into budget_list(budget_num,pro_id,pro_name,	quantity, price)
+		values(#{budget_num},#{pro_id},#{pro_name},#{quantity},#{price});
 	</insert>
 
 	<!--DELETE FROM 테이블명 WHERE = 조건 -->
 	<delete id="deleteBudgetInfo" parameterType="java.lang.Integer">
-		DELETE FROM
-		BUDGET_INFO WHERE BUDGET_NUM=#{budget_num};
+		delete from
+		budget_info where budget_num=#{budget_num};
 	</delete>
 
 	<!-- <delete id="deleteBudgetList" -->
@@ -69,8 +69,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 적합/부적합 -->
 	<update id="updateBudget" parameterType="com.ssafy.edu.model.BudgetInfo">
-		UPDATE BUDGET_INFO SET SUITABILITY=#{suitability} WHERE
-		BUDGET_NUM=#{budget_num}
+		update budget_info set suitability=#{suitability} where
+		budget_num=#{budget_num}
 	</update>
 
 </mapper>

@@ -16,7 +16,7 @@
             </p>
           </div>
         </v-col>
-        <v-col >
+        <v-col style="padding-top:80px">
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field
               type="number"
@@ -93,7 +93,7 @@ export default {
   padding-left: 60px;
   padding-right: 60px;
   padding-bottom: 60px;
-  width: 700px;
+  width: 800px;
   height:500px;
   top: 50%;
   left: 50%;
