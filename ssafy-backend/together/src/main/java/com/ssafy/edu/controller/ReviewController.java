@@ -1,12 +1,13 @@
 package com.ssafy.edu.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,11 +61,11 @@ public class ReviewController {
 		for (int i = 0; i < reviewlist.size(); i++) {
 
 			List<String> reviewlikeuser = reviewservice.getReviewLikeUser(reviewlist.get(i).getReview_num());
-			System.out.println(reviewlikeuser.toString());
+//			System.out.println(reviewlikeuser.toString());
 			reviewlist.get(i).setLike_user(reviewlikeuser);
 		}
 
-		System.out.println(" 된다 : " + reviewlist);
+//		System.out.println(" 된다 : " + reviewlist);
 		return new ResponseEntity<List<ReviewResult>>(reviewlist, HttpStatus.OK);
 	}
 
@@ -92,46 +92,54 @@ public class ReviewController {
 	}
 
 	@ApiOperation(value = "review 작성하기", response = ReviewResult.class)
-	@RequestMapping(value = "/review", method = RequestMethod.POST)
-	public void insertReview(@RequestBody Review review) throws Exception {
-		logger.info("3-------------insertReview-----------------------------" + new Date());
+	@RequestMapping(path = "/review", method = RequestMethod.POST)
+	public String uploadImage(HttpServletRequest httpServletRequest, @RequestPart MultipartFile files)
+			throws IOException {
+		logger.info("3-------------uploadImage-----------------------------" + new Date());
+		
 
-		// budget_num, review_content 넘어옴.
-		reviewservice.insertReview(review);
+			Review review = new Review();
+			review.setBudget_num(Integer.parseInt(httpServletRequest.getParameter("budget_num")));
+			review.setReview_content(httpServletRequest.getParameter("review_content"));
+			reviewservice.insertReview(review);
 
-	}
+			int review_num = reviewservice.getLastReviewNumber(review.getBudget_num());
 
-	@ApiOperation(value = "review 이미지 파일 업로드 하기", response = ReviewResult.class)
-	@RequestMapping(value = "/review/upload", method = RequestMethod.POST, headers = ("content-type=multipart/form-data"))
-	public void insertReviewFile(@RequestParam int budget_num,
-			@RequestParam(required = false) List<MultipartFile> multipartfiles) throws Exception {
-		logger.info("4-------------insertReviewFile-----------------------------" + new Date());
-
-		for (int i = 0; i < multipartfiles.size(); i++) {
-			MultipartFile files = multipartfiles.get(i);
+			System.out.println("======================");
+			System.out.println(files.getName());
+			System.out.println(files.getOriginalFilename());
+			System.out.println(files.getContentType());
+			System.out.println("======================");
+			
+			String path="/home/ubuntu/opt/assets/";
+			
 			String fileName = files.getOriginalFilename();
-			String fileNameExtension = FilenameUtils.getExtension(fileName).toLowerCase();
-			File destinationFile;
-			String destinationFileName;
-			String fileUrl = "C:\\Users\\multicampus\\Desktop\\s02p13b109\\ssafy-backend\\together\\UploadFile\\";
+			byte[] imageData = files.getBytes();
+			File folder = null;
+			
+			
+			FileOutputStream fileOutputStream = null;
+			String url = "";
+			try {
+				fileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileName;
+				url =  path+ fileName;
+				File newfile=new File(url);
+				fileOutputStream = new FileOutputStream(newfile);
+				fileOutputStream.write(imageData);
+			} catch (Throwable e) {
+				e.printStackTrace(System.out);
+			} finally {
+				fileOutputStream.close();
+				ReviewFile file = new ReviewFile();
+				file.setReview_num(review_num);
+				file.setFile_name(fileName);
+				file.setFile_ori_name(files.getOriginalFilename());
+				file.setFile_url(url);
 
-			do {
-				destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;
-				destinationFile = new File(fileUrl + destinationFileName);
-			} while (destinationFile.exists());
-
-			destinationFile.getParentFile().mkdirs();
-			files.transferTo(destinationFile);
-
-			int review_num = reviewservice.getLastReviewNumber(budget_num);
-			ReviewFile file = new ReviewFile();
-			file.setReview_num(review_num);
-			file.setFile_name(destinationFileName);
-			file.setFile_ori_name(fileName);
-			file.setFile_url(fileUrl);
-
-			reviewservice.insertReviewFile(file); // 게시글 이미지 파일 insert
-		}
+				reviewservice.insertReviewFile(file); // 게시글 이미지 파일 insert
+			}
+			return url;
+		
 	}
 
 	@ApiOperation(value = "review 수정하기", response = ReviewResult.class)
@@ -143,19 +151,33 @@ public class ReviewController {
 
 	}
 
-	@ApiOperation(value = "review 좋아요 수 update", response = ReviewResult.class)
-	@RequestMapping(value = "/review/like_count/{review_num}", method = RequestMethod.POST)
+	@ApiOperation(value = "review 좋아요 수 update", response = ReviewCount.class)
+	@RequestMapping(value = "/review/like_count", method = RequestMethod.POST)
 	public void insertReviewLikeCount(@RequestBody ReviewCount reviewcount) throws Exception {
-		logger.info("4-------------updateReview-----------------------------" + new Date());
+		logger.info("5-------------insertReviewLikeCount-----------------------------" + new Date());
 
+		System.out.println("좋아요 수 찾기" + reviewcount);
 		reviewservice.insertReviewLikeCount(reviewcount);
+		reviewservice.updateReviewLikeCount(reviewcount.getReview_num());
+	}
+
+	@ApiOperation(value = "review 좋아요 취소", response = ReviewCount.class)
+	@RequestMapping(value = "/review/like_count/{review_num}/{user_email}", method = RequestMethod.DELETE)
+	public void deleteReviewLikeCount(@PathVariable int review_num, @PathVariable String user_email) throws Exception {
+		logger.info("6-------------deleteReviewLikeCount-----------------------------" + new Date());
+		ReviewCount reviewcount = new ReviewCount();
+		reviewcount.setReview_num(review_num);
+		reviewcount.setUser_email(user_email);
+		System.out.println("좋아요 취소 : " + reviewcount);
+
+		reviewservice.deleteReviewLikeCount(reviewcount);
 		reviewservice.updateReviewLikeCount(reviewcount.getReview_num());
 	}
 
 	@ApiOperation(value = "review 삭제하기", response = ReviewResult.class)
 	@RequestMapping(value = "/review/{review_num}", method = RequestMethod.DELETE)
 	public ResponseEntity<ReviewResult> deleteReview(@PathVariable int review_num) throws Exception {
-		logger.info("5-------------deleteReview-----------------------------" + new Date());
+		logger.info("8-------------deleteReview-----------------------------" + new Date());
 
 		reviewservice.deleteReview(review_num);
 

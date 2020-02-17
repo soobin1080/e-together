@@ -19,29 +19,25 @@ public class ReplyService implements IReplyService {
 		// TODO Auto-generated method stub
 		return replydao.getAllReply(review_num);
 	}
-	
+
 	@Override
 	public void insertReply(Reply reply) {
 		// TODO Auto-generated method stub
 		replydao.insertReply(reply);
-		
+
 	}
 
 	@Override
 	public void deleteReply(Reply reply) {
 		// TODO Auto-generated method stub
 		replydao.deleteReply(reply);
-		
-	}
 
+	}
 
 	@Override
 	public void updateReply(Reply reply) {
 		// TODO Auto-generated method stub
 		replydao.updateReply(reply);
 	}
-
-
-	
 
 }

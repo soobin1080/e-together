@@ -76,4 +76,10 @@ public class ReviewService implements IReviewService {
 		return reviewdao.getReviewLikeUser(review_num);
 	}
 
+	@Override
+	public void deleteReviewLikeCount(ReviewCount reviewcount) {
+		// TODO Auto-generated method stub
+		reviewdao.deleteReviewLikeCount(reviewcount);
+	}
+
 }
