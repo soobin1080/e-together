@@ -1,5 +1,5 @@
 <template>
-  <div class="py-1">
+  <div>
     <v-layout>
       <v-flex xs12>
         <p class="font-weight-regular">          

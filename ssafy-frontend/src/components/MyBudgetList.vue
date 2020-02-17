@@ -1,6 +1,6 @@
 <template>
 <div>
-<h5 style="text-align:center">목록</h5><br>
+<h5 style="text-align:center">나의 장보기 내역</h5><br>
   <table width="100%">
     <colgroup>
       <col width="40%" />

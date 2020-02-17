@@ -1,7 +1,6 @@
 <template>
   <div id="downloadpdf" style>
-    <div>
-    </div>
+    <div></div>
     <table width="100%" style="font-size:15px" class="table-dark">
       <tr style="text-align:center;">
         <th>제목</th>
@@ -73,28 +72,26 @@
         <p style="padding-left:30px; color:gray">후기를 등록하시면 회원님의 예산 상세 내역이 함께 게시됩니다.!</p>
         <v-col>
           <div class="container">
-            <form class="large-12 medium-12 small-12 cell" enctype="multipart/form-data">
+            <div class="large-12 medium-12 small-12 cell">
               <label>
                 Files
                 <input
                   type="file"
-                  ref="reviewimage"
-                  multiple
+                  id="files"
+                  ref="files"
                   v-on:change="handleFilesUploads()"
                 />
               </label>
-              <!-- <button v-on:click="submitFiles()">Submit</button> -->
-            </form>
+              <v-textarea
+                v-model="content"
+                background-color="amber lighten-4"
+                color="orange orange-darken-4"
+                outlined
+                shaped
+                placeholder="후기를 작성해주세요!"
+              ></v-textarea>
+            </div>
           </div>
-
-          <v-textarea
-            v-model="content"
-            background-color="amber lighten-4"
-            color="orange orange-darken-4"
-            outlined
-            shaped
-            placeholder="후기를 작성해주세요!"
-          ></v-textarea>
         </v-col>
 
         <v-card-actions>
@@ -120,14 +117,10 @@ export default {
     budgetList: {
       type: Array
     }
-    // title :{
-    //   type : String
-    // }
   },
 
   data() {
     return {
-      // budgetDetail: [],
       detail: {},
       total: 0,
       budgetlength: 0,
@@ -136,16 +129,13 @@ export default {
       propTitle: "mypdf",
       likeClass: "far fa-thumbs-up",
       dislikeClass: "far fa-thumbs-down",
-      files: {},
-      image: ""
+      files: ""
     };
   },
 
   methods: {
     handleFilesUploads() {
-      console.log(this.$refs);
-      this.image = this.$refs.reviewimage.files;
-      console.log(this.image);
+      this.files = this.$refs.files.files;
     },
 
     dateParsing(beforeParsing) {
@@ -172,104 +162,31 @@ export default {
           return;
         }
 
-        // /*
-        //   Initialize the form data
-        // */
-        // const formData = new FormData();
+        let formData = new FormData();
 
-        // /*
-        //   Iteate over any file sent over appending the files
-        //   to the form data.
-        // */
-        // for (var i = 0; i < this.image.length; i++) {
-        //   let file = this.image[i];
-        //   console.log(file);
-        //   formData.append("files", file);
-        // }
-        // console.log(formData);
-        // console.log(formData._boundary);
-
-        // http
-        // .post('review', formData,{
-        //   headers:{
-        //     'Content-type' : 'multipart/form-data'
-        //   }
-        // }).then((res)=>{
-        //   console.log(res);
-        // }).catch((err) => {
-        //   console.log(err);
-        // });
-
-        this.imageupload();
+        for (var i = 0; i < this.files.length; i++) {
+          let file = this.files[i];
+          formData.append("files", file);
+        }
+        formData.append("budget_num", this.budgetInfo.budget_num);
+        alert("budget_num: " + this.budgetInfo.budget_num);
+        formData.append("review_content", this.content);
+        alert("review_content: " + this.content);
 
         http
-          .post("/review", {
-            budget_num: this.budgetInfo.budget_num,
-            review_content: this.content
-          })
+          .post("/review", formData)
           .then(response => {
-            console.log("content전송!");
+            console.log("SUCCESS!!");
             console.log(response);
             // this.result = response.;
           })
           .catch(ex => {
-            console.warn("ERROR! :", ex);
+            console.log("FAILURE!!");
           });
         this.$router.push("/review");
       } else {
         this.dialog = false;
       }
-    },
-
-    imageupload() {
-      /*
-          Initialize the form data
-        */
-      const formData = new FormData();
-
-      /*
-          Iteate over any file sent over appending the files
-          to the form data.
-        */
-      for (var i = 0; i < this.image.length; i++) {
-        let file = this.image[i];
-        console.log(file);
-        formData.append("files", file);
-      }
-      console.log(formData);
-      for (var key of formData.keys()) {
-        console.log("key");
-  console.log(key);
-
-}
-
-for (var value of formData.values()) {
-console.log("value");
-  console.log(value);
-
-}
-
-      http
-        .post(
-          "/review/upload",
-          {
-            files:formData,
-            budget_num: this.budgetInfo.budget_num
-          },
-          {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          }
-        )
-        .then(response => {
-          console.log("image upload response");
-          console.log(response);
-          // this.result = response.;
-        })
-        .catch(ex => {
-          console.warn("ERROR! :", ex);
-        });
     },
     checklikeStatus() {
       let status = this.budgetInfo.suitability;
@@ -333,49 +250,46 @@ console.log("value");
     makePDF(selector) {
       // console.log(selector);
       window.html2canvas = html2canvas; //Vue.js 특성상 window 객체에 직접 할당해야한다.
-      // let that = this;
-      // let pdf = new jsPDF("p", "mm", "a4");
-      // let canvas = pdf.canvas;
-      // const pageWidth = 210; //캔버스 너비 mm
-      // const pageHeight = 295; //캔버스 높이 mm
-      // canvas.width = pageWidth;
-      // let ele = document.getElementById(selector);
-      // let width = ele.offsetWidth; // 셀렉트한 요소의 px 너비
-      // let height = ele.offsetHeight; // 셀렉트한 요소의 px 높이
-      // let imgHeight = (pageWidth * height) / width; // 이미지 높이값 px to mm 변환
+      let that = this;
+      let pdf = new jsPDF("p", "mm", "a4");
+      let canvas = pdf.canvas;
+      const pageWidth = 210; //캔버스 너비 mm
+      const pageHeight = 295; //캔버스 높이 mm
+      canvas.width = pageWidth;
+      let ele = document.getElementById(selector);
+      let width = ele.offsetWidth; // 셀렉트한 요소의 px 너비
+      let height = ele.offsetHeight; // 셀렉트한 요소의 px 높이
+      let imgHeight = (pageWidth * height) / width; // 이미지 높이값 px to mm 변환
 
-      // console.log("뭐냐"+selector);
+      console.log("뭐냐"+selector);
 
       // let ele = document.querySelector('body');
 
-      // if (!ele) {
-      //   console.warn(selector + " is not exist.");
-      //   return false;
-      // }
-      // console.log(canvas);
+      if (!ele) {
+        console.warn(selector + " is not exist.");
+        return false;
+      }
+      console.log(canvas);
 
-      //   var canvasElement = document.createElement("canvas");
-      // html2canvas(ele, { canvaspdf:canvas }).then(function(canvaspdf) {
-      //   ele.appendChild(canvaspdf);
-      //   const img = canvaspdf.toDataURL("image/jpeg", 1.0);
-      //   pdf.addImage(img, "jpeg", 300,1000, pageWidth, imgHeight);
-      //   pdf.save(that.propTitle.toLowerCase() + ".pdf");
-      // });
-
-      html2canvas(document.getElementById(selector), {
-        onrendered: function(canvas) {
-          var imgData = canvas.toDataURL("image/png");
-          console.log("Report Image URL: " + imgData);
-          var doc = new jsPDF("p", "mm", [297, 210]); //210mm wide and 297mm high
-          doc.addImage(imgData, "PNG", 10, 10);
-          doc.save(that.propTitle.toLowerCase() + ".pdf");
-        }
+        var canvasElement = document.createElement("canvas");
+      html2canvas(ele, { canvaspdf:canvas }).then(function(canvaspdf) {
+        ele.appendChild(canvaspdf);
+        const img = canvaspdf.toDataURL("image/jpeg", 1.0);
+        pdf.addImage(img, "jpeg", 0,0, pageWidth, imgHeight);
+        pdf.save(that.propTitle.toLowerCase() + ".pdf");
       });
+
+      // html2canvas(document.getElementById(selector), {
+      //   onrendered: function(canvas) {
+      //     var imgData = canvas.toDataURL("image/png");
+      //     console.log("Report Image URL: " + imgData);
+      //     var doc = new jsPDF("p", "mm", [297, 210]); //210mm wide and 297mm high
+      //     doc.addImage(imgData, "PNG", 10, 10);
+      //     doc.save(that.propTitle.toLowerCase() + ".pdf");
+      //   }
+      // });
     }
   },
-
-  mount() {},
-
   computed: {
     convertDate() {
       console.log("convertDate");
@@ -404,11 +318,7 @@ console.log("value");
       console.log(this.total);
       return this.budgetList;
     }
-  },
-  created() {
-    // this.getMyBudgetDetail(this.budgetDetail);
-    // this.total_sum();
-  }
+  } 
 };
 </script>
 
