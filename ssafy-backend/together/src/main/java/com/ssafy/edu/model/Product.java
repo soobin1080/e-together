@@ -3,7 +3,7 @@ package com.ssafy.edu.model;
 public class Product {
 	private String pro_id;
 	private String pro_name;
-	private String price; 
+	private int price; 
 	private String main_category; 
 	private String weight; 
 	private Double capacity;
@@ -12,7 +12,7 @@ public class Product {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Product(String pro_id, String pro_name, String price, String main_category, String weight, Double capacity,
+	public Product(String pro_id, String pro_name, int price, String main_category, String weight, Double capacity,
 			String img) {
 		super();
 		this.pro_id = pro_id;
@@ -25,7 +25,7 @@ public class Product {
 	}
 	
 	
-	public Product(String pro_id, String pro_name, String price, String main_category, String weight, String img) {
+	public Product(String pro_id, String pro_name, int price, String main_category, String weight, String img) {
 		super();
 		this.pro_id = pro_id;
 		this.pro_name = pro_name;
@@ -46,10 +46,10 @@ public class Product {
 	public void setPro_name(String pro_name) {
 		this.pro_name = pro_name;
 	}
-	public String getPrice() {
+	public int getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 	public String getMain_category() {

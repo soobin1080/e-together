@@ -1,6 +1,5 @@
 package com.ssafy.edu.model;
 
-import java.util.Date;
 import java.util.List;
 
 public class ReviewResult {
@@ -13,6 +12,7 @@ public class ReviewResult {
 	private int budget;
 	private int like_count;
 	private List<String> like_user;
+	private String file_url;
 
 	public ReviewResult() {
 		super();
@@ -20,7 +20,7 @@ public class ReviewResult {
 	}
 
 	public ReviewResult(int review_num, int budget_num, String name, String budget_title, int personnel, int budget,
-			int like_count, List<String> like_user) {
+			int like_count, List<String> like_user, String file_url) {
 		super();
 		this.review_num = review_num;
 		this.budget_num = budget_num;
@@ -30,6 +30,7 @@ public class ReviewResult {
 		this.budget = budget;
 		this.like_count = like_count;
 		this.like_user = like_user;
+		this.file_url = file_url;
 	}
 
 	public int getReview_num() {
@@ -96,11 +97,19 @@ public class ReviewResult {
 		this.like_user = like_user;
 	}
 
+	public String getFile_url() {
+		return file_url;
+	}
+
+	public void setFile_url(String file_url) {
+		this.file_url = file_url;
+	}
+
 	@Override
 	public String toString() {
 		return "ReviewResult [review_num=" + review_num + ", budget_num=" + budget_num + ", name=" + name
 				+ ", budget_title=" + budget_title + ", personnel=" + personnel + ", budget=" + budget + ", like_count="
-				+ like_count + ", user_email=" + like_user + "]";
+				+ like_count + ", like_user=" + like_user + ", file_url=" + file_url + "]";
 	}
 
 }

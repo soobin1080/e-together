@@ -1,24 +1,24 @@
 package com.ssafy.edu.model;
 
 public class BudgetAverageRate {
-	private int water;
-	private int noodle;
-	private int rice;
-	private int instant;
-	private int nuts;
-	private int vegetable;
-	private int seafood;
-	private int fruits;
-	private int snack;
-	private int meat;
+	private Double water;
+	private Double noodle;
+	private Double rice;
+	private Double instant;
+	private Double nuts;
+	private Double vegetable;
+	private Double seafood;
+	private Double fruits;
+	private Double snack;
+	private Double meat;
 
 	public BudgetAverageRate() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public BudgetAverageRate(int water, int noodle, int rice, int instant, int nuts, int vegetable, int seafood,
-			int fruits, int snack, int meat) {
+	public BudgetAverageRate(Double water, Double noodle, Double rice, Double instant, Double nuts, Double vegetable,
+			Double seafood, Double fruits, Double snack, Double meat) {
 		super();
 		this.water = water;
 		this.noodle = noodle;
@@ -32,83 +32,83 @@ public class BudgetAverageRate {
 		this.meat = meat;
 	}
 
-	public int getWater() {
+	public Double getWater() {
 		return water;
 	}
 
-	public void setWater(int water) {
+	public void setWater(Double water) {
 		this.water = water;
 	}
 
-	public int getNoodle() {
+	public Double getNoodle() {
 		return noodle;
 	}
 
-	public void setNoodle(int noodle) {
+	public void setNoodle(Double noodle) {
 		this.noodle = noodle;
 	}
 
-	public int getRice() {
+	public Double getRice() {
 		return rice;
 	}
 
-	public void setRice(int rice) {
+	public void setRice(Double rice) {
 		this.rice = rice;
 	}
 
-	public int getInstant() {
+	public Double getInstant() {
 		return instant;
 	}
 
-	public void setInstant(int instant) {
+	public void setInstant(Double instant) {
 		this.instant = instant;
 	}
 
-	public int getNuts() {
+	public Double getNuts() {
 		return nuts;
 	}
 
-	public void setNuts(int nuts) {
+	public void setNuts(Double nuts) {
 		this.nuts = nuts;
 	}
 
-	public int getVegetable() {
+	public Double getVegetable() {
 		return vegetable;
 	}
 
-	public void setVegetable(int vegetable) {
+	public void setVegetable(Double vegetable) {
 		this.vegetable = vegetable;
 	}
 
-	public int getSeafood() {
+	public Double getSeafood() {
 		return seafood;
 	}
 
-	public void setSeafood(int seafood) {
+	public void setSeafood(Double seafood) {
 		this.seafood = seafood;
 	}
 
-	public int getFruits() {
+	public Double getFruits() {
 		return fruits;
 	}
 
-	public void setFruits(int fruits) {
+	public void setFruits(Double fruits) {
 		this.fruits = fruits;
 	}
 
-	public int getSnack() {
+	public Double getSnack() {
 		return snack;
 	}
 
-	public void setSnack(int snack) {
+	public void setSnack(Double snack) {
 		this.snack = snack;
 	}
 
-	public int getMeat() {
+	public Double getMeat() {
 		return meat;
 	}
 
-	public void setMeat(int meat) {
+	public void setMeat(Double meat) {
 		this.meat = meat;
 	}
 
@@ -118,5 +118,7 @@ public class BudgetAverageRate {
 				+ ", nuts=" + nuts + ", vegetable=" + vegetable + ", seafood=" + seafood + ", fruits=" + fruits
 				+ ", snack=" + snack + ", meat=" + meat + "]";
 	}
+
+	
 
 }

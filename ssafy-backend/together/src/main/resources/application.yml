@@ -2,6 +2,12 @@ server:
    port: 8197
    servlet:
       contextPath: /together
+#   ssl:
+#    key-store: /etc/letsencrypt/live/i02b109.p.ssafy.io/keystore.p12
+#    key-store-password: together
+#    key-store-type: PKCS12
+#    key-alias: etogether
+
 spring:
   servlet:
     mutipart:
@@ -10,4 +16,3 @@ spring:
       max-request-size: 100MB
       
 
-      
