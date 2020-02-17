@@ -1,7 +1,7 @@
 <template>
   <div id="downloadpdf" style>
     <div></div>
-    <table width="100%" style="font-size:15px" class="table-dark">
+    <table width="100%" style="font-size:15px" class="table-white">
       <tr style="text-align:center;">
         <th>제목</th>
         <td v-html="computedBudgetInfo.budget_title" style="text-align:center"></td>

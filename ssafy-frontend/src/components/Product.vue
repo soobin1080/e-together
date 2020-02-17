@@ -38,7 +38,7 @@ export default {
   props: {
     pro_id: { type: String },
     pro_name: { type: String },
-    price: { type: String },
+    price: { type: Number },
     img: { type: String },
     main_category: { type: String },
     product: { type: Object }
