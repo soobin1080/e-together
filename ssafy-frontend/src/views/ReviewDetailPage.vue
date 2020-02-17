@@ -22,25 +22,18 @@
       }
     },
 
-    getReview(reviewNum) {
-      console.log('getReview')
-      http
-        .get(`review/${reviewNum}`, {
-          review_num: reviewNum
-        }, this.$store.getters.requestHeader)
-        .then(res => {
-          console.log(res)
-        }) 
-    }
-
-
-  },
-
-  created(){
-    EventBus.$on('goToDetail', reviewNum => {
-      console.log('이벤트 받음' + reviewNum)
-      this.getReview(reviewNum)
-    })
+    methods: {
+      getReview(reviewNum) {
+        console.log('getReview')
+        http
+          .get(`review/${reviewNum}`, {
+            review_num: reviewNum
+          }, this.$store.getters.requestHeader)
+          .then(res => {
+            console.log(res)
+          }) 
+      }
+    },
   }
 </script>
 

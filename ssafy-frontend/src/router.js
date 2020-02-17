@@ -92,7 +92,7 @@ export default new Router({
 		{
 			path : '/reviewDetail',
 			name : 'reviewdetail',
-			compoenent: ReviewDetail
+			component: ReviewDetail
 		}
 
   ]
