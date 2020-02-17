@@ -185,6 +185,56 @@ export default {
       budgetList: [],
       etcTotal : 0,
       mainTotal: 0,
+      recommendBar : [
+        {
+        category : '정육/계란류',
+        price: 0,
+        className: 'progress-bar bg-danger'
+      }, {
+        category : '생수/음료',
+        price: 0,
+        className: 'progress-bar bg-primary'
+      }, {
+        category : '채소',
+        price: 0,
+        className: 'progress-bar bg-success'
+      }, {
+        category : '라면',
+        price: 0,
+        className: 'progress-bar bg-warning'
+      }
+      ],
+      recommendBarETC: [
+         {
+        category : '수산물/해산물',
+        price: 0,
+        className: 'progress-bar bg-primary'
+      }, {
+        category : '쌀/잡곡',
+        price: 0,
+        className: 'progress-bar bg-secondary'
+
+      }, {
+        category : '즉석식품',
+        price: 0,
+        className: 'progress-bar bg-dark'
+
+      }, {
+        category : '과일',
+        price: 0,
+        className: 'progress-bar bg-success'
+
+      }, {
+        category : '스낵',
+        price: 0,
+        className: 'progress-bar bg-warning'
+      }, {
+        category : '견과/건해산물',
+        price: 0,
+        className: 'progress-bar bg-info'
+      }
+      ],
+      recommendTotal: 0,
       colorByCategory: [
         {'정육/계란류' : 'bg-danger'},
         {'생수/음료' : 'bg-primary'},
@@ -195,7 +245,9 @@ export default {
     };
   },
   mounted() {
+    console.log('martpage, budget : '+this.$store.state.budget)
     this.getProductList(this.keyword);
+    this.recommendBudgetBar(this.$store.state.budget)
   },
   computed: {
     mountedProduct() {
@@ -251,19 +303,32 @@ export default {
       this.pages = 1;
     },
 
-    // selectTab: function(title) {
-    //   console.log(title)
-    //   if (title !== "전체") {
-    //     // console.log("not all")
-    //     this.pagingProduct = this.products.filter(product => {
-    //       console.log("not all")
-    //       return product.main_category == title
-    //     })
-    //   }
-    //   else {
+    recommendBudgetBar(mybudget) {
+      if (mybudget !== null && mybudget !== undefined && mybudget !== 0){
+        console.log("recommendBudgetBar")
+        http
+          .get("/recommend", {
+            params: {
+              budget: mybudget
+            }
+          })
+            .then(res => {
+              this.recommendBar = res.data
+              console.log(this.recommendBar)
+              const keys = Object.keys(this.recommendBar)
+              console.log(keys.length)
+              const categoryDict = this.$store.state.recommendDict
+              // const prices = Object.keys(this.recommendBar)
+              for (let i = 0; i < keys.length; i++) {
+                console.log(categoryDict[keys[i]])
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      }
+    },
 
-    //   }
-    // },
     getImgUrl(img) {
       return require("../assets/" + img);
     },
@@ -288,7 +353,7 @@ export default {
         .get("/product")
         .then(response => {
           this.products = response.data;
-          console.log(this.products);
+          // console.log(this.products);
           if (this.products.length % this.productPerPage === 0) {
             this.pagingLength = parseInt(
               this.products.length / this.productPerPage

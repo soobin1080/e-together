@@ -36,19 +36,16 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       
-      <v-toolbar-items class="hidden-xs-only" style="height: 64px;">
-        <div class="menu" style="height:20px">       
-       <v-btn text @click="clickproduct" style="height:64px" >Mart</v-btn>             
-        <v-btn text v-if="username"  @click="clickmybudget" style="height:64px">My Budget</v-btn>
-       
-        
-        <v-btn text @click="clickreview" style="height:64px">Review</v-btn>
-        
-        </div>
-        <div  v-if="username"  class="text-center" style="padding-top:20px; padding-left:10px">
+      <v-toolbar-items class="hidden-xs-only justify-content-around" style="height: 64px;">
+        <!-- <div class="menu d-inline" style="height:20px">        -->
+          <v-btn text width="10%" @click="clickproduct" style="height:64px" >Mart</v-btn>             
+          <v-btn text width="10%" v-if="username" @click="clickmybudget" style="height:64px">My Budget</v-btn>
+          <v-btn text width="10%" @click="clickreview" style="height:64px">Review</v-btn>
+        <!-- </div> -->
+        <v-btn text v-if="username" class="text-center" style="padding-top:20px; padding-left:10px">
           <v-menu offset-y open-on-hover>
             <template v-slot:activator="{ on }">
-              <span text v-on="on" style="padding-bottom:17px; font-weight:bold; color:darkblue" >  <i class="material-icons">account_circle</i> {{setUserName}}</span>님, 환영합니다.
+              <span class="headerMenu" text v-on="on" style="padding-bottom:17px; font-weight:bold; color:darkblue">  <i class="material-icons">account_circle</i> {{setUserName}}</span>님, 환영합니다.
             </template>
             <v-list dense shaped>
               <v-list-item>
@@ -59,9 +56,9 @@
               </v-list-item>
             </v-list>
           </v-menu>
-        </div>
+        </v-btn>
         <!-- <v-btn v-if="username" text @click="logout">Logout</v-btn> -->
-        <v-btn v-else text @click="$modal.show('login-modal')">Login</v-btn>
+        <v-btn v-else text width="10%" @click="$modal.show('login-modal')">Login</v-btn>
         <!-- <v-btn v-if="!username" text to="/findpwd">비밀번호 찾기</v-btn> -->
         
       </v-toolbar-items>
@@ -162,7 +159,9 @@ export default {
   }
 };
 </script>
-<style>
-
+<style scoped>
+  .headerMenu >span {
+    font-size: 5vw;
+  }
 
 </style>

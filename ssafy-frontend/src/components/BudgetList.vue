@@ -262,21 +262,6 @@ export default {
     del_pro(i){
       this.$store.dispatch('deleteProductAsync', i)
     },
-
-    recommendBudgetBar(mybudget) {
-      console.log("recommendBudgetBar")
-      console.log(mybudget)
-      http
-        .get("/recommend", {
-          budget: mybudget
-          })
-          .then(res => {
-            console.log(res)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-    },
     
     changeQuantity(budget, idx, event) {
       console.log('change')

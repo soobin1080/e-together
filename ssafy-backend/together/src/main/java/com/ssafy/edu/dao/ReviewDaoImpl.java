@@ -76,4 +76,9 @@ public class ReviewDaoImpl {
 		// TODO Auto-generated method stub
 		sqlSession.delete(ns+"deleteReviewLikeCount",reviewcount);
 	}
+
+	public String getReviewImage(int review_num) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(ns+"getReviewImage",review_num);
+	}
 }
