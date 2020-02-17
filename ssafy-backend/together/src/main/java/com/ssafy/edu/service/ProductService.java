@@ -36,6 +36,12 @@ public class ProductService implements IProductService {
 		// TODO Auto-generated method stub
 		return productdao.categoryKeywordSearchProduct(category,keyword);
 	}
+
+	@Override
+	public void insertProduct(Product product) {
+		// TODO Auto-generated method stub
+		productdao.insertProduct(product);
+	}
 	
 
 }

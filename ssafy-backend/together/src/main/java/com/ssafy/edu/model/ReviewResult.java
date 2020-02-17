@@ -1,6 +1,7 @@
 package com.ssafy.edu.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class ReviewResult {
 //제목, 작성자,이미지, 예산, 인원, 좋아요수
@@ -10,8 +11,8 @@ public class ReviewResult {
 	private String budget_title;
 	private int personnel;
 	private int budget;
-	private String budget_img;
 	private int like_count;
+	private List<String> like_user;
 
 	public ReviewResult() {
 		super();
@@ -19,7 +20,7 @@ public class ReviewResult {
 	}
 
 	public ReviewResult(int review_num, int budget_num, String name, String budget_title, int personnel, int budget,
-			String budget_img, int like_count) {
+			int like_count, List<String> like_user) {
 		super();
 		this.review_num = review_num;
 		this.budget_num = budget_num;
@@ -27,8 +28,8 @@ public class ReviewResult {
 		this.budget_title = budget_title;
 		this.personnel = personnel;
 		this.budget = budget;
-		this.budget_img = budget_img;
 		this.like_count = like_count;
+		this.like_user = like_user;
 	}
 
 	public int getReview_num() {
@@ -79,14 +80,6 @@ public class ReviewResult {
 		this.budget = budget;
 	}
 
-	public String getBudget_img() {
-		return budget_img;
-	}
-
-	public void setBudget_img(String budget_img) {
-		this.budget_img = budget_img;
-	}
-
 	public int getLike_count() {
 		return like_count;
 	}
@@ -95,11 +88,19 @@ public class ReviewResult {
 		this.like_count = like_count;
 	}
 
+	public List<String> getLike_user() {
+		return like_user;
+	}
+
+	public void setLike_user(List<String> like_user) {
+		this.like_user = like_user;
+	}
+
 	@Override
 	public String toString() {
 		return "ReviewResult [review_num=" + review_num + ", budget_num=" + budget_num + ", name=" + name
-				+ ", budget_title=" + budget_title + ", personnel=" + personnel + ", budget=" + budget + ", budget_img="
-				+ budget_img + ", like_count=" + like_count + "]";
+				+ ", budget_title=" + budget_title + ", personnel=" + personnel + ", budget=" + budget + ", like_count="
+				+ like_count + ", user_email=" + like_user + "]";
 	}
 
 }

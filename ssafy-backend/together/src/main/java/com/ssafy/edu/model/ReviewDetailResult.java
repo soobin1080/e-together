@@ -6,6 +6,7 @@ public class ReviewDetailResult {
 	private Review review;
 	private BudgetInfo budgetinfo;
 	private List<BudgetListResult> budgetlist;
+	private List<String> like_user;
 
 	public ReviewDetailResult() {
 		super();
@@ -43,10 +44,18 @@ public class ReviewDetailResult {
 		this.budgetlist = budgetlist;
 	}
 
+	public List<String> getLike_user() {
+		return like_user;
+	}
+
+	public void setLike_user(List<String> like_user) {
+		this.like_user = like_user;
+	}
+
 	@Override
 	public String toString() {
 		return "ReviewDetailResult [review=" + review + ", budgetinfo=" + budgetinfo + ", budgetlist=" + budgetlist
-				+ "]";
+				+ ", like_user=" + like_user + "]";
 	}
 
 }

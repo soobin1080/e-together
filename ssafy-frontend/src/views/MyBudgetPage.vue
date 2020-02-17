@@ -28,11 +28,11 @@
       </div>
      
 
-      <div class="text-center" fluid>
+      <div class="text-center" fluid style="padding-bottom:40px">
         <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
       </div>
-    </div>
-    <div class="mx-auto my-5 flat" style="width:60%" v-if="showflag==true">
+
+      <div class="mx-auto my-5 flat" style="width:60%" v-if="showflag==true">
      <MyBudgetDetail
      :budgetList="budgetList" 
      :budgetInfo="budgetInfo"
@@ -42,6 +42,8 @@
      </MyBudgetDetail>
     </div>
 
+    </div>
+    
   </div>  
 </template>
 
@@ -154,7 +156,7 @@ export default {
 
 <style scoped>
 .main {
-  padding-top: 80px;
+  padding-top: 60px;
   padding-bottom: 80px;
 }
 </style>

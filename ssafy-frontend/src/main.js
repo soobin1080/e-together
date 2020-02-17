@@ -24,6 +24,8 @@ import VueSession from 'vue-session'
 
 import VuetifyNumberInput from '@jzolago/vuetify-number-input'
 
+var infiniteScroll =  require('vue-infinite-scroll');
+Vue.use(infiniteScroll)
 
 Vue.config.productionTip = false
 
@@ -38,7 +40,6 @@ Vue.use(VueCsrf);
 Vue.use(VueAxios, axios)
 Vue.use(VuetifyNumberInput);
 Vue.use(VueSession, {persist: true})
-Vue.use(InfiniteLoading, { /* options */ });
 Vue.use(VueSessionStorage)
 
 // Require dependencies
