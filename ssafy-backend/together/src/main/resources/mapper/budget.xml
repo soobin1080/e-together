@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		budget, suitability, budget_date
 		from budget_info
 		where
-		user_email=(select email from user where email=#{user_email})
+		user_email=(select email from user where email=#{user_email}) order by budget_num desc;
 	</select>
 
 	<!-- 내 예산안 상세 보기 -->
