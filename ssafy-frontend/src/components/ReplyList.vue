@@ -1,9 +1,12 @@
 <template>
-<ul class="list-group list-group-flush">
-  <li class="list-group-item">
-    <Reply></Reply>
-  </li>
-</ul>
+<v-container>
+  <ul class="list-group list-group-flush">
+    <li v-for="reply in allReplys" style="list-style-type:none;">
+      <Reply :reply="reply">
+      </Reply>
+    </li>
+  </ul>
+</v-container>
 </template>
 
 <script>
@@ -13,6 +16,11 @@ export default {
   components: {
     Reply
   },
+  props: {
+    allReplys: {
+      type: Array
+    }
+  }, 
   methods: {
 
   },
