@@ -21,7 +21,7 @@
     <v-card-actions>
       <v-btn
         text
-        :to="{ path: `reviewdetail/${this.review.review_num}`, params: { reviewNum: this.review.review_num }}"
+        :to="{ path: `reviewdetail/${this.review.review_num}/${computedReview.name}`, params: { reviewNum: this.review.review_num, userName: computedReview.name }}"
         style="text-decoration:none; color:black;">
         상세 보기
       </v-btn>
@@ -32,10 +32,13 @@
       </v-btn> -->
       <v-spacer></v-spacer>
       {{computedReview.like_user.length}}
+
       <i v-if="isLiked" class="fas fa-heart ml-1" style="color: red;font-size:20px;" @click="like(review)"></i>
       <i v-else class="far fa-heart ml-1" style="color:black;font-size:20px;" @click="like(review)"></i>
     </v-card-actions>
   </v-card>
+
+
   
   <!-- <v-card height="330px">
     <v-img src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg" height="194"></v-img>

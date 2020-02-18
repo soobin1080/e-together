@@ -11,6 +11,7 @@
             <h4
               class="card-title text-center"
             >{{budgetInfo.budget_title}}</h4>
+            <h5 class="text-center">{{review.name}}</h5>
             <div class="text-center">
               <p class="card-text">{{review.review_content}}</p>
               <p class="card-text">
@@ -18,17 +19,25 @@
               </p>
               <i class="fas fa-heart text-danger mr-1 mb-3"></i>
               {{like_users.length}}
-              <span
-                id="likeBtn"
-                class="badge badge-pill badge-primary"
+              <!--이미 좋아요 누른 경우--><span
+                v-if="likeStatus"
+                class="likeBtn badge badge-pill badge-danger"
                 style="cursor:pointer"
                 @click="like(review)"
-              >좋아요</span>
+              >좋아요 취소</span>
+              <span
+                v-else
+                class="likeBtn badge badge-pill badge-primary"
+                style="cursor:pointer"
+                @click="like(review)"
+                >
+                좋아요
+              </span>
               <br />
               <!-- <span v-else 
                 class="badge badge-pill badge-primary" 
                 style="cursor:pointer"
-              @click="like(review)">좋아요</span>-->
+              @click="like(review)">좋아요</span> -->
               <p
                 v-if="budgetInfo.suitability === 1"
                 class="text-center d-inline-block bg-primary rounded"
@@ -61,41 +70,8 @@
               />
               <!-- 톡 이미지 부분이고, 전 kakaolink_btn_small.png로 불러왔습니다.   -->
             </a>
-
-            <!-- <p class="text-center" 
-              data-toggle="modal" 
-              data-target="#exampleModalLong" 
-              style="cursor:pointer">
-              예산 전체보기
-            </p>-->
-            <!-- <div v-for="budget in this.budgetList">
-              {{ budget.pro_name }} * {{budget.quantity}} = {{budget.price}}
-            </div>-->
           </div>
-          <!-- 
-          
-  
-
-          <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">장바구니 전체</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                  <ul class="list-group list-group-flush">
-                    <li v-for="product in budgetList" class="list-group-item">
-                      {{product.pro_name}} * {{product.quantity}}
-                    </li>
-                  </ul>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>-->
+ 
         </div>
 
         <div class="col-md-12">
@@ -111,7 +87,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="product in budgetList" :key="product">
+              <tr v-for="product in budgetList" :key="product.pro_name">
                 <td v-html="product.pro_name"></td>
 
                 <td v-html="product.quantity"></td>
@@ -142,6 +118,8 @@
       <v-btn outlined color="error"  class="mr-4" @click="deleteReview(review.review_num)">삭제</v-btn>
       </span>
     </div>
+
+      
   </div>
 </template>
 
@@ -151,20 +129,40 @@ import http from "../http-common";
 import Kakao from "../services/KakaotalkService";
 export default {
   name: "ReviewDetail",
+  components: {
+  },
 
   data() {
     return {
-      review: Object,
-      budgetInfo: Object,
-      budgetList: Array,
+      // review: Object,
+      // budgetInfo: Object,
+      // budgetList: Array,
       like_users: Array,
       reviewNum: Number,
-      likeStatus: false,
       dialogm1: "",
       dialog: false,
       total: 0,
-      img: ""
+      img: "",
+      allReplys: Array,
     };
+  },
+
+  props: {
+    review : {
+      type: Object
+    },
+    budgetList: {
+      type: Array
+    },
+    budgetInfo: {
+      type: Object
+    },
+    like_users: {
+      type: Array
+    },
+    total: {
+      type: Number
+    }
   },
 
   methods: {
@@ -238,9 +236,9 @@ export default {
         ]
       });
     },
+
     total_sum() {
       console.log(this.budgetList);
-      // console.log(this.budgetList)
     },
     dateParsing(beforeParsing) {
       const t = beforeParsing.indexOf("T");
@@ -256,72 +254,7 @@ export default {
       console.log("realdate: " + realdate);
       return realdate;
     },
-    getReviewDetailByArg(review_num) {
-      let loginUser = sessionStorage.getItem("email");
-      http
-        .get(
-          `/review/${this.reviewNum}`,
-          { review_num: this.reviewNum },
-          this.$store.getters.requestHeader
-        )
-        .then(res => {
-          console.log(res);
-          this.review = res.data.review;
-          this.budgetInfo = res.data.budgetinfo;
-          this.budgetList = res.data.budgetlist;
-          this.like_users = res.data.like_user;
-          let loginUser = sessionStorage.getItem("email");
-          var likeBtn = document.getElementById("likeBtn");
-          console.log(likeBtn);
-          if (this.like_users.includes(loginUser)) {
-            likeBtn.innerHTML = "좋아요 취소";
-            likeBtn.className = "badge badge-pill badge-danger";
-          } else {
-            likeBtn.innerHTML = "좋아요";
-            likeBtn.className = "badge badge-pill badge-primary";
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    getReviewDetail() {
-      this.reviewNum = this.$route.params.reviewNum;
-      console.log("getReviewDetail");
-      http
-        .get(
-          `/review/${this.reviewNum}`,
-          { review_num: this.reviewNum },
-          this.$store.getters.requestHeader
-        )
-        .then(res => {
-          console.log(res);
-          this.review = res.data.review;
-          this.budgetInfo = res.data.budgetinfo;
-          this.budgetList = res.data.budgetlist;
-          console.log(this.budgetList);
-          this.total = this.budgetList.reduce(
-            (total, budget) => (total += budget.price * budget.quantity),
-            0
-          );
-          this.like_users = res.data.like_user;
-          let loginUser = sessionStorage.getItem("email");
-
-          if (this.like_users.includes(loginUser)) {
-            document.getElementById("likeBtn").innerHTML = "좋아요 취소";
-            document.getElementById("likeBtn").className =
-              "badge badge-pill badge-danger";
-          } else {
-            document.getElementById("likeBtn").innerHTML = "좋아요";
-            document.getElementById("likeBtn").className =
-              "badge badge-pill badge-primary";
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-
+  
     like(review) {
       let loginUser = sessionStorage.getItem("email");
       if (loginUser === null || typeof loginUser === undefined) {
@@ -339,7 +272,7 @@ export default {
             this.$store.getters.requestHeader
           )
           .then(res => {
-            this.getReviewDetail(loginUser);
+            this.$emit('getReviewDetailbyArg', review.review_num)
             console.log(res);
           })
           .catch(err => {
@@ -357,26 +290,19 @@ export default {
             this.$store.getters.requestHeader
           )
           .then(res => {
+            this.$emit('getReviewDetailbyArg', review.review_num)
             console.log(res);
-            this.getReviewDetailByArg(loginUser);
           })
           .catch(err => {
             console.log(err);
           });
       }
-    },
-    likeStatus() {
-      // $(document).ready(function() {
-      console.log("likeStatus");
-      var likeBtn = document.getElementById("likeBtn");
-      console.log(likeBtn);
-      // });
-    }
+    },  
+  
   },
   mounted() {
-    this.getReviewDetail();
-    // this.likeStatus();
     this.total_sum();
+    this.getAllReplys();
   },
 
   computed: {
@@ -389,7 +315,16 @@ export default {
 
     computedReviewNum() {
       return this.$route.params.reviewNum;
-    }
+    },
+
+    likeStatus() {
+      let loginUser = sessionStorage.getItem("email");
+        if (this.like_users.includes(loginUser)) {
+          return true
+        } else {
+          return false
+      }
+    },
   }
 };
 </script>
