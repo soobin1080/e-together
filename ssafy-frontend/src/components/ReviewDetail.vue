@@ -3,23 +3,47 @@
     <!-- <div class="container" style="height:100%; width:50%;"> -->
     <div class="card mb-3" style="height:100%;">
       <div class="row no-gutters">
-        <div class="col-md-4">
-          <v-img :src="'http://13.209.9.53'+review_img" class="card-img" alt ></v-img>
+        <div class="col-md-5">
+          <v-img :src="'http://13.209.9.53'+review_img" class="card-img" alt></v-img>
         </div>
-        <div class="col-md-8">
-          <div class="card-body mt-8">
-            <h4
-              class="card-title text-center"
-            >{{budgetInfo.budget_title}}</h4>
-            <h5 class="text-center">{{review.name}}</h5>
+        <div class="col-md-7">
+          <div class="card-body mt-4">
+            <h4 class="card-title text-center">{{budgetInfo.budget_title}}</h4>
+            <h6 class="text-center" style="color:dimgrey">by. {{review.name}}</h6>
             <div class="text-center">
-              <p class="card-text">{{review.review_content}}</p>
-              <p class="card-text">
+              <p class="card-text" style="padding:0px">
                 <small class="text-muted">{{dateParsing(review.review_date)}}</small>
               </p>
+
+              <v-card-text class="text-center" style="color:dimgrey; padding:3px">
+                <i class="material-icons">people_outline</i>
+                {{budgetInfo.personnel}}명
+                <i class="material-icons" style="padding-left:15px">money</i>
+                {{budgetInfo.budget}}원
+              </v-card-text>
+
+              <p class="card-text" style="padding-top:15px">{{review.review_content}}</p>
+
+              <p
+                v-if="budgetInfo.suitability === 1"
+                class="text-center bg-primary rounded"
+                style="color:white"
+              >사용자가 적합하다고 판단한 예산입니다.</p>
+              <p
+                v-else-if="budgetInfo.suitability == 2"
+                class="text-center bg-warning rounded"
+                style="color:white"
+              >사용자가 부적합하다고 판단한 예산입니다.</p>
+              <p
+                v-else
+                class="text-center bg-secondary rounded"
+                style="color:white"
+              >사용자가 아직 적합도를 정하지 않았습니다.</p>
+
               <i class="fas fa-heart text-danger mr-1 mb-3"></i>
               {{like_users.length}}
-              <!--이미 좋아요 누른 경우--><span
+              <!--이미 좋아요 누른 경우-->
+              <span
                 v-if="likeStatus"
                 class="likeBtn badge badge-pill badge-danger"
                 style="cursor:pointer"
@@ -30,48 +54,29 @@
                 class="likeBtn badge badge-pill badge-primary"
                 style="cursor:pointer"
                 @click="like(review)"
-                >
-                좋아요
-              </span>
-              <br />
-              <!-- <span v-else 
-                class="badge badge-pill badge-primary" 
-                style="cursor:pointer"
-              @click="like(review)">좋아요</span> -->
-              <p
-                v-if="budgetInfo.suitability === 1"
-                class="text-center bg-primary rounded"
-                style="color:white"
-              > 사용자가 적합하다고 판단한 예산입니다. </p>
-              <p
-                v-else-if="budgetInfo.suitability == 2"
-                class="text-center bg-warning rounded"
-                style="color:white"
-              > 사용자가 부적합하다고 판단한 예산입니다. </p>
-              <p
-                v-else
-                class="text-center bg-secondary rounded"
-                style="color:white"
-              > 사용자가 아직 적합도를 정하지 않았습니다. </p>
-            </div>
-            <p
-              class="text-center font-weight-bolder"
-            >인원 : {{budgetInfo.personnel}} / 예산 : {{budgetInfo.budget}}</p>
-            <a
-              href="javascript:;"
-              @click="kakaotalklink"
-              id="kakao-link-btn"
-              style="width:30px; height:auto"
-            >
-              <!-- 버튼이 생기는 부분, id는 맘대로 쓰시되 아래 js 코드도 동일하게 적용해주셔야 합니다. -->
-              <img
-                src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+              >좋아요</span>      
+
+              <!-- 카톡링크전송: 작성자랑 현재 로그인한 사람이랑 같아야만 보인다 -->
+              <span v-if="checkUser()==true">
+              <a
+                href="javascript:;"
+                @click="kakaotalklink"
+                id="kakao-link-btn"
                 style="width:30px; height:auto"
-              />
-              <!-- 톡 이미지 부분이고, 전 kakaolink_btn_small.png로 불러왔습니다.   -->
-            </a>
+              >
+                <!-- 버튼이 생기는 부분, id는 맘대로 쓰시되 아래 js 코드도 동일하게 적용해주셔야 합니다. -->
+                <img
+                  src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+                  style="width:30px; height:auto"
+                />
+                <!-- 톡 이미지 부분이고, 전 kakaolink_btn_small.png로 불러왔습니다.   -->
+              </a>
+            </span>
+            </div>
+
+            
+            
           </div>
- 
         </div>
 
         <div class="col-md-12">
@@ -111,15 +116,13 @@
     <!-- </div> -->
 
     <div style="text-align:right">
-      <v-btn outlined color="success"  class="mr-4" @click="gotoList">목록</v-btn>
+      <v-btn outlined color="success" class="mr-4" @click="gotoList">목록</v-btn>
 
       <!-- 작성자랑 지금 로그인한 사용자가 같아야만 이 버튼이 보임 -->
       <span v-if="checkUser()==true">
-      <v-btn outlined color="error"  class="mr-4" @click="deleteReview(review.review_num)">삭제</v-btn>
+        <v-btn outlined color="error" class="mr-4" @click="deleteReview(review.review_num)">삭제</v-btn>
       </span>
     </div>
-
-      
   </div>
 </template>
 
@@ -129,8 +132,7 @@ import http from "../http-common";
 import Kakao from "../services/KakaotalkService";
 export default {
   name: "ReviewDetail",
-  components: {
-  },
+  components: {},
 
   data() {
     return {
@@ -142,12 +144,12 @@ export default {
       dialogm1: "",
       dialog: false,
       total: 0,
-      allReplys: Array,
+      allReplys: Array
     };
   },
 
   props: {
-    review : {
+    review: {
       type: Object
     },
     budgetList: {
@@ -162,47 +164,45 @@ export default {
     total: {
       type: Number
     },
-    review_img:{
+    review_img: {
       type: String
     }
-
   },
 
   methods: {
-    checkUser(){
-      if(this.budgetInfo.user_email==sessionStorage.getItem("email")){
+    checkUser() {
+      if (this.budgetInfo.user_email == sessionStorage.getItem("email")) {
         return true;
-      }else{
+      } else {
         return false;
       }
-     
     },
-    gotoList(){
+    gotoList() {
       this.$router.push("/review");
     },
-    deleteReview(num){
-      console.log(num)
-       let conf = confirm('리뷰를 삭제하시겠습니까?')
-       if(conf){
-       http
-        .delete("/review/"+num)
-        .then(response => {
-          console.log(response) 
-            if(response.status==200){
+    deleteReview(num) {
+      console.log(num);
+      let conf = confirm("리뷰를 삭제하시겠습니까?");
+      if (conf) {
+        http
+          .delete("/review/" + num)
+          .then(response => {
+            console.log(response);
+            if (response.status == 200) {
               alert("삭제 처리 하였습니다!");
               this.$router.push("/review");
-            } else{
+            } else {
               alert("삭제 처리하지 못하였습니다!");
             }
-        })
-        .catch((err) => {
-          console.log(err)
-          this.errored = true;
-        })
-        .finally(() => (this.loading = false));
-       }else{
-         return;
-       }
+          })
+          .catch(err => {
+            console.log(err);
+            this.errored = true;
+          })
+          .finally(() => (this.loading = false));
+      } else {
+        return;
+      }
     },
     kakaotalklink() {
       //<![CDATA[
@@ -216,9 +216,11 @@ export default {
           // 여기부터 실제 내용이 들어갑니다.
           title: this.budgetInfo.budget_title, // 본문 제목
           description: this.review.review_content, // 본문 바로 아래 들어가는 영역?
-          imageUrl: 'http://13.209.9.53'+this.review_img, // 이미지
-          link: {            
-            webUrl: "'https://i02b109.p.ssafy.io/reviewdetail/'+this.review_num"
+          imageUrl: "http://13.209.9.53" + this.review_img, // 이미지
+          link: {
+            webUrl:
+              "https://i02b109.p.ssafy.io/reviewdetail?review_num=" +
+              this.review_num
           }
         },
         social: {
@@ -231,11 +233,13 @@ export default {
           {
             title: "e투계더로 이동",
             link: {
-              webUrl: "'https://i02b109.p.ssafy.io/reviewdetail/'+this.review_num"
+              webUrl:
+                "https://i02b109.p.ssafy.io/reviewdetail?review_num=" +
+                this.review_num
             }
           }
-        ]        
-      });      
+        ]
+      });
     },
 
     total_sum() {
@@ -255,7 +259,7 @@ export default {
       console.log("realdate: " + realdate);
       return realdate;
     },
-  
+
     like(review) {
       let loginUser = sessionStorage.getItem("email");
       if (loginUser === null || typeof loginUser === undefined) {
@@ -273,7 +277,7 @@ export default {
             this.$store.getters.requestHeader
           )
           .then(res => {
-            this.$emit('getReviewDetailbyArg', review.review_num)
+            this.$emit("getReviewDetailbyArg", review.review_num);
             console.log(res);
           })
           .catch(err => {
@@ -291,15 +295,14 @@ export default {
             this.$store.getters.requestHeader
           )
           .then(res => {
-            this.$emit('getReviewDetailbyArg', review.review_num)
+            this.$emit("getReviewDetailbyArg", review.review_num);
             console.log(res);
           })
           .catch(err => {
             console.log(err);
           });
       }
-    },  
-  
+    }
   },
   mounted() {
     this.total_sum();
@@ -320,12 +323,12 @@ export default {
 
     likeStatus() {
       let loginUser = sessionStorage.getItem("email");
-        if (this.like_users.includes(loginUser)) {
-          return true
-        } else {
-          return false
+      if (this.like_users.includes(loginUser)) {
+        return true;
+      } else {
+        return false;
       }
-    },
+    }
   }
 };
 </script>
@@ -335,7 +338,7 @@ export default {
   padding-top: 80px;
   padding-bottom: 80px;
   margin: auto;
-  width: 80%;
+  width: 60%;
 }
 table {
   width: 100%;
