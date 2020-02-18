@@ -4,7 +4,7 @@
     <div class="card mb-3" style="height:100%;">
       <div class="row no-gutters">
         <div class="col-md-4">
-          <img src class="card-img" alt />{{review.img}}
+          <v-img :src="'http://13.209.9.53'+review_img" class="card-img" alt ></v-img>
         </div>
         <div class="col-md-8">
           <div class="card-body mt-8">
@@ -40,7 +40,7 @@
               @click="like(review)">좋아요</span> -->
               <p
                 v-if="budgetInfo.suitability === 1"
-                class="text-center d-inline-block bg-primary rounded"
+                class="text-center bg-primary rounded"
                 style="color:white"
               > 사용자가 적합하다고 판단한 예산입니다. </p>
               <p
@@ -142,7 +142,6 @@ export default {
       dialogm1: "",
       dialog: false,
       total: 0,
-      img: "",
       allReplys: Array,
     };
   },
@@ -162,7 +161,11 @@ export default {
     },
     total: {
       type: Number
+    },
+    review_img:{
+      type: String
     }
+
   },
 
   methods: {
@@ -213,10 +216,9 @@ export default {
           // 여기부터 실제 내용이 들어갑니다.
           title: this.budgetInfo.budget_title, // 본문 제목
           description: this.review.review_content, // 본문 바로 아래 들어가는 영역?
-          imageUrl: "../etogether.png", // 이미지
-          link: {
-            mobileWebUrl: "https://developers.kakao.com",
-            webUrl: "https://developers.kakao.com"
+          imageUrl: 'http://13.209.9.53'+this.review_img, // 이미지
+          link: {            
+            webUrl: "'https://i02b109.p.ssafy.io/reviewdetail/'+this.review_num"
           }
         },
         social: {
@@ -229,12 +231,11 @@ export default {
           {
             title: "e투계더로 이동",
             link: {
-              mobileWebUrl: "https://developers.kakao.com",
-              webUrl: "https://developers.kakao.com"
+              webUrl: "'https://i02b109.p.ssafy.io/reviewdetail/'+this.review_num"
             }
           }
-        ]
-      });
+        ]        
+      });      
     },
 
     total_sum() {

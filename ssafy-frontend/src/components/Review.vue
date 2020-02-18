@@ -6,12 +6,12 @@
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="headline">{{computedReview.budget_title}}</v-list-item-title>
-        <v-list-item-subtitle>by {{computedReview.name}}</v-list-item-subtitle>
+        <v-list-item-subtitle>by. {{computedReview.name}}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
     <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
+      :src="'http://13.209.9.53'+computedReview.file_url"
       height="194"
     ></v-img>
 
@@ -168,7 +168,4 @@ i {
   cursor: pointer;
 }
 
-v-btn {
-
-}
 </style>
