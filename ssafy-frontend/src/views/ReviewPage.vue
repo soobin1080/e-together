@@ -102,7 +102,6 @@ export default {
                 } 
                 this.pages++;
                 this.busy = false
-                // this.busy = false
                 console.log("allReview : " +this.allReviews)
               }
             })
