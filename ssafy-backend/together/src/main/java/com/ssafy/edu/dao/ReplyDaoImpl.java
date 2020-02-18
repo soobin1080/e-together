@@ -25,12 +25,12 @@ public class ReplyDaoImpl {
 
 	public void insertReply(Reply reply) {
 		// TODO Auto-generated method stub
-		sqlSession.insert(ns + "insertReview", reply);
+		sqlSession.insert(ns + "insertReply", reply);
 	}
 
 	public void deleteReply(Reply reply) {
 		// TODO Auto-generated method stub
-		sqlSession.delete(ns + "deleteReview", reply);
+		sqlSession.delete(ns + "deleteReply", reply);
 	}
 
 	public void updateReply(Reply reply) {

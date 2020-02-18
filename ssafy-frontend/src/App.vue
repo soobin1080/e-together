@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <Header></Header>
+    <Header data-html2canvas-ignore="true"></Header>
     <v-content>
       <router-view />
     </v-content>
-    <Footer></Footer>
+    <Footer data-html2canvas-ignore="true"></Footer>
   </v-app>
 </template>
 

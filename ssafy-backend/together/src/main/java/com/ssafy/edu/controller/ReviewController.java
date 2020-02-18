@@ -134,7 +134,7 @@ public class ReviewController {
 			file.setReview_num(review_num);
 			file.setFile_name(fileName);
 			file.setFile_ori_name(files.getOriginalFilename());
-			file.setFile_url(url);
+			file.setFile_url("/together/assets/"+fileName);
 
 			reviewservice.insertReviewFile(file); // 게시글 이미지 파일 insert
 		}
