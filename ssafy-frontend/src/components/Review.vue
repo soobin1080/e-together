@@ -5,7 +5,7 @@
   >
     <v-list-item>
       <v-list-item-content>
-        <v-list-item-title class="headline">{{computedReview.budget_title}}</v-list-item-title>
+        <v-list-item-title class="headline">{{computedReview.budget_title}}</v-list-item-title> 
         <v-list-item-subtitle>by. {{computedReview.name}}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
@@ -15,7 +15,9 @@
       height="194"
     ></v-img>
 
-    <v-card-text>
+    <v-card-text class="text-right">
+      <i class="material-icons">people_outline</i> {{computedReview.personnel}}명
+      <i class="material-icons" style="padding-left:15px">money</i> {{computedReview.budget}}원
     </v-card-text>
 
     <v-card-actions>
