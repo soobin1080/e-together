@@ -21,6 +21,7 @@
       :budgetInfo="budgetInfo"
       :budgetList="budgetList"
       :like_users="like_users"
+      :review_img="review_img"
       @getReviewDetailbyArg="getReviewDetailByArg">
     </ReviewDetail>
 
@@ -91,7 +92,7 @@ export default {
       console.log("getReview");
       http
         .get(
-          `review/${reviewNum}`,
+          `/review/${reviewNum}`,
           {
             review_num: reviewNum
           },
@@ -134,6 +135,7 @@ export default {
             0
           );
           this.like_users = res.data.like_user;
+          this.review_img=res.data.review_img;
           let loginUser = sessionStorage.getItem("email");
 
           // if (this.like_users.includes(loginUser)) {
@@ -165,6 +167,7 @@ export default {
           this.budgetInfo = res.data.budgetinfo;
           this.budgetList = res.data.budgetlist;
           this.like_users = res.data.like_user;
+          this.review_img=res.data.review_img;
           // let loginUser = sessionStorage.getItem("email");
           // var likeBtn = document.getElementById("likeBtn");
           // console.log(likeBtn);

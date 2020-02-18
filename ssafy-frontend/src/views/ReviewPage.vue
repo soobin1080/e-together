@@ -86,7 +86,7 @@ export default {
       console.log('loadmore')
       setTimeout(() => {
         http
-          .get('review', this.$store.getters.requestHeader)
+          .get('/review', this.$store.getters.requestHeader)
             .then(res => {
               console.log(res)
               if (this.allReviews.length < res.data.length) {
