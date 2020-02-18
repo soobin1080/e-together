@@ -82,6 +82,7 @@
               style="text-align:right"
               autofocus
             />원
+            <!-- <v-btn text>예산 추천</v-btn> -->
           </td>
         </tr>
       </table>
@@ -113,6 +114,7 @@
         </tr>
       </table>
     </b-list-group-item>
+    <v-btn block color="primary" @click="changeRecommendBar">예산 추천</v-btn>
     <v-btn block @click.stop="dialog=true">저장하기</v-btn>
 
     <!-- 제목 지정 modal -->
@@ -184,6 +186,10 @@ export default {
     }
   },
   methods: {
+    changeRecommendBar() {
+      console.log('changeRecommendBar emit!')
+      this.$emit('changeRecommendBar', this.budget)
+    },
     cookie() {
       this.$cookie.set("test", this.personnel, 1);
     },
