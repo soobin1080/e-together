@@ -1,5 +1,5 @@
 <template>
-  <div class="pdf" style>
+  <div style>
     <div id="downloadpdf">
       <table width="100%" style="font-size:15px" class="table-white">
         <tr style="text-align:center;">
@@ -252,20 +252,38 @@ export default {
     makePDF() {     
      
 			window.html2canvas = html2canvas //Vue.js 특성상 window 객체에 직접 할당해야한다.
-			let that = this
 			let pdf = new jsPDF('p', 'mm', 'a4')
 			let canvas = pdf.canvas
+			const pageWidth = 210//캔버스 너비 mm
+			const pageHeight = 297 //캔버스 높이 mm
+      canvas.width =pdf.width
+      
       let ele = document.querySelector('body')
+			let width = ele.offsetWidth // 셀렉트한 요소의 px 너비
+			let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
+			let imgHeight = pageWidth * height/width // 이미지 높이값 px to mm 변환
+
 			if(!ele){
 				console.warn(selector + ' is not exist.')
 				return false
 			}
-
 			html2canvas(document.querySelector('body')).then(function(canvas) {
-        var doc = pdf //jspdf객체 생성
+        let position = 0
         var imgData = canvas.toDataURL("image/png"); //캔버스를 이미지로 변환
-        doc.addImage(imgData, "PNG", 0,-120,210,295); //이미지를 기반으로 pdf생성
-        doc.save("MyBudget.pdf"); //pdf저장
+        pdf.addImage(imgData, "PNG",0,-120, pageWidth, imgHeight, undefined, 'FAST'); //이미지를 기반으로 pdf생성
+
+        //Paging 처리
+					let heightLeft = imgHeight //페이징 처리를 위해 남은 페이지 높이 세팅.
+					heightLeft -= pageHeight
+					while (heightLeft >= 0) {
+						position = heightLeft - imgHeight
+						pdf.addPage();
+						pdf.addImage(imgData, 'png', 0, position, pageWidth, imgHeight)
+						heightLeft -= pageHeight
+					}
+
+
+        pdf.save("MyBudget.pdf"); //pdf저장
       });
 
 		}

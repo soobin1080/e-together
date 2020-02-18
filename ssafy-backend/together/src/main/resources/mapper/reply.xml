@@ -6,8 +6,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getAllReply"
 		parameterType="com.ssafy.edu.model.Reply"
-		resultType="com.ssafy.edu.model.Reply">
-		select reply_num,review_num, reply_content,writer_email,reply_date from reply where review_num=#{review_num}
+		resultType="com.ssafy.edu.model.ReplyResult">
+		select r.reply_num, r.review_num, r.reply_content, r.writer_email, r.reply_date, u.name from reply r,user u where review_num=#{review_num} and r.writer_email=u.email;
 	</select>
 
 	<insert id="insertReply"
@@ -18,11 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<update id="updateReply"
 		parameterType="com.ssafy.edu.model.Reply">
-		update reply set content=#{content} where review_num=#{review_num} and writer_email=#{writer_email};
+		update reply set reply_content=#{reply_content} where reply_num=#{reply_num} and writer_email=#{writer_email};
 	</update>
 	
-	<delete id= "deleteReply" parameterType="com.ssafy.edu.model.Reply">
-	delete from reply where review_num=#{review_num} and writer_email=#{writer_email};
+	<delete id= "deleteReply" parameterType="java.lang.Integer">
+	delete from reply where reply_num=#{reply_num};
 	</delete>
 </mapper>
 

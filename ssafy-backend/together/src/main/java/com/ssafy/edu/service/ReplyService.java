@@ -28,16 +28,15 @@ public class ReplyService implements IReplyService {
 	}
 
 	@Override
-	public void deleteReply(Reply reply) {
-		// TODO Auto-generated method stub
-		replydao.deleteReply(reply);
-
-	}
-
-	@Override
 	public void updateReply(Reply reply) {
 		// TODO Auto-generated method stub
 		replydao.updateReply(reply);
+	}
+
+	@Override
+	public void deleteReply(int reply_num) {
+		// TODO Auto-generated method stub
+		replydao.deleteReply(reply_num);
 	}
 
 }

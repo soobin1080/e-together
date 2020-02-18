@@ -33,7 +33,7 @@ public class MysqlProductDB {
 			connection.setAutoCommit(false);
 			Document doc = null;
 
-			String url = "http://emart.ssg.com/category/main.ssg?dispCtgId=0006110140&pgae=1";
+			String url = "http://emart.ssg.com/category/main.ssg?dispCtgId=0006140000&page=2";
 
 			// 각각의 대분류 페이지에 들어가서 다시 화면 긁어오기
 			try {
@@ -53,22 +53,26 @@ public class MysqlProductDB {
 
 			while (products.hasNext()) {
 				Element product = products.next();
-				String pro_id = product.select("a").first().attr("data-info").toString();
+				long pro_id = Long.parseLong(product.select("a").first().attr("data-info").toString());
 				String pro_name = product.select("em.tx_ko").text();
 				String price = product.select("em.ssg_price").text();
+				System.out.println("상품이름은 : "+pro_name);
+				System.out.println("가격이 어떻게 들어오는지 확인 좀 : "+price);
+				String[] str=price.split(" ");
 				
-				int price_num =Integer.parseInt(price.replaceAll("\\,", "")); 
+				int price_num =Integer.parseInt(str[0].replaceAll("\\,", "")); 
 				
 				
 				String weight = product.select("div.unit").text();
 				String img = product.select("img").attr("src").toString();
+				img="http:"+img;
 
 				System.out.println(pro_id +"/"+pro_name+"/"+price_num+"/"+weight+"/"+img+"\t");
 				
 //				pro_id,pro_name,price,main_category,gram,img
-				preparedStatementInsert.setString(1, pro_id);
+				preparedStatementInsert.setInt(1, pro_id);
 				preparedStatementInsert.setString(2, pro_name);
-				preparedStatementInsert.setLong(3, price_num);
+				preparedStatementInsert.setInt(3, price_num);
 				preparedStatementInsert.setString(4, "정육/계란류");
 				preparedStatementInsert.setString(5, weight);
 				preparedStatementInsert.setString(6, img);

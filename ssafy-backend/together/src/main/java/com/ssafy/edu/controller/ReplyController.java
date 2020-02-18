@@ -32,22 +32,22 @@ public class ReplyController {
 
 	@Autowired
 	private IReplyService replyservice;
-	
+
 	@ApiOperation(value = "후기 전체 댓글 뿌리주기", response = List.class)
 	@RequestMapping(value = "/reply/{review_num}", method = RequestMethod.GET)
 	public ResponseEntity<List<Reply>> getAllReply(@PathVariable int review_num) throws Exception {
 		logger.info("1-------------getAllReview-----------------------------" + new Date());
 
 		List<Reply> replylist = replyservice.getAllReply(review_num);
-		
+
 		System.out.println(replylist);
-		
+
 		if (replylist.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<Reply>>(replylist,HttpStatus.OK);
+		return new ResponseEntity<List<Reply>>(replylist, HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "댓글 작성하기", response = Reply.class)
 	@RequestMapping(value = "/reply", method = RequestMethod.POST)
 	public ResponseEntity<Reply> insertReply(@RequestBody Reply reply) throws Exception {
@@ -57,26 +57,31 @@ public class ReplyController {
 
 		return new ResponseEntity<Reply>(reply, HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "댓글 삭제하기", response = Reply.class)
-	@RequestMapping(value = "/reply/{review_num}", method = RequestMethod.DELETE)
-	public ResponseEntity<Reply> deleteReply(@PathVariable int review_num) throws Exception {
+	@RequestMapping(value = "/reply/{reply_num}", method = RequestMethod.DELETE)
+	public ResponseEntity<Reply> deleteReply(@PathVariable int reply_num) throws Exception {
 		logger.info("3-------------deleteReply-----------------------------" + new Date());
 
-//		replyservice.deleteReply(review_num);
+		replyservice.deleteReply(reply_num);
 
 		return new ResponseEntity<Reply>(HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "댓글 수정하기", response = Reply.class)
-	@RequestMapping(value = "/reply/{review_num}/{wrtier_email}", method = RequestMethod.POST)
+	@RequestMapping(value = "/reply/update", method = RequestMethod.POST)
 	public ResponseEntity<Reply> updateReply(@RequestBody Reply reply) throws Exception {
 		logger.info("4-------------updateReply-----------------------------" + new Date());
+System.out.println(reply);
+		if (reply.getWriter_email() != null) {
+			replyservice.updateReply(reply);
+			return new ResponseEntity<Reply>(reply, HttpStatus.OK);
+		} else if (reply.getWriter_email().isEmpty()) {
+			return new ResponseEntity<Reply>(reply, HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<Reply>(reply, HttpStatus.NO_CONTENT);
+		}
 
-		replyservice.updateReply(reply);
-
-		return new ResponseEntity<Reply>(reply, HttpStatus.OK);
 	}
 
-	
 }
