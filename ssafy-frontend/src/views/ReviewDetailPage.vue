@@ -21,12 +21,12 @@
       :budgetInfo="budgetInfo"
       :budgetList="budgetList"
       :like_users="like_users"
-      :review_img="review_img"
       @getReviewDetailbyArg="getReviewDetailByArg">
     </ReviewDetail>
 
     <ReplyList 
-      :allReplys="allReplys">
+      :allReplys="allReplys"
+      @renewReply="getAllReplysByArg">
     </ReplyList>
     
     <v-container>
@@ -36,7 +36,7 @@
       >
 
         <v-textarea
-        color="gray"
+        color="orange"
           outlined
           name="input-7-4"
           label="댓글을 입력해주세요"
@@ -93,7 +93,7 @@ export default {
       console.log("getReview");
       http
         .get(
-          `/review/${reviewNum}`,
+          `review/${reviewNum}`,
           {
             review_num: reviewNum
           },
@@ -154,7 +154,6 @@ export default {
             0
           );
           this.like_users = res.data.like_user;
-          this.review_img=res.data.review_img;
           let loginUser = sessionStorage.getItem("email");
 
         })
@@ -201,17 +200,6 @@ export default {
           this.budgetInfo = res.data.budgetinfo;
           this.budgetList = res.data.budgetlist;
           this.like_users = res.data.like_user;
-          this.review_img=res.data.review_img;
-          // let loginUser = sessionStorage.getItem("email");
-          // var likeBtn = document.getElementById("likeBtn");
-          // console.log(likeBtn);
-          // if (this.like_users.includes(loginUser)) {
-          //   likeBtn.innerHTML = "좋아요 취소";
-          //   likeBtn.className = "badge badge-pill badge-danger";
-          // } else {
-          //   likeBtn.innerHTML = "좋아요";
-          //   likeBtn.className = "badge badge-pill badge-primary";
-          // }
         })
         .catch(err => {
           console.log(err);

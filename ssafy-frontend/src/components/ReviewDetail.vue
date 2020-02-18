@@ -97,11 +97,11 @@
 
               <tr>
                 <th colspan="2">합계</th>
-                <td>{{this.total}} 원</td>
+                <td>{{total_sum()}} 원</td>
               </tr>
               <tr>
                 <th colspan="2">잔액</th>
-                <td>{{budgetInfo.budget-this.total}} 원</td>
+                <td>{{budgetInfo.budget-total_sum()}} 원</td>
               </tr>
             </tbody>
           </table>
@@ -239,12 +239,16 @@ export default {
     },
 
     total_sum() {
-      console.log(this.budgetList);
+      this.total = this.budgetList.reduce(
+        (total, budget) => (total += budget.price * budget.quantity),
+        0
+      );
+      return this.total;
+      // console.log(this.budgetList);
     },
     dateParsing(beforeParsing) {
       const t = beforeParsing.indexOf("T");
       const afterParsing = beforeParsing.substring(0, t);
-      // console.log(afterParsing)
       const realdate =
         afterParsing.substring(0, 4) +
         "년 " +
@@ -262,7 +266,6 @@ export default {
         alert("로그인이 필요합니다.");
         return;
       }
-      // console.log(review)
       if (this.like_users.includes(loginUser)) {
         console.log("delete");
         console.log(review.review_num);
