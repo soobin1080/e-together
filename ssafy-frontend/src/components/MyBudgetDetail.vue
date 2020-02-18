@@ -1,74 +1,65 @@
 <template>
-  <div id="downloadpdf" style>
-    <div></div>
-    <table width="100%" style="font-size:15px" class="table-white">
-      <tr style="text-align:center;">
-        <th>제목</th>
-        <td v-html="computedBudgetInfo.budget_title" style="text-align:center"></td>
-        <th>인원</th>
-        <td style="text-align:center">{{computedBudgetInfo.personnel}} 명</td>
-        <th>예산</th>
-        <td style="text-align:center">{{computedBudgetInfo.budget}} 원</td>
-        <th>날짜</th>
-        <td style="text-align:center">{{dateParsing(computedBudgetInfo.budget_date)}}</td>
+  <div class="pdf" style>
+    <div id="downloadpdf">
+      <table width="100%" style="font-size:15px" class="table-white">
+        <tr style="text-align:center;">
+          <th>제목</th>
+          <td v-html="computedBudgetInfo.budget_title" style="text-align:center"></td>
+          <th>인원</th>
+          <td style="text-align:center">{{computedBudgetInfo.personnel}} 명</td>
+          <th>예산</th>
+          <td style="text-align:center">{{computedBudgetInfo.budget}} 원</td>
+          <th>날짜</th>
+          <td style="text-align:center">{{dateParsing(computedBudgetInfo.budget_date)}}</td>
 
-        <th>적/부</th>
-        <td style="text-align:center">
-          <!-- 적 / 부 -->
-          <div>
-            <i
-              :class="likeClass"
-              style="color:blue; margin-right: 5px;"
-              @click="changeLikeStatus(1)"
-            ></i>
-            <!-- <i class="fas fa-thumbs-up"></i> -->
-            <i :class="dislikeClass" style="color:red" @click="changeLikeStatus(2)"></i>
-            <!-- <i class="fas fa-thumbs-down"></i> -->
-          </div>
-        </td>
-      </tr>
-    </table>
-
-    <table style="width:100%; margin:auto; text-align:center">
-      <col width="55%" />
-      <col width="15%" />
-      <col width="30%" />
-      <thead>
-        <tr>
-          <th style="background-color: #fffeaa; color:#3d2300">항목</th>
-          <th style="background-color: #fffeaa; color:#3d2300">수량</th>
-          <th style="background-color: #fffeaa; color:#3d2300">가격</th>
+          <th>적/부</th>
+          <td style="text-align:center">
+            <!-- 적 / 부 -->
+            <div>
+              <i
+                :class="likeClass"
+                style="color:blue; margin-right: 5px;"
+                @click="changeLikeStatus(1)"
+              ></i>
+              <!-- <i class="fas fa-thumbs-up"></i> -->
+              <i :class="dislikeClass" style="color:red" @click="changeLikeStatus(2)"></i>
+              <!-- <i class="fas fa-thumbs-down"></i> -->
+            </div>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        <tr v-for="i in computedBudgetList.length" :key="i">
-          <td v-html="computedBudgetList[i-1].pro_name"></td>
+      </table>
 
-          <td v-html="computedBudgetList[i-1].quantity"></td>
-
-          <td class="pro_price">{{computedBudgetList[i-1].price}} 원</td>
-        </tr>
-
-        <tr>
-          <th colspan="2">합계</th>
-          <td>{{this.total}} 원</td>
-        </tr>
-        <tr>
-          <th colspan="2">잔액</th>
-          <td>{{computedBudgetInfo.budget-this.total}} 원</td>
-        </tr>
-      </tbody>
-    </table>
+      <table style="width:100%; margin:auto; text-align:center">
+        <col width="55%" />
+        <col width="15%" />
+        <col width="30%" />
+        <thead>
+          <tr>
+            <th style="background-color: #fffeaa; color:#3d2300">항목</th>
+            <th style="background-color: #fffeaa; color:#3d2300">수량</th>
+            <th style="background-color: #fffeaa; color:#3d2300">가격</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="i in computedBudgetList.length" :key="i">
+            <td v-html="computedBudgetList[i-1].pro_name"></td>
+            <td v-html="computedBudgetList[i-1].quantity"></td>
+            <td class="pro_price">{{computedBudgetList[i-1].price}} 원</td>
+          </tr>
+          <tr>
+            <th colspan="2">합계</th>
+            <td>{{this.total}} 원</td>
+          </tr>
+          <tr>
+            <th colspan="2">잔액</th>
+            <td>{{computedBudgetInfo.budget-this.total}} 원</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <br />
     <div data-html2canvas-ignore="true" style="text-align:center">
-      
-
-      <v-btn
-        outlined
-        color="success"
-        class="mr-4"       
-        @click="makePDF('downloadpdf')"
-      >pdf로 저장</v-btn>
+      <v-btn outlined color="success" class="mr-4" @click="makePDF()">pdf로 저장</v-btn>
       <v-btn outlined color="error" @click.stop="dialog=true">후기 남기기</v-btn>
     </div>
 
@@ -135,18 +126,24 @@ export default {
     };
   },
 
-  methods: {    
+  methods: {
     handleFilesUploads() {
       this.files = this.$refs.files.files;
     },
 
-    dateParsing(beforeParsing) {      
-      const t = beforeParsing.indexOf('T')
-      const afterParsing = beforeParsing.substring(0, t)      
+    dateParsing(beforeParsing) {
+      const t = beforeParsing.indexOf("T");
+      const afterParsing = beforeParsing.substring(0, t);
       // console.log(afterParsing)
-      const realdate=afterParsing.substring(0,4)+"년 "+afterParsing.substring(5,7)+"월 "+(Number(afterParsing.substring(8,11))+1)+"일"
-      console.log("realdate: "+realdate)
-      return realdate 
+      const realdate =
+        afterParsing.substring(0, 4) +
+        "년 " +
+        afterParsing.substring(5, 7) +
+        "월 " +
+        (Number(afterParsing.substring(8, 11)) + 1) +
+        "일";
+      console.log("realdate: " + realdate);
+      return realdate;
     },
     total_sum() {
       //  console.log("budgetList 길이!:"+ this.budgetlength);
@@ -250,49 +247,28 @@ export default {
         this.$emit("renewBudgetList");
         this.$emit("showdetail", this.budgetInfo.budget_num);
       }
-    },
-    makePDF(selector) {
-      // console.log(selector);
-      window.html2canvas = html2canvas; //Vue.js 특성상 window 객체에 직접 할당해야한다.
-      let that = this;
-      let pdf = new jsPDF("p", "mm", "a4");
-      let canvas = pdf.canvas;
-      const pageWidth = 210; //캔버스 너비 mm
-      const pageHeight = 295; //캔버스 높이 mm
-      canvas.width = pageWidth;
-      let ele = document.getElementById(selector);
-      let width = ele.offsetWidth; // 셀렉트한 요소의 px 너비
-      let height = ele.offsetHeight; // 셀렉트한 요소의 px 높이
-      let imgHeight = (pageWidth * height) / width; // 이미지 높이값 px to mm 변환
+    }
+    ,
+    makePDF() {     
+     
+			window.html2canvas = html2canvas //Vue.js 특성상 window 객체에 직접 할당해야한다.
+			let that = this
+			let pdf = new jsPDF('p', 'mm', 'a4')
+			let canvas = pdf.canvas
+      let ele = document.querySelector('body')
+			if(!ele){
+				console.warn(selector + ' is not exist.')
+				return false
+			}
 
-      console.log("뭐냐" + selector);
-
-      // let ele = document.querySelector('body');
-
-      if (!ele) {
-        console.warn(selector + " is not exist.");
-        return false;
-      }
-      console.log(canvas);
-
-      var canvasElement = document.createElement("canvas");
-      html2canvas(ele, { canvaspdf: canvas }).then(function(canvaspdf) {
-        ele.appendChild(canvaspdf);
-        const img = canvaspdf.toDataURL("image/jpeg", 1.0);
-        pdf.addImage(img, "jpeg", 0, 0, pageWidth, imgHeight);
-        pdf.save(that.propTitle.toLowerCase() + ".pdf");
+			html2canvas(document.querySelector('body')).then(function(canvas) {
+        var doc = pdf //jspdf객체 생성
+        var imgData = canvas.toDataURL("image/png"); //캔버스를 이미지로 변환
+        doc.addImage(imgData, "PNG", 0,-120,210,295); //이미지를 기반으로 pdf생성
+        doc.save("MyBudget.pdf"); //pdf저장
       });
 
-      // html2canvas(document.getElementById(selector), {
-      //   onrendered: function(canvas) {
-      //     var imgData = canvas.toDataURL("image/png");
-      //     console.log("Report Image URL: " + imgData);
-      //     var doc = new jsPDF("p", "mm", [297, 210]); //210mm wide and 297mm high
-      //     doc.addImage(imgData, "PNG", 10, 10);
-      //     doc.save(that.propTitle.toLowerCase() + ".pdf");
-      //   }
-      // });
-    }
+		}
   },
   computed: {
     convertDate() {

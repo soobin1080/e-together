@@ -11,7 +11,8 @@
             <h4
               class="card-title text-center"
             >{{budgetInfo.budget_title}}</h4>
-            <div class="text-center">              
+            <h5 class="text-center">{{review.name}}</h5>
+            <div class="text-center">
               <p class="card-text">{{review.review_content}}</p>
               <p class="card-text">
                 <small class="text-muted">{{dateParsing(review.review_date)}}</small>
@@ -239,7 +240,6 @@ export default {
 
     total_sum() {
       console.log(this.budgetList);
-      // console.log(this.budgetList)
     },
     dateParsing(beforeParsing) {
       const t = beforeParsing.indexOf("T");

@@ -36,17 +36,18 @@
       >
 
         <v-textarea
+        color="gray"
           outlined
           name="input-7-4"
           label="댓글을 입력해주세요"
-          :model="content"
+          v-model="content"
         ></v-textarea>
 
 
         <v-btn
           color="success"
           class="mr-4"
-          @click="validate"
+          @click="writeReply"
         >
           작성
         </v-btn> 
@@ -104,11 +105,24 @@ export default {
     },
      getAllReplys() {
       console.log('getAllReplys')
-      console.log(this.Review)
-      const reviewNum = this.Review.review_num
+      const reviewNum = this.$route.params.reviewNum;
+      console.log(reviewNum)
       http 
         .get(`/reply/${reviewNum}`)
           .then(res => {
+            this.allReplys = res.data
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+      })
+    },
+    getAllReplysByArg(reviewNum) {
+      console.log(reviewNum)
+      http 
+        .get(`/reply/${reviewNum}`)
+          .then(res => {
+            this.allReplys = res.data
             console.log(res)
           })
           .catch(err => {
@@ -117,7 +131,11 @@ export default {
     },
     getReviewDetail() {
       this.reviewNum = this.$route.params.reviewNum;
+      const name = this.$route.params.userName;
       console.log("getReviewDetail");
+      console.log(this.$route.params)
+      console.log(this.reviewNum)
+      console.log(name)
       http
         .get(
           `/review/${this.reviewNum}`,
@@ -127,6 +145,7 @@ export default {
         .then(res => {
           console.log(res);
           this.review = res.data.review;
+          this.review['name'] = name
           this.budgetInfo = res.data.budgetinfo;
           this.budgetList = res.data.budgetlist;
           console.log(this.budgetList);
@@ -138,19 +157,34 @@ export default {
           this.review_img=res.data.review_img;
           let loginUser = sessionStorage.getItem("email");
 
-          // if (this.like_users.includes(loginUser)) {
-          //   document.getElementById("likeBtn").innerHTML = "좋아요 취소";
-          //   document.getElementById("likeBtn").className =
-          //     "badge badge-pill badge-danger";
-          // } else {
-          //   document.getElementById("likeBtn").innerHTML = "좋아요";
-          //   document.getElementById("likeBtn").className =
-          //     "badge badge-pill badge-primary";
-          // }
         })
         .catch(err => {
           console.log(err);
         });
+    },
+
+    writeReply(){
+      if (this.content === "") {
+        alert('내용을 작성해주세요')
+        return
+      } else {
+        http
+          .post(`/reply`, {
+            review_num: this.review.review_num,
+            reply_content: this.content,
+            writer_email: sessionStorage.getItem('email')
+          }, this.$store.getters.requestHeader)
+          . then(res => {
+            console.log(res)
+            alert('댓글 작성 완료')
+            this.title = ""
+            this.getAllReplys()
+            // this.getAllReplysByArg(this.review.review_num)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
     },
 
     getReviewDetailByArg(review_num) {

@@ -23,7 +23,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app>
+    <v-app-bar app data-html2canvas-ignore="true">
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar">
           <v-icon>menu</v-icon>

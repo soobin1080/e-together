@@ -21,7 +21,7 @@
     <v-card-actions>
       <v-btn
         text
-        :to="{ path: `reviewdetail/${this.review.review_num}`, params: { reviewNum: this.review.review_num }}"
+        :to="{ path: `reviewdetail/${this.review.review_num}/${computedReview.name}`, params: { reviewNum: this.review.review_num, userName: computedReview.name }}"
         style="text-decoration:none; color:black;">
         상세 보기
       </v-btn>

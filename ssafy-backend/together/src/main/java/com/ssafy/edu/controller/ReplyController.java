@@ -38,9 +38,14 @@ public class ReplyController {
 	public ResponseEntity<List<Reply>> getAllReply(@PathVariable int review_num) throws Exception {
 		logger.info("1-------------getAllReview-----------------------------" + new Date());
 
-		List<Reply> reviewlist = replyservice.getAllReply(review_num);
-
-		return new ResponseEntity<List<Reply>>(HttpStatus.OK);
+		List<Reply> replylist = replyservice.getAllReply(review_num);
+		
+		System.out.println(replylist);
+		
+		if (replylist.isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Reply>>(replylist,HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "댓글 작성하기", response = Reply.class)

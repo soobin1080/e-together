@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from user u,
 		budget_info b, review r, review_file f
 		where u.email=b.user_email and
-		b.budget_num=r.budget_num and r.review_num=f.review_num;
+		b.budget_num=r.budget_num and r.review_num=f.review_num order by r.review_num desc;
 	</select>
 
 	<select id="getReviewLikeUser" parameterType="java.lang.Integer"
