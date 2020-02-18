@@ -119,7 +119,7 @@ export default {
       this.$refs.form.resetValidation();
     },
     getUserInfo(UserEmail) {
-      let myemail = localStorage.getItem("email");
+      let myemail = sessionStorage.getItem("email");
       console.log(this.$store.getters.isLoggedIn);
       http
         .post(`/myselfDetail/${myemail}`, this.$store.getters.requestHeader)
@@ -189,8 +189,8 @@ export default {
     getUserName() {
       console.log("emit!");
       console.log("getUserName");
-      console.log(localStorage.getItem("user"));
-      this.username = localStorage.getItem("user");
+      console.log(sessionStorage.getItem("user"));
+      this.username = sessionStorage.getItem("user");
       this.isLoggedIn = this.$store.getters.isLoggedIn;
     },
     logout() {
@@ -198,14 +198,14 @@ export default {
         .post(
           "/logout",
           {
-            email: localStorage.getItem("email")
+            email: sessionStorage.getItem("email")
           },
           this.$store.getters.requestHeader
         )
         .then(res => {
           console.log(res);
           if (res.data.state === "succ" && res.data.count == 1) {
-            localStorage.clear();
+            sessionStorage.clear();
             this.getUserName();
             this.$router.push("/");
           }

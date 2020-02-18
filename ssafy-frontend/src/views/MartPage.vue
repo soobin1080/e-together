@@ -8,13 +8,49 @@
         v-resize-text
       >Mart</div>
     </ImgBanner>
+    {{recommendTotal + recommendETCTotal}}
+    <div class="progress text-center mx-auto mt-5" style="width: 70%;" v-on="on">
+      <div
+        v-for="bar in recommendBar"
+        :key="bar.className"
+        :class="bar.className"
+        :style="{width: (bar.price / (recommendTotal + recommendETCTotal) * 100) +'%'}"
+        >
+        <!-- {{bar.price}} -->
+        <div v-if="bar.price > 0">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">{{bar.category}}</span>
+            </template>
+            <span>{{bar.category}} : {{numberCut(bar.price / (recommendTotal + recommendETCTotal))+'%'}}</span>
+          </v-tooltip>
+        </div>
+      </div>
+
+      <div
+        v-if="recommendETCTotal > 0"
+        class="progress-bar bg-secondary"
+        v-bind:style="{width: (recommendETCTotal / (recommendTotal + recommendETCTotal)) * 100+'%'}"
+      >
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <span v-on="on">기타</span>
+          </template>
+          <span v-for="bar in recommendBarETC" :key="bar.className">
+            <span v-if="bar.price > 0">
+              {{bar.category}} : {{numberCut(bar.price / (recommendTotal + recommendETCTotal) * 100)+'%'}}
+              <br/>
+            </span>
+          </span>
+        </v-tooltip>
+      </div>
+    </div>
     
     <div class="progress text-center mx-auto mt-5" style="width: 70%; height: 15%;" v-on="on">
       <!-- <div v-for="category in computedBudgetListBar" class="progress-bar">{{category.category}}</div> -->
-      
       <div 
         v-for="bar in getMainBar" 
-        :key="bar.price"
+        :key="bar.className"
         :class="bar.className"
         :style="{width: (bar.price / (getMainTotal + getETCTotal)) * 100+'%'}"
         >
@@ -37,7 +73,7 @@
           <template v-slot:activator="{ on }">
             <span v-on="on">기타</span>
           </template>
-          <span v-for="bar in getETCBar" :key="bar">
+          <span v-for="bar in getETCBar" :key="bar.className">
             <span v-if="bar.price > 0">
               {{bar.category}} : {{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}}
               <br/>
@@ -118,7 +154,9 @@
       <!-- 장보기 내역 -->
       <!-- <v-col> -->
         <v-flex d-none d-lg-flex>
-          <BudgetList id="budgetList">
+          <BudgetList 
+            id="budgetList"
+            @changeRecommendBar="recommendBudgetBar">
           </BudgetList>
         </v-flex>
       <!-- </v-col> -->
@@ -128,7 +166,7 @@
     <!-- modal 창 -->
     <v-row justify="center">
       <v-dialog v-model="budgetDialog" scrollable max-width="300px">
-        <BudgetList></BudgetList>
+        <BudgetList @changeRecommendBar="recommendBudgetBar"></BudgetList>
       </v-dialog> 
     </v-row>
     
@@ -164,12 +202,12 @@ export default {
       tabs: [
         { title: "전체" },
         { title: "정육/계란류" },
-        { title: "수산물/해산물" },
-        { title: "채소" },
-        { title: "쌀/잡곡" },
-        { title: "라면" },
-        { title: "즉석식품" },
         { title: "생수/음료" },
+        { title: "채소" },
+        { title: "라면" },
+        { title: "수산물/해산물" },
+        { title: "즉석식품" },
+        { title: "쌀/잡곡" },
         { title: "과일" },
         { title: "스낵" },
         { title: "견과/건해산물" }
@@ -235,6 +273,7 @@ export default {
       }
       ],
       recommendTotal: 0,
+      recommendETCTotal: 0,
       colorByCategory: [
         {'정육/계란류' : 'bg-danger'},
         {'생수/음료' : 'bg-primary'},
@@ -277,8 +316,7 @@ export default {
 
     getTotal() {
       return this.$store.state.mainTotal + this.$store.state.etcTotal
-    }
-
+    },
   },
 
   methods: {
@@ -304,6 +342,19 @@ export default {
     },
 
     recommendBudgetBar(mybudget) {
+      mybudget = Number(mybudget)
+      this.recommendTotal = 0;
+      this.recommendETCTotal = 0;
+      let i = 0;
+      while (i < this.recommendBar.length || i < this.recommendBarETC.length) {
+        if (i < this.recommendBar.length) {
+          this.recommendBar[i].price = 0
+        }
+        this.recommendBarETC[i].price = 0
+        i++;
+      }
+      console.log('recommendBar')
+      console.log(typeof mybudget)
       if (mybudget !== null && mybudget !== undefined && mybudget !== 0){
         console.log("recommendBudgetBar")
         http
@@ -313,19 +364,46 @@ export default {
             }
           })
             .then(res => {
-              this.recommendBar = res.data
               console.log(this.recommendBar)
-              const keys = Object.keys(this.recommendBar)
-              console.log(keys.length)
+              const keys = Object.keys(res.data)
+              const vals = Object.values(res.data)
+              console.log(this.recommendBar)
               const categoryDict = this.$store.state.recommendDict
               // const prices = Object.keys(this.recommendBar)
+              console.log(vals)
+              console.log(typeof this.recommendBar)
               for (let i = 0; i < keys.length; i++) {
                 console.log(categoryDict[keys[i]])
+
+                if (this.$store.state.ETC.includes(categoryDict[keys[i]])) {
+                  const idx = this.recommendBarETC.findIndex(bar => {
+                    return bar.category === categoryDict[keys[i]]
+                  })
+                  console.log(idx)
+                  this.recommendBarETC[idx].price = vals[i]
+                  this.recommendETCTotal += vals[i]
+                  
+                } else {
+                  const idx = this.recommendBar.findIndex(bar => {
+                    return bar.category === categoryDict[keys[i]]
+                  })
+                  console.log(idx)
+                  this.recommendBar[idx].price = vals[i]
+                  this.recommendTotal += vals[i]
+                }
+                
               }
+              console.log(this.recommendBarETC)
+              console.log(this.recommendBar)
+              console.log(this.recommendETCTotal)
+              console.log(this.recommendTotal)
+
             })
             .catch(err => {
               console.log(err)
             })
+      } else {
+        alert('잘못된 금액입니다.')
       }
     },
 

@@ -79,7 +79,8 @@ export default {
       return require("../assets/" + img);
     },
     pwdCheck() {
-      if (this.$session.has("accessToken") && typeof this.$session.get("accessToken") !== undefined) {
+      // if (this.$session.has("accessToken") && typeof this.$session.get("accessToken") !== undefined) {
+          if (sessionStorage.getItem("accessToken") !== undefined) {
         this.$router.push("/pwdcheck"); 
       } else {
         alert('잘못된 접근입니다.')
@@ -88,7 +89,7 @@ export default {
     getUserName() {
       console.log("emit!");
       console.log("getUserName");
-      console.log(this.$session.get("user"));
+      // console.log(this.$session.get("user"));
       this.username = sessionStorage.getItem("user");
       this.isLoggedIn = this.$store.getters.isLoggedIn;
     },
