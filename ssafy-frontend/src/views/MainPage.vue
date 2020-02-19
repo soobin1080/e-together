@@ -49,7 +49,11 @@
               <v-btn color="error" class="mr-4" @click="reset">Reset</v-btn>
               <v-btn :disabled="!valid" color="#ffd900" @click="validate">장보기</v-btn>
             </div>
+           
           </v-form>
+          <br>
+           <small style="padding-top:40px; margin:auto; color:red">* 마트 상품은 e-mart몰 상품을 기반으로 합니다.</small>
+          
         </v-col>
       </v-row>
     </v-container>
