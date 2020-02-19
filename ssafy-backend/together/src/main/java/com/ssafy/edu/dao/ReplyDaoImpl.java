@@ -28,9 +28,9 @@ public class ReplyDaoImpl {
 		sqlSession.insert(ns + "insertReply", reply);
 	}
 
-	public void deleteReply(Reply reply) {
+	public void deleteReply(int reply_num) {
 		// TODO Auto-generated method stub
-		sqlSession.delete(ns + "deleteReply", reply);
+		sqlSession.delete(ns + "deleteReply", reply_num);
 	}
 
 	public void updateReply(Reply reply) {

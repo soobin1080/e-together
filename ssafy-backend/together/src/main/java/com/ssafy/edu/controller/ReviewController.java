@@ -147,6 +147,7 @@ public class ReviewController {
 	public void updateReview(@RequestBody Review review) throws Exception {
 		logger.info("4-------------updateReview-----------------------------" + new Date());
 
+		System.out.println(review.toString());
 		reviewservice.updateReview(review);
 
 	}
