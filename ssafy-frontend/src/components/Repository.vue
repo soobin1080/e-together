@@ -4,11 +4,7 @@
       <v-flex xs12>
         <p class="font-weight-regular">          
 		  Git Link : 
-          <a
-            :href="repos.web_url"
-            target="_blank"
-            style="color:dimgray;"
-          >{{repos.path_with_namespace}}</a>
+
         </p>
       </v-flex>
     </v-layout>

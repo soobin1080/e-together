@@ -22,7 +22,7 @@
           :allBudgets="allBudgets"
           :budgetPerPage="budgetPerPage"
           :pages="pages"
-          v-on:showdetail="showdetail"
+          @showdetail="showdetail"
           @getMyBudget="getMyBudgets"
         ></MyBudgetList>
       </div>
@@ -108,9 +108,6 @@ export default {
             this.pagingLength =
               parseInt(this.allLength / this.budgetPerPage) + 1;
           }
-          // this.pages = 1;
-          // console.log(res)
-          // return res.data
         })
         .catch(err => {
           console.log(err);
@@ -119,7 +116,6 @@ export default {
     showdetail(budgetNum) {
       this.showflag = true;
       if (this.showflag === true) {
-        // console.log("--Parent (showdetail) : " + budgetNum);
         http
           .get(
             `/budget/detail/${budgetNum}`,
@@ -129,70 +125,21 @@ export default {
             this.$store.getters.RequestHeader
           )
           .then(res => {
-            // console.log(res)
             this.budgetInfo = res.data.budgetinfo;
             this.budgetList = res.data.budgetlist;
-            // console.log(this.budgetInfo)
-            // console.log(this.budgetList)
+
           });
-        // this.budgetDetail.budget_title = title;
-        // this.title = title
-        // // this.budgetDetail =
-      }
-      // this.showflag=false;
+        }
+      },
     },
-    makePDF() {
-      // console.log(document.getElementById('downloadpdf'));
-      // window.open(document.getElementById('downloadpdf'),"width=400,height=500");
-      // console.log(document.querySelector("#downloadpdf"));
-      // html2canvas(document.querySelector("#downloadpdf")).then(function(canvas) {
-      //   var doc = new jsPDF("p", "mm", "a4"); //jspdf객체 생성
-      //   var imgData = canvas.toDataURL("image/png"); //캔버스를 이미지로 변환
-      //   doc.addImage(imgData, "PNG", 0, 0); //이미지를 기반으로 pdf생성
-      //   doc.save("sample-file.pdf"); //pdf저장
-      // });
-
-      // window.html2canvas = html2canvas //Vue.js 특성상 window 객체에 직접 할당해야한다.
-			// let that = this
-			// let pdf = new jsPDF('p', 'mm', 'a4')
-			// let canvas = pdf.canvas
-			// const pageWidth = 210 //캔버스 너비 mm
-			// const pageHeight = 295 //캔버스 높이 mm
-			// canvas.width = pageWidth
-			// let ele = document.querySelector('body')
-
-			// let width = ele.offsetWidth // 셀렉트한 요소의 px 너비
-			// let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
-			// let imgHeight = pageWidth * height/width // 이미지 높이값 px to mm 변환
-
-      // console.log("이것은 ele : "+ele);
-
-      //  html2canvas(document.querySelector('body')).then(function(canvas) {
-      //   var doc = new jsPDF("p", "mm", "a4"); //jspdf객체 생성
-      //   var imgData = canvas.toDataURL("image/png"); //캔버스를 이미지로 변환
-      //   doc.addImage(imgData, "PNG", 0, 0,pageWidth, imgHeight, undefined, 'slow'); //이미지를 기반으로 pdf생성
-      //   doc.save("sample-file.pdf"); //pdf저장
-      // });
-
-			// html2canvas(ele, {
-			// 	onrendered: function(canvas) {
-			// 		let position = 0
-			// 		const imgData = canvas.toDataURL('image/png')
-			// 		pdf.addImage(imgData, 'png', 0, position, pageWidth, imgHeight, undefined, 'slow')
-			// 		pdf.save(that.propTitle.toLowerCase() +'.pdf')
-			// 	},
-			// });	
-    }
-  },
   computed: {
-    // mountedBudget() {
-    //   // console.log("mountedBudget");
-    //   this.allBudgets = this.getMyBudgets();
-    //   this.allLength = this.allBudgets.length;
-    //   return this.getMyBudgets();
-    // }
+
   },
   mounted() {
+    this.getMyBudgets();
+  },
+
+  created() {
     this.getMyBudgets();
   }
 };

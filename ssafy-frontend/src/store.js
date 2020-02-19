@@ -12,8 +12,8 @@ export default new Vuex.Store({
     user:  sessionStorage.getItem("user"),
     email: sessionStorage.getItem("email"),
     phone: sessionStorage.getItem("phone"),
-    personnel: '', // 인원
-    budget: '', // 예산 
+    personnel: 0, // 인원
+    budget: 0, // 예산 
     tokenType: '',
     budgetlist : [],
     budgetListBar: [
