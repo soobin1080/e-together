@@ -50,7 +50,7 @@
           </v-tooltip>
         </div>
       </div>
-
+      <br>
       <p style="margin:auto; padding-top:5px; width:70%; color:dimgrey">
         <i class="material-icons">assessment</i>현재 내 예산 비율
       </p>

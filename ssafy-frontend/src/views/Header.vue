@@ -26,6 +26,11 @@
           <v-list-item-content>Review</v-list-item-content>
           <!-- <v-list-item-content>{{ item.title }}</v-list-item-content> -->
         </v-list-item>
+        <v-list-item v-if="checkAdmin" @click="goToAdminPage">
+          <v-list-item-action></v-list-item-action>
+          <v-list-item-content>Admin</v-list-item-content>
+          <!-- <v-list-item-content>{{ item.title }}</v-list-item-content> -->
+        </v-list-item>
         <v-list-item v-if="setUserName" @click="logout">
           <v-list-item-action></v-list-item-action>
           <v-list-item-content class="text-center">Logout</v-list-item-content>
@@ -50,13 +55,13 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-toolbar-items class="hidden-xs-only justify-content-around" style="height: 64px;">
+      <v-toolbar-items class="hidden-xs-only justify-content-around">
         <!-- <div class="menu d-inline" style="height:20px">        -->
         <v-btn text width="10%" @click="clickproduct" style="height:64px">Mart</v-btn>
         <v-btn text width="10%" v-if="username" @click="clickmybudget" style="height:64px">My Budget</v-btn>
         <v-btn text width="10%" @click="clickreview" style="height:64px">Review</v-btn>
-        <!-- </div> -->
-        <v-btn text v-if="username" class="text-center" style="padding-top:20px; padding-left:10px">
+        <v-btn text width="10%" v-if="checkAdmin" style="height:64px" @click="goToAdminPage">Admin</v-btn>
+        <v-btn text v-if="username" class="text-center"  style="padding-top:20px;">
           <v-menu offset-y open-on-hover>
             <template v-slot:activator="{ on }">
               <span
@@ -68,7 +73,6 @@
                 <i class="material-icons">account_circle</i>
                 {{setUserName}}
               </span>
-              <p style="padding-top:7px">님, 환영합니다.</p>
             </template>
             <v-list dense shaped>
               <v-list-item>
@@ -109,11 +113,7 @@ export default {
       }
     },
     getUserName() {
-      console.log("emit!");
-      console.log("getUserName");
-      // console.log(this.$session.get("user"));
       this.username = sessionStorage.getItem("user");
-      this.isLoggedIn = this.$store.getters.isLoggedIn;
     },
     logout() {
       let conf = confirm("로그아웃 하시겠습니까?");
@@ -152,7 +152,34 @@ export default {
     },
     clickreview() {
       this.$router.push("/review");
+    },
+    goToAdminPage() {
+      console.log('gotoadminpage')
+      const authenitcation = sessionStorage.getItem('auth')
+      if (authenitcation !== "3") {
+        alert('관리자만 접속 가능한 페이지입니다')
+        return
+      } else {
+        console.log('pass')
+        http
+          .get('/users',authenitcation, this.$store.getters.requestHeader)
+          .then(res => {
+            console.log(res)
+          })
+          .catch( err =>{
+            console.log(err)
+          })
+      }
+    },
+    getIsAdmin() {
+      console.log('getIsAdmin')
+      this.isAdmin = this.$store.getters.isAdmin
+      console.log(this.isAdmin)
     }
+    // isAdmin(){
+    //   this.isAdmin = this.$store.getters.isAdmin
+    //   return this.isAdmin
+    // }
   },
 
   data() {
@@ -166,24 +193,28 @@ export default {
         // { title: "UserInfo", path: "/userinfo" }
         // { title: "비밀번호 찾기", path:"/findpwd"}
       ],
-      username: ""
+      username: "",
+      isAdmin: false,
     };
   },
 
   computed: {
     setUserName() {
       console.log("setUserName");
-      // this.username = this.$store.state.user
       console.log(this.username);
       return this.username;
     },
     checkLoggedIn() {
       return this.isLoggedIn;
+    },
+    checkAdmin(){
+      console.log('checkadmin')
+      return this.isAdmin
     }
   },
   mounted() {
     this.getUserName();
-    //this.checkLoggedIn()
+    this.getIsAdmin();
   }
 };
 </script>

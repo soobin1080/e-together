@@ -19,6 +19,7 @@
     "firebase-tools": "^7.12.1",
     "html2canvas": "^1.0.0-rc.5",
     "jspdf": "^1.5.3",
+    "material-design-icons-iconfont": "^5.0.1",
     "my-dependency": "^1.0.1",
     "register-service-worker": "^1.6.2",
     "save": "^2.4.0",
