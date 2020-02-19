@@ -16,8 +16,8 @@
       </v-layout>
     </v-img>
 
-    <div class="main" fluid>
-      <div style="width:60%; height: 100%;" class="mx-auto my-5 flat" data-html2canvas-ignore="true">
+    <v-flex  xs12 md7 lg7 class="main">
+      <div style="height: 100%;" class="mx-auto my-5 flat" data-html2canvas-ignore="true">
         <MyBudgetList 
           :allBudgets="allBudgets"
           :budgetPerPage="budgetPerPage"
@@ -31,7 +31,7 @@
         <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
       </div>
 
-      <div class="mx-auto my-5 flat" style="width:60%" v-if="showflag==true">
+      <div class="mx-auto my-5 flat"  v-if="showflag==true">
         <MyBudgetDetail
           id="downloadpdf"
           :budgetList="budgetList"
@@ -40,8 +40,7 @@
           @showdetail="showdetail"
         ></MyBudgetDetail>
       </div>
-        <!-- <v-btn outlined color="success" class="mr-4" @click="makePDF()">pdf로 저장</v-btn> -->
-    </div>
+    </v-flex>
   </div>
 </template>
 
@@ -147,6 +146,7 @@ export default {
 
 <style scoped>
 .main {
+  margin: auto;
   padding-top: 60px;
   padding-bottom: 80px;
 }

@@ -7,6 +7,7 @@
       <Reply 
         :reply="reply"
         :class="floatWhere"
+        :user_email="user_email"
         @renewReply="upRenewReply"
         >
       </Reply>
@@ -26,6 +27,9 @@ export default {
   props: {
     allReplys: {
       type: Array
+    },
+    user_email:{
+      type: String
     }
   }, 
   methods: {

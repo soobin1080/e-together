@@ -2,15 +2,16 @@
   <div>
     <LoginModal @checkLogIn="getUserName"></LoginModal>
     <v-navigation-drawer v-model="sidebar" fixed temporary>
-      <v-list>
-        <div>
+      <v-list style="padding-top:10px;">
+         <v-list-item style="padding:0px">
+          <v-list-item-action></v-list-item-action>
          <router-link to="/" tag="span" style="cursor: pointer">
           <v-img :src="getImgUrl('etogether.png')" width="80px" />
-        </router-link></div>
-        <v-list-item v-if="setUserName" @click="pwdCheck">
-          <!-- <v-list-item-action></v-list-item-action> -->
-          <i class="material-icons">account_circle</i>
-          {{setUserName}}
+        </router-link>      
+        </v-list-item>        
+        <v-list-item style="padding:0px" v-if="setUserName" @click="pwdCheck">
+          <v-list-item-action></v-list-item-action>
+          <i class="material-icons">account_circle</i>{{setUserName}}         
         </v-list-item>
         <v-list-item  @click="clickproduct">
           <v-list-item-action></v-list-item-action>
@@ -25,7 +26,7 @@
           <v-list-item-content>Review</v-list-item-content>
           <!-- <v-list-item-content>{{ item.title }}</v-list-item-content> -->
         </v-list-item>
-        <v-list-item v-if="setUserName" @click="$modal.show('login-modal')">
+        <v-list-item v-if="setUserName" @click="logout">
           <v-list-item-action></v-list-item-action>
           <v-list-item-content class="text-center">Logout</v-list-item-content>
         </v-list-item>
