@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class Review {
 	private int review_num;
 	private int budget_num;
+	private String name;
 	private String review_content;
 	private int like_count;
 	private Date review_date;
@@ -17,10 +18,12 @@ public class Review {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Review(int review_num, int budget_num, String review_content, int like_count, Date review_date) {
+	public Review(int review_num, int budget_num, String name, String review_content, int like_count,
+			Date review_date) {
 		super();
 		this.review_num = review_num;
 		this.budget_num = budget_num;
+		this.name = name;
 		this.review_content = review_content;
 		this.like_count = like_count;
 		this.review_date = review_date;
@@ -40,6 +43,14 @@ public class Review {
 
 	public void setBudget_num(int budget_num) {
 		this.budget_num = budget_num;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getReview_content() {
@@ -68,8 +79,9 @@ public class Review {
 
 	@Override
 	public String toString() {
-		return "Review [review_num=" + review_num + ", budget_num=" + budget_num + ", review_content=" + review_content
-				+ ", like_count=" + like_count + ", review_date=" + review_date + "]";
+		return "Review [review_num=" + review_num + ", budget_num=" + budget_num + ", name=" + name
+				+ ", review_content=" + review_content + ", like_count=" + like_count + ", review_date=" + review_date
+				+ "]";
 	}
 
 }

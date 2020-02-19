@@ -51,25 +51,6 @@ public class UserController {
 	@Autowired
 	PasswordEncoder encoder;
 
-	@ApiOperation(value = "회원가입을 한다. ", response = UserseqResult.class)
-	@RequestMapping(value = "/regi", method = RequestMethod.POST)
-	public ResponseEntity<NumberResult> regi(@RequestBody User dto) throws Exception {
-		logger.info("3-------------regi-----------------------------" + dto);
-
-		int total = userService.regi(dto);
-		NumberResult nr = new NumberResult();
-		nr.setCount(total);
-		nr.setName("regi");
-		nr.setState("succ");
-		if (total <= 0) {
-			nr.setCount(-1);
-			nr.setName("regi");
-			nr.setState("fail");
-			return new ResponseEntity<NumberResult>(nr, HttpStatus.OK);
-		}
-		return new ResponseEntity<NumberResult>(nr, HttpStatus.OK);
-	}
-
 	@ApiOperation(value = "이메일 중복 체크를 한다. ", response = UserseqResult.class)
 	@RequestMapping(value = "/emailCheck", method = RequestMethod.POST)
 	public ResponseEntity<NumberResult> emailCheck(@RequestBody User dto) throws Exception {
@@ -86,28 +67,6 @@ public class UserController {
 			return new ResponseEntity<NumberResult>(nr, HttpStatus.OK);
 		}
 		return new ResponseEntity<NumberResult>(nr, HttpStatus.OK);
-	}
-
-	@ApiOperation(value = "로그인을 한다. ", response = UserseqResult.class)
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<UserseqResult> login(@RequestBody User dto) throws Exception {
-		logger.info("3-------------login-----------------------------" + dto);
-		User user = userService.login(dto);
-		UserseqResult nr = new UserseqResult();
-		nr.setCount(user.getCount());
-		nr.setName("login");
-		nr.setLoginEmail(user.getEmail());
-		nr.setState("succ");
-		nr.setIsLogin(true);
-		if (user.getCount() <= 0) {
-			nr.setCount(-1);
-			nr.setName("login");
-			nr.setState("fail");
-			nr.setLoginEmail(user.getEmail());
-			nr.setIsLogin(false);
-			return new ResponseEntity<UserseqResult>(nr, HttpStatus.OK);
-		}
-		return new ResponseEntity<UserseqResult>(nr, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "로그아웃을 한다. ", response = UserseqResult.class)
@@ -283,22 +242,22 @@ public class UserController {
 	}
 
 	// 관리자
-	int recentPage = 0;
-
 	@ApiOperation(value = "회원정보 리스트를 반환한다.", response = List.class)
-	@RequestMapping(value = "/findAllUsers", method = RequestMethod.GET)
-	public ResponseEntity<List<User>> findAllUsers(@RequestParam(required = false, defaultValue = "0") String nowPage)
-			throws Exception {
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	public ResponseEntity<List<User>> findAllUsers(@RequestParam int auth) throws Exception {
 		logger.info("1-------------findAllUsers-----------------------------" + new Date());
-
-		List<User> userList = userService.findAllUsers();
-		System.out.println(userList);
-		if (userList.isEmpty()) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		} else {
-			System.out.println(userList.get(0));
+		if (auth == 3) {
+			List<User> userList = userService.findAllUsers();
+			System.out.println(userList);
+			if (userList.isEmpty()) {
+				return new ResponseEntity(HttpStatus.NO_CONTENT);
+			} else {
+				System.out.println(userList.get(0));
+			}
+			return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
 		}
-		return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+		//관리자 권한 없는 사용자 접근 금지
+		return new ResponseEntity<List<User>>(HttpStatus.FORBIDDEN);
 	}
 
 	@ApiOperation(value = "이메일로 회원을 검색할 수 있다.", response = User.class)

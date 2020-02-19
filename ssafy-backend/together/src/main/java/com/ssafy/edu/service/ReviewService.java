@@ -88,4 +88,10 @@ public class ReviewService implements IReviewService {
 		return reviewdao.getReviewImage(review_num);
 	}
 
+	@Override
+	public List<ReviewResult> getWantedReview(int personnel, int budget) {
+		// TODO Auto-generated method stub
+		return reviewdao.getWantedReview(personnel,budget);
+	}
+
 }

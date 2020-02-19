@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,13 +17,13 @@ public class MysqlProductDB {
 	static final String USERNAME = "root";
 	static final String PASSWORD = "together";
 
-	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+	public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException {
 		Connection connection = null;
 		PreparedStatement preparedStatementInsert = null;
 		PreparedStatement preparedStatementUpdate = null;
 
-		String insertTableSQL = "INSERT IGNORE INTO product" + "(pro_id,pro_name,price,main_category,weight,img) VALUES"
-				+ "(?,?,?,?,?,?)";
+		String insertTableSQL = "INSERT IGNORE INTO product"
+				+ "(pro_id,pro_name,price,main_category,weight,img) VALUES" + "(?,?,?,?,?,?)";
 
 		try {
 			connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
@@ -33,7 +32,7 @@ public class MysqlProductDB {
 			connection.setAutoCommit(false);
 			Document doc = null;
 
-			String url = "http://emart.ssg.com/category/main.ssg?dispCtgId=0006140000&page=2";
+			String url = "http://emart.ssg.com/disp/category.ssg?dispCtgId=6000023943&page=2";
 
 			// 각각의 대분류 페이지에 들어가서 다시 화면 긁어오기
 			try {
@@ -45,7 +44,6 @@ public class MysqlProductDB {
 
 			// 상품 정보 가져오기
 			Elements pro_element = doc.select("div.com_tmpl_main_list");
-
 			Iterator<Element> products = pro_element.select("li.cunit_t232").iterator();
 
 			// 데이터를 db에 넣기 전에 쿼리문 준비
@@ -53,38 +51,42 @@ public class MysqlProductDB {
 
 			while (products.hasNext()) {
 				Element product = products.next();
-				long pro_id = Long.parseLong(product.select("a").first().attr("data-info").toString());
+				// 아이디
+				String proID = product.select("a").first().attr("data-info").toString();
+				long pro_id = Long.parseLong(proID);
+				// 이름
 				String pro_name = product.select("em.tx_ko").text();
+				// 갸격
 				String price = product.select("em.ssg_price").text();
-				System.out.println("상품이름은 : "+pro_name);
-				System.out.println("가격이 어떻게 들어오는지 확인 좀 : "+price);
-				String[] str=price.split(" ");
-				
-				int price_num =Integer.parseInt(str[0].replaceAll("\\,", "")); 
-				
-				
+				String[] str = price.split(" ");
+				int price_num = Integer.parseInt(str[0].replaceAll("\\,", ""));
+				// 중량
 				String weight = product.select("div.unit").text();
+				// 이미지
 				String img = product.select("img").attr("src").toString();
-				img="http:"+img;
+				img = "http:" + img;
+				System.out.println(pro_id + ", " + pro_name + ", " + price_num + ", " + weight + ", " + img + "\t");
 
-				System.out.println(pro_id +"/"+pro_name+"/"+price_num+"/"+weight+"/"+img+"\t");
-				
+
 //				pro_id,pro_name,price,main_category,gram,img
 				preparedStatementInsert.setLong(1, pro_id);
 				preparedStatementInsert.setString(2, pro_name);
 				preparedStatementInsert.setInt(3, price_num);
-				preparedStatementInsert.setString(4, "정육/계란류");
+				preparedStatementInsert.setString(4, "즉석식품");
 				preparedStatementInsert.setString(5, weight);
 				preparedStatementInsert.setString(6, img);
 				preparedStatementInsert.executeUpdate();
 			}
+			
 			connection.commit();
 			System.out.println("트랜잭션 정상처리");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
+
 		} finally {
-			if (preparedStatementInsert != null)
+			if (preparedStatementInsert != null) {
 				preparedStatementInsert.close();
+			}
 			if (preparedStatementUpdate != null)
 				preparedStatementUpdate.close();
 			if (connection != null)
@@ -93,7 +95,5 @@ public class MysqlProductDB {
 		System.out.println("MysqlDB 연결종료.");
 
 	}
-	
-	
 
 }
