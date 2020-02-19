@@ -16,8 +16,8 @@
       </v-layout>
     </v-img>
 
-    <div class="main" fluid>
-      <div style="width:60%; height: 100%;" class="mx-auto my-5 flat" data-html2canvas-ignore="true">
+    <v-flex  xs12 md7 lg7 class="main">
+      <div style="height: 100%;" class="mx-auto my-5 flat" data-html2canvas-ignore="true">
         <MyBudgetList 
           :allBudgets="allBudgets"
           :budgetPerPage="budgetPerPage"
@@ -31,7 +31,7 @@
         <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
       </div>
 
-      <div class="mx-auto my-5 flat" style="width:60%" v-if="showflag==true">
+      <div class="mx-auto my-5 flat"  v-if="showflag==true">
         <MyBudgetDetail
           id="downloadpdf"
           :budgetList="budgetList"
@@ -40,8 +40,7 @@
           @showdetail="showdetail"
         ></MyBudgetDetail>
       </div>
-        <!-- <v-btn outlined color="success" class="mr-4" @click="makePDF()">pdf로 저장</v-btn> -->
-    </div>
+    </v-flex>
   </div>
 </template>
 
@@ -140,49 +139,8 @@ export default {
         // // this.budgetDetail =
       }
       // this.showflag=false;
-    },
-    makePDF() {
-      // console.log(document.getElementById('downloadpdf'));
-      // window.open(document.getElementById('downloadpdf'),"width=400,height=500");
-      // console.log(document.querySelector("#downloadpdf"));
-      // html2canvas(document.querySelector("#downloadpdf")).then(function(canvas) {
-      //   var doc = new jsPDF("p", "mm", "a4"); //jspdf객체 생성
-      //   var imgData = canvas.toDataURL("image/png"); //캔버스를 이미지로 변환
-      //   doc.addImage(imgData, "PNG", 0, 0); //이미지를 기반으로 pdf생성
-      //   doc.save("sample-file.pdf"); //pdf저장
-      // });
-
-      // window.html2canvas = html2canvas //Vue.js 특성상 window 객체에 직접 할당해야한다.
-			// let that = this
-			// let pdf = new jsPDF('p', 'mm', 'a4')
-			// let canvas = pdf.canvas
-			// const pageWidth = 210 //캔버스 너비 mm
-			// const pageHeight = 295 //캔버스 높이 mm
-			// canvas.width = pageWidth
-			// let ele = document.querySelector('body')
-
-			// let width = ele.offsetWidth // 셀렉트한 요소의 px 너비
-			// let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
-			// let imgHeight = pageWidth * height/width // 이미지 높이값 px to mm 변환
-
-      // console.log("이것은 ele : "+ele);
-
-      //  html2canvas(document.querySelector('body')).then(function(canvas) {
-      //   var doc = new jsPDF("p", "mm", "a4"); //jspdf객체 생성
-      //   var imgData = canvas.toDataURL("image/png"); //캔버스를 이미지로 변환
-      //   doc.addImage(imgData, "PNG", 0, 0,pageWidth, imgHeight, undefined, 'slow'); //이미지를 기반으로 pdf생성
-      //   doc.save("sample-file.pdf"); //pdf저장
-      // });
-
-			// html2canvas(ele, {
-			// 	onrendered: function(canvas) {
-			// 		let position = 0
-			// 		const imgData = canvas.toDataURL('image/png')
-			// 		pdf.addImage(imgData, 'png', 0, position, pageWidth, imgHeight, undefined, 'slow')
-			// 		pdf.save(that.propTitle.toLowerCase() +'.pdf')
-			// 	},
-			// });	
     }
+   
   },
   computed: {
     // mountedBudget() {
@@ -200,6 +158,7 @@ export default {
 
 <style scoped>
 .main {
+  margin: auto;
   padding-top: 60px;
   padding-bottom: 80px;
 }

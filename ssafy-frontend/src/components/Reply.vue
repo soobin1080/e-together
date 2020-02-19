@@ -3,6 +3,7 @@
   <div class="list-group-item">
     <!-- <i class="fas fa-file-alt" stlye="size:10px;"></i> -->
     <div>
+      <span v-if="checkUser()==true"  class="badge outlined badge-success mr-2">작성자</span>
       <b class="mr-2" style="">{{reply.name}}</b>
 
       <p class="d-inline mr-2" style="font-size:0.8rem">{{dateParsing(reply.reply_date)}}</p>
@@ -41,6 +42,9 @@ export default {
   props: {
     reply: {
       type: Object
+    },
+    user_email:{
+      type:String
     }
   },
   data(){
@@ -51,6 +55,13 @@ export default {
     }
   }, 
   methods: {
+    checkUser() {
+      if (this.user_email == this.reply.writer_email) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     dateParsing(beforeParsing) {      
       const t = beforeParsing.indexOf('T')
       const afterParsing = beforeParsing.substring(0, t)      

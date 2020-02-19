@@ -93,7 +93,8 @@
       </div>
     </div>
 
-    <v-row class="main" style="padding-top:40px">
+<v-flex  xs12 md9 lg9 class="main">
+    <v-row  style="padding-top:40px">
       <v-col lg="8" style="padding-top:0px;">
         <!-- search box -->
         <v-text-field
@@ -166,6 +167,7 @@
       </v-flex>
       <!-- </v-col> -->
     </v-row>
+</v-flex>
     <!-- modal 창 -->
     <v-row justify="center">
       <v-dialog v-model="budgetDialog" scrollable max-width="300px">
@@ -487,6 +489,6 @@ export default {
 .main {
   padding-bottom: 80px;
   margin: auto;
-  width: 80%;
+  
 }
 </style>
