@@ -6,13 +6,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getBudgetNumList" parameterType="java.lang.Integer"
 		resultType="java.lang.Integer">
-		select budget_num from budget_info where budget=#{budget};
+		select budget_num from budget_info where budget between #{budget}*0.9 and #{budget}*1.1;
 	</select>
 
 	<select id="getBudgetAverageRate"
 		parameterType="java.lang.Integer"
 		resultType="com.ssafy.edu.model.RecommendResult">
-
 		select budget_info.budget_num, product.main_category, sum(product.price) price_sum
 		from budget_info,budget_list,product
 		where budget_info.budget_num=#{budget_num} and

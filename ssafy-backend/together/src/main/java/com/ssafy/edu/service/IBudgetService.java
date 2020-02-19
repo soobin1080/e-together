@@ -30,6 +30,8 @@ public interface IBudgetService {
 
 	void updateBudget(int budget_num, int suitability);
 
+	void updateBudgetInfo(BudgetInfo budgetinfo);
+
 
 	
 }

@@ -14,11 +14,13 @@ public class ReviewDetailResult {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReviewDetailResult(Review review, BudgetInfo budgetinfo, List<BudgetListResult> budgetlist,	String review_img) {
+	public ReviewDetailResult(Review review, BudgetInfo budgetinfo, List<BudgetListResult> budgetlist,
+			List<String> like_user, String review_img) {
 		super();
 		this.review = review;
 		this.budgetinfo = budgetinfo;
 		this.budgetlist = budgetlist;
+		this.like_user = like_user;
 		this.review_img = review_img;
 	}
 

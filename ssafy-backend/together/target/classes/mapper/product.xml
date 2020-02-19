@@ -8,33 +8,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 전체 식품 보기 - -->
 	<select id="getAllProduct"
 		resultType="com.ssafy.edu.model.Product">
-		select pro_id, pro_name, price, main_category, weight,capacity, img
+		select pro_id, pro_name, price, main_category, weight, img
 		from product
 	</select>
 
 	<select id="keywordSearchProduct" parameterType="java.lang.String"
 		resultType="com.ssafy.edu.model.Product">
-		select pro_id, pro_name, price, main_category, weight,capacity, img
+		select pro_id, pro_name, price, main_category, weight, img
 		from product where pro_name like concat('%',#{keyword},'%')
 	</select>
 	
 	<select id="categorySearchProduct" parameterType="java.lang.String"
 		resultType="com.ssafy.edu.model.Product">
-		select pro_id, pro_name, price, main_category, weight,capacity, img
+		select pro_id, pro_name, price, main_category, weight, img
 		from product where main_category= #{category}
 	</select> 
 	
 	<select id="categoryKeywordSearchProduct" parameterType="com.ssafy.edu.model.Product"
 		resultType="com.ssafy.edu.model.Product">
-		select pro_id, pro_name, price, main_category, weight,capacity, img
+		select pro_id, pro_name, price, main_category, weight, img
 		from product where main_category= #{category} and pro_name like concat('%',#{keyword},'%')
 	</select> 
 	
 	<insert id="insertProduct"
 		parameterType="com.ssafy.edu.model.Product">
 		insert ignore into product(pro_id, pro_name,
-		price, main_category, weight, capacity, img)
-		values(#{pro_id},#{pro_name},#{price},#{main_category},#{weight},#{capacity},#{img});
+		price, main_category, weight, img)
+		values(#{pro_id},#{pro_name},#{price},#{main_category},#{weight},#{img});
 	</insert>
 
 </mapper>

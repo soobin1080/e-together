@@ -32,4 +32,6 @@ public interface IReviewService {
 	void deleteReviewLikeCount(ReviewCount reviewcount);
 
 	String getReviewImage(int review_num);
+
+	List<ReviewResult> getWantedReview(int personnel, int budget);
 }

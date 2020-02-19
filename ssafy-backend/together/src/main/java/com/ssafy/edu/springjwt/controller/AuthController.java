@@ -1,10 +1,5 @@
 package com.ssafy.edu.springjwt.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -24,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.edu.service.IUserService;
-import com.ssafy.edu.service.UserService;
-import com.ssafy.edu.springjwt.model.ERole;
-import com.ssafy.edu.springjwt.model.Role;
 import com.ssafy.edu.controller.UserController;
 import com.ssafy.edu.model.User;
 import com.ssafy.edu.springjwt.payload.request.LoginRequest;
@@ -67,10 +59,9 @@ public class AuthController {
 		// 지금 로그인된 정보를 userDetails에 넣는다.
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		return ResponseEntity
-				.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()));
+				.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(),userDetails.getAuth()));
 	}
 
-/////////////////내꺼에 맞게 바꾸기
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
@@ -82,9 +73,6 @@ public class AuthController {
 		User user = new User(0, signUpRequest.getEmail(), encoder.encode(signUpRequest.getPwd()), null,
 				signUpRequest.getName(), 0, 1, signUpRequest.getPhone());
 
-//		String phone = user.getPhone();
-//		String newphone = phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7, 11);
-//		user.setPhone(newphone);
 
 		int result = userService.regi(user);
 
