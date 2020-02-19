@@ -3,10 +3,11 @@
 <h5 style="text-align:center">나의 장보기 내역</h5><br>
   <table width="100%">
     <colgroup>
-      <col width="40%" />
+      <col width="35%" />
       <col width="10%" />
-      <col width="15%" />
-      <col width="15%" />
+      <col width="10%" />
+      <col width="20%" />
+      <col width="10%" />
       <col width="10%" />
       <col width="10%"/>
      
@@ -17,6 +18,7 @@
       <th>예산</th>
       <th>날짜</th>
       <th>적/부</th>
+      <th>수정</th>
       <th>삭제</th>
     </tr>
     <template v-if="this.allBudgets.length==0 || this.allBudgets.length==undefined">
@@ -42,7 +44,11 @@
           부적합
         </span>
       </td>
-      <td style="text-align:center">
+      <td class="text-center text-dark" style="cursor:pointer">
+        <i @click="modifyMove(budget)" class="fas fa-tools"></i>
+      </td>
+
+      <td class="text-center">
         <i @click="budgetDelete(budget.budget_num)" class="fas fa-trash-alt" style="color: red; cursor:pointer;"></i>
       </td>
     </tr>
@@ -106,7 +112,7 @@ export default {
             budget_num: budgetNum
           }, this.$store.getters.requestHeader)
           .then( res => {
-            
+            this.$emit('getMyBudget')
           })
           .catch( err => {
             console.log(err)
@@ -114,6 +120,17 @@ export default {
       } else {
         return;
       }
+    },
+
+    modifyMove(budget) {
+       if (sessionStorage.getItem('email') !== budget.user_email) {
+         alert('본인만 수정이 가능합니다')
+         return
+       } else {
+         this.$router.push({
+          name: 'product', 
+          params: {modifyBudget: budget}})
+       }
     }
   },
   computed: {

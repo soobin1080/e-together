@@ -142,7 +142,12 @@ export default {
       this.$router.push("/product");
     },
     clickmybudget() {
-      this.$router.push("/mybudget");
+      if (sessionStorage.getItem('accessToken')) {
+        this.$router.push("/mybudget");
+      } else {
+        alert('로그인 후 이용해주세요')
+        return 
+      }
     },
     clickreview() {
       this.$router.push("/review");

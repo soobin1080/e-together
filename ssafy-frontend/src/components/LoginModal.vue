@@ -116,6 +116,7 @@ export default {
             sessionStorage.setItem("user", res.data.username);
             sessionStorage.setItem("email", res.data.email);
             sessionStorage.setItem("phone", res.data.phone);
+          
             // this.$session.start()
             // this.$session.set("accessToken", res.data.accessToken)
             // this.$session.set("user", res.data.username)

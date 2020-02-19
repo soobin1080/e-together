@@ -3,7 +3,7 @@
     max-width="344"
     class="m-3"
   >
-    <v-list-item>
+    <v-list-item @click="goToDetail">
       <v-list-item-content>
         <v-list-item-title class="headline">{{computedReview.budget_title}}</v-list-item-title> 
         <v-list-item-subtitle>by. {{computedReview.name}}</v-list-item-subtitle>
@@ -12,6 +12,7 @@
 
     <v-img
       :src="'http://13.209.9.53'+computedReview.file_url"
+      @click="goToDetail"
       height="194"
     ></v-img>
 
@@ -21,12 +22,12 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn
+      <!-- <v-btn
         text
         :to="{ path: `reviewdetail/${this.review.review_num}/${computedReview.name}`, params: { reviewNum: this.review.review_num, userName: computedReview.name }}"
         style="text-decoration:none; color:black;">
         상세 보기
-      </v-btn>
+      </v-btn> -->
       <!-- <v-btn
         text
       >
@@ -151,6 +152,15 @@
       getUserEmail() {
         return sessionStorage.getItem('email')
       },
+      goToDetail() {
+        this.$router.push(
+          { path: `reviewdetail/${this.review.review_num}/${this.review.name}`, 
+            params: { 
+              reviewNum: this.review.review_num, 
+              userName: this.review.name }
+              }
+            )
+          }
    },
 
     computed: {
