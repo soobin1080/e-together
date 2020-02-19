@@ -72,8 +72,8 @@
           <div class="container">
             <div class="large-12 medium-12 small-12 cell">
               <label>
-                Files
-                <input type="file" id="files" ref="files" v-on:change="handleFilesUploads()" />
+                <i class="material-icons">insert_photo</i>
+                <input type="file" id="files" ref="files" v-on:change="handleFilesUploads()">                
               </label>
               <v-textarea
                 v-model="content"
@@ -162,6 +162,10 @@ export default {
           alert("내용을 입력해주세요.");
           return;
         }
+        if(this.files == ""){
+          alert("이미지를 등록해주세요.");
+          return;
+        }
 
         let formData = new FormData();
 
@@ -170,9 +174,9 @@ export default {
           formData.append("files", file);
         }
         formData.append("budget_num", this.budgetInfo.budget_num);
-        alert("budget_num: " + this.budgetInfo.budget_num);
+        // alert("budget_num: " + this.budgetInfo.budget_num);
         formData.append("review_content", this.content);
-        alert("review_content: " + this.content);
+        // alert("review_content: " + this.content);
 
         http
           .post("/review", formData)

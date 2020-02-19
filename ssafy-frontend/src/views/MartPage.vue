@@ -8,48 +8,92 @@
         v-resize-text
       >Mart</div>
     </ImgBanner>
-    
-    <div class="progress text-center mx-auto mt-5" style="width: 70%; height: 15%;" v-on="on">
-      <!-- <div v-for="category in computedBudgetListBar" class="progress-bar">{{category.category}}</div> -->
-      
-      <div 
-        v-for="bar in getMainBar" 
-        :key="bar.price"
-        :class="bar.className"
-        :style="{width: (bar.price / (getMainTotal + getETCTotal)) * 100+'%'}"
+
+    <!-- 비율 추천 그래프 -->
+    <div class="mt-12">
+      <p style="margin:auto; width:70%; color:dimgrey;">
+        <i class="material-icons">assessment</i>예산 별 비율 추천
+      </p>
+      <div class="progress text-center mx-auto" style="width: 70%;" v-on="on">
+        <div
+          v-for="bar in recommendBar"
+          :key="bar.className"
+          :class="bar.className"
+          :style="{width: (bar.price / (recommendTotal + recommendETCTotal) * 100) +'%'}"
         >
-        <div v-if="bar.price > 0">
+          <!-- {{bar.price}} -->
+          <div v-if="bar.price > 0">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <span v-on="on">{{bar.category}}</span>
+              </template>
+              <span>{{bar.category}} : {{numberCut(bar.price / (recommendTotal + recommendETCTotal))+'%'}}</span>
+            </v-tooltip>
+          </div>
+        </div>
+
+        <div
+          v-if="recommendETCTotal > 0"
+          class="progress-bar bg-secondary"
+          v-bind:style="{width: (recommendETCTotal / (recommendTotal + recommendETCTotal)) * 100+'%'}"
+        >
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
-              <span v-on="on">{{bar.category}}</span>
+              <span v-on="on">기타</span>
             </template>
-            <span>{{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}} / {{bar.price}}원</span>
+            <span v-for="bar in recommendBarETC" :key="bar.className">
+              <span v-if="bar.price > 0">
+                {{bar.category}} : {{numberCut(bar.price / (recommendTotal + recommendETCTotal) * 100)+'%'}}
+                <br />
+              </span>
+            </span>
           </v-tooltip>
         </div>
       </div>
-      <div
-        v-if="getETCTotal > 0"
-        class="progress-bar bg-secondary"
-        v-bind:style="{width: (getETCTotal / (getMainTotal + getETCTotal)) * 100+'%'}"
-      >
 
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <span v-on="on">기타</span>
-          </template>
-          <span v-for="bar in getETCBar" :key="bar">
-            <span v-if="bar.price > 0">
-              {{bar.category}} : {{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}}
-              <br/>
+      <p style="margin:auto; padding-top:5px; width:70%; color:dimgrey">
+        <i class="material-icons">assessment</i>현재 내 예산 비율
+      </p>
+      <div class="progress text-center mx-auto" style="width: 70%; height: 15%;" v-on="on">
+        <!-- <div v-for="category in computedBudgetListBar" class="progress-bar">{{category.category}}</div> -->
+        <div
+          v-for="bar in getMainBar"
+          :key="bar.className"
+          :class="bar.className"
+          :style="{width: (bar.price / (getMainTotal + getETCTotal)) * 100+'%'}"
+        >
+          <div v-if="bar.price > 0">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <span v-on="on">{{bar.category}}</span>
+              </template>
+              <span>{{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}} / {{bar.price}}원</span>
+            </v-tooltip>
+          </div>
+        </div>
+        <div
+          v-if="getETCTotal > 0"
+          class="progress-bar bg-secondary"
+          v-bind:style="{width: (getETCTotal / (getMainTotal + getETCTotal)) * 100+'%'}"
+        >
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">기타</span>
+            </template>
+            <span v-for="bar in getETCBar" :key="bar.className">
+              <span v-if="bar.price > 0">
+                {{bar.category}} : {{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}}
+                <br />
+              </span>
             </span>
-          </span>
-        </v-tooltip>
+          </v-tooltip>
+        </div>
+        <!-- <div class="progress-bar" role="progressbar" style="width: 30%"></div>
+        <div class="progress-bar bg-info" role="progressbar" style="width: 20%"></div>-->
       </div>
-      <!-- <div class="progress-bar" role="progressbar" style="width: 30%"></div>
-      <div class="progress-bar bg-info" role="progressbar" style="width: 20%"></div> -->
     </div>
 
-    <v-row class="main" style="padding-top:80px">
+    <v-row class="main" style="padding-top:40px">
       <v-col lg="8" style="padding-top:0px;">
         <!-- search box -->
         <v-text-field
@@ -117,25 +161,21 @@
       <!-- v-b-modal.modal-1 -->
       <!-- 장보기 내역 -->
       <!-- <v-col> -->
-        <v-flex d-none d-lg-flex>
-          <BudgetList id="budgetList">
-          </BudgetList>
-        </v-flex>
+      <v-flex d-none d-lg-flex>
+        <BudgetList id="budgetList" @changeRecommendBar="recommendBudgetBar"></BudgetList>
+      </v-flex>
       <!-- </v-col> -->
-      
-      
     </v-row>
     <!-- modal 창 -->
     <v-row justify="center">
       <v-dialog v-model="budgetDialog" scrollable max-width="300px">
-        <BudgetList></BudgetList>
-      </v-dialog> 
+        <BudgetList @changeRecommendBar="recommendBudgetBar"></BudgetList>
+      </v-dialog>
     </v-row>
-    
 
     <!-- <BudgetModal id="budgetModal">
 
-    </BudgetModal> -->
+    </BudgetModal>-->
   </div>
 </template>
 <script>
@@ -151,7 +191,7 @@ export default {
     ImgBanner,
     BudgetList,
     ProductList,
-    BudgetModal,
+    BudgetModal
   },
   directives: {
     ResizeText
@@ -164,12 +204,12 @@ export default {
       tabs: [
         { title: "전체" },
         { title: "정육/계란류" },
-        { title: "수산물/해산물" },
-        { title: "채소" },
-        { title: "쌀/잡곡" },
-        { title: "라면" },
-        { title: "즉석식품" },
         { title: "생수/음료" },
+        { title: "채소" },
+        { title: "라면" },
+        { title: "수산물/해산물" },
+        { title: "즉석식품" },
+        { title: "쌀/잡곡" },
         { title: "과일" },
         { title: "스낵" },
         { title: "견과/건해산물" }
@@ -183,102 +223,107 @@ export default {
       pagingLength: 0,
       budgetDialog: false,
       budgetList: [],
-      etcTotal : 0,
+      etcTotal: 0,
       mainTotal: 0,
-      recommendBar : [
+      recommendBar: [
         {
-        category : '정육/계란류',
-        price: 0,
-        className: 'progress-bar bg-danger'
-      }, {
-        category : '생수/음료',
-        price: 0,
-        className: 'progress-bar bg-primary'
-      }, {
-        category : '채소',
-        price: 0,
-        className: 'progress-bar bg-success'
-      }, {
-        category : '라면',
-        price: 0,
-        className: 'progress-bar bg-warning'
-      }
+          category: "정육/계란류",
+          price: 0,
+          className: "progress-bar bg-danger"
+        },
+        {
+          category: "생수/음료",
+          price: 0,
+          className: "progress-bar bg-primary"
+        },
+        {
+          category: "채소",
+          price: 0,
+          className: "progress-bar bg-success"
+        },
+        {
+          category: "라면",
+          price: 0,
+          className: "progress-bar bg-warning"
+        }
       ],
       recommendBarETC: [
-         {
-        category : '수산물/해산물',
-        price: 0,
-        className: 'progress-bar bg-primary'
-      }, {
-        category : '쌀/잡곡',
-        price: 0,
-        className: 'progress-bar bg-secondary'
-
-      }, {
-        category : '즉석식품',
-        price: 0,
-        className: 'progress-bar bg-dark'
-
-      }, {
-        category : '과일',
-        price: 0,
-        className: 'progress-bar bg-success'
-
-      }, {
-        category : '스낵',
-        price: 0,
-        className: 'progress-bar bg-warning'
-      }, {
-        category : '견과/건해산물',
-        price: 0,
-        className: 'progress-bar bg-info'
-      }
+        {
+          category: "수산물/해산물",
+          price: 0,
+          className: "progress-bar bg-primary"
+        },
+        {
+          category: "쌀/잡곡",
+          price: 0,
+          className: "progress-bar bg-secondary"
+        },
+        {
+          category: "즉석식품",
+          price: 0,
+          className: "progress-bar bg-dark"
+        },
+        {
+          category: "과일",
+          price: 0,
+          className: "progress-bar bg-success"
+        },
+        {
+          category: "스낵",
+          price: 0,
+          className: "progress-bar bg-warning"
+        },
+        {
+          category: "견과/건해산물",
+          price: 0,
+          className: "progress-bar bg-info"
+        }
       ],
       recommendTotal: 0,
+      recommendETCTotal: 0,
       colorByCategory: [
-        {'정육/계란류' : 'bg-danger'},
-        {'생수/음료' : 'bg-primary'},
-        {'채소' : 'bg-success'},
-        {'라면' : 'bg-warning'},
-        {'기타' : 'bg-secondary'}
+        { "정육/계란류": "bg-danger" },
+        { "생수/음료": "bg-primary" },
+        { 채소: "bg-success" },
+        { 라면: "bg-warning" },
+        { 기타: "bg-secondary" }
       ]
     };
   },
   mounted() {
-    console.log('martpage, budget : '+this.$store.state.budget)
+    console.log("martpage, budget : " + this.$store.state.budget);
     this.getProductList(this.keyword);
-    this.recommendBudgetBar(this.$store.state.budget)
+    this.recommendBudgetBar(this.$store.state.budget);
   },
   computed: {
     mountedProduct() {
       this.getProductList(this.keyword);
-      return true
+      return true;
     },
 
     getMainBar() {
       // this.mainTotal = this.$store.state.budgetListBar.reduce((total, budget) => total += budget.price, 0)
-      return this.$store.state.budgetListBar
+      return this.$store.state.budgetListBar;
     },
 
     getETCBar() {
-      console.log('getETCBar : ', this.$store.state.budgetListBarETC)
+      console.log("getETCBar : ", this.$store.state.budgetListBarETC);
       // this.etcTotal = this.$store.state.budgetListBarETC.reduce((total, budget) => total += budget.price, 0)
       // console.log(this.etcTotal)
-      return this.$store.state.budgetListBarETC
+      return this.$store.state.budgetListBarETC;
     },
 
     getMainTotal() {
-      return this.$store.state.mainTotal
+      return this.$store.state.mainTotal;
     },
 
     getETCTotal() {
-      return this.$store.state.etcTotal
+      return this.$store.state.etcTotal;
     },
 
     getTotal() {
-      return this.$store.state.mainTotal + this.$store.state.etcTotal
+      return this.$store.state.mainTotal + this.$store.state.etcTotal;
     }
-
   },
 
   methods: {
@@ -304,28 +349,65 @@ export default {
     },
 
     recommendBudgetBar(mybudget) {
-      if (mybudget !== null && mybudget !== undefined && mybudget !== 0){
-        console.log("recommendBudgetBar")
+      mybudget = Number(mybudget);
+      this.recommendTotal = 0;
+      this.recommendETCTotal = 0;
+      let i = 0;
+      while (i < this.recommendBar.length || i < this.recommendBarETC.length) {
+        if (i < this.recommendBar.length) {
+          this.recommendBar[i].price = 0;
+        }
+        this.recommendBarETC[i].price = 0;
+        i++;
+      }
+      console.log("recommendBar");
+      console.log(typeof mybudget);
+      if (mybudget !== null && mybudget !== undefined && mybudget !== 0) {
+        console.log("recommendBudgetBar");
         http
           .get("/recommend", {
             params: {
               budget: mybudget
             }
           })
-            .then(res => {
-              this.recommendBar = res.data
-              console.log(this.recommendBar)
-              const keys = Object.keys(this.recommendBar)
-              console.log(keys.length)
-              const categoryDict = this.$store.state.recommendDict
-              // const prices = Object.keys(this.recommendBar)
-              for (let i = 0; i < keys.length; i++) {
-                console.log(categoryDict[keys[i]])
+          .then(res => {
+            console.log(this.recommendBar);
+            const keys = Object.keys(res.data);
+            const vals = Object.values(res.data);
+            console.log(this.recommendBar);
+            const categoryDict = this.$store.state.recommendDict;
+            // const prices = Object.keys(this.recommendBar)
+            console.log(vals);
+            console.log(typeof this.recommendBar);
+            for (let i = 0; i < keys.length; i++) {
+              console.log(categoryDict[keys[i]]);
+
+              if (this.$store.state.ETC.includes(categoryDict[keys[i]])) {
+                const idx = this.recommendBarETC.findIndex(bar => {
+                  return bar.category === categoryDict[keys[i]];
+                });
+                console.log(idx);
+                this.recommendBarETC[idx].price = vals[i];
+                this.recommendETCTotal += vals[i];
+              } else {
+                const idx = this.recommendBar.findIndex(bar => {
+                  return bar.category === categoryDict[keys[i]];
+                });
+                console.log(idx);
+                this.recommendBar[idx].price = vals[i];
+                this.recommendTotal += vals[i];
               }
-            })
-            .catch(err => {
-              console.log(err)
-            })
+            }
+            console.log(this.recommendBarETC);
+            console.log(this.recommendBar);
+            console.log(this.recommendETCTotal);
+            console.log(this.recommendTotal);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
+        alert("잘못된 금액입니다.");
       }
     },
 
@@ -340,7 +422,7 @@ export default {
     getProductList(keyword) {
       // this.$emit('search');
       this.keyword = keyword;
-      console.log(this.keyword)
+      console.log(this.keyword);
       console.log("키워드는" + this.keyword);
       if (this.keyword != "" && this.keyword.length > 0) {
         this.search();
@@ -371,10 +453,10 @@ export default {
     search() {
       http
         .get(`/product/category/${this.keyword}`, {
-          keyword : this.keyword
-          })
+          keyword: this.keyword
+        })
         .then(response => {
-          console.log('res : '+ response)
+          console.log("res : " + response);
           this.products = response.data;
           if (this.products.length % this.productPerPage === 0) {
             this.pagingLength = parseInt(
@@ -392,10 +474,10 @@ export default {
         .finally(() => (this.loading = false));
     },
     modalAppear() {
-      this.budgetDialog = true
+      this.budgetDialog = true;
     },
     numberCut(number) {
-      return number.toFixed(2)
+      return number.toFixed(2);
     }
   }
 };
@@ -407,5 +489,4 @@ export default {
   margin: auto;
   width: 80%;
 }
-
 </style>
