@@ -70,7 +70,7 @@ public class MysqlProductDB {
 				System.out.println(pro_id +"/"+pro_name+"/"+price_num+"/"+weight+"/"+img+"\t");
 				
 //				pro_id,pro_name,price,main_category,gram,img
-				preparedStatementInsert.setInt(1, pro_id);
+				preparedStatementInsert.setLong(1, pro_id);
 				preparedStatementInsert.setString(2, pro_name);
 				preparedStatementInsert.setInt(3, price_num);
 				preparedStatementInsert.setString(4, "정육/계란류");
