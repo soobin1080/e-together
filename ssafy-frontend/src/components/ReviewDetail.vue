@@ -25,24 +25,22 @@
                 {{budgetInfo.budget}}원
               </v-card-text>
 
-              <p class="card-text" style="padding-top:15px">{{review.review_content}}</p>
-
               <p
                 v-if="budgetInfo.suitability === 1"
-                class="text-center bg-primary rounded"
+                class="text-center bg-primary rounded d-inline-block"
                 style="color:white"
               >사용자가 적합하다고 판단한 예산입니다.</p>
               <p
                 v-else-if="budgetInfo.suitability == 2"
-                class="text-center bg-warning rounded"
+                class="text-center bg-warning rounded d-inline-block"
                 style="color:white"
               >사용자가 부적합하다고 판단한 예산입니다.</p>
               <p
                 v-else
-                class="text-center bg-secondary rounded"
+                class="text-center bg-secondary rounded d-inline-block"
                 style="color:white"
               >사용자가 아직 적합도를 정하지 않았습니다.</p>
-
+              <br>
               <i class="fas fa-heart text-danger mr-1 mb-3"></i>
               {{like_users.length}}
               <!--이미 좋아요 누른 경우-->
@@ -78,7 +76,15 @@
             </div>
           </div>
         </div>
-
+        <v-textarea
+          solo
+          name="input-7-4"
+          no-resize
+          readonly
+          :value="review.review_content"
+          style="padding:5%;"
+        ></v-textarea>
+        <!-- <p class="card-text" style="padding-top:15px">{{review.review_content}}</p> -->
         <div class="col-md-12">
           <table style="width:100%; margin:auto; text-align:center">
             <col width="55%" />

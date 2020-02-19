@@ -22,7 +22,7 @@
           :allBudgets="allBudgets"
           :budgetPerPage="budgetPerPage"
           :pages="pages"
-          v-on:showdetail="showdetail"
+          @showdetail="showdetail"
           @getMyBudget="getMyBudgets"
         ></MyBudgetList>
       </div>
@@ -107,9 +107,6 @@ export default {
             this.pagingLength =
               parseInt(this.allLength / this.budgetPerPage) + 1;
           }
-          // this.pages = 1;
-          // console.log(res)
-          // return res.data
         })
         .catch(err => {
           console.log(err);
@@ -118,7 +115,6 @@ export default {
     showdetail(budgetNum) {
       this.showflag = true;
       if (this.showflag === true) {
-        // console.log("--Parent (showdetail) : " + budgetNum);
         http
           .get(
             `/budget/detail/${budgetNum}`,
@@ -128,29 +124,21 @@ export default {
             this.$store.getters.RequestHeader
           )
           .then(res => {
-            // console.log(res)
             this.budgetInfo = res.data.budgetinfo;
             this.budgetList = res.data.budgetlist;
-            // console.log(this.budgetInfo)
-            // console.log(this.budgetList)
+
           });
-        // this.budgetDetail.budget_title = title;
-        // this.title = title
-        // // this.budgetDetail =
-      }
-      // this.showflag=false;
-    }
-   
-  },
+        }
+      },
+    },
   computed: {
-    // mountedBudget() {
-    //   // console.log("mountedBudget");
-    //   this.allBudgets = this.getMyBudgets();
-    //   this.allLength = this.allBudgets.length;
-    //   return this.getMyBudgets();
-    // }
+
   },
   mounted() {
+    this.getMyBudgets();
+  },
+
+  created() {
     this.getMyBudgets();
   }
 };

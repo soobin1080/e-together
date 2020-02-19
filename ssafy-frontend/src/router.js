@@ -41,7 +41,8 @@ export default new Router({
 
 			path: '/product',
 			name: 'product',
-			component: MartPage
+			component: MartPage,
+			props: true
 		},				
 		{
 			path: '/team',

@@ -203,6 +203,10 @@ export default {
     },
    budgetSave(bool) {
       if (bool === true) {
+        if (!sessionStorage.getItem('accessToken')) {
+          alert('저장 기능은 로그인 후 이용해주세요')
+          return
+        }
         if (this.budgetTitle == "") {
           alert("제목을 입력해주세요.");
           return;

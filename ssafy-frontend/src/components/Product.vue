@@ -1,5 +1,45 @@
 <template>
-  <v-card height="260px">
+<v-card
+    class="mx-auto"
+    max-width="400"
+  >
+    <v-img
+      class="white--text align-end"
+      height="200px"
+      :src="img"
+    >
+    </v-img>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <!-- <div class="lightgrey--text" v-on="on">{{pro_name}}</div> -->
+        <v-card-title v-on="on" class="font-weight-bold grey--text">{{pro_name}}</v-card-title>
+      </template>
+      <span>{{pro_name}}</span>
+    </v-tooltip>
+
+    <v-card-subtitle class="pb-0 font-weight-black">{{price}}</v-card-subtitle>
+
+    <v-card-subtitle 
+      style="font-family:'Noto Sans KR', sans-serif;font-size:0.9rem"
+      class="d-flex justify-content-between">
+      <p>
+        수량:
+            <input
+              type="number"
+              placeholder="1"
+              min="1"
+              size="small"
+              style="text-align:center; font-size:10pt; width:40px"
+              inline
+              controls
+              v-model="quantity"
+              :quantity="quantity"
+            />
+      </p>
+      <i class="far fa-plus-square" style="cursor:pointer;color:yellow;margin-left:2%;font-size:1.2rem;" @click="addcart"></i>
+    </v-card-subtitle>
+  </v-card>
+  <!-- <v-card height="260px">
     <v-img :src="img" height="140px"></v-img>
     <v-card-title>
       <div>
@@ -29,7 +69,7 @@
         </div>
       </div>
     </v-card-title>
-  </v-card>
+  </v-card> -->
 </template>
 <script>
 import EventBus from "../event-bus.js";
@@ -92,9 +132,10 @@ export default {
 }
 
 .grey--text {
-  font-size: 11pt;
+  width:90%;
+  font-size: 0.8rem;
   /* 한 줄 자르기 */
-  display: inline-block;
+  /* display: inline-block; */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
