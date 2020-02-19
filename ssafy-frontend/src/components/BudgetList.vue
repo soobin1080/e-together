@@ -34,7 +34,7 @@
             <td class="pro_price" style="text-align:center;">{{computedBudgetList[i-1].pro_price}} 원</td>
             <td style="text-align:center;">
               <v-btn text icon color="red" @click="del_pro(i-1)">
-                <v-icon>close</v-icon>
+                <i class="fas fa-trash-alt"></i>
               </v-btn>
             </td>
           </tr>
