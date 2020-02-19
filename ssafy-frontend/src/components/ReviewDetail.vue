@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <!-- <div class="container" style="height:100%; width:50%;"> -->
+  <v-flex  xs12 md8 lg8 class="main">
+    
     <div class="card mb-3" style="height:100%;">
       <div class="row no-gutters">
         <div class="col-md-5">
@@ -18,28 +18,29 @@
               <v-card-text class="text-center" style="color:dimgrey; padding:3px">
                 <i class="material-icons">people_outline</i>
                 {{budgetInfo.personnel}}명
-                <i class="material-icons" style="padding-left:15px">money</i>
+                <i
+                  class="material-icons"
+                  style="padding-left:15px"
+                >money</i>
                 {{budgetInfo.budget}}원
               </v-card-text>
 
-              <p class="card-text" style="padding-top:15px">{{review.review_content}}</p>
-
               <p
                 v-if="budgetInfo.suitability === 1"
-                class="text-center bg-primary rounded"
+                class="text-center bg-primary rounded d-inline-block"
                 style="color:white"
               >사용자가 적합하다고 판단한 예산입니다.</p>
               <p
                 v-else-if="budgetInfo.suitability == 2"
-                class="text-center bg-warning rounded"
+                class="text-center bg-warning rounded d-inline-block"
                 style="color:white"
               >사용자가 부적합하다고 판단한 예산입니다.</p>
               <p
                 v-else
-                class="text-center bg-secondary rounded"
+                class="text-center bg-secondary rounded d-inline-block"
                 style="color:white"
               >사용자가 아직 적합도를 정하지 않았습니다.</p>
-
+              <br>
               <i class="fas fa-heart text-danger mr-1 mb-3"></i>
               {{like_users.length}}
               <!--이미 좋아요 누른 경우-->
@@ -54,31 +55,36 @@
                 class="likeBtn badge badge-pill badge-primary"
                 style="cursor:pointer"
                 @click="like(review)"
-              >좋아요</span>      
+              >좋아요</span>
 
               <!-- 카톡링크전송: 작성자랑 현재 로그인한 사람이랑 같아야만 보인다 -->
               <span v-if="checkUser()==true">
-              <a
-                href="javascript:;"
-                @click="kakaotalklink"
-                id="kakao-link-btn"
-                style="width:30px; height:auto"
-              >
-                <!-- 버튼이 생기는 부분, id는 맘대로 쓰시되 아래 js 코드도 동일하게 적용해주셔야 합니다. -->
-                <img
-                  src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+                <a
+                  href="javascript:;"
+                  @click="kakaotalklink"
+                  id="kakao-link-btn"
                   style="width:30px; height:auto"
-                />
-                <!-- 톡 이미지 부분이고, 전 kakaolink_btn_small.png로 불러왔습니다.   -->
-              </a>
-            </span>
+                >
+                  <!-- 버튼이 생기는 부분, id는 맘대로 쓰시되 아래 js 코드도 동일하게 적용해주셔야 합니다. -->
+                  <img
+                    src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+                    style="width:30px; height:auto"
+                  />
+                  <!-- 톡 이미지 부분이고, 전 kakaolink_btn_small.png로 불러왔습니다.   -->
+                </a>
+              </span>
             </div>
-
-            
-            
           </div>
         </div>
-
+        <v-textarea
+          solo
+          name="input-7-4"
+          no-resize
+          readonly
+          :value="review.review_content"
+          style="padding:5%;"
+        ></v-textarea>
+        <!-- <p class="card-text" style="padding-top:15px">{{review.review_content}}</p> -->
         <div class="col-md-12">
           <table style="width:100%; margin:auto; text-align:center">
             <col width="55%" />
@@ -113,8 +119,7 @@
         </div>
       </div>
     </div>
-    <!-- </div> -->
-
+  
     <div style="text-align:right">
       <v-btn outlined color="success" class="mr-4" @click="gotoList">목록</v-btn>
 
@@ -123,7 +128,7 @@
         <v-btn outlined color="error" class="mr-4" @click="deleteReview(review.review_num)">삭제</v-btn>
       </span>
     </div>
-  </div>
+  </v-flex >
 </template>
 
 <script>
@@ -144,7 +149,7 @@ export default {
       dialogm1: "",
       dialog: false,
       total: 0,
-      allReplys: Array
+      allReplys: Array,
     };
   },
 
@@ -219,8 +224,25 @@ export default {
           imageUrl: "http://13.209.9.53" + this.review_img, // 이미지
           link: {
             webUrl:
-              "https://i02b109.p.ssafy.io/reviewdetail?review_num=" +
-              this.review_num
+              "https://i02b109.p.ssafy.io/reviewdetail/" +
+              this.$route.params.reviewNum +
+              "/" +
+              this.$route.params.name,
+            mobileWebUrl:
+              "https://i02b109.p.ssafy.io/reviewdetail/" +
+              this.$route.params.reviewNum +
+              "/" +
+              this.$route.params.name,
+            androidExecParams:
+              "https://i02b109.p.ssafy.io/reviewdetail/" +
+              this.$route.params.reviewNum +
+              "/" +
+              this.$route.params.name,
+            iosExecParams:
+              "https://i02b109.p.ssafy.io/reviewdetail/" +
+              this.$route.params.reviewNum +
+              "/" +
+              this.$route.params.name
           }
         },
         social: {
@@ -234,8 +256,25 @@ export default {
             title: "e투계더로 이동",
             link: {
               webUrl:
-                "https://i02b109.p.ssafy.io/reviewdetail?review_num=" +
-                this.review_num
+                "https://i02b109.p.ssafy.io/reviewdetail/" +
+                this.$route.params.reviewNum +
+                "/" +
+                this.$route.params.name,
+              mobileWebUrl:
+                "https://i02b109.p.ssafy.io/reviewdetail/" +
+                this.$route.params.reviewNum +
+                "/" +
+                this.$route.params.name,
+              androidExecParams:
+                "https://i02b109.p.ssafy.io/reviewdetail/" +
+                this.$route.params.reviewNum +
+                "/" +
+                this.$route.params.name,
+              iosExecParams:
+                "https://i02b109.p.ssafy.io/reviewdetail/" +
+                this.$route.params.reviewNum +
+                "/" +
+                this.$route.params.name
             }
           }
         ]
@@ -341,7 +380,7 @@ export default {
   padding-top: 80px;
   padding-bottom: 80px;
   margin: auto;
-  width: 60%;
+  
 }
 table {
   width: 100%;

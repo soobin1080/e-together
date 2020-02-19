@@ -27,7 +27,7 @@
               <template v-slot:activator="{ on }">
                 <span v-on="on">{{bar.category}}</span>
               </template>
-              <span>{{bar.category}} : {{numberCut(bar.price / (recommendTotal + recommendETCTotal))+'%'}}</span>
+              <span>{{bar.category}} : {{numberCut(bar.price / (recommendTotal + recommendETCTotal) * 100)+'%'}}</span>
             </v-tooltip>
           </div>
         </div>
@@ -50,7 +50,7 @@
           </v-tooltip>
         </div>
       </div>
-
+      <br>
       <p style="margin:auto; padding-top:5px; width:70%; color:dimgrey">
         <i class="material-icons">assessment</i>현재 내 예산 비율
       </p>
@@ -93,7 +93,8 @@
       </div>
     </div>
 
-    <v-row class="main" style="padding-top:40px">
+<v-flex  xs12 md9 lg9 class="main">
+    <v-row  style="padding-top:40px">
       <v-col lg="8" style="padding-top:0px;">
         <!-- search box -->
         <v-text-field
@@ -122,7 +123,7 @@
           <!-- page navigation-->
           <br />
           <div class="text-center">
-            <v-pagination v-model="pages" :length="pagingLength" total-visible="12"></v-pagination>
+            <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
           </div>
 
           <ProductList
@@ -162,14 +163,21 @@
       <!-- 장보기 내역 -->
       <!-- <v-col> -->
       <v-flex d-none d-lg-flex>
-        <BudgetList id="budgetList" @changeRecommendBar="recommendBudgetBar"></BudgetList>
+        <BudgetList 
+          @changeRecommendBar="recommendBudgetBar"
+          >
+        </BudgetList>
       </v-flex>
       <!-- </v-col> -->
     </v-row>
+</v-flex>
     <!-- modal 창 -->
     <v-row justify="center">
       <v-dialog v-model="budgetDialog" scrollable max-width="300px">
-        <BudgetList @changeRecommendBar="recommendBudgetBar"></BudgetList>
+        <BudgetList 
+          @changeRecommendBar="recommendBudgetBar"
+          >
+        </BudgetList>
       </v-dialog>
     </v-row>
 
@@ -196,7 +204,9 @@ export default {
   directives: {
     ResizeText
   },
-
+  props: {
+    modifyBudget: Object,
+  },
   data() {
     return {
       keyword: "",
@@ -292,8 +302,13 @@ export default {
   },
   mounted() {
     console.log("martpage, budget : " + this.$store.state.budget);
+    console.log(this.modifyBudget)
     this.getProductList(this.keyword);
     this.recommendBudgetBar(this.$store.state.budget);
+    if (this.modifyBudget) {
+      console.log('modifyMarPage')
+      this.showdetail(this.modifyBudget.budget_num)
+    }
   },
   computed: {
     mountedProduct() {
@@ -398,16 +413,16 @@ export default {
                 this.recommendTotal += vals[i];
               }
             }
-            console.log(this.recommendBarETC);
-            console.log(this.recommendBar);
-            console.log(this.recommendETCTotal);
-            console.log(this.recommendTotal);
+            // console.log(this.recommendBarETC);
+            // console.log(this.recommendBar);
+            // console.log(this.recommendETCTotal);
+            // console.log(this.recommendTotal);
           })
           .catch(err => {
-            console.log(err);
+            // console.log(err);
           });
       } else {
-        alert("잘못된 금액입니다.");
+        // alert("잘못된 금액입니다.");
       }
     },
 
@@ -478,7 +493,25 @@ export default {
     },
     numberCut(number) {
       return number.toFixed(2);
-    }
+    },
+    showdetail(budgetNum) {
+      http
+        .get(
+          `/budget/detail/${budgetNum}`,
+          {
+            budget_num: budgetNum
+          },
+          this.$store.getters.RequestHeader
+        )
+        .then(res => {
+          // this.budgetInfo = res.data.budgetinfo;
+          console.log('showDetail')
+          console.log(res)
+          this.$store.state.budgetlist = res.data.budgetlist;
+          this.$store.state.personnel = res.data.budgetinfo.personnel
+          this.$store.state.budget = res.data.budgetinfo.budget
+        });
+      },
   }
 };
 </script>
@@ -487,6 +520,7 @@ export default {
 .main {
   padding-bottom: 80px;
   margin: auto;
-  width: 80%;
+  
 }
+
 </style>

@@ -12,8 +12,9 @@ export default new Vuex.Store({
     user:  sessionStorage.getItem("user"),
     email: sessionStorage.getItem("email"),
     phone: sessionStorage.getItem("phone"),
-    personnel: '', // 인원
-    budget: '', // 예산 
+    auth: sessionStorage.getItem("auth"),
+    personnel: 0, // 인원
+    budget: 0, // 예산 
     tokenType: '',
     budgetlist : [],
     budgetListBar: [
@@ -93,6 +94,9 @@ export default new Vuex.Store({
     },
     userId: function(state) {
       return state.user ? state.user : ""
+    },
+    isAdmin: function(state) {
+      return state.auth === "3" ? true : false
     }
   },
   mutations : {

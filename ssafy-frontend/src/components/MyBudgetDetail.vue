@@ -305,10 +305,6 @@ export default {
       console.log(this.budgetInfo.suitability);
       this.checklikeStatus();
       return this.budgetInfo;
-      // this.getMyBudgetDetail(this.budgetDetail)
-      // console.log(this.budgetDetail.budgetlist)
-      // this.total = this.budgetDetail.budgetlist.reduce((total, budget) => total += (budget.price * budget.quantity), 0)
-      // return this.budgetDetail
     },
     computedBudgetList: function() {
       console.log("computedBudgetList");

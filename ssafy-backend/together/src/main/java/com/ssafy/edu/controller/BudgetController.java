@@ -111,18 +111,6 @@ public class BudgetController {
 
 		budgetservice.deleteBudgetInfo(budget_num);
 
-//		List<BudgetListResult> budgetlist = budget.getBudgetlist();
-
-		//mysql cas
-//		for (int i = 0; i < budgetlist.size(); i++) {
-//			budgetservice.deleteBudgetList(budget.getUser_email(), budget.getBudget_title(),
-//					budgetlist.get(i).getPro_id());
-//			System.out.println(i + "번째 상품 삭제-----------------");
-//		}
-
-//		if ( == null) {
-//			return new ResponseEntity(HttpStatus.NO_CONTENT);
-//		}
 		return new ResponseEntity<Budget>(HttpStatus.OK);
 	}
 	
@@ -137,5 +125,35 @@ public class BudgetController {
 		
 		return new ResponseEntity<BudgetInfo>(HttpStatus.OK);
 	}
+	
+//	@ApiOperation(value = "내 예산안 수정하기", response = List.class)
+//	@RequestMapping(value = "/budget/update", method = RequestMethod.POST)
+//	public ResponseEntity<Budget> updateOneBudget(@RequestBody Budget budget) throws Exception {
+//		logger.info("3-------------updateOneBudget-----------------------------" + new Date());
+//
+//		
+//		budgetservice.updateBudgetInfo(budget.getBudgetinfo());
+//
+//		List<BudgetListResult> budgetlistresult = budget.getBudgetlist();
+//
+//		for (int i = 0; i < budgetlistresult.size(); i++) {
+//
+//			BudgetList budgetlist = new BudgetList();
+//			budgetlist.setBudget_num(budget.getBudgetinfo().getBudget_num());
+//			budgetlist.setPro_id(budgetlistresult.get(i).getPro_id());
+//			budgetlist.setPro_name(budgetlistresult.get(i).getPro_name());
+//			budgetlist.setQuantity(budgetlistresult.get(i).getQuantity());
+//			budgetlist.setPrice(budgetlistresult.get(i).getPrice());
+//			
+//			budgetservice.insertBudgetList(budgetlist);
+//			
+//			System.out.println(i + "번째 상품 : " + budgetlist.toString());
+//		}
+//
+//		if (budget == null) {
+//			return new ResponseEntity(HttpStatus.NO_CONTENT);
+//		}
+//		return new ResponseEntity<Budget>(budget, HttpStatus.OK);
+//	}
 	
 }

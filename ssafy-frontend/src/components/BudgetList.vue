@@ -34,7 +34,7 @@
             <td class="pro_price" style="text-align:center;">{{computedBudgetList[i-1].pro_price}} 원</td>
             <td style="text-align:center;">
               <v-btn text icon color="red" @click="del_pro(i-1)">
-                <v-icon>close</v-icon>
+                <i class="fas fa-trash-alt"></i>
               </v-btn>
             </td>
           </tr>
@@ -203,6 +203,10 @@ export default {
     },
    budgetSave(bool) {
       if (bool === true) {
+        if (!sessionStorage.getItem('accessToken')) {
+          alert('저장 기능은 로그인 후 이용해주세요')
+          return
+        }
         if (this.budgetTitle == "") {
           alert("제목을 입력해주세요.");
           return;

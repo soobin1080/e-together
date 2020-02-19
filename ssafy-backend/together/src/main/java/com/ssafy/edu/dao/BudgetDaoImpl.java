@@ -70,5 +70,10 @@ public class BudgetDaoImpl {
 		sqlSession.selectOne(ns+"updateBudget",paramMap);
 	}
 
+	public void updateBudgetInfo(BudgetInfo budgetinfo) {
+		// TODO Auto-generated method stub
+		sqlSession.selectOne(ns+"updateBudgetInfo",budgetinfo);
+	}
+
 	
 }

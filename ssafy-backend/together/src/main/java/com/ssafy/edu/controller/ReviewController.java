@@ -61,14 +61,27 @@ public class ReviewController {
 		for (int i = 0; i < reviewlist.size(); i++) {
 
 			List<String> reviewlikeuser = reviewservice.getReviewLikeUser(reviewlist.get(i).getReview_num());
-//			System.out.println(reviewlikeuser.toString());
 			reviewlist.get(i).setLike_user(reviewlikeuser);
 		}
-
-//		System.out.println(" 된다 : " + reviewlist);
 		return new ResponseEntity<List<ReviewResult>>(reviewlist, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "예산,인원에 맞는 review 뿌려주기", response = List.class)
+	@RequestMapping(value = "/review/{personnel}/{budget}", method = RequestMethod.GET)
+	public ResponseEntity<List<ReviewResult>> getWantedReview(@PathVariable int personnel, @PathVariable int budget) throws Exception {
+		logger.info("1-------------getWantedReview-----------------------------" + new Date());
 
+		// name, personnel, like_count 도 반환하도록 고치자.
+		List<ReviewResult> reviewlist = reviewservice.getWantedReview(personnel,budget);
+
+		for (int i = 0; i < reviewlist.size(); i++) {
+
+			List<String> reviewlikeuser = reviewservice.getReviewLikeUser(reviewlist.get(i).getReview_num());
+			reviewlist.get(i).setLike_user(reviewlikeuser);
+		}
+		return new ResponseEntity<List<ReviewResult>>(reviewlist, HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "review 상세보기", response = ReviewResult.class)
 	@RequestMapping(value = "/review/{review_num}", method = RequestMethod.GET)
 	public ResponseEntity<ReviewDetailResult> getOneReview(@PathVariable int review_num) throws Exception {
@@ -147,7 +160,6 @@ public class ReviewController {
 	public void updateReview(@RequestBody Review review) throws Exception {
 		logger.info("4-------------updateReview-----------------------------" + new Date());
 
-		System.out.println(review.toString());
 		reviewservice.updateReview(review);
 
 	}
