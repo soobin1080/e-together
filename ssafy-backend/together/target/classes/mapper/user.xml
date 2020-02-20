@@ -46,9 +46,9 @@
 
 	<!-- 모든 회원 검색 -->
 	<select id="findAllUsers" resultType="com.ssafy.edu.model.User">
-		select email, name
+		select email, name, phone,withdraw
 		from user
-		where withdraw=0 and auth=1 order by email
+		where auth=1 order by email
 	</select>
 	
 	<!-- email 체크 -->
