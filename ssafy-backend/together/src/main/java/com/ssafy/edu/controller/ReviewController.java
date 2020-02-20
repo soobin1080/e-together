@@ -65,14 +65,15 @@ public class ReviewController {
 		}
 		return new ResponseEntity<List<ReviewResult>>(reviewlist, HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "예산,인원에 맞는 review 뿌려주기", response = List.class)
 	@RequestMapping(value = "/review/{personnel}/{budget}", method = RequestMethod.GET)
-	public ResponseEntity<List<ReviewResult>> getWantedReview(@PathVariable int personnel, @PathVariable int budget) throws Exception {
+	public ResponseEntity<List<ReviewResult>> getWantedReview(@PathVariable int personnel, @PathVariable int budget)
+			throws Exception {
 		logger.info("1-------------getWantedReview-----------------------------" + new Date());
 
 		// name, personnel, like_count 도 반환하도록 고치자.
-		List<ReviewResult> reviewlist = reviewservice.getWantedReview(personnel,budget);
+		List<ReviewResult> reviewlist = reviewservice.getWantedReview(personnel, budget);
 
 		for (int i = 0; i < reviewlist.size(); i++) {
 
@@ -81,7 +82,7 @@ public class ReviewController {
 		}
 		return new ResponseEntity<List<ReviewResult>>(reviewlist, HttpStatus.OK);
 	}
-	
+
 	@ApiOperation(value = "review 상세보기", response = ReviewResult.class)
 	@RequestMapping(value = "/review/{review_num}", method = RequestMethod.GET)
 	public ResponseEntity<ReviewDetailResult> getOneReview(@PathVariable int review_num) throws Exception {
@@ -96,7 +97,7 @@ public class ReviewController {
 		List<BudgetListResult> budgetlist = budgetservice.getOneBudgetList(budget_num);
 		List<String> like_user = reviewservice.getReviewLikeUser(review_num);
 		String review_img = reviewservice.getReviewImage(review_num);
-		
+
 		reviewdetailresult.setReview(review);
 		reviewdetailresult.setBudgetinfo(budgetinfo);
 		reviewdetailresult.setBudgetlist(budgetlist);
@@ -147,7 +148,7 @@ public class ReviewController {
 			file.setReview_num(review_num);
 			file.setFile_name(fileName);
 			file.setFile_ori_name(files.getOriginalFilename());
-			file.setFile_url("/together/assets/"+fileName);
+			file.setFile_url("/together/assets/" + fileName);
 
 			reviewservice.insertReviewFile(file); // 게시글 이미지 파일 insert
 		}

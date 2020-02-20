@@ -43,9 +43,7 @@ public class RecommendController {
 		for (int i = 0; i < budget_number.size(); i++) {
 			// 저장된 예산안 하나에서 예산가격으로 상품들의 카테고리별 비율 알아내기!
 			int budget_num = budget_number.get(i);
-//			System.out.println("예산안 번호 : "+budget_num);
 			BudgetAverageRate bar = recommendservice.getBudgetAverageRate(budget, budget_num);
-//			System.out.println(bar);
 			
 			budgetaveragerate.setWater((budgetaveragerate.getWater() + bar.getWater()) / 2);
 			budgetaveragerate.setNoodle((budgetaveragerate.getNoodle() + bar.getNoodle()) / 2);

@@ -94,20 +94,5 @@ public class ProductController {
 		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "상품 넣기 보기", response = List.class)
-	@RequestMapping(value = "/product", method = RequestMethod.POST)
-	public ResponseEntity<List<Product>> insertProduct(@RequestBody List<Product> products) throws Exception {
-		logger.info("1-------------insertProduct-----------------------------" + new Date());
 
-		for (int i = 0; i < products.size(); i++) {
-
-			productservice.insertProduct(products.get(i));
-		}
-
-		System.out.println(products);
-		if (products.isEmpty()) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
-	}
 }

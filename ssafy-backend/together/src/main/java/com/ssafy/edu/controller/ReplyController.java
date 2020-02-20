@@ -72,7 +72,7 @@ public class ReplyController {
 	@RequestMapping(value = "/reply/update", method = RequestMethod.POST)
 	public ResponseEntity<Reply> updateReply(@RequestBody Reply reply) throws Exception {
 		logger.info("4-------------updateReply-----------------------------" + new Date());
-System.out.println(reply);
+		System.out.println(reply);
 		if (reply.getWriter_email() != null) {
 			replyservice.updateReply(reply);
 			return new ResponseEntity<Reply>(reply, HttpStatus.OK);
