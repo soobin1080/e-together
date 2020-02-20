@@ -61,17 +61,16 @@ public class BudgetService implements IBudgetService {
 		budgetdao.deleteBudgetInfo(budget_num);
 	}
 
-	// 예산안 수정하기
-//	@Override
-//	public void updateBudget(BudgetInfo budgetinfo) {
-//		// TODO Auto-generated method stub
-//		budgetdao.updateBudget(budgetinfo);
-//	}
-
 	@Override
 	public void updateBudget(int budget_num, int suitability) {
 		// TODO Auto-generated method stub
-		budgetdao.updateBudget(budget_num,suitability);
+		budgetdao.updateBudget(budget_num, suitability);
+	}
+
+	@Override
+	public void updateBudgetInfo(BudgetInfo budgetinfo) {
+		// TODO Auto-generated method stub
+		budgetdao.updateBudgetInfo(budgetinfo);
 	}
 
 }

@@ -10,8 +10,8 @@
     </ImgBanner>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-container fluid style="width:700px; padding-bottom:80px">
-        <h2 class="text-center mt-5">회원 정보</h2>
+      <v-container fluid style="width:700px; padding-top:80px; padding-bottom:80px">
+        <h4 class="text-center mt-5">회원 정보</h4>
 
         <v-text-field v-model="user.name" label="name" readonly></v-text-field>
 
@@ -19,12 +19,12 @@
 
         <v-text-field v-model="user.phone" label="Phone" readonly></v-text-field>
 
-        <v-btn color="error" class="mr-4" style="float:left" @click="withdraw">탈퇴하기</v-btn>
+        <v-btn color="error" class="mr-4" outlined style="float:left" @click="withdraw">탈퇴하기</v-btn>
         <template>
           
             <v-dialog v-model="dialog" persistent max-width="500px">
               <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark v-on="on">비밀번호 변경</v-btn>
+                <v-btn color="primary" outlined dark v-on="on">비밀번호 변경</v-btn>
               </template>
               <v-card>
                 <v-card-title>
@@ -63,7 +63,7 @@
             </v-dialog>
         
         </template>
-        <v-btn color="success" class="mr-4" to="/userinfomodify" style="float:right">수정하기</v-btn>
+        <v-btn color="success" class="mr-4" to="/userinfomodify" outlined style="float:right">수정하기</v-btn>
       </v-container>
     </v-form>
   </div>
@@ -119,7 +119,7 @@ export default {
       this.$refs.form.resetValidation();
     },
     getUserInfo(UserEmail) {
-      let myemail = localStorage.getItem("email");
+      let myemail = sessionStorage.getItem("email");
       console.log(this.$store.getters.isLoggedIn);
       http
         .post(`/myselfDetail/${myemail}`, this.$store.getters.requestHeader)
@@ -189,8 +189,8 @@ export default {
     getUserName() {
       console.log("emit!");
       console.log("getUserName");
-      console.log(localStorage.getItem("user"));
-      this.username = localStorage.getItem("user");
+      console.log(sessionStorage.getItem("user"));
+      this.username = sessionStorage.getItem("user");
       this.isLoggedIn = this.$store.getters.isLoggedIn;
     },
     logout() {
@@ -198,14 +198,14 @@ export default {
         .post(
           "/logout",
           {
-            email: localStorage.getItem("email")
+            email: sessionStorage.getItem("email")
           },
           this.$store.getters.requestHeader
         )
         .then(res => {
           console.log(res);
           if (res.data.state === "succ" && res.data.count == 1) {
-            localStorage.clear();
+            sessionStorage.clear();
             this.getUserName();
             this.$router.push("/");
           }

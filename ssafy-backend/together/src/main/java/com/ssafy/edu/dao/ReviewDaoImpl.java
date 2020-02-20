@@ -1,6 +1,8 @@
 package com.ssafy.edu.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +77,18 @@ public class ReviewDaoImpl {
 	public void deleteReviewLikeCount(ReviewCount reviewcount) {
 		// TODO Auto-generated method stub
 		sqlSession.delete(ns+"deleteReviewLikeCount",reviewcount);
+	}
+
+	public String getReviewImage(int review_num) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(ns+"getReviewImage",review_num);
+	}
+
+	public List<ReviewResult> getWantedReview(int personnel, int budget) {
+		// TODO Auto-generated method stub
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("personnel", personnel);
+		paramMap.put("budget", budget);
+		return sqlSession.selectList(ns+"getWantedReview",paramMap);
 	}
 }

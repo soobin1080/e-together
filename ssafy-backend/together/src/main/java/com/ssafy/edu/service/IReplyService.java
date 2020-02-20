@@ -10,7 +10,7 @@ public interface IReplyService {
 
 	void insertReply(Reply reply);
 
-	void deleteReply(Reply reply);
+	void deleteReply(int reply_num);
 
 	void updateReply(Reply reply);
 

@@ -3,28 +3,31 @@
     max-width="344"
     class="m-3"
   >
-    <v-list-item>
+    <v-list-item @click="goToDetail">
       <v-list-item-content>
-        <v-list-item-title class="headline">{{computedReview.budget_title}}</v-list-item-title>
-        <v-list-item-subtitle>by {{computedReview.name}}</v-list-item-subtitle>
+        <v-list-item-title class="headline">{{computedReview.budget_title}}</v-list-item-title> 
+        <v-list-item-subtitle>by. {{computedReview.name}}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
     <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
+      :src="'http://13.209.9.53'+computedReview.file_url"
+      @click="goToDetail"
       height="194"
     ></v-img>
 
-    <v-card-text>
+    <v-card-text class="text-right">
+      <i class="material-icons" style="font-size:1.5rem">people_outline</i>{{computedReview.personnel}}명
+      <i class="material-icons" style="padding-left:15px">money</i> {{computedReview.budget}}원
     </v-card-text>
 
     <v-card-actions>
-      <v-btn
+      <!-- <v-btn
         text
-        :to="{ path: `reviewdetail/${this.review.review_num}`, params: { reviewNum: this.review.review_num }}"
+        :to="{ path: `reviewdetail/${this.review.review_num}/${computedReview.name}`, params: { reviewNum: this.review.review_num, userName: computedReview.name }}"
         style="text-decoration:none; color:black;">
         상세 보기
-      </v-btn>
+      </v-btn> -->
       <!-- <v-btn
         text
       >
@@ -32,10 +35,13 @@
       </v-btn> -->
       <v-spacer></v-spacer>
       {{computedReview.like_user.length}}
+
       <i v-if="isLiked" class="fas fa-heart ml-1" style="color: red;font-size:20px;" @click="like(review)"></i>
       <i v-else class="far fa-heart ml-1" style="color:black;font-size:20px;" @click="like(review)"></i>
     </v-card-actions>
   </v-card>
+
+
   
   <!-- <v-card height="330px">
     <v-img src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg" height="194"></v-img>
@@ -146,6 +152,15 @@
       getUserEmail() {
         return sessionStorage.getItem('email')
       },
+      goToDetail() {
+        this.$router.push(
+          { path: `reviewdetail/${this.review.review_num}`, 
+            params: { 
+              reviewNum: this.review.review_num, 
+                }
+              }
+            )
+          }
    },
 
     computed: {
@@ -165,7 +180,4 @@ i {
   cursor: pointer;
 }
 
-v-btn {
-
-}
 </style>

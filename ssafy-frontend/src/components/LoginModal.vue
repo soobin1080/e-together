@@ -31,7 +31,7 @@
             </div>
 
             <!-- </form> -->
-
+<!-- 
             <button class="large-btn google-btn" @click="loginWithGoogle">
               connect with
               <span>google</span>
@@ -39,7 +39,7 @@
             <button class="large-btn facebook-btn" @click="loginWithFackbook">
               connect with
               <span>facebook</span>
-            </button>
+            </button> -->
 
             <div class="button-set" style="padding-top:20px">
              
@@ -116,6 +116,7 @@ export default {
             sessionStorage.setItem("user", res.data.username);
             sessionStorage.setItem("email", res.data.email);
             sessionStorage.setItem("phone", res.data.phone);
+            sessionStorage.setItem("auth", res.data.auth);
             // this.$session.start()
             // this.$session.set("accessToken", res.data.accessToken)
             // this.$session.set("user", res.data.username)
@@ -124,6 +125,7 @@ export default {
 
 
             this.$emit("checkLogIn");
+            this.$emit("checkIsAdmin");
             this.$router.push("/");
           }
 

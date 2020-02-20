@@ -30,4 +30,8 @@ public interface IReviewService {
 	List<String> getReviewLikeUser(int review_num);
 
 	void deleteReviewLikeCount(ReviewCount reviewcount);
+
+	String getReviewImage(int review_num);
+
+	List<ReviewResult> getWantedReview(int personnel, int budget);
 }

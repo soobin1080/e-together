@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		budget, suitability, budget_date
 		from budget_info
 		where
-		user_email=(select email from user where email=#{user_email})
+		user_email=(select email from user where email=#{user_email}) order by budget_num desc;
 	</select>
 
 	<!-- 내 예산안 상세 보기 -->
@@ -62,16 +62,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		budget_info where budget_num=#{budget_num};
 	</delete>
 
-	<!-- <delete id="deleteBudgetList" -->
-	<!-- parameterType="java.lang.Integer"> -->
-	<!-- DELETE FROM BUDGET_LIST WHERE BUDGET_NUM=#{budget_num}; -->
-	<!-- </delete> -->
-
 	<!-- 적합/부적합 -->
 	<update id="updateBudget" parameterType="com.ssafy.edu.model.BudgetInfo">
 		update budget_info set suitability=#{suitability} where
 		budget_num=#{budget_num}
 	</update>
+	
+	<!-- 예산안 수정하기   UPDATE userTbl SET Money = 10000 , item1 = '티셔츠'-->
+	<update id="updateBudgetInfo"
+		parameterType="com.ssafy.edu.model.BudgetInfo">
+		update budget_info set budget_title=#{budget_title}, personnel=#{personnel}, budget=#{budget} where user_email=#{user_email} and budget_num=#{budget_num};
+	</update>
+
+	<update id="updateBudgetList"
+		parameterType="com.ssafy.edu.model.BudgetList">
+		update budget_list set pro_id=#{pro_id},pro_name=#{pro_name},quantity=#{quantity},price=#{price} where budget_num=#{budget_num};
+	</update>
+	
+	
 
 </mapper>
 

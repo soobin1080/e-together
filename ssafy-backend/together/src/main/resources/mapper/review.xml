@@ -8,36 +8,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		resultType="com.ssafy.edu.model.ReviewResult">
 		select r.review_num,b.budget_num, u.name, b.budget_title,
 		b.personnel,
-		b.budget, r.review_img, r.like_count
-		from user u,
-		budget_info b, review r
+		b.budget, r.review_img, r.like_count, f.file_url
+		from user
+		u,
+		budget_info b, review r, review_file f
 		where u.email=b.user_email and
-		b.budget_num=r.budget_num;
+		b.budget_num=r.budget_num and r.review_num=f.review_num order by
+		r.review_num desc;
 	</select>
-	
+
+	<!-- 원하는 리뷰만 보여주기 -->
+	<select id="getWantedReview"
+		resultType="com.ssafy.edu.model.ReviewResult">
+		select r.review_num,b.budget_num, u.name, b.budget_title,
+		b.personnel,
+		b.budget, r.review_img, r.like_count, f.file_url
+		from user
+		u,
+		budget_info b, review r, review_file f
+		where u.email=b.user_email and
+		b.budget_num=r.budget_num and r.review_num=f.review_num and
+		((personnel between #{personnel}*0.9 and #{personnel}*1.1) or (budget between #{budget}*0.9
+		and #{budget}*1.1)) order by r.review_num desc;
+	</select>
+
 	<select id="getReviewLikeUser" parameterType="java.lang.Integer"
 		resultType="java.lang.String">
-		select user_email from review_likecount where review_num=#{review_num}
+		select user_email from review_likecount where
+		review_num=#{review_num}
 	</select>
 
 	<select id="getOneReview" parameterType="java.lang.Integer"
 		resultType="com.ssafy.edu.model.Review">
-		select review_num, budget_num, review_content,
-		like_count,
-		review_date
-		from review
-		where review_num=#{review_num}
+		select r.review_num, r.budget_num, u.name,
+		r.review_content,
+		r.like_count,
+		r.review_date
+		from review r, user u,
+		budget_info b
+		where review_num=#{review_num} and
+		r.budget_num=b.budget_num and b.user_email=u.email;
 	</select>
 
 	<!-- 후기 작성하기 -->
 	<insert id="insertReview"
 		parameterType="com.ssafy.edu.model.Review">
-		insert into review(budget_num,review_content,like_count,review_date)
+		insert into
+		review(budget_num,review_content,like_count,review_date)
 		values(#{budget_num},#{review_content},#{like_count},date(now()));
 	</insert>
-	
-	<select id="getLastReviewNumber" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-		select review_num from review where budget_num=#{budget_num} order by review_num desc limit 1;
+
+	<select id="getLastReviewNumber"
+		parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select review_num from
+		review where budget_num=#{budget_num} order by review_num desc limit
+		1;
 	</select>
 
 	<!-- 후기 파일 업로드 -->
@@ -57,8 +82,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<update id="updateReviewLikeCount"
 		parameterType="java.lang.Integer">
-		update review set like_count=(select count(*) from review_likecount where
-		review_num=#{review_num}) where review_num=#{review_num}
+		update review set like_count=(select count(*) from
+		review_likecount where
+		review_num=#{review_num}) where
+		review_num=#{review_num}
 	</update>
 
 	<update id="updateReview"
@@ -72,11 +99,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from review where
 		review_num=#{review_num}
 	</delete>
-	
-	<delete id="deleteReviewLikeCount" parameterType="com.ssafy.edu.model.ReviewCount">
+
+	<delete id="deleteReviewLikeCount"
+		parameterType="com.ssafy.edu.model.ReviewCount">
 		delete from review_likecount where
 		review_num=#{review_num} and user_email=#{user_email}
 	</delete>
+
+	<select id="getReviewImage" parameterType="java.lang.Integer"
+		resultType="java.lang.String">
+		select file_url from review_file where
+		review_num=#{review_num}
+	</select>
 
 </mapper>
 

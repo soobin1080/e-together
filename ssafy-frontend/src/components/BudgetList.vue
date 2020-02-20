@@ -34,7 +34,7 @@
             <td class="pro_price" style="text-align:center;">{{computedBudgetList[i-1].pro_price}} 원</td>
             <td style="text-align:center;">
               <v-btn text icon color="red" @click="del_pro(i-1)">
-                <v-icon>close</v-icon>
+                <i class="fas fa-trash-alt"></i>
               </v-btn>
             </td>
           </tr>
@@ -82,6 +82,7 @@
               style="text-align:right"
               autofocus
             />원
+            <!-- <v-btn text>예산 추천</v-btn> -->
           </td>
         </tr>
       </table>
@@ -113,6 +114,7 @@
         </tr>
       </table>
     </b-list-group-item>
+    <v-btn block color="primary" @click="changeRecommendBar">예산 추천</v-btn>
     <v-btn block @click.stop="dialog=true">저장하기</v-btn>
 
     <!-- 제목 지정 modal -->
@@ -155,35 +157,31 @@ export default {
     },
     }
   },
-
+  
 
 
   created() {
-    // EventBus.$on("addCart", product => {
-    //   // this.list.push(product);
-    //   this.total_sum(product.price*=product.quantity);
-    // });
+
   },
   watch: {
     list: {
       handler: function(newVal) {
-        // this.list = this.$store.state.budgetlist
-        console.log(newVal);
-        console.log("dddddddddd");
-        console.log(this.list);
         let sum = 0;
         for (let i = 0; i < this.list.length; i++) {
           sum += newVal[i].quantity * newVal[i].pro_price;
         }
         this.total = sum;
-        this.budgetalert();
-        // this.total+= this.list[i].price;
+
       },
       deep: true,
       immediate: true,
     }
   },
   methods: {
+    changeRecommendBar() {
+      console.log('changeRecommendBar emit!')
+      this.$emit('changeRecommendBar', this.budget)
+    },
     cookie() {
       this.$cookie.set("test", this.personnel, 1);
     },
@@ -192,11 +190,14 @@ export default {
       this.$store.state.budget = this.budget;
     },
     stringNumberToInt(stringNumber) {
-      //console.log(parseInt(stringNumber.replace(/,/g, "")));
       return parseInt(stringNumber.replace(/,/g, ""));
     },
    budgetSave(bool) {
       if (bool === true) {
+        if (!sessionStorage.getItem('accessToken')) {
+          alert('저장 기능은 로그인 후 이용해주세요')
+          return
+        }
         if (this.budgetTitle == "") {
           alert("제목을 입력해주세요.");
           return;
@@ -223,8 +224,6 @@ export default {
             budget: this.budget,
             budget_list : this.list
           }
-        console.log(budget)
-        // console.log(this.budgetTitle)
         http
           .post("/budget", {
             budgetinfo : {
@@ -236,12 +235,10 @@ export default {
             budgetlist : this.list
           }, this.$store.getters.requestHeader)
           .then(response => {
-            console.log(response)
             this.personnel = 0
             this.budget = 0
           })
           .catch(ex => {
-            console.warn("ERROR! :", ex);
           });
         this.$store.dispatch('allClearAsync')
         this.$router.push("/mybudget");
@@ -249,14 +246,8 @@ export default {
         this.dialog=false;
       }
     },
-    budgetalert() {
-      // if (this.total > this.budget) {
-      //   alert("예산을 초과하였습니다!");
-      // }
-    },
     total_sum(val) {
       this.total += val;
-      this.budgetalert();
       return this.total;
     },
     del_pro(i){
@@ -264,17 +255,12 @@ export default {
     },
     
     changeQuantity(budget, idx, event) {
-      console.log('change')
       const oldvalue = this.computedBudgetList[idx].quantity
       const newvalue = event.target.value
-      console.log(oldvalue)
-      console.log(newvalue)
       let ope = ""
       if (oldvalue > newvalue) { // 감소
-        // this.$store.dispatch('changeQuantityAsync', budget, idx)
         ope = "m"
       } else if (oldvalue < newvalue) { // 증가
-        // this.$store.dispatch('changeQuantityAsync', budget, idx)
         ope = "p"
       }
       let changeInfo = {
@@ -286,56 +272,22 @@ export default {
         category: budget.category,
         changeQuantity: newvalue
       }
-      console.log(budget)
-      console.log(changeInfo)
       this.$store.dispatch('changeQuantityAsync', changeInfo)
-      // this.$store.state.budgetlist[idx].quantity = oldvalue
-      // const quantities = document.querySelectorAll('.quantity')
-      // console.log(quantities[idx].value)
     },
-
-      // console.log(quantities.length)
-      // quantities.forEach(btn => {
-      //   btn.addEventListener('input', function(event) {
-      //     console.log('numberInput')
-      //     console.log(event)
-      //   })
-        
-      // });
-      // console.log('newquantity')
-      // if (isNaN(this.list[i].quantity)) {
-      //   this.list[i].quantity = 1;
-      // }
-      // const etc = false
-      // if (this.$store.state.ETC.includes(this.computedBudgetList[i].category)) {
-      //   etc = true
-      // }
-      // const productInfo = {
-      //   quantity : this.computedBudgetList[i].quantity,
-      //   isETC: etc,
-      //   product_id: this.computedBudgetList[i].pro_id
-      // }
-
-      // this.$store.dispatch('changeQuantityAsync', productInfo)
-      // this.list[i].price = this.list[i].quantity * this.list[i].pro_price;
-      // // console.log(this.list[i].price);
-      // this.budgetalert();
   },
   mounted() {
     this.personnel = this.$store.state.personnel;
     this.budget = this.$store.state.budget;
-    if (this.budget == "" || this.personnel == "") {
-      alert("인원과 예산을 입력해주세요!");
-    }
-    console.log('mounted : '+this.budget)
-    this.recommendBudgetBar(this.budget)
   },
   computed: {
     computedBudgetList() {
-      // console.log(typeof this.$store.state.budgetlist[0])
       this.list = this.$store.state.budgetlist
       return this.$store.state.budgetlist
     }
+  },
+
+  craeted() {
+
   }
 };
 </script>

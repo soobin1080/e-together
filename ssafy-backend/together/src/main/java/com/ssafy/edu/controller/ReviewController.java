@@ -61,14 +61,27 @@ public class ReviewController {
 		for (int i = 0; i < reviewlist.size(); i++) {
 
 			List<String> reviewlikeuser = reviewservice.getReviewLikeUser(reviewlist.get(i).getReview_num());
-//			System.out.println(reviewlikeuser.toString());
 			reviewlist.get(i).setLike_user(reviewlikeuser);
 		}
-
-//		System.out.println(" 된다 : " + reviewlist);
 		return new ResponseEntity<List<ReviewResult>>(reviewlist, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "예산,인원에 맞는 review 뿌려주기", response = List.class)
+	@RequestMapping(value = "/review/{personnel}/{budget}", method = RequestMethod.GET)
+	public ResponseEntity<List<ReviewResult>> getWantedReview(@PathVariable int personnel, @PathVariable int budget) throws Exception {
+		logger.info("1-------------getWantedReview-----------------------------" + new Date());
 
+		// name, personnel, like_count 도 반환하도록 고치자.
+		List<ReviewResult> reviewlist = reviewservice.getWantedReview(personnel,budget);
+
+		for (int i = 0; i < reviewlist.size(); i++) {
+
+			List<String> reviewlikeuser = reviewservice.getReviewLikeUser(reviewlist.get(i).getReview_num());
+			reviewlist.get(i).setLike_user(reviewlikeuser);
+		}
+		return new ResponseEntity<List<ReviewResult>>(reviewlist, HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "review 상세보기", response = ReviewResult.class)
 	@RequestMapping(value = "/review/{review_num}", method = RequestMethod.GET)
 	public ResponseEntity<ReviewDetailResult> getOneReview(@PathVariable int review_num) throws Exception {
@@ -82,11 +95,13 @@ public class ReviewController {
 		BudgetInfo budgetinfo = budgetservice.getOneBudgetInfo(budget_num);
 		List<BudgetListResult> budgetlist = budgetservice.getOneBudgetList(budget_num);
 		List<String> like_user = reviewservice.getReviewLikeUser(review_num);
-
+		String review_img = reviewservice.getReviewImage(review_num);
+		
 		reviewdetailresult.setReview(review);
 		reviewdetailresult.setBudgetinfo(budgetinfo);
 		reviewdetailresult.setBudgetlist(budgetlist);
 		reviewdetailresult.setLike_user(like_user);
+		reviewdetailresult.setReview_img(review_img);
 
 		return new ResponseEntity<ReviewDetailResult>(reviewdetailresult, HttpStatus.OK);
 	}
@@ -96,50 +111,48 @@ public class ReviewController {
 	public String uploadImage(HttpServletRequest httpServletRequest, @RequestPart MultipartFile files)
 			throws IOException {
 		logger.info("3-------------uploadImage-----------------------------" + new Date());
-		
 
-			Review review = new Review();
-			review.setBudget_num(Integer.parseInt(httpServletRequest.getParameter("budget_num")));
-			review.setReview_content(httpServletRequest.getParameter("review_content"));
-			reviewservice.insertReview(review);
+		Review review = new Review();
+		review.setBudget_num(Integer.parseInt(httpServletRequest.getParameter("budget_num")));
+		review.setReview_content(httpServletRequest.getParameter("review_content"));
+		reviewservice.insertReview(review);
 
-			int review_num = reviewservice.getLastReviewNumber(review.getBudget_num());
+		int review_num = reviewservice.getLastReviewNumber(review.getBudget_num());
 
-			System.out.println("======================");
-			System.out.println(files.getName());
-			System.out.println(files.getOriginalFilename());
-			System.out.println(files.getContentType());
-			System.out.println("======================");
-			
-			String path="/home/ubuntu/opt/assets/";
-			
-			String fileName = files.getOriginalFilename();
-			byte[] imageData = files.getBytes();
-			File folder = null;
-			
-			
-			FileOutputStream fileOutputStream = null;
-			String url = "";
-			try {
-				fileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileName;
-				url =  path+ fileName;
-				File newfile=new File(url);
-				fileOutputStream = new FileOutputStream(newfile);
-				fileOutputStream.write(imageData);
-			} catch (Throwable e) {
-				e.printStackTrace(System.out);
-			} finally {
-				fileOutputStream.close();
-				ReviewFile file = new ReviewFile();
-				file.setReview_num(review_num);
-				file.setFile_name(fileName);
-				file.setFile_ori_name(files.getOriginalFilename());
-				file.setFile_url(url);
+		System.out.println("======================");
+		System.out.println(files.getName());
+		System.out.println(files.getOriginalFilename());
+		System.out.println(files.getContentType());
+		System.out.println("======================");
 
-				reviewservice.insertReviewFile(file); // 게시글 이미지 파일 insert
-			}
-			return url;
-		
+		String path = "/home/ubuntu/opt/assets/";
+
+		String fileName = files.getOriginalFilename();
+		byte[] imageData = files.getBytes();
+		File folder = null;
+
+		FileOutputStream fileOutputStream = null;
+		String url = "";
+		try {
+			fileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileName;
+			url = path + fileName;
+			File newfile = new File(url);
+			fileOutputStream = new FileOutputStream(newfile);
+			fileOutputStream.write(imageData);
+		} catch (Throwable e) {
+			e.printStackTrace(System.out);
+		} finally {
+			fileOutputStream.close();
+			ReviewFile file = new ReviewFile();
+			file.setReview_num(review_num);
+			file.setFile_name(fileName);
+			file.setFile_ori_name(files.getOriginalFilename());
+			file.setFile_url("/together/assets/"+fileName);
+
+			reviewservice.insertReviewFile(file); // 게시글 이미지 파일 insert
+		}
+		return url;
+
 	}
 
 	@ApiOperation(value = "review 수정하기", response = ReviewResult.class)

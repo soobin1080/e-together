@@ -1,6 +1,5 @@
 package com.ssafy.edu.springjwt.payload.response;
 
-import java.util.List;
 
 public class JwtResponse {
 	private String token;
@@ -8,12 +7,14 @@ public class JwtResponse {
 	private Long id;
 	private String username;
 	private String email;
+	private int auth;
 
-	public JwtResponse(String accessToken, Long id, String username, String email) {
+	public JwtResponse(String accessToken, Long id, String username, String email, int auth) {
 		this.token = accessToken;
 		this.id = id;
 		this.username = username;
 		this.email = email;
+		this.auth = auth;
 	}
 
 	public String getAccessToken() {
@@ -54,6 +55,14 @@ public class JwtResponse {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public int getAuth() {
+		return auth;
+	}
+
+	public void setAuth(int auth) {
+		this.auth = auth;
 	}
 
 }

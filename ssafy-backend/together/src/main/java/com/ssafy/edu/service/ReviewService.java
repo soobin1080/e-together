@@ -82,4 +82,16 @@ public class ReviewService implements IReviewService {
 		reviewdao.deleteReviewLikeCount(reviewcount);
 	}
 
+	@Override
+	public String getReviewImage(int review_num) {
+		// TODO Auto-generated method stub
+		return reviewdao.getReviewImage(review_num);
+	}
+
+	@Override
+	public List<ReviewResult> getWantedReview(int personnel, int budget) {
+		// TODO Auto-generated method stub
+		return reviewdao.getWantedReview(personnel,budget);
+	}
+
 }

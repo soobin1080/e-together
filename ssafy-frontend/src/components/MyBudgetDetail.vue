@@ -1,87 +1,65 @@
 <template>
-  <div id="downloadpdf" style>
-    <div></div>
-    <table width="100%" style="font-size:15px" class="table-white">
-      <tr style="text-align:center;">
-        <th>제목</th>
-        <td v-html="computedBudgetInfo.budget_title" style="text-align:center"></td>
-        <th>인원</th>
-        <td style="text-align:center">{{computedBudgetInfo.personnel}} 명</td>
-        <th>예산</th>
-        <td style="text-align:center">{{computedBudgetInfo.budget}} 원</td>
-        <th>날짜</th>
-        <td style="text-align:center">{{dateParsing(computedBudgetInfo.budget_date)}}</td>
+  <div style>
+    <div id="downloadpdf">
+      <table width="100%" style="font-size:15px" class="table-white">
+        <tr style="text-align:center;">
+          <th>제목</th>
+          <td v-html="computedBudgetInfo.budget_title" style="text-align:center"></td>
+          <th>인원</th>
+          <td style="text-align:center">{{computedBudgetInfo.personnel}} 명</td>
+          <th>예산</th>
+          <td style="text-align:center">{{computedBudgetInfo.budget}} 원</td>
+          <th>날짜</th>
+          <td style="text-align:center">{{dateParsing(computedBudgetInfo.budget_date)}}</td>
 
-        <th>적/부</th>
-        <td style="text-align:center">
-          <!-- 적 / 부 -->
-          <div>
-            <i
-              :class="likeClass"
-              style="color:blue; margin-right: 5px;"
-              @click="changeLikeStatus(1)"
-            ></i>
-            <!-- <i class="fas fa-thumbs-up"></i> -->
-            <i :class="dislikeClass" style="color:red" @click="changeLikeStatus(2)"></i>
-            <!-- <i class="fas fa-thumbs-down"></i> -->
-          </div>
-        </td>
-      </tr>
-    </table>
-
-    <table style="width:100%; margin:auto; text-align:center">
-      <col width="55%" />
-      <col width="15%" />
-      <col width="30%" />
-      <thead>
-        <tr>
-          <th style="background-color: #fffeaa; color:#3d2300">항목</th>
-          <th style="background-color: #fffeaa; color:#3d2300">수량</th>
-          <th style="background-color: #fffeaa; color:#3d2300">가격</th>
+          <th>적/부</th>
+          <td style="text-align:center">
+            <!-- 적 / 부 -->
+            <div>
+              <i
+                :class="likeClass"
+                style="color:blue; margin-right: 5px;"
+                @click="changeLikeStatus(1)"
+              ></i>
+              <!-- <i class="fas fa-thumbs-up"></i> -->
+              <i :class="dislikeClass" style="color:red" @click="changeLikeStatus(2)"></i>
+              <!-- <i class="fas fa-thumbs-down"></i> -->
+            </div>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        <tr v-for="i in computedBudgetList.length" :key="i">
-          <td v-html="computedBudgetList[i-1].pro_name"></td>
+      </table>
 
-          <td v-html="computedBudgetList[i-1].quantity"></td>
-
-          <td class="pro_price">{{computedBudgetList[i-1].price}} 원</td>
-        </tr>
-
-        <tr>
-          <th colspan="2">합계</th>
-          <td>{{this.total}} 원</td>
-        </tr>
-        <tr>
-          <th colspan="2">잔액</th>
-          <td>{{computedBudgetInfo.budget-this.total}} 원</td>
-        </tr>
-      </tbody>
-    </table>
+      <table style="width:100%; margin:auto; text-align:center">
+        <col width="55%" />
+        <col width="15%" />
+        <col width="30%" />
+        <thead>
+          <tr>
+            <th style="background-color: #fffeaa; color:#3d2300">항목</th>
+            <th style="background-color: #fffeaa; color:#3d2300">수량</th>
+            <th style="background-color: #fffeaa; color:#3d2300">가격</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="i in computedBudgetList.length" :key="i">
+            <td v-html="computedBudgetList[i-1].pro_name"></td>
+            <td v-html="computedBudgetList[i-1].quantity"></td>
+            <td class="pro_price">{{computedBudgetList[i-1].price}} 원</td>
+          </tr>
+          <tr>
+            <th colspan="2">합계</th>
+            <td>{{this.total}} 원</td>
+          </tr>
+          <tr>
+            <th colspan="2">잔액</th>
+            <td>{{computedBudgetInfo.budget-this.total}} 원</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <br />
     <div data-html2canvas-ignore="true" style="text-align:center">
-      <a
-        href="javascript:;"
-        @click="kakaotalklink"
-        id="kakao-link-btn"
-        style="width:30px; height:auto"
-      >
-        <!-- 버튼이 생기는 부분, id는 맘대로 쓰시되 아래 js 코드도 동일하게 적용해주셔야 합니다. -->
-        <img
-          src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
-          style="width:30px; height:auto"
-        />
-        <!-- 톡 이미지 부분이고, 전 kakaolink_btn_small.png로 불러왔습니다.   -->
-      </a>
-
-      <v-btn
-        outlined
-        color="success"
-        class="mr-4"
-        id="kakao-link-btn"
-        @click="makePDF('downloadpdf')"
-      >pdf로 저장</v-btn>
+      <v-btn outlined color="success" class="mr-4" @click="makePDF()">pdf로 저장</v-btn>
       <v-btn outlined color="error" @click.stop="dialog=true">후기 남기기</v-btn>
     </div>
 
@@ -94,8 +72,8 @@
           <div class="container">
             <div class="large-12 medium-12 small-12 cell">
               <label>
-                Files
-                <input type="file" id="files" ref="files" v-on:change="handleFilesUploads()" />
+                <i class="material-icons">insert_photo</i>
+                <input type="file" id="files" ref="files" v-on:change="handleFilesUploads()">                
               </label>
               <v-textarea
                 v-model="content"
@@ -123,7 +101,6 @@
 import http from "../http-common";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import Kakao from "../services/KakaotalkService";
 export default {
   name: "MyBudgetDetail",
   props: {
@@ -150,54 +127,23 @@ export default {
   },
 
   methods: {
-    kakaotalklink() {
-      //<![CDATA[
-      // // 사용할 앱의 JavaScript 키를 설정해 주세요.
-      Kakao.init("918cb2cf36b91b4f11f0a63002dc2154");
-      // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
-      Kakao.Link.createDefaultButton({
-        container: "#kakao-link-btn", // 컨테이너는 아까 위에 버튼이 쓰여진 부분 id
-        objectType: "feed",
-        content: {
-          // 여기부터 실제 내용이 들어갑니다.
-          title: this.computedBudgetInfo.budget_title, // 본문 제목
-          description: this.dateParsing(this.computedBudgetInfo.budget_date), // 본문 바로 아래 들어가는 영역?
-          imageUrl:
-            "../etogether.png", // 이미지
-          link: {
-            mobileWebUrl: "https://developers.kakao.com",
-            webUrl: "https://developers.kakao.com"
-          }
-        },
-        // social: {
-        //   /* 공유하면 소셜 정보도 같이 줄 수 있는데, 이 부분은 기반 서비스마다 적용이 쉬울수도 어려울 수도 있을듯 합니다. 전 연구해보고 안되면 제거할 예정 (망할 google  blogger...) */
-        //   likeCount: 286,
-        //   commentCount: 45,
-        //   sharedCount: 845
-        // },
-        buttons: [
-          {
-            title: "e투계더로 이동",
-            link: {
-              mobileWebUrl: "https://developers.kakao.com",
-              webUrl: "https://developers.kakao.com"
-            }
-          },
-          
-        ]
-      });
-    },
     handleFilesUploads() {
       this.files = this.$refs.files.files;
     },
 
-    dateParsing(beforeParsing) {      
-      const t = beforeParsing.indexOf('T')
-      const afterParsing = beforeParsing.substring(0, t)      
+    dateParsing(beforeParsing) {
+      const t = beforeParsing.indexOf("T");
+      const afterParsing = beforeParsing.substring(0, t);
       // console.log(afterParsing)
-      const realdate=afterParsing.substring(0,4)+"년 "+afterParsing.substring(5,7)+"월 "+(Number(afterParsing.substring(8,11))+1)+"일"
-      console.log("realdate: "+realdate)
-      return realdate 
+      const realdate =
+        afterParsing.substring(0, 4) +
+        "년 " +
+        afterParsing.substring(5, 7) +
+        "월 " +
+        (Number(afterParsing.substring(8, 11)) + 1) +
+        "일";
+      console.log("realdate: " + realdate);
+      return realdate;
     },
     total_sum() {
       //  console.log("budgetList 길이!:"+ this.budgetlength);
@@ -216,6 +162,10 @@ export default {
           alert("내용을 입력해주세요.");
           return;
         }
+        if(this.files == ""){
+          alert("이미지를 등록해주세요.");
+          return;
+        }
 
         let formData = new FormData();
 
@@ -224,9 +174,9 @@ export default {
           formData.append("files", file);
         }
         formData.append("budget_num", this.budgetInfo.budget_num);
-        alert("budget_num: " + this.budgetInfo.budget_num);
+        // alert("budget_num: " + this.budgetInfo.budget_num);
         formData.append("review_content", this.content);
-        alert("review_content: " + this.content);
+        // alert("review_content: " + this.content);
 
         http
           .post("/review", formData)
@@ -301,49 +251,46 @@ export default {
         this.$emit("renewBudgetList");
         this.$emit("showdetail", this.budgetInfo.budget_num);
       }
-    },
-    makePDF(selector) {
-      // console.log(selector);
-      window.html2canvas = html2canvas; //Vue.js 특성상 window 객체에 직접 할당해야한다.
-      let that = this;
-      let pdf = new jsPDF("p", "mm", "a4");
-      let canvas = pdf.canvas;
-      const pageWidth = 210; //캔버스 너비 mm
-      const pageHeight = 295; //캔버스 높이 mm
-      canvas.width = pageWidth;
-      let ele = document.getElementById(selector);
-      let width = ele.offsetWidth; // 셀렉트한 요소의 px 너비
-      let height = ele.offsetHeight; // 셀렉트한 요소의 px 높이
-      let imgHeight = (pageWidth * height) / width; // 이미지 높이값 px to mm 변환
+    }
+    ,
+    makePDF() {     
+     
+			window.html2canvas = html2canvas //Vue.js 특성상 window 객체에 직접 할당해야한다.
+			let pdf = new jsPDF('p', 'mm', 'a4')
+			let canvas = pdf.canvas
+			const pageWidth = 210//캔버스 너비 mm
+			const pageHeight = 297 //캔버스 높이 mm
+      canvas.width =pdf.width
+      
+      let ele = document.querySelector('body')
+			let width = ele.offsetWidth // 셀렉트한 요소의 px 너비
+			let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
+			let imgHeight = pageWidth * height/width // 이미지 높이값 px to mm 변환
 
-      console.log("뭐냐" + selector);
+			if(!ele){
+				console.warn(selector + ' is not exist.')
+				return false
+			}
+			html2canvas(document.querySelector('body')).then(function(canvas) {
+        let position = 0
+        var imgData = canvas.toDataURL("image/png"); //캔버스를 이미지로 변환
+        pdf.addImage(imgData, "PNG",0,-120, pageWidth, imgHeight, undefined, 'FAST'); //이미지를 기반으로 pdf생성
 
-      // let ele = document.querySelector('body');
+        //Paging 처리
+					let heightLeft = imgHeight //페이징 처리를 위해 남은 페이지 높이 세팅.
+					heightLeft -= pageHeight
+					while (heightLeft >= 0) {
+						position = heightLeft - imgHeight
+						pdf.addPage();
+						pdf.addImage(imgData, 'png', 0, position, pageWidth, imgHeight)
+						heightLeft -= pageHeight
+					}
 
-      if (!ele) {
-        console.warn(selector + " is not exist.");
-        return false;
-      }
-      console.log(canvas);
 
-      var canvasElement = document.createElement("canvas");
-      html2canvas(ele, { canvaspdf: canvas }).then(function(canvaspdf) {
-        ele.appendChild(canvaspdf);
-        const img = canvaspdf.toDataURL("image/jpeg", 1.0);
-        pdf.addImage(img, "jpeg", 0, 0, pageWidth, imgHeight);
-        pdf.save(that.propTitle.toLowerCase() + ".pdf");
+        pdf.save("MyBudget.pdf"); //pdf저장
       });
 
-      // html2canvas(document.getElementById(selector), {
-      //   onrendered: function(canvas) {
-      //     var imgData = canvas.toDataURL("image/png");
-      //     console.log("Report Image URL: " + imgData);
-      //     var doc = new jsPDF("p", "mm", [297, 210]); //210mm wide and 297mm high
-      //     doc.addImage(imgData, "PNG", 10, 10);
-      //     doc.save(that.propTitle.toLowerCase() + ".pdf");
-      //   }
-      // });
-    }
+		}
   },
   computed: {
     convertDate() {
@@ -358,10 +305,6 @@ export default {
       console.log(this.budgetInfo.suitability);
       this.checklikeStatus();
       return this.budgetInfo;
-      // this.getMyBudgetDetail(this.budgetDetail)
-      // console.log(this.budgetDetail.budgetlist)
-      // this.total = this.budgetDetail.budgetlist.reduce((total, budget) => total += (budget.price * budget.quantity), 0)
-      // return this.budgetDetail
     },
     computedBudgetList: function() {
       console.log("computedBudgetList");

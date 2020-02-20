@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.edu.model.User;
 
 public class UserDetailsImpl implements UserDetails {
+	
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -24,31 +21,24 @@ public class UserDetailsImpl implements UserDetails {
 
 	private String password;
 
+	private int auth;
+
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Long id, String username, String email, String password,
+	public UserDetailsImpl(Long id, String username, String email, String password, int auth,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.auth=auth;
 		this.authorities = authorities;
 	}
 
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-				
-				
-				/*user.getRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName().name()))
-				.collect(Collectors.toList());*/
 
-		return new UserDetailsImpl(
-				0L,
-				user.getName(), 
-				user.getEmail(),
-				user.getPwd(),
-				authorities);
+		return new UserDetailsImpl(0L, user.getName(), user.getEmail(), user.getPwd(), user.getAuth(), authorities);
 	}
 
 	@Override
@@ -72,6 +62,10 @@ public class UserDetailsImpl implements UserDetails {
 	@Override
 	public String getUsername() {
 		return username;
+	}
+
+	public int getAuth() {
+		return auth;
 	}
 
 	@Override
@@ -109,6 +103,5 @@ public class UserDetailsImpl implements UserDetails {
 		return "UserDetailsImpl [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
 				+ ", authorities=" + authorities + "]";
 	}
-	
-	
+
 }

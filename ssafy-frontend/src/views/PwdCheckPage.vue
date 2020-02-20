@@ -17,7 +17,7 @@
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           type="password"
         ></v-text-field>
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate" style="float:right">비밀번호 확인</v-btn>
+      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate" outlined style="float:right">비밀번호 확인</v-btn>
       </v-container>
     </v-form>
 
@@ -50,7 +50,7 @@ directives: {
       pwdCheck : true,
       isPwdRight: false,
       user: {
-        email: localStorage.getItem('email'),
+        email: sessionStorage.getItem('email'),
         pwd: "",
         //Authorization : 'Bearer '+this.$store.state.accessToken
       },
@@ -100,7 +100,7 @@ directives: {
   mounted(){
     console.log('mountedFindpwd')
     var ref = document.referrer;
-    let tkn = localStorage.getItem('accessToken')
+    let tkn = sessionStorage.getItem('accessToken')
     console.log(tkn)
     if (typeof tkn === undefined || !tkn) {
       alert('잘못된 접근입니다.')

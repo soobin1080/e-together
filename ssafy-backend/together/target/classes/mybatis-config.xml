@@ -26,5 +26,6 @@
         <mapper resource="mapper/budget.xml"/>
         <mapper resource="mapper/review.xml"/>
         <mapper resource="mapper/reply.xml"/>
+        <mapper resource="mapper/recommend.xml"/>
     </mappers>
 </configuration>
