@@ -18,23 +18,10 @@ export default {
     };
   },
   props: {
-    product: { 
-      type: Object 
-    },
-    productPerPage: {
-      type: Number
-    },
-    products: {
+    pagingProducts: {
       type: Array
-    },
-    pages: {
-      type: Number,
-      required: true
-    },
-    category: {
-      type: String,
-      required: true
     }
+ 
   },
   data() {
     return {};
@@ -49,30 +36,31 @@ export default {
   },
   computed: {
     computedPagingProducts() {
-      console.log("productlist computed");
-      this.pagingProductList = [];
+      return this.pagingProducts
+      // console.log("productlist computed");
+      // this.pagingProductList = [];
 
-      let tempList = [];
-      if (this.category !== "전체") {
-        tempList = this.products.filter(product => {
-          // console.log("productlist computed")
-          return product.main_category === this.category;
-        });
-      } else {
-        tempList = this.products;
-      }
+      // let tempList = [];
+      // if (this.category !== "전체") {
+      //   tempList = this.products.filter(product => {
+      //     // console.log("productlist computed")
+      //     return product.main_category === this.category;
+      //   });
+      // } else {
+      //   tempList = this.products;
+      // }
 
-      let start = (this.pages - 1) * this.productPerPage;
-      let end = (this.pages - 1) * this.productPerPage + this.productPerPage;
+      // let start = (this.pages - 1) * this.productPerPage;
+      // let end = (this.pages - 1) * this.productPerPage + this.productPerPage;
 
-      if (end > tempList.length) {
-        end = tempList.length;
-      }
-      for (let i = start; i < end; i++) {
-        this.pagingProductList.push(tempList[i]);
-      }
-      //console.log("pagingProudct : " + this.pagingProductList)
-      return this.pagingProductList;
+      // if (end > tempList.length) {
+      //   end = tempList.length;
+      // }
+      // for (let i = start; i < end; i++) {
+      //   this.pagingProductList.push(tempList[i]);
+      // }
+      // //console.log("pagingProudct : " + this.pagingProductList)
+      // return this.pagingProductList;
     }
   }
 };

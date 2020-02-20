@@ -82,7 +82,7 @@ export default {
     weight: {type: String},
     img: { type: String },
     main_category: { type: String },
-    product: { type: Object }
+    // product: { type: Object }
   },
   data: () => ({
     quantity: 1,

@@ -92,12 +92,11 @@
             </span>
           </v-tooltip>
         </div>
-        <!-- <div class="progress-bar" role="progressbar" style="width: 30%"></div>
-        <div class="progress-bar bg-info" role="progressbar" style="width: 20%"></div>-->
       </div>
     </div>
 
-<v-flex  xs12 md9 lg9 class="main">
+
+<v-flex xs12 md9 lg9 class="main">
     <v-row  style="padding-top:40px">
       <v-col lg="8" style="padding-top:0px;">
         <!-- search box -->
@@ -110,7 +109,7 @@
           solo-inverted
           shaped
           v-model="keyword"
-          v-on:keyup="getProductList(keyword)"
+          v-on:keyup="getProductListByCaterogy(category, pages, keyword)"
         ></v-text-field>
 
         <b-card no-body style>
@@ -119,7 +118,7 @@
             <v-tab
               v-for="tab in tabs"
               :key="tab.title"
-              @click="clickTab(tab.title)"
+              @click="getProductListByCaterogy(tab.title, pages, keyword)"
               v-model="category"
             >{{tab.title}}</v-tab>
           </v-tabs>
@@ -127,14 +126,15 @@
           <!-- page navigation-->
           <br />
           <div class="text-center">
-            <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
+            <v-pagination 
+              v-model="pages" 
+              :length="pagingLength"
+              @click="getProductListByCaterogy(this.category, pages, '')"
+              total-visible="7"></v-pagination>
           </div>
 
           <ProductList
-            :products="products"
-            :pages="pages"
-            :category="category"
-            :productPerPage="productPerPage"
+            :pagingProducts="pagingProducts"
           ></ProductList>
           <!-- 카테고리 탭 -->
           <!-- <b-tabs small card :tabs="tabs">
@@ -208,9 +208,6 @@ export default {
   directives: {
     ResizeText
   },
-  props: {
-    modifyBudget: Object,
-  },
   data() {
     return {
       keyword: "",
@@ -228,7 +225,7 @@ export default {
         { title: "스낵" },
         { title: "견과/건해산물" }
       ],
-      pagingProduct: [],
+      pagingProducts: [],
       pages: 1,
       productPerPage: 12,
       pagingLength: 10,
@@ -296,39 +293,32 @@ export default {
       recommendTotal: 0,
       recommendETCTotal: 0,
       colorByCategory: [
-        { "정육/계란류": "bg-danger" },
-        { "생수/음료": "bg-primary" },
-        { 채소: "bg-success" },
-        { 라면: "bg-warning" },
-        { 기타: "bg-secondary" }
+        { "정육/계란류" : "bg-danger" },
+        { "생수/음료" : "bg-primary" },
+        { "채소" : "bg-success" },
+        { "라면" : "bg-warning" },
+        { "기타" : "bg-secondary" }
       ]
     };
   },
   mounted() {
-    console.log("martpage, budget : " + this.$store.state.budget);
-    console.log(this.modifyBudget)
-    this.getProductList(this.keyword);
+    // this.getProductList(this.keyword);
     this.recommendBudgetBar(this.$store.state.budget);
-    if (this.modifyBudget) {
-      console.log('modifyMarPage')
-      this.showdetail(this.modifyBudget.budget_num)
-    }
+    this.getProductListByCaterogy("정육/계란류", 2, this.keyword);
   },
   computed: {
-    mountedProduct() {
-      this.getProductList(this.keyword);
-      return true;
-    },
+
+
+    // mountedProduct() {
+    //   this.getProductList(this.keyword);
+    //   return true;
+    // },
 
     getMainBar() {
-      // this.mainTotal = this.$store.state.budgetListBar.reduce((total, budget) => total += budget.price, 0)
       return this.$store.state.budgetListBar;
     },
 
     getETCBar() {
-      console.log("getETCBar : ", this.$store.state.budgetListBarETC);
-      // this.etcTotal = this.$store.state.budgetListBarETC.reduce((total, budget) => total += budget.price, 0)
-      // console.log(this.etcTotal)
       return this.$store.state.budgetListBarETC;
     },
 
@@ -355,6 +345,34 @@ export default {
   },
 
   methods: {
+    getProductListByCaterogy(cat, num, key) {
+      console.log(cat, num, key)
+      let myPage = 0
+      if (this.category !== cat) {
+        myPage = 1
+      } else { 
+        myPage = num
+      }
+      let requestUrl = ""
+      if (key !== "") {
+        requestUrl = `/product/${key}`
+      } else {
+        requestUrl = `/product/`
+      }
+      console.log(requestUrl)
+      http
+        .get(requestUrl, {
+          params: {
+            category : cat,
+            page: this.pages,
+          }
+        }, this.$store.getters.requestHeader)
+        .then( res => {
+          console.log(res)
+          // this.pagingLength = res.data
+          this.pagingProducts = res.data.productlist
+        })
+    },
     clickTab: function(title) {
       this.category = title;
       if (this.category !== "전체") {
@@ -444,14 +462,6 @@ export default {
         .then(response => {
           this.products = response.data;
           this.pagingProduct = response.data;
-          // if (this.products.length % this.productPerPage === 0) {
-          //   this.pagingLength = parseInt(
-          //     this.products.length / this.productPerPage
-          //   );
-          // } else {
-          //   this.pagingLength =
-          //     parseInt(this.products.length / this.productPerPage) + 1;
-          // }
         })
         .catch(() => {
           this.errored = true;
