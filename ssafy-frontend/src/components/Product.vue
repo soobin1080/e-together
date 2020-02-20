@@ -36,7 +36,7 @@
               :quantity="quantity"
             />
       </p>
-      <i class="far fa-plus-square" style="cursor:pointer;color:yellow;margin-left:2%;font-size:1.2rem;" @click="addcart"></i>
+      <i class="far fa-plus-square" style="cursor:pointer;color:orange;margin-left:2%;font-size:1.2rem;" @click="addcart"></i>
     </v-card-subtitle>
   </v-card>
   <!-- <v-card height="260px">
