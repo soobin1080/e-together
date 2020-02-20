@@ -443,14 +443,15 @@ export default {
         .get("/product")
         .then(response => {
           this.products = response.data;
-          if (this.products.length % this.productPerPage === 0) {
-            this.pagingLength = parseInt(
-              this.products.length / this.productPerPage
-            );
-          } else {
-            this.pagingLength =
-              parseInt(this.products.length / this.productPerPage) + 1;
-          }
+          this.pagingProduct = response.data;
+          // if (this.products.length % this.productPerPage === 0) {
+          //   this.pagingLength = parseInt(
+          //     this.products.length / this.productPerPage
+          //   );
+          // } else {
+          //   this.pagingLength =
+          //     parseInt(this.products.length / this.productPerPage) + 1;
+          // }
         })
         .catch(() => {
           this.errored = true;
@@ -510,5 +511,4 @@ export default {
   margin: auto;
   
 }
-
 </style>

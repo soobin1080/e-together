@@ -153,7 +153,6 @@ export default {
         .then(res => {
           console.log(res);
           this.review = res.data.review;
-          this.review["name"] = name;
           this.budgetInfo = res.data.budgetinfo;
           this.budgetList = res.data.budgetlist;
           console.log(this.budgetList);

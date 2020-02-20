@@ -15,6 +15,7 @@ import FindPwdPage from './views/FindPwdPage.vue'
 import FindEmailPage from './views/FindEmailPage.vue'
 import ReviewDetailPage from './views/ReviewDetailPage.vue'
 import ErrorPage from './views/ErrorPage.vue'
+import AdminPage from './views/AdminPage.vue'
 import store from './store.js'
 
 Vue.use(Router)
@@ -106,7 +107,7 @@ export default new Router({
 			component: FindPwdPage
 		},
 		{
-			path : '/reviewDetail/:reviewNum/:userName',
+			path : '/reviewDetail/:reviewNum',
 			name : 'reviewdetail',
 			component: ReviewDetailPage
 		},
@@ -115,6 +116,11 @@ export default new Router({
 			name : 'errorPage',
 			component: ErrorPage
 		},
+		{
+			path: '/admin',
+			name: 'adminPage',
+			component: AdminPage
+		}
 
   ]
 })
