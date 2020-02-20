@@ -1,7 +1,7 @@
 <template>
   <v-layout mt-5 wrap>
     <v-flex v-for="product in computedPagingProducts" xs6 sm4 lg3 :key="product.pro_name">
-      <Product class="ma-2" :pro_name="product.pro_name" :price="product.price" :img="product.img" :product="product"></Product>
+      <Product class="ma-2" :pro_name="product.pro_name" :price="product.price" :weight="product.weight" :img="product.img" :product="product"></Product>
     </v-flex>
     <small style="padding-top:10px; margin:auto; color:red">* 마트 상품은 e-mart몰 상품을 기반으로 합니다.</small>
   </v-layout>

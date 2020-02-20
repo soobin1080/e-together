@@ -10,8 +10,8 @@
     </ImgBanner>
 
     <v-form ref="form" v-model="valid" lazy-validation>
-      <v-container fluid style="width:700px; padding-bottom:80px">
-        <h2 class="text-center mt-5">내 정보 수정</h2>
+      <v-container fluid style="width:700px; padding-top:80px; padding-bottom:80px">
+        <h4 class="text-center mt-5">내 정보 수정</h4>
         <br />
         <v-text-field
           v-model="computedUser.name"
@@ -37,8 +37,8 @@
 
         <div class="btn" style="float:right">
           <!-- <v-btn color="primary" class="mr-4"  @click="pwdmodi">비밀번호 수정</v-btn> -->
-          <v-btn color="error" class="mr-4" @click="reset">Reset</v-btn>
-          <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">수정!</v-btn>
+          <v-btn color="error" outlined class="mr-4" @click="reset">Reset</v-btn>
+          <v-btn :disabled="!valid" outlined color="success" class="mr-4" @click="validate">수정!</v-btn>
         </div>
       </v-container>
     </v-form>
@@ -74,7 +74,7 @@ export default {
       required: value => !!value || "Required.",
       min_8: v => v.length >= 8 || "Min 8 characters",
       min_4: v => v.length >= 4 || "Min 4 characters",
-      min_11: v => v.length == 11 || "휴대폰번호 형식에 맞게 입력해주세요!",
+      min_11: v => v.length == 11 || " '-'을 제외한 11자리를 입력해주세요!",
       is_num: v => !isNaN(v) || "Please input number",
       emailMatch: () => "The email and password you entered don't match"
     },

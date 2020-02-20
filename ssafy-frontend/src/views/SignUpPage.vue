@@ -85,7 +85,7 @@ export default {
       required: value => !!value || "Required.",
       min_8: v => v.length >= 8 || "Min 8 characters",
       min_4: v => v.length >= 4 || "Min 4 characters",
-      min_11: v => v.length == 11 || "휴대폰번호 형식에 맞게 입력해주세요!",
+      min_11: v => v.length == 11 || " '-'을 제외한 11자리를 입력해주세요!",
       is_num: v => !isNaN(v) || "Please input number",
       emailMatch: () => "The email and password you entered don't match"
     },

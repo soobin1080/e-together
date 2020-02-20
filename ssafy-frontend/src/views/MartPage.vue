@@ -12,7 +12,7 @@
     <!-- 비율 추천 그래프 -->
     <div class="mt-12" >
       <p style="margin:auto; width:70%; color:dimgrey;">
-        <i class="material-icons">assessment</i>예산 별 비율 추천
+        <i class="material-icons">assessment</i>예산 별 비율 추천        
       </p>
       <div 
         class="progress text-center mx-auto" 

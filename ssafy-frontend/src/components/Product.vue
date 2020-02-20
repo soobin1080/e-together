@@ -12,12 +12,12 @@
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
         <!-- <div class="lightgrey--text" v-on="on">{{pro_name}}</div> -->
-        <v-card-title v-on="on" class="font-weight-bold grey--text">{{pro_name}}</v-card-title>
+        <v-card-title v-on="on" class="font-weight-bold lightgrey--text">{{pro_name}}</v-card-title>
       </template>
       <span>{{pro_name}}</span>
     </v-tooltip>
-
-    <v-card-subtitle class="pb-0 font-weight-black">{{price}}</v-card-subtitle>
+<v-card-subtitle class="pb-0 font-weight-grey" style="text-align:right; font-size:12px">{{weight}}</v-card-subtitle>
+    <v-card-subtitle class="pb-0 font-weight-black" style="text-align:right">{{price}}원</v-card-subtitle>
 
     <v-card-subtitle 
       style="font-family:'Noto Sans KR', sans-serif;font-size:0.9rem"
@@ -79,6 +79,7 @@ export default {
     pro_id: { type: String },
     pro_name: { type: String },
     price: { type: Number },
+    weight: {type: String},
     img: { type: String },
     main_category: { type: String },
     product: { type: Object }
@@ -111,6 +112,7 @@ export default {
         quantity: Number(this.quantity),
         pro_price:Number(this.price) * Number(this.quantity),
         category: this.product.main_category,
+        weight:this.weight,
         isETC: this.ETC.includes(this.product.main_category),
       };
       console.log(product)
@@ -128,7 +130,7 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 140px;
+  width: 180px;
 }
 
 .grey--text {

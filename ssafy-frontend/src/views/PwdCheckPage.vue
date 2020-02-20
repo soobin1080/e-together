@@ -17,7 +17,7 @@
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           type="password"
         ></v-text-field>
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate" style="float:right">비밀번호 확인</v-btn>
+      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate" outlined style="float:right">비밀번호 확인</v-btn>
       </v-container>
     </v-form>
 

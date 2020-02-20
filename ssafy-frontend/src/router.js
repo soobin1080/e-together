@@ -14,9 +14,20 @@ import UserInfoModifyPage from './views/UserInfoModifyPage.vue'
 import FindPwdPage from './views/FindPwdPage.vue'
 import FindEmailPage from './views/FindEmailPage.vue'
 import ReviewDetailPage from './views/ReviewDetailPage.vue'
-
+import ErrorPage from './views/ErrorPage.vue'
+import store from './store.js'
 
 Vue.use(Router)
+
+const requireAuth = () => (to, from, next) => {
+	console.log(store.state.accessToken);
+	if (store.state.accessToken == null) {	
+		alert("접근하실 수 없습니다. 로그인 해주세요!")	
+		return next('/');
+	}else{
+		return next();
+	}			
+  };
 
 export default new Router({
   mode: 'history',
@@ -57,13 +68,15 @@ export default new Router({
 		{
 			path: '/userinfo',
 			name: 'userinfo',
-			component: UserInfoPage
+			component: UserInfoPage,
+			beforeEnter:requireAuth()
 
 		},
 		{
 			path: '/mybudget',
 			name: 'mybudget',
-			component: MyBudgetPage
+			component: MyBudgetPage,
+			beforeEnter:requireAuth()
 		},
 		{
 			path: '/review',
@@ -73,12 +86,14 @@ export default new Router({
 		{
 			path: '/pwdcheck',
 			name: 'pwdcheck',
-			component: PwdCheckPage
+			component: PwdCheckPage,
+			beforeEnter:requireAuth()
 		},
 		{
 			path: '/userinfomodify',
 			name: 'userinfomodify',
-			component: UserInfoModifyPage
+			component: UserInfoModifyPage,
+			beforeEnter:requireAuth()
 		},
 		{
 			path: '/findemail',
@@ -94,7 +109,12 @@ export default new Router({
 			path : '/reviewDetail/:reviewNum/:userName',
 			name : 'reviewdetail',
 			component: ReviewDetailPage
-		}
+		},
+		{
+			path : '*',
+			name : 'errorPage',
+			component: ErrorPage
+		},
 
   ]
 })
