@@ -58,7 +58,7 @@
       <v-toolbar-items class="hidden-xs-only justify-content-around">
         <!-- <div class="menu d-inline" style="height:20px">        -->
         <v-btn text width="10%" @click="clickproduct" style="height:64px">Mart</v-btn>
-        <v-btn text width="10%" v-if="username" @click="clickmybudget" style="height:64px">My Budget</v-btn>
+        <v-btn text width="25%" v-if="username" @click="clickmybudget" style="height:64px">My Budget</v-btn>
         <v-btn text width="10%" @click="clickreview" style="height:64px">Review</v-btn>
         <v-btn text width="10%" v-if="checkAdmin" style="height:64px" @click="goToAdminPage">Admin</v-btn>
         <v-btn text v-if="username" class="text-center"  style="padding-top:20px;">
@@ -74,12 +74,16 @@
                 {{setUserName}}
               </span>
             </template>
-            <v-list dense shaped>
-              <v-list-item>
-                <v-list-item-title @click="pwdCheck" style="font-weight:bold; color:dimgrey">내 정보 보기</v-list-item-title>
+            <v-list dense shaped width="100%">
+              <v-list-item  @click="pwdCheck">
+                <v-list-item-action>
+                <v-list-item-content style="font-weight:bold; font-size:15px; color:dimgrey">My Page</v-list-item-content>
+              </v-list-item-action>
               </v-list-item>
-              <v-list-item>
-                <v-list-item-title @click="logout" style="font-weight:bold; color:dimgrey">LOGOUT</v-list-item-title>
+              <v-list-item  @click="logout">
+                <v-list-item-action>
+                <v-list-item-content style="font-weight:bold; font-size:15px; color:dimgrey">Logout</v-list-item-content>
+              </v-list-item-action>
               </v-list-item>
             </v-list>
           </v-menu>

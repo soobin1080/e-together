@@ -31,7 +31,7 @@
             </div>
 
             <!-- </form> -->
-
+<!-- 
             <button class="large-btn google-btn" @click="loginWithGoogle">
               connect with
               <span>google</span>
@@ -39,7 +39,7 @@
             <button class="large-btn facebook-btn" @click="loginWithFackbook">
               connect with
               <span>facebook</span>
-            </button>
+            </button> -->
 
             <div class="button-set" style="padding-top:20px">
              
