@@ -88,12 +88,9 @@ export default {
         http
           .get('/review', this.$store.getters.requestHeader)
             .then(res => {
-              console.log(res)
               if (this.allReviews.length < res.data.length) {
-                console.log('scroll 실행')
                 for (let i = (this.pages-1)*this.reviewPerPage; i < this.pages*this.reviewPerPage; i++ ) {
                   if (this.allReviews.length === res.data.length) {
-                    console.log('break')
                     this.busy = true
                     break;
                   } else {
@@ -102,7 +99,6 @@ export default {
                 } 
                 this.pages++;
                 this.busy = false
-                console.log("allReview : " +this.allReviews)
               }
             })
       }, 100);

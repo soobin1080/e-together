@@ -10,11 +10,15 @@
     </ImgBanner>
 
     <!-- 비율 추천 그래프 -->
-    <div class="mt-12">
+    <div class="mt-12" >
       <p style="margin:auto; width:70%; color:dimgrey;">
         <i class="material-icons">assessment</i>예산 별 비율 추천
       </p>
-      <div class="progress text-center mx-auto" style="width: 70%;" v-on="on">
+      <div 
+        class="progress text-center mx-auto" 
+        style="width: 70%;" 
+        v-on="on" 
+        v-if="canRecommend">
         <div
           v-for="bar in recommendBar"
           :key="bar.className"
@@ -338,12 +342,20 @@ export default {
 
     getTotal() {
       return this.$store.state.mainTotal + this.$store.state.etcTotal;
+    },
+
+    canRecommend() {
+      if ((this.recommendETCTotal > 0 || this.recommendTotal > 0)) {
+        return true
+      } else {
+        alert('비교예산이 없습니다')
+        return false
+      }
     }
   },
 
   methods: {
     clickTab: function(title) {
-      console.log(title);
       this.category = title;
       if (this.category !== "전체") {
         this.pagingProduct = this.products.filter(product => {
@@ -375,10 +387,7 @@ export default {
         this.recommendBarETC[i].price = 0;
         i++;
       }
-      console.log("recommendBar");
-      console.log(typeof mybudget);
       if (mybudget !== null && mybudget !== undefined && mybudget !== 0) {
-        console.log("recommendBudgetBar");
         http
           .get("/recommend", {
             params: {
@@ -386,56 +395,40 @@ export default {
             }
           })
           .then(res => {
-            console.log(this.recommendBar);
             const keys = Object.keys(res.data);
             const vals = Object.values(res.data);
-            console.log(this.recommendBar);
             const categoryDict = this.$store.state.recommendDict;
-            // const prices = Object.keys(this.recommendBar)
-            console.log(vals);
-            console.log(typeof this.recommendBar);
+
             for (let i = 0; i < keys.length; i++) {
-              console.log(categoryDict[keys[i]]);
 
               if (this.$store.state.ETC.includes(categoryDict[keys[i]])) {
                 const idx = this.recommendBarETC.findIndex(bar => {
                   return bar.category === categoryDict[keys[i]];
                 });
-                console.log(idx);
+
                 this.recommendBarETC[idx].price = vals[i];
                 this.recommendETCTotal += vals[i];
               } else {
                 const idx = this.recommendBar.findIndex(bar => {
                   return bar.category === categoryDict[keys[i]];
                 });
-                console.log(idx);
+
                 this.recommendBar[idx].price = vals[i];
                 this.recommendTotal += vals[i];
               }
             }
-            // console.log(this.recommendBarETC);
-            // console.log(this.recommendBar);
-            // console.log(this.recommendETCTotal);
-            // console.log(this.recommendTotal);
           })
           .catch(err => {
-            // console.log(err);
           });
       } else {
-        // alert("잘못된 금액입니다.");
       }
     },
 
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-    // search(keyword){
-    //   console.log("/////검색어: "+keyword+" "+this.keyword);
-    //   this.keyword=keyword;
-
-    // },
+  
     getProductList(keyword) {
-      // this.$emit('search');
       this.keyword = keyword;
       console.log(this.keyword);
       console.log("키워드는" + this.keyword);
@@ -450,7 +443,6 @@ export default {
         .get("/product")
         .then(response => {
           this.products = response.data;
-          // console.log(this.products);
           if (this.products.length % this.productPerPage === 0) {
             this.pagingLength = parseInt(
               this.products.length / this.productPerPage
@@ -471,7 +463,6 @@ export default {
           keyword: this.keyword
         })
         .then(response => {
-          console.log("res : " + response);
           this.products = response.data;
           if (this.products.length % this.productPerPage === 0) {
             this.pagingLength = parseInt(
@@ -504,9 +495,6 @@ export default {
           this.$store.getters.RequestHeader
         )
         .then(res => {
-          // this.budgetInfo = res.data.budgetinfo;
-          console.log('showDetail')
-          console.log(res)
           this.$store.state.budgetlist = res.data.budgetlist;
           this.$store.state.personnel = res.data.budgetinfo.personnel
           this.$store.state.budget = res.data.budgetinfo.budget
