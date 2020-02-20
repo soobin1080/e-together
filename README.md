@@ -1,67 +1,102 @@
+---
+typora-copy-images-to: typora-user-images
+---
+
 ## [#1. Web/Mobile_웹기술 PJT : 웹 프론트엔드 / 백엔드 개발]
 
-### [공통-Sub PJT II] 백엔드 구성 및 기본 기능 구현
+### [공통-Sub PJT II] 개발 시스템 API 활용 및 관리자 기능 구현
 
 #### 1. 소개
 
 ###### < 단체 장보기 서비스  "e-투계더" >
 
-e-투계더는 emart 상품을 기반으로 워크샵, MT, 여행 등 단체로 장을 봐야 하는 상황에 카테고리 별로 필요한 상품을 보여주고 인원 별, 예산 별 상품을 추천해주는 서비스입니다. 선택한 상품의 가격을 계산해주고, 장보기 리스트를 저장할 수 있습니다.
+e-투계더는 emart 상품을 기반으로 워크샵, MT, 여행 등 단체로 장을 봐야 하는 상황에 카테고리 별로 필요한 상품을 보여주고 예산 별 카테고리 비율을 추천해주는 서비스입니다. 선택한 상품의 합계를 계산해주고, 장보기 리스트를 저장하고 pdf로 다운로드할 수 있습니다. 서비스 이용 후기를 등록하여 다른 사용자들과 장보기 내역을 공유하고 인원과 예산이 비슷한 사용자의 리뷰를 검색해 볼 수 있습니다. e-투계더 서비스로 합리적인 장보기를 해보세요.
 
 
 
-#### 2. 환경
+#### 2. 개발 환경
 
 - Node.js
 - Vue.js, Vue-cli, Vuetify
-- Spring, Restful API
+- Spring boot, Restful API
 - Mysql Database
-- Firebase
 - IDE: Visual Studio Code, Spring Tool Suite
 
 
 
-#### 3. 프로젝트 진행 사항
+#### 3. 시스템 아키텍쳐
 
-- User, Product API 도출
-- Database 테이블 생성
+![시스템아키텍쳐](C:\Users\multicampus\Desktop\s02p13b109\typora-user-images\시스템아키텍쳐.png)
 
-- 회원가입/로그인 페이지 & 기능 구현
-- 메인 페이지 구현
-- 장보기 페이지 구현
-- 웹 사이트 크롤링 - Database 저장
-- 장보기 페이지 기능 구현 - 카테고리 탭, 검색 기능, 페이징 기능
+#### 4. ERD
 
+![ERD](C:\Users\multicampus\Desktop\s02p13b109\typora-user-images\ERD.PNG)
 
-
-#### 4. Restful API 
+#### 5. Restful API 
 
 ###### 	User API
 
-- `POST /regi` : 회원가입
-- `POST /emailCheck` : 이메일 중복체크
-- `POST /login` : 로그인
-- `POST /logout` : 로그아웃
-- `POST /pwdCheck` : 내 정보 확인 시 비밀번호 체크
-- `POST /myselfDetail/{email}` : 현재 로그인 되어있는 사용자의 상세정보 보기
-- `POST /findEmail` : 이메일 찾기
-- `POST /findPwd` : 비밀번호 찾기 및 임시 비밀번호 발급
-- `POST /updateMyself` : 현재 로그인된 사용자의 정보 수정
-- `POST /updatePwd` : 현재 로그인된 사용자의 비밀번호 수정
-- `POST /deleteMyself` : 탈퇴
-- `GET /findAllUsers` : 전체 회원 정보 리스트 반환
-- `GET /fingUserByEmail/{email}` : 이메일로 회원 검색
-- `POST /auth/signin` : 권한을 가지고 로그인
-- `POST /auth/signup` : 권한을 가지고 회원가입
+- `POST /api/emailCheck` : 이메일 중복체크
+- `POST /api/logout` : 로그아웃
+- `POST /api/pwdCheck` : 내 정보 확인 시 비밀번호 체크
+- `POST /api/myselfDetail/{email}` : 현재 로그인 되어있는 사용자의 상세정보 보기
+- `POST /api/findEmail` : 이메일 찾기
+- `POST /api/findPwd` : 비밀번호 찾기 및 임시 비밀번호 발급
+- `POST /api/updateMyself` : 현재 로그인된 사용자의 정보 수정
+- `POST /api/updatePwd` : 현재 로그인된 사용자의 비밀번호 수정
+- `POST /api/deleteMyself` : 탈퇴
+- `GET /api/user` : 전체 회원 정보 리스트 반환
+- `GET /api/fingUserByEmail/{email}` : 이메일로 회원 검색
+- `POST /api/auth/signin` : 권한을 가지고 로그인
+- `POST /api/auth/signup` : 권한을 가지고 회원가입
 
 
 
 ###### 	Product API
 
-- `GET /product` : 상품 목록 표시
-- `GET /product/{keyword}` : 전체 상품에서 상품명으로 상품 검색
-- `GET /product_ctg/{category}` : 카테고리 별로 상품 표시
-- `GET /product_ctg/{category}/{keyword}` : 카테고리 내에서 상품 검색
+- `GET /api/product` : 상품 목록 보기
+- `POST /api/product` : 
+- `GET /api/product/category/{keyword}` : 전체 상품에서 상품명으로 상품 검색
+- `GET /api/product/{category}` : 카테고리 별 상품 보기
+- `GET /api/product/{category}/{keyword}` : 카테고리 별 상품 검색
+
+
+
+###### Budget API
+
+- `POST /api/budget` : 내 예산안 저장하기
+- `GET /api/budget/{user_email}` : 내 예산안 목록 보기
+- `GET /api/budget/detail/{budget_num}` : 내 예산안 상세보기
+- `POST /api/budget/{budget_num}/{suitability}` : 내 예산안 가져오기
+- `DELETE /api/budget/{budget_num}` : 내 예산안 지우기
+
+
+
+###### Review API
+
+- `POST /api/review` : review 작성하기
+- `GET /api/review` : 전체 review 목록 보기
+- `GET /api/review/{review_num} ` : review 상세보기
+- `POST /api/review/{review_num} ` : review 수정하기
+- `DELETE /api/review/{review_num} ` : review 삭제하기
+- `POST /api/review/like_count` : review 좋아요 수 update
+- `DELETE /api/review/like_count/{review_num}/{user_email}` : review 좋아요 취소
+- `GET /api/review/{personnel}/{budget}` : 인원과 예산에 맞는 review 검색
+
+
+
+###### Reply API
+
+- `GET /api/reply/{review_num}` : review 전체 댓글 보여주기
+- `POST /api/reply` : 댓글 작성하기
+- `POST /api/reply/update` : 댓글 수정하기
+- `DELETE /api/reply/{review_num}` : 댓글 삭제하기
+
+
+
+###### Recommand API
+
+- `GET /api/recommend` : 내 예산에 맞게 카테고리 별 비율 추천
 
 
 

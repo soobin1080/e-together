@@ -125,7 +125,7 @@ export default {
 
 
             this.$emit("checkLogIn");
-            this.$router.push("/");
+            this.$router.push("/");            
           }
 
           else {
