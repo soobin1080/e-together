@@ -92,12 +92,11 @@
             </span>
           </v-tooltip>
         </div>
-        <!-- <div class="progress-bar" role="progressbar" style="width: 30%"></div>
-        <div class="progress-bar bg-info" role="progressbar" style="width: 20%"></div>-->
       </div>
     </div>
 
-<v-flex  xs12 md9 lg9 class="main">
+
+<v-flex xs12 md9 lg9 class="main">
     <v-row  style="padding-top:40px">
       <v-col lg="8" style="padding-top:0px;">
         <!-- search box -->
@@ -110,7 +109,7 @@
           solo-inverted
           shaped
           v-model="keyword"
-          v-on:keyup="getProductList(keyword)"
+          v-on:keyup="getProductListByCaterogy(category, pages, keyword)"
         ></v-text-field>
 
         <b-card no-body style>
@@ -119,7 +118,7 @@
             <v-tab
               v-for="tab in tabs"
               :key="tab.title"
-              @click="clickTab(tab.title)"
+              @click="getProductListByCaterogy(tab.title, pages, keyword)"
               v-model="category"
             >{{tab.title}}</v-tab>
           </v-tabs>
@@ -127,14 +126,15 @@
           <!-- page navigation-->
           <br />
           <div class="text-center">
-            <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
+            <v-pagination 
+              v-model="pages" 
+              :length="pagingLength"
+              @click="getProductListByCaterogy(this.category, pages, '')"
+              total-visible="7"></v-pagination>
           </div>
 
           <ProductList
-            :products="products"
-            :pages="pages"
-            :category="category"
-            :productPerPage="productPerPage"
+            :pagingProducts="pagingProducts"
           ></ProductList>
           <!-- 카테고리 탭 -->
           <!-- <b-tabs small card :tabs="tabs">
@@ -186,7 +186,6 @@
     </v-row>
 
     <!-- <BudgetModal id="budgetModal">
-
     </BudgetModal>-->
   </div>
 </template>
@@ -197,7 +196,6 @@ import BudgetList from "../components/BudgetList";
 import ProductList from "../components/ProductList";
 import ResizeText from "vue-resize-text";
 import BudgetModal from "../components/BudgetModal";
-
 export default {
   components: {
     ImgBanner,
@@ -207,9 +205,6 @@ export default {
   },
   directives: {
     ResizeText
-  },
-  props: {
-    modifyBudget: Object,
   },
   data() {
     return {
@@ -228,7 +223,7 @@ export default {
         { title: "스낵" },
         { title: "견과/건해산물" }
       ],
-      pagingProduct: [],
+      pagingProducts: [],
       pages: 1,
       productPerPage: 12,
       pagingLength: 10,
@@ -296,54 +291,39 @@ export default {
       recommendTotal: 0,
       recommendETCTotal: 0,
       colorByCategory: [
-        { "정육/계란류": "bg-danger" },
-        { "생수/음료": "bg-primary" },
-        { 채소: "bg-success" },
-        { 라면: "bg-warning" },
-        { 기타: "bg-secondary" }
+        { "정육/계란류" : "bg-danger" },
+        { "생수/음료" : "bg-primary" },
+        { "채소" : "bg-success" },
+        { "라면" : "bg-warning" },
+        { "기타" : "bg-secondary" }
       ]
     };
   },
   mounted() {
-    console.log("martpage, budget : " + this.$store.state.budget);
-    console.log(this.modifyBudget)
-    this.getProductList(this.keyword);
+    // this.getProductList(this.keyword);
     this.recommendBudgetBar(this.$store.state.budget);
-    if (this.modifyBudget) {
-      console.log('modifyMarPage')
-      this.showdetail(this.modifyBudget.budget_num)
-    }
+    this.getProductListByCaterogy("정육/계란류", 2, this.keyword);
   },
   computed: {
-    mountedProduct() {
-      this.getProductList(this.keyword);
-      return true;
-    },
-
+    // mountedProduct() {
+    //   this.getProductList(this.keyword);
+    //   return true;
+    // },
     getMainBar() {
-      // this.mainTotal = this.$store.state.budgetListBar.reduce((total, budget) => total += budget.price, 0)
       return this.$store.state.budgetListBar;
     },
-
     getETCBar() {
-      console.log("getETCBar : ", this.$store.state.budgetListBarETC);
-      // this.etcTotal = this.$store.state.budgetListBarETC.reduce((total, budget) => total += budget.price, 0)
-      // console.log(this.etcTotal)
       return this.$store.state.budgetListBarETC;
     },
-
     getMainTotal() {
       return this.$store.state.mainTotal;
     },
-
     getETCTotal() {
       return this.$store.state.etcTotal;
     },
-
     getTotal() {
       return this.$store.state.mainTotal + this.$store.state.etcTotal;
     },
-
     canRecommend() {
       if ((this.recommendETCTotal > 0 || this.recommendTotal > 0)) {
         return true
@@ -353,8 +333,35 @@ export default {
       }
     }
   },
-
   methods: {
+    getProductListByCaterogy(cat, num, key) {
+      console.log(cat, num, key)
+      let myPage = 0
+      if (this.category !== cat) {
+        myPage = 1
+      } else { 
+        myPage = num
+      }
+      let requestUrl = ""
+      if (key !== "") {
+        requestUrl = `/product/${key}`
+      } else {
+        requestUrl = `/product/`
+      }
+      console.log(requestUrl)
+      http
+        .get(requestUrl, {
+          params: {
+            category : cat,
+            page: this.pages,
+          }
+        }, this.$store.getters.requestHeader)
+        .then( res => {
+          console.log(res)
+          // this.pagingLength = res.data
+          this.pagingProducts = res.data.productlist
+        })
+    },
     clickTab: function(title) {
       this.category = title;
       if (this.category !== "전체") {
@@ -364,7 +371,6 @@ export default {
       } else {
         this.pagingProduct = this.products;
       }
-
       this.allLength = this.pagingProduct.length;
       console.log("allLength : " + this.allLength);
       if (this.allLength % this.productPerPage === 0) {
@@ -374,7 +380,6 @@ export default {
       }
       this.pages = 1;
     },
-
     recommendBudgetBar(mybudget) {
       mybudget = Number(mybudget);
       this.recommendTotal = 0;
@@ -398,21 +403,17 @@ export default {
             const keys = Object.keys(res.data);
             const vals = Object.values(res.data);
             const categoryDict = this.$store.state.recommendDict;
-
             for (let i = 0; i < keys.length; i++) {
-
               if (this.$store.state.ETC.includes(categoryDict[keys[i]])) {
                 const idx = this.recommendBarETC.findIndex(bar => {
                   return bar.category === categoryDict[keys[i]];
                 });
-
                 this.recommendBarETC[idx].price = vals[i];
                 this.recommendETCTotal += vals[i];
               } else {
                 const idx = this.recommendBar.findIndex(bar => {
                   return bar.category === categoryDict[keys[i]];
                 });
-
                 this.recommendBar[idx].price = vals[i];
                 this.recommendTotal += vals[i];
               }
@@ -423,7 +424,6 @@ export default {
       } else {
       }
     },
-
     getImgUrl(img) {
       return require("../assets/" + img);
     },
@@ -444,14 +444,6 @@ export default {
         .then(response => {
           this.products = response.data;
           this.pagingProduct = response.data;
-          // if (this.products.length % this.productPerPage === 0) {
-          //   this.pagingLength = parseInt(
-          //     this.products.length / this.productPerPage
-          //   );
-          // } else {
-          //   this.pagingLength =
-          //     parseInt(this.products.length / this.productPerPage) + 1;
-          // }
         })
         .catch(() => {
           this.errored = true;
@@ -512,3 +504,15 @@ export default {
   
 }
 </style>
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
