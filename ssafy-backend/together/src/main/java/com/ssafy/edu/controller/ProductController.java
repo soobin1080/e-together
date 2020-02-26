@@ -1,6 +1,5 @@
 package com.ssafy.edu.controller;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.edu.model.Product;
+import com.ssafy.edu.model.ProductPage;
 import com.ssafy.edu.service.IProductService;
 
 import io.swagger.annotations.Api;
@@ -34,64 +34,74 @@ public class ProductController {
 	@Autowired
 	private IProductService productservice;
 
-	@ApiOperation(value = "전체 상품 보기", response = List.class)
-	@RequestMapping(value = "/product", method = RequestMethod.GET)
-	public ResponseEntity<List<Product>> getAllProduct() throws Exception {
-		logger.info("1-------------getAllProduct-----------------------------" + new Date());
-		List<Product> products = productservice.getAllProduct();
+//	@ApiOperation(value = "전체 상품 보기", response = List.class)
+//	@RequestMapping(value = "/product", method = RequestMethod.GET)
+//	public ResponseEntity<List<Product>> getAllProduct() throws Exception {
+//		logger.info("1-------------getAllProduct-----------------------------" + new Date());
+//		List<Product> products = productservice.getAllProduct();
+//
+//		System.out.println(products);
+//		if (products.isEmpty()) {
+//			return new ResponseEntity(HttpStatus.NO_CONTENT);
+//		}
+//		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+//	}
+//
+//	@ApiOperation(value = "전체에서 상품 검색", response = List.class)
+//	@RequestMapping(value = { "/product/category/{keyword}" }, method = RequestMethod.GET)
+//	public ResponseEntity<List<Product>> keywordSearchProduct(@PathVariable String keyword) throws Exception {
+//		logger.info("2-------------keywordSearchProduct-----------------------------" + new Date());
+//
+//		System.out.println(keyword);
+//		List<Product> products = productservice.keywordSearchProduct(keyword);
+//
+//		System.out.println("---------검색결과: " + products);
+//
+//		if (products.isEmpty()) {
+//			return new ResponseEntity(HttpStatus.NO_CONTENT);
+//		}
+//		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+//	}
 
-		System.out.println(products);
-		if (products.isEmpty()) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
-	}
-
-	@ApiOperation(value = "전체에서 상품 검색", response = List.class)
-	@RequestMapping(value = { "/product/category/{keyword}" }, method = RequestMethod.GET)
-	public ResponseEntity<List<Product>> keywordSearchProduct(@PathVariable String keyword) throws Exception {
-		logger.info("2-------------keywordSearchProduct-----------------------------" + new Date());
-
-		System.out.println(keyword);
-		List<Product> products = productservice.keywordSearchProduct(keyword);
-
-		System.out.println("---------검색결과: " + products);
-
-		if (products.isEmpty()) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
-	}
-
+	int recentPage = 0;
+	
 	@ApiOperation(value = "카테고리 별 상품 보기", response = List.class)
-	@RequestMapping(value = { "/product/{category}" }, method = RequestMethod.GET)
-	public ResponseEntity<List<Product>> categorySearchProduct(@PathVariable String category) throws Exception {
+	@RequestMapping(value = { "/product" }, method = RequestMethod.GET)
+	public ResponseEntity<ProductPage> categorySearchProduct(@RequestParam(required = false, defaultValue="1")int page,@RequestParam String category) throws Exception {
 		logger.info("3-------------categorySearchProduct-----------------------------" + new Date());
+		
+		recentPage = page;
+		System.out.println("recentPage :" + recentPage);
+		
+		ProductPage productpage = productservice.getProductListWithPage(page,category);
+//		List<Product> products = productpage.getProductlist();
 
-		List<Product> products = productservice.categorySearchProduct(category);
+		System.out.println("---------검색결과: " + productpage);
 
-		System.out.println("---------검색결과: " + products);
-
-		if (products.isEmpty()) {
+		if (productpage==null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+		return new ResponseEntity<ProductPage>(productpage, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "카테고리 별 상품 검색", response = List.class)
-	@RequestMapping(value = { "/product/{category}/{keyword}" }, method = RequestMethod.GET)
-	public ResponseEntity<List<Product>> categoryKeywordSearchProduct(@PathVariable String category,
+	@ApiOperation(value = "카테고리 별 상품 검색", response = ProductPage.class)
+	@RequestMapping(value = { "/product/{keyword}" }, method = RequestMethod.GET)
+	public ResponseEntity<ProductPage> categoryKeywordSearchProduct(@RequestParam(required = false, defaultValue="1")int page,@RequestParam String category,
 			@PathVariable String keyword) throws Exception {
 		logger.info("4-------------categoryKeywordSearchProduct-----------------------------" + new Date());
 
-		List<Product> products = productservice.categoryKeywordSearchProduct(category, keyword);
+		recentPage = page;
+		System.out.println("recentPage :" + recentPage);
+		
+		ProductPage productpage = productservice.getKeywordProductListWithPage(page,category,keyword);
+//		List<Product> products = productpage.getProductlist();
+		
+		System.out.println("---------검색결과: " + productpage);
 
-		System.out.println("---------검색결과: " + products);
-
-		if (products.isEmpty()) {
+		if (productpage==null) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+		return new ResponseEntity<ProductPage>(productpage, HttpStatus.OK);
 	}
 
 
