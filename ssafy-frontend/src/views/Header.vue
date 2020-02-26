@@ -74,7 +74,7 @@
                 {{setUserName}}
               </span>
             </template>
-            <v-list dense shaped width="100%">
+            <v-list dense shaped width="150px">
               <v-list-item  @click="pwdCheck">
                 <v-list-item-action>
                 <v-list-item-content style="font-weight:bold; font-size:15px; color:dimgrey">My Page</v-list-item-content>

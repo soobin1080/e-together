@@ -67,10 +67,5 @@ public class BudgetService implements IBudgetService {
 		budgetdao.updateBudget(budget_num, suitability);
 	}
 
-	@Override
-	public void updateBudgetInfo(BudgetInfo budgetinfo) {
-		// TODO Auto-generated method stub
-		budgetdao.updateBudgetInfo(budgetinfo);
-	}
 
 }
