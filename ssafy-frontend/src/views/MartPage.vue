@@ -305,10 +305,12 @@ export default {
     this.getProductListByCaterogy("정육/계란류", 2, this.keyword);
   },
   computed: {
+
     // mountedProduct() {
     //   this.getProductList(this.keyword);
     //   return true;
     // },
+
     getMainBar() {
       return this.$store.state.budgetListBar;
     },
