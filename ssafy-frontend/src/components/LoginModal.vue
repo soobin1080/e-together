@@ -125,7 +125,8 @@ export default {
 
 
             this.$emit("checkLogIn");
-            this.$router.push("/");            
+            this.$emit("checkIsAdmin");
+            this.$router.push("/");
           }
 
           else {
