@@ -14,9 +14,11 @@ import UserInfoModifyPage from './views/UserInfoModifyPage.vue'
 import FindPwdPage from './views/FindPwdPage.vue'
 import FindEmailPage from './views/FindEmailPage.vue'
 import ReviewDetailPage from './views/ReviewDetailPage.vue'
+import AdminPage from './views/AdminPage.vue'
 import ErrorPage from './views/ErrorPage.vue'
 import MapPage from './views/MapPage.vue'
 import store from './store.js'
+
 
 Vue.use(Router)
 
