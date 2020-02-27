@@ -4,7 +4,6 @@
     <br>
     <ul class="list-group">
       <li v-for="user in computedUserList"
-        v-if="" 
         @click="goUserDetail(user.email)"
         class="list-group-item list-group-item-action" 
         :style="isDeleteUser(user)">

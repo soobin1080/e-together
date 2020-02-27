@@ -129,7 +129,6 @@
             <v-pagination 
               v-model="pages" 
               :length="pagingLength"
-              @click="getProductListByCaterogy(this.category, pages, '')"
               total-visible="7"></v-pagination>
           </div>
 
@@ -209,7 +208,6 @@ export default {
   data() {
     return {
       keyword: "",
-      products: [],
       tabs: [
         { title: "전체" },
         { title: "정육/계란류" },
@@ -226,9 +224,8 @@ export default {
       pagingProducts: [],
       pages: 1,
       productPerPage: 12,
-      pagingLength: 10,
       category: "전체",
-      allLegnth: 0,
+      // allLegnth: 0,
       pagingLength: 0,
       budgetDialog: false,
       budgetList: [],
@@ -302,7 +299,7 @@ export default {
   mounted() {
     // this.getProductList(this.keyword);
     this.recommendBudgetBar(this.$store.state.budget);
-    this.getProductListByCaterogy("정육/계란류", 2, this.keyword);
+    this.getProductListByCaterogy(this.category, 1, this.keyword);
   },
   computed: {
 
@@ -335,11 +332,17 @@ export default {
       }
     }
   },
+  watch: {
+    pages : function() {
+      this.getProductListByCaterogy(this.category, this.pages, this.keyword)
+    }
+  },
   methods: {
     getProductListByCaterogy(cat, num, key) {
       console.log(cat, num, key)
+      console.log('this.category : '+this.category + ' cat : '+ cat)
       let myPage = 0
-      if (this.category !== cat) {
+      if (this.category !== cat || key !== this.keyword) { // 카테고리나 검색어가 갱신되면 페이지도 초기화
         myPage = 1
       } else { 
         myPage = num
@@ -355,13 +358,17 @@ export default {
         .get(requestUrl, {
           params: {
             category : cat,
-            page: this.pages,
+            page: myPage,
           }
         }, this.$store.getters.requestHeader)
         .then( res => {
           console.log(res)
-          // this.pagingLength = res.data
+          console.log(res.data.totPage)
           this.pagingProducts = res.data.productlist
+          this.pagingLength = key === "" ? res.data.totPage : res.data.endPage
+          console.log(this.pagingLength)
+          this.category = cat
+          this.pages = myPage
         })
     },
     clickTab: function(title) {
