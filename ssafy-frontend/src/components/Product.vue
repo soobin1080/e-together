@@ -1,42 +1,41 @@
 <template>
-<v-card
-    class="mx-auto"
-    max-width="400"
-  >
-    <v-img
-      class="white--text align-end"
-      height="200px"
-      :src="img"
-    >
-    </v-img>
-    <v-tooltip bottom>
+  <v-card class="mx-auto" max-width="400" min-height="330">
+    <v-img class="white--text align-end" height="200px" :src="img"></v-img>
+    <v-tooltip top>
       <template v-slot:activator="{ on }">
         <!-- <div class="lightgrey--text" v-on="on">{{pro_name}}</div> -->
         <v-card-title v-on="on" class="font-weight-bold lightgrey--text">{{pro_name}}</v-card-title>
       </template>
       <span>{{pro_name}}</span>
     </v-tooltip>
-<v-card-subtitle class="pb-0 font-weight-grey" style="text-align:right; font-size:12px">{{weight}}</v-card-subtitle>
-    <v-card-subtitle class="pb-0 font-weight-black" style="text-align:right">{{price}}원</v-card-subtitle>
 
-    <v-card-subtitle 
-      style="font-family:'Noto Sans KR', sans-serif;font-size:0.9rem"
-      class="d-flex justify-content-between">
-      <p>
+    <v-card-subtitle style="padding-top:5px">
+      <p class="pb-0" style="float:left; font-size:12px">{{weight}} &nbsp;</p>
+      <p class="pb-0" style="float:right; font-size:15px; font-weight:bold">{{price}}원</p>
+    </v-card-subtitle>
+
+    <v-card-subtitle>
+      <p style="float:left;" class="mr-5">
         수량:
-            <input
-              type="number"
-              placeholder="1"
-              min="1"
-              size="small"
-              style="text-align:center; font-size:10pt; width:40px"
-              inline
-              controls
-              v-model="quantity"
-              :quantity="quantity"
-            />
+        <input
+          type="number"
+          placeholder="1"
+          min="1"
+          size="small"
+          style="text-align:center; font-size:10pt; width:40px"
+          inline
+          controls
+          v-model="quantity"
+          :quantity="quantity"
+        />
       </p>
-      <i class="far fa-plus-square" style="cursor:pointer;color:orange;margin-left:2%;font-size:1.2rem;" @click="addcart"></i>
+      <p style="float:right; text-align:right;">
+      <i
+        class="far fa-plus-square"
+        style="cursor:pointer; color:orange;font-size:1.2rem;"
+        @click="addcart"
+      ></i>
+      </p>
     </v-card-subtitle>
   </v-card>
   <!-- <v-card height="260px">
@@ -69,7 +68,7 @@
         </div>
       </div>
     </v-card-title>
-  </v-card> -->
+  </v-card>-->
 </template>
 <script>
 import EventBus from "../event-bus.js";
@@ -79,45 +78,53 @@ export default {
     pro_id: { type: String },
     pro_name: { type: String },
     price: { type: Number },
-    weight: {type: String},
+    weight: { type: String },
     img: { type: String },
     main_category: { type: String },
     product: { type: Object }
   },
   data: () => ({
     quantity: 1,
-    ETC: ['수산물/해산물', '쌀/잡곡', '즉석식품', '과일', '스낵', '견과/건해산물'],
+    ETC: [
+      "수산물/해산물",
+      "쌀/잡곡",
+      "즉석식품",
+      "과일",
+      "스낵",
+      "견과/건해산물"
+    ],
     colorByCategory: {
-        '정육/계란류': 'bg-danger',
-        '생수/음료' : 'bg-primary',
-        '채소' : 'bg-success',
-        '라면' : 'bg-warning',
-        '기타' : 'bg-secondary'
+      "정육/계란류": "bg-danger",
+      "생수/음료": "bg-primary",
+      채소: "bg-success",
+      라면: "bg-warning",
+      기타: "bg-secondary"
     }
   }),
   methods: {
     addcart() {
+      alert("장바구니에 담았습니다!");
       // console.log(this.product);
 
       // console.log(
       //   "/////////////" + this.pro_id + "             " + this.main_category
       // );
       // console.log(this.product)
-      console.log(this.colorByCategory['정육/계란류'])
-      
+      console.log(this.colorByCategory["정육/계란류"]);
+
       let product = {
-        pro_id : this.pro_id,
+        pro_id: this.pro_id,
         pro_name: this.pro_name,
         price: Number(this.price),
         quantity: Number(this.quantity),
-        pro_price:Number(this.price) * Number(this.quantity),
+        pro_price: Number(this.price) * Number(this.quantity),
         category: this.product.main_category,
-        weight:this.weight,
-        isETC: this.ETC.includes(this.product.main_category),
+        weight: this.weight,
+        isETC: this.ETC.includes(this.product.main_category)
       };
-      console.log(product)
-      this.$store.dispatch('addCartAsync', product)
-      this.$store.dispatch('addBudgetBarAsync', product)
+      console.log(product);
+      this.$store.dispatch("addCartAsync", product);
+      this.$store.dispatch("addBudgetBarAsync", product);
       // EventBus.$emit("addCart", product);
     }
   }
@@ -134,7 +141,7 @@ export default {
 }
 
 .grey--text {
-  width:90%;
+  width: 90%;
   font-size: 0.8rem;
   /* 한 줄 자르기 */
   /* display: inline-block; */

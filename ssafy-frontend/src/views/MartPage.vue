@@ -8,135 +8,136 @@
         v-resize-text
       >Mart</div>
     </ImgBanner>
+    <v-flex xs12 md9 lg9 class="main">
+      <!-- 비율 추천 그래프 -->
+      <div class="mt-8">
+        <div>
+          <p style="margin:auto; width:100%; color:dimgrey;">
+            <i class="material-icons">assessment</i>예산 별 비율 추천
+          </p>
+          <div
+            class="progress text-center mx-auto"
+            style="width: 100%;"
+            v-on="on"
+            v-if="canRecommend"
+          >
+            <div
+              v-for="bar in recommendBar"
+              :key="bar.className"
+              :class="bar.className"
+              :style="{width: (bar.price / (recommendTotal + recommendETCTotal) * 100) +'%'}"
+            >
+              <!-- {{bar.price}} -->
+              <div v-if="bar.price > 0">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <span v-on="on">{{bar.category}}</span>
+                  </template>
+                  <span>{{bar.category}} : {{numberCut(bar.price / (recommendTotal + recommendETCTotal) * 100)+'%'}}</span>
+                </v-tooltip>
+              </div>
+            </div>
 
-    <!-- 비율 추천 그래프 -->
-    <div class="mt-12" >
-      <p style="margin:auto; width:70%; color:dimgrey;">
-        <i class="material-icons">assessment</i>예산 별 비율 추천        
-      </p>
-      <div 
-        class="progress text-center mx-auto" 
-        style="width: 70%;" 
-        v-on="on" 
-        v-if="canRecommend">
-        <div
-          v-for="bar in recommendBar"
-          :key="bar.className"
-          :class="bar.className"
-          :style="{width: (bar.price / (recommendTotal + recommendETCTotal) * 100) +'%'}"
-        >
-          <!-- {{bar.price}} -->
-          <div v-if="bar.price > 0">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <span v-on="on">{{bar.category}}</span>
-              </template>
-              <span>{{bar.category}} : {{numberCut(bar.price / (recommendTotal + recommendETCTotal) * 100)+'%'}}</span>
-            </v-tooltip>
+            <div
+              v-if="recommendETCTotal > 0"
+              class="progress-bar bg-secondary"
+              v-bind:style="{width: (recommendETCTotal / (recommendTotal + recommendETCTotal)) * 100+'%'}"
+            >
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <span v-on="on">기타</span>
+                </template>
+                <span v-for="bar in recommendBarETC" :key="bar.className">
+                  <span v-if="bar.price > 0">
+                    {{bar.category}} : {{numberCut(bar.price / (recommendTotal + recommendETCTotal) * 100)+'%'}}
+                    <br />
+                  </span>
+                </span>
+              </v-tooltip>
+            </div>
           </div>
-        </div>
-
-        <div
-          v-if="recommendETCTotal > 0"
-          class="progress-bar bg-secondary"
-          v-bind:style="{width: (recommendETCTotal / (recommendTotal + recommendETCTotal)) * 100+'%'}"
-        >
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <span v-on="on">기타</span>
-            </template>
-            <span v-for="bar in recommendBarETC" :key="bar.className">
-              <span v-if="bar.price > 0">
-                {{bar.category}} : {{numberCut(bar.price / (recommendTotal + recommendETCTotal) * 100)+'%'}}
-                <br />
-              </span>
-            </span>
-          </v-tooltip>
-        </div>
-      </div>
-      <br>
-      <p style="margin:auto; padding-top:5px; width:70%; color:dimgrey">
-        <i class="material-icons">assessment</i>현재 내 예산 비율
-      </p>
-      <div class="progress text-center mx-auto" style="width: 70%; height: 15%;" v-on="on">
-        <!-- <div v-for="category in computedBudgetListBar" class="progress-bar">{{category.category}}</div> -->
-        <div
-          v-for="bar in getMainBar"
-          :key="bar.className"
-          :class="bar.className"
-          :style="{width: (bar.price / (getMainTotal + getETCTotal)) * 100+'%'}"
-        >
-          <div v-if="bar.price > 0">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <span v-on="on">{{bar.category}}</span>
-              </template>
-              <span>{{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}} / {{bar.price}}원</span>
-            </v-tooltip>
-          </div>
-        </div>
-        <div
-          v-if="getETCTotal > 0"
-          class="progress-bar bg-secondary"
-          v-bind:style="{width: (getETCTotal / (getMainTotal + getETCTotal)) * 100+'%'}"
-        >
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <span v-on="on">기타</span>
-            </template>
-            <span v-for="bar in getETCBar" :key="bar.className">
-              <span v-if="bar.price > 0">
-                {{bar.category}} : {{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}}
-                <br />
-              </span>
-            </span>
-          </v-tooltip>
-        </div>
-      </div>
-    </div>
-
-
-<v-flex xs12 md9 lg9 class="main">
-    <v-row  style="padding-top:40px">
-      <v-col lg="8" style="padding-top:0px;">
-        <!-- search box -->
-        <v-text-field
-          width="100px"
-          flat
-          hide-details
-          label="Search"
-          prepend-inner-icon="search"
-          solo-inverted
-          shaped
-          v-model="keyword"
-          v-on:keyup="getProductListByCaterogy(category, pages, keyword)"
-        ></v-text-field>
-
-        <b-card no-body style>
-          <v-tabs dark background-color="darken-3" show-arrows>
-            <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
-            <v-tab
-              v-for="tab in tabs"
-              :key="tab.title"
-              @click="getProductListByCaterogy(tab.title, pages, keyword)"
-              v-model="category"
-            >{{tab.title}}</v-tab>
-          </v-tabs>
-
-          <!-- page navigation-->
           <br />
-          <div class="text-center">
-            <v-pagination 
-              v-model="pages" 
-              :length="pagingLength"
-              total-visible="7"></v-pagination>
+          <p style="margin:auto; padding-top:5px; width:100%; color:dimgrey">
+            <i class="material-icons">assessment</i>현재 내 예산 비율
+          </p>
+          <div class="progress text-center mx-auto" style="width: 100%; height: 15%;" v-on="on">
+            <!-- <div v-for="category in computedBudgetListBar" class="progress-bar">{{category.category}}</div> -->
+            <div
+              v-for="bar in getMainBar"
+              :key="bar.className"
+              :class="bar.className"
+              :style="{width: (bar.price / (getMainTotal + getETCTotal)) * 100+'%'}"
+            >
+              <div v-if="bar.price > 0">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <span v-on="on">{{bar.category}}</span>
+                  </template>
+                  <span>{{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}} / {{bar.price}}원</span>
+                </v-tooltip>
+              </div>
+            </div>
+            <div
+              v-if="getETCTotal > 0"
+              class="progress-bar bg-secondary"
+              v-bind:style="{width: (getETCTotal / (getMainTotal + getETCTotal)) * 100+'%'}"
+            >
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <span v-on="on">기타</span>
+                </template>
+                <span v-for="bar in getETCBar" :key="bar.className">
+                  <span v-if="bar.price > 0">
+                    {{bar.category}} : {{numberCut((bar.price / (getMainTotal + getETCTotal)) * 100)+'%'}}
+                    <br />
+                  </span>
+                </span>
+              </v-tooltip>
+            </div>
           </div>
+        </div>
+      </div>
 
-          <ProductList
-            :pagingProducts="pagingProducts"
-          ></ProductList>
-          <!-- 카테고리 탭 -->
-          <!-- <b-tabs small card :tabs="tabs">
+      <!-- <v-flex xs12 md9 lg9 class="main"> -->
+      <v-row style="padding-top:40px">
+        <v-col lg="8" style="padding-top:0px;">
+          <!-- search box -->
+          <v-text-field
+            width="100px"
+            flat
+            hide-details
+            label="Search"
+            prepend-inner-icon="search"
+            solo-inverted
+            shaped
+            v-model="keyword"
+            v-on:keyup="getProductListByCaterogy(category, pages, keyword)"
+          ></v-text-field>
+
+          <b-card no-body style>
+            <v-tabs dark background-color="darken-3" show-arrows>
+              <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
+              <v-tab
+                v-for="tab in tabs"
+                :key="tab.title"
+                @click="getProductListByCaterogy(tab.title, pages, keyword)"
+                v-model="category"
+              >{{tab.title}}</v-tab>
+            </v-tabs>
+
+
+            <ProductList :pagingProducts="pagingProducts"></ProductList>
+
+             <!-- page navigation-->
+            <br />
+            <div class="text-center">
+               
+              <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
+            
+            </div>
+            <br />
+            <!-- 카테고리 탭 -->
+            <!-- <b-tabs small card :tabs="tabs">
               <b-tab v-for="tab in tabs" :key="tab.title" :title="tab.title" @click="clickTab">
               </b-tab>
               <ProductList 
@@ -145,42 +146,36 @@
                 :category="category"
                 :productPerPage="productPerPage"></ProductList>
               
-          </b-tabs>-->
+            </b-tabs>-->
 
-          <!-- modal 플로팅 버튼-->
-          <v-btn
-            fixed
-            dark
-            fab
-            bottom
-            right
-            color="#ffd900"
-            @click="modalAppear"
-            class="hidden-lg-only"
-          >
-            <i class="material-icons">shopping_cart</i>
-          </v-btn>
-        </b-card>
-      </v-col>
-      <!-- v-b-modal.modal-1 -->
-      <!-- 장보기 내역 -->
-      <!-- <v-col> -->
-      <v-flex d-none d-lg-flex>
-        <BudgetList 
-          @changeRecommendBar="recommendBudgetBar"
-          >
-        </BudgetList>
-      </v-flex>
-      <!-- </v-col> -->
-    </v-row>
-</v-flex>
+            <!-- modal 플로팅 버튼-->
+            <v-btn
+              fixed
+              dark
+              fab
+              bottom
+              right
+              color="#ffd900"
+              @click="modalAppear"
+              class="hidden-lg-only"
+            >
+              <i class="material-icons">shopping_cart</i>
+            </v-btn>
+          </b-card>
+        </v-col>
+        <!-- v-b-modal.modal-1 -->
+        <!-- 장보기 내역 -->
+        <!-- <v-col> -->
+        <v-flex d-none d-lg-flex>
+          <BudgetList @changeRecommendBar="recommendBudgetBar"></BudgetList>
+        </v-flex>
+        <!-- </v-col> -->
+      </v-row>
+    </v-flex>
     <!-- modal 창 -->
     <v-row justify="center">
-      <v-dialog v-model="budgetDialog" scrollable max-width="300px">
-        <BudgetList 
-          @changeRecommendBar="recommendBudgetBar"
-          >
-        </BudgetList>
+      <v-dialog v-model="budgetDialog" scrollable max-width="500px">
+        <BudgetList @changeRecommendBar="recommendBudgetBar"></BudgetList>
       </v-dialog>
     </v-row>
 
@@ -288,11 +283,11 @@ export default {
       recommendTotal: 0,
       recommendETCTotal: 0,
       colorByCategory: [
-        { "정육/계란류" : "bg-danger" },
-        { "생수/음료" : "bg-primary" },
-        { "채소" : "bg-success" },
-        { "라면" : "bg-warning" },
-        { "기타" : "bg-secondary" }
+        { "정육/계란류": "bg-danger" },
+        { "생수/음료": "bg-primary" },
+        { 채소: "bg-success" },
+        { 라면: "bg-warning" },
+        { 기타: "bg-secondary" }
       ]
     };
   },
@@ -302,7 +297,6 @@ export default {
     this.getProductListByCaterogy(this.category, 1, this.keyword);
   },
   computed: {
-
     // mountedProduct() {
     //   this.getProductList(this.keyword);
     //   return true;
@@ -324,52 +318,57 @@ export default {
       return this.$store.state.mainTotal + this.$store.state.etcTotal;
     },
     canRecommend() {
-      if ((this.recommendETCTotal > 0 || this.recommendTotal > 0)) {
-        return true
+      if (this.recommendETCTotal > 0 || this.recommendTotal > 0) {
+        return true;
       } else {
-        alert('비교예산이 없습니다')
-        return false
+        alert("비교예산이 없습니다");
+        return false;
       }
     }
   },
   watch: {
-    pages : function() {
-      this.getProductListByCaterogy(this.category, this.pages, this.keyword)
+    pages: function() {
+      this.getProductListByCaterogy(this.category, this.pages, this.keyword);
     }
   },
   methods: {
     getProductListByCaterogy(cat, num, key) {
-      console.log(cat, num, key)
-      console.log('this.category : '+this.category + ' cat : '+ cat)
-      let myPage = 0
-      if (this.category !== cat || key !== this.keyword) { // 카테고리나 검색어가 갱신되면 페이지도 초기화
-        myPage = 1
-      } else { 
-        myPage = num
-      }
-      let requestUrl = ""
-      if (key !== "") {
-        requestUrl = `/product/${key}`
+      console.log(cat, num, key);
+      console.log("this.category : " + this.category + " cat : " + cat);
+      let myPage = 0;
+      if (this.category !== cat || key !== this.keyword) {
+        // 카테고리나 검색어가 갱신되면 페이지도 초기화
+        myPage = 1;
       } else {
-        requestUrl = `/product/`
+        myPage = num;
       }
-      console.log(requestUrl)
+      let requestUrl = "";
+      if (key !== "") {
+        requestUrl = `/product/${key}`;
+      } else {
+        requestUrl = `/product/`;
+      }
+      console.log(requestUrl);
       http
-        .get(requestUrl, {
-          params: {
-            category : cat,
-            page: myPage,
-          }
-        }, this.$store.getters.requestHeader)
-        .then( res => {
-          console.log(res)
-          console.log(res.data.totPage)
-          this.pagingProducts = res.data.productlist
-          this.pagingLength = key === "" ? res.data.totPage : res.data.endPage
-          console.log(this.pagingLength)
-          this.category = cat
-          this.pages = myPage
-        })
+        .get(
+          requestUrl,
+          {
+            params: {
+              category: cat,
+              page: myPage
+            }
+          },
+          this.$store.getters.requestHeader
+        )
+        .then(res => {
+          console.log(res);
+          console.log(res.data.totPage);
+          this.pagingProducts = res.data.productlist;
+          this.pagingLength = key === "" ? res.data.totPage : res.data.endPage;
+          console.log(this.pagingLength);
+          this.category = cat;
+          this.pages = myPage;
+        });
     },
     clickTab: function(title) {
       this.category = title;
@@ -428,15 +427,14 @@ export default {
               }
             }
           })
-          .catch(err => {
-          });
+          .catch(err => {});
       } else {
       }
     },
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-  
+
     getProductList(keyword) {
       this.keyword = keyword;
       console.log(this.keyword);
@@ -498,10 +496,10 @@ export default {
         )
         .then(res => {
           this.$store.state.budgetlist = res.data.budgetlist;
-          this.$store.state.personnel = res.data.budgetinfo.personnel
-          this.$store.state.budget = res.data.budgetinfo.budget
+          this.$store.state.personnel = res.data.budgetinfo.personnel;
+          this.$store.state.budget = res.data.budgetinfo.budget;
         });
-      },
+    }
   }
 };
 </script>
@@ -510,18 +508,12 @@ export default {
 .main {
   padding-bottom: 80px;
   margin: auto;
-  
+}
+.mt-8 {
+  background-color: lightyellow;
+  margin: auto;
+  padding: 12px;
+  padding-bottom: 20px;
+  border-radius: 20px;
 }
 </style>
-© 2020 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About

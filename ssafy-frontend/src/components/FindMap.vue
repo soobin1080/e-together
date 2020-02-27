@@ -1,18 +1,20 @@
 <template>
   <div class="map_wrap">
-    <div ref="map" id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+    <div ref="map" id="map" style="width:100%; height:100%; position:relative; overflow:hidden;"></div>
 
     <div id="menu_wrap" class="bg_white">
       <div class="option">
         <div>
-          <form onsubmit="searchPlaces(); return false;">
-            <input type="text" value placeholder="지역을 입력해주세요!" id="keyword" size="20" />
+          <!-- <form onsubmit="searchPlaces(); return false;" style="width:100%">
+            <input type="text" value="" placeholder="지역을 입력해주세요!" id="keyword" size="30" />
             <button type="submit">검색하기</button>
-          </form>
+          </form>-->
+          <input type="text" v-model="value" placeholder="지역을 입력해주세요!" size="25" @keypress="searchPlaces(value)" style="padding-left:0.5px !important; height:30px !important; font-size:14px !important;" />
+          <button @click="searchPlaces(value)" style="font-size:13px !important">검색하기</button>
         </div>
       </div>
       <hr />
-      <ul id="placesList"></ul>
+      <ul id="placesList" style="padding-left:0px"></ul>
       <div id="pagination"></div>
     </div>
   </div>
@@ -31,7 +33,7 @@ export default {
       const script = document.createElement("script");
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
-        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=918cb2cf36b91b4f11f0a63002dc2154&libraries=services,clusterer,drawing";
+        "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=918cb2cf36b91b4f11f0a63002dc2154&libraries=services,clusterer,drawing";
       document.head.appendChild(script);
     }
   },
@@ -41,7 +43,8 @@ export default {
       map: null,
       mapCenter: this.center,
       markers: [],
-      infowindow: null
+      infowindow: null,
+      places:[]
     };
   },
 
@@ -70,7 +73,7 @@ export default {
 
       const options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
+        level: 5 // 지도의 확대 레벨
       };
 
       const map = new kakao.maps.Map(container, options);
@@ -83,8 +86,13 @@ export default {
       // // 카테고리로 은행을 검색합니다
       // ps.keywordSearch("이마트", this.placesSearchCB);
     },
-    searchPlaces() {
-      var keyword = document.getElementById("keyword").value + " 이마트";
+    searchPlaces(value) {
+      console.log(value);
+      if (value == undefined) {
+        var keyword = "이마트";
+      } else {
+        var keyword = value + " 이마트";
+      }
 
       if (!keyword.replace(/^\s+|\s+$/g, "")) {
         alert("키워드를 입력해주세요!");
@@ -135,6 +143,7 @@ export default {
     },
     // 검색 결과 목록과 마커를 표출하는 함수입니다
     displayPlaces(places) {
+      this.places=places;
       var listEl = document.getElementById("placesList"),
         menuEl = document.getElementById("menu_wrap"),
         fragment = document.createDocumentFragment(),
@@ -163,26 +172,25 @@ export default {
         // 마커와 검색결과 항목에 mouseover 했을때
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
         // mouseout 했을 때는 인포윈도우를 닫습니다
+        var title=places[i].place_name;
+        
         (function(marker, title) {
-          kakao.maps.event.addListener(marker, "mouseover", function() {
-             var content = '<div style="padding:5px;z-index:1;">' + title + "</div>";
+            kakao.maps.event.addListener(marker, 'mouseover', function() {
+                displayInfowindow(marker, title);
+            });
 
-     infowindow.setContent(content);
-      infowindow.open(this.map, marker);
-          });
+            kakao.maps.event.addListener(marker, 'mouseout', function() {
+                infowindow.close();
+            });
 
-          kakao.maps.event.addListener(marker, "mouseout", function() {
-            infowindow.close();
-          });
+            itemEl.onmouseover =  function () {
+                displayInfowindow(marker, title);
+            };
 
-          itemEl.onmouseover = function() { var content = '<div style="padding:5px;z-index:1;">' + title + "</div>";
-
-      infowindow.setContent(content);
-      infowindow.open(this.map, marker);};
-          itemEl.onmouseout = function() {
-            infowindow.close();
-          };
-        })(marker, places[i].place_name);
+            itemEl.onmouseout =  function () {
+                infowindow.close();
+            };
+        });
 
         fragment.appendChild(itemEl);
       }
@@ -201,8 +209,8 @@ export default {
           '<span class="markerbg marker_' +
           (index + 1) +
           '"></span>' +
-          '<div class="info">' +
-          "   <h5>" +
+          '<div class="info" style="background-color:rgba( 255, 255, 255, 0 ) !important">' +
+          '   <h5 style="font-size:13px !important; font-weight:bold !important">' +
           places.place_name +
           "</h5>";
 
@@ -229,7 +237,7 @@ export default {
     addMarker(position, idx, title) {
       var imageSrc = emartmarker, // 마커 이미지 url, 스프라이트 이미지를 씁니다
         imageSize = new kakao.maps.Size(30, 40), // 마커 이미지의 크기
-        imgOptions = { offset: new kakao.maps.Point(27, 69) },
+        imgOptions = { },
         markerImage = new kakao.maps.MarkerImage(
           imageSrc,
           imageSize,
@@ -237,7 +245,8 @@ export default {
         ),
         marker = new kakao.maps.Marker({
           position: position, // 마커의 위치
-          image: markerImage
+          image: markerImage,
+          title: this.places[idx].place_name
         });
 
       marker.setMap(this.map); // 지도 위에 마커를 표출합니다
@@ -284,12 +293,12 @@ export default {
     },
     // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
     // 인포윈도우에 장소명을 표시합니다
-    // displayInfowindow(marker, title) {
-    //   var content = '<div style="padding:5px;z-index:1;">' + title + "</div>";
+    displayInfowindow(marker, title) {
+      var content = '<div style="padding:5px;z-index:1;">' + title + "</div>";
 
-    //   this.infowindow.setContent(content);
-    //   this.infowindow.open(this.map, marker);
-    // },
+      this.infowindow.setContent(content);
+      this.infowindow.open(this.map, marker);
+    },
 
     // 검색결과 목록의 자식 Element를 제거하는 함수입니다
     removeAllChildNods(el) {
@@ -317,20 +326,20 @@ export default {
 .map_wrap {
   position: relative;
   width: 100%;
-  height: 500px;
+  height: 580px;
 }
 #menu_wrap {
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
-  width: 250px;
+  width: 300px;
   margin: 10px 0 30px 10px;
   padding: 5px;
   overflow-y: auto;
   background: rgba(255, 255, 255, 0.7);
   z-index: 1;
-  font-size: 12px;
+  font-size: 15px;
   border-radius: 10px;
 }
 .bg_white {
@@ -347,7 +356,7 @@ export default {
   text-align: center;
 }
 #menu_wrap .option p {
-  margin: 10px 0;
+  margin: 15px 0;
 }
 #menu_wrap .option button {
   margin-left: 5px;
@@ -361,6 +370,10 @@ export default {
   overflow: hidden;
   cursor: pointer;
   min-height: 65px;
+}
+.v-application .info {
+  background-color: white !important;
+  border-color: #2196f3 !important;
 }
 #placesList .item span {
   display: block;

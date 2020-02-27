@@ -115,7 +115,7 @@ export default new Router({
 			component: ReviewDetailPage
 		},
 		{
-			path : '/mappage',
+			path : '/map',
 			name : 'mappage',
 			component: MapPage
 		},
