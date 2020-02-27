@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ssafy.review">
 
-	<select id="getAllReview"
+	<select id="getAllReview" parameterType="java.lang.Integer"
 		resultType="com.ssafy.edu.model.ReviewResult">
 		select r.review_num,b.budget_num, u.name, b.budget_title,
 		b.personnel,
@@ -14,11 +14,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		budget_info b, review r, review_file f
 		where u.email=b.user_email and
 		b.budget_num=r.budget_num and r.review_num=f.review_num order by
-		r.review_num desc;
+		r.review_num desc LIMIT #{startContent}, 6;
 	</select>
 
 	<!-- 원하는 리뷰만 보여주기 -->
-	<select id="getWantedReview"
+	<select id="getWantedReview" parameterType="hashmap"
 		resultType="com.ssafy.edu.model.ReviewResult">
 		select r.review_num,b.budget_num, u.name, b.budget_title,
 		b.personnel,
@@ -28,8 +28,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		budget_info b, review r, review_file f
 		where u.email=b.user_email and
 		b.budget_num=r.budget_num and r.review_num=f.review_num and
-		((personnel between #{personnel}*0.9 and #{personnel}*1.1) or (budget between #{budget}*0.9
-		and #{budget}*1.1)) order by r.review_num desc;
+		((personnel between #{personnel}*0.9 and #{personnel}*1.1) or (budget
+		between #{budget}*0.9
+		and #{budget}*1.1)) order by r.review_num desc LIMIT #{startContent}, 6;
 	</select>
 
 	<select id="getReviewLikeUser" parameterType="java.lang.Integer"
@@ -110,6 +111,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		resultType="java.lang.String">
 		select file_url from review_file where
 		review_num=#{review_num}
+	</select>
+
+	<select id="cntTotReview" resultType="java.lang.Integer">
+		select count(*) from review
+	</select>
+
+	<select id="cntTotWantedReview" parameterType="hashmap"
+		resultType="java.lang.Integer">
+		select count(*)
+		from user u, budget_info b, review r, review_file f
+		where u.email=b.user_email and	b.budget_num=r.budget_num
+		and r.review_num=f.review_num and
+		((personnel between #{personnel}*0.9 and #{personnel}*1.1) 
+		or
+		(budget between #{budget}*0.9 and #{budget}*1.1));
 	</select>
 
 </mapper>

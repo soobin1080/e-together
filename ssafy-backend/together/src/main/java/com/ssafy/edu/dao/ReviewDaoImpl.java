@@ -20,9 +20,9 @@ public class ReviewDaoImpl {
 	@Autowired
 	private SqlSession sqlSession;
 
-	public List<ReviewResult> getAllReview() {
+	public List<ReviewResult> getAllReview(int startContent) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(ns + "getAllReview");
+		return sqlSession.selectList(ns + "getAllReview",startContent);
 	}
 	
 	public Review getOneReview(int review_num) {
@@ -84,11 +84,26 @@ public class ReviewDaoImpl {
 		return sqlSession.selectOne(ns+"getReviewImage",review_num);
 	}
 
-	public List<ReviewResult> getWantedReview(int personnel, int budget) {
+	public List<ReviewResult> getWantedReview(int startContent,int personnel, int budget) {
 		// TODO Auto-generated method stub
 		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("startContent", startContent);
 		paramMap.put("personnel", personnel);
 		paramMap.put("budget", budget);
 		return sqlSession.selectList(ns+"getWantedReview",paramMap);
 	}
+
+	public int cntTotReview() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(ns + "cntTotReview");
+	}
+
+	public int cntTotWantedReview(int personnel, int budget) {
+		// TODO Auto-generated method stub
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("personnel", personnel);
+		paramMap.put("budget", budget);
+		return sqlSession.selectOne(ns + "cntTotWantedReview",paramMap);
+	}
+
 }

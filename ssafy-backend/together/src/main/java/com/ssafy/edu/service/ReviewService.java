@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.edu.dao.ReviewDaoImpl;
+import com.ssafy.edu.model.ProductPage;
 import com.ssafy.edu.model.Review;
 import com.ssafy.edu.model.ReviewCount;
 import com.ssafy.edu.model.ReviewFile;
+import com.ssafy.edu.model.ReviewPage;
 import com.ssafy.edu.model.ReviewResult;
 
 @Service
@@ -17,15 +19,15 @@ public class ReviewService implements IReviewService {
 	private ReviewDaoImpl reviewdao;
 
 	@Override
-	public List<ReviewResult> getAllReview() {
+	public List<ReviewResult> getAllReview(int startContent) {
 		// TODO Auto-generated method stub
-		return reviewdao.getAllReview();
+		return reviewdao.getAllReview(startContent);
 	}
 
 	@Override
 	public void insertReview(Review review) {
 		// TODO Auto-generated method stub
-		 reviewdao.insertReview(review);
+		reviewdao.insertReview(review);
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class ReviewService implements IReviewService {
 		// TODO Auto-generated method stub
 		reviewdao.insertReviewFile(file);
 	}
-	
+
 	@Override
 	public void updateReview(Review review) {
 		// TODO Auto-generated method stub
@@ -89,9 +91,50 @@ public class ReviewService implements IReviewService {
 	}
 
 	@Override
-	public List<ReviewResult> getWantedReview(int personnel, int budget) {
+	public List<ReviewResult> getWantedReview(int startContent,int personnel, int budget) {
 		// TODO Auto-generated method stub
-		return reviewdao.getWantedReview(personnel,budget);
+		return reviewdao.getWantedReview(startContent,personnel, budget);
+	}
+
+	@Override
+	public ReviewPage getReviewListWithPage(int nowPage) {
+		// TODO Auto-generated method stub
+		int totPage = (int) Math.ceil(reviewdao.cntTotReview() / 6.0);
+		System.out.println("totPage : " + totPage);
+		System.out.println("nowPage : " + nowPage);
+
+		int startContent = (nowPage - 1) * 6;
+		System.out.println("startContent : " + startContent);
+
+		// name, personnel, like_count 도 반환
+		List<ReviewResult> reviewlist = reviewdao.getAllReview(startContent);
+
+		for (int i = 0; i < reviewlist.size(); i++) {
+			List<String> reviewlikeuser = reviewdao.getReviewLikeUser(reviewlist.get(i).getReview_num());
+			reviewlist.get(i).setLike_user(reviewlikeuser);
+		}
+
+		return new ReviewPage(reviewlist, nowPage, 1, totPage, totPage);
+	}
+
+	@Override
+	public ReviewPage getWantedReviewListWithPage(int nowPage, int personnel, int budget) {
+		// TODO Auto-generated method stub
+		int totPage = (int) Math.ceil(reviewdao.cntTotWantedReview(personnel,budget) / 6.0);
+		System.out.println("totPage : " + totPage);
+		System.out.println("nowPage : " + nowPage);
+
+		int startContent = (nowPage - 1) * 6;
+		System.out.println("startContent : " + startContent);
+		// name, personnel, like_count 도 반환
+		List<ReviewResult> reviewlist = reviewdao.getWantedReview(startContent,personnel, budget);
+
+		for (int i = 0; i < reviewlist.size(); i++) {
+			List<String> reviewlikeuser = reviewdao.getReviewLikeUser(reviewlist.get(i).getReview_num());
+			reviewlist.get(i).setLike_user(reviewlikeuser);
+		}
+
+		return new ReviewPage(reviewlist, nowPage, 1, totPage, totPage);
 	}
 
 }
