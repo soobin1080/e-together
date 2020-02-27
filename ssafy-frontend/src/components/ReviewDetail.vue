@@ -347,6 +347,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.review)
     this.total_sum();
     this.getAllReplys();
   },

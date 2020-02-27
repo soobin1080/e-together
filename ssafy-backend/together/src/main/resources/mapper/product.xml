@@ -56,6 +56,64 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by pro_id LIMIT #{startContent}, 12;
 
 	</select>
+	<!-- pro_id,pro_name,price ,main_category ,gram ,img -->
+	<!-- 전체 식품 보기 - -->
+<!-- 	<select id="getAllProduct" -->
+<!-- 		resultType="com.ssafy.edu.model.Product"> -->
+<!-- 		select pro_id, pro_name, price, main_category, weight, img -->
+<!-- 		from product -->
+<!-- 	</select> -->
+
+<!-- 	<select id="keywordSearchProduct" parameterType="java.lang.String" -->
+<!-- 		resultType="com.ssafy.edu.model.Product"> -->
+<!-- 		select pro_id, pro_name, price, main_category, weight, img -->
+<!-- 		from product where pro_name like concat('%',#{keyword},'%') -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="categorySearchProduct" parameterType="java.lang.String" -->
+<!-- 		resultType="com.ssafy.edu.model.Product"> -->
+<!-- 		select pro_id, pro_name, price, main_category, weight, img -->
+<!-- 		from product where main_category= #{category} -->
+<!-- 	</select>  -->
+	
+<!-- 	<select id="categoryKeywordSearchProduct" parameterType="com.ssafy.edu.model.Product" -->
+<!-- 		resultType="com.ssafy.edu.model.Product"> -->
+<!-- 		select pro_id, pro_name, price, main_category, weight, img -->
+<!-- 		from product where main_category= #{category} and pro_name like concat('%',#{keyword},'%') -->
+<!-- 	</select>  -->
+	
+	<insert id="insertProduct"
+		parameterType="com.ssafy.edu.model.Product">
+		insert ignore into product(pro_id, pro_name,
+		price, main_category, weight, img)
+		values(#{pro_id},#{pro_name},#{price},#{main_category},#{weight},#{img});
+	</insert>
+	
+	<select id="cntTotFood" parameterType="java.lang.String" resultType="java.lang.Integer">
+	
+		select count(*) from product
+<!-- 		<if test="category!=null and !category.equals('')"> -->
+			where main_category=#{category};
+<!-- 		</if>;		 -->
+	</select>
+	
+	<select id="getProductListWithPage" parameterType="hashMap" resultType="com.ssafy.edu.model.Product">
+		select pro_id, pro_name, price, main_category, weight, img
+		from product
+<!-- 		<if test="category!=null and !category.equals('')"> -->
+			 where main_category= #{category}
+<!-- 		</if> -->
+		 order by pro_id LIMIT #{startContent}, 12;
+	</select>
+	
+	<select id="getKeywordProductListWithPage" parameterType="hashMap" resultType="com.ssafy.edu.model.Product">
+		select pro_id, pro_name, price, main_category, weight, img
+		from product
+<!-- 		<if test="category!=null and !category.equals('')"> -->
+			 where main_category= #{category} and pro_name like concat('%',#{keyword},'%')
+<!-- 		</if> -->
+		 order by pro_id LIMIT #{startContent}, 12;
+	</select>
 
 </mapper>
 

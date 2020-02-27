@@ -154,10 +154,10 @@
       },
       goToDetail() {
         this.$router.push(
-          { path: `reviewdetail/${this.review.review_num}/${this.review.name}`, 
+          { path: `reviewdetail/${this.review.review_num}`, 
             params: { 
               reviewNum: this.review.review_num, 
-              userName: this.review.name }
+                }
               }
             )
           }

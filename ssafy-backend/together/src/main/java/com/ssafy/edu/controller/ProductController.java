@@ -1,6 +1,5 @@
 package com.ssafy.edu.controller;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +34,37 @@ public class ProductController {
 	@Autowired
 	private IProductService productservice;
 
-int recentPage = 0;
+
+//	@ApiOperation(value = "전체 상품 보기", response = List.class)
+//	@RequestMapping(value = "/product", method = RequestMethod.GET)
+//	public ResponseEntity<List<Product>> getAllProduct() throws Exception {
+//		logger.info("1-------------getAllProduct-----------------------------" + new Date());
+//		List<Product> products = productservice.getAllProduct();
+//
+//		System.out.println(products);
+//		if (products.isEmpty()) {
+//			return new ResponseEntity(HttpStatus.NO_CONTENT);
+//		}
+//		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+//	}
+//
+//	@ApiOperation(value = "전체에서 상품 검색", response = List.class)
+//	@RequestMapping(value = { "/product/category/{keyword}" }, method = RequestMethod.GET)
+//	public ResponseEntity<List<Product>> keywordSearchProduct(@PathVariable String keyword) throws Exception {
+//		logger.info("2-------------keywordSearchProduct-----------------------------" + new Date());
+//
+//		System.out.println(keyword);
+//		List<Product> products = productservice.keywordSearchProduct(keyword);
+//
+//		System.out.println("---------검색결과: " + products);
+//
+//		if (products.isEmpty()) {
+//			return new ResponseEntity(HttpStatus.NO_CONTENT);
+//		}
+//		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+//	}
+
+	int recentPage = 0;
 	
 	@ApiOperation(value = "카테고리 별 상품 보기", response = List.class)
 	@RequestMapping(value = { "/product" }, method = RequestMethod.GET)

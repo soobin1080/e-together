@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LoginModal @checkLogIn="getUserName"></LoginModal>
+    <LoginModal @checkLogIn="getUserName" @checkIsAdmin="getIsAdmin"></LoginModal>
     <v-navigation-drawer v-model="sidebar" fixed temporary>
       <v-list style="padding-top:10px;">
          <v-list-item style="padding:0px">
@@ -135,6 +135,7 @@ export default {
             if (res.data.state === "succ" && res.data.count == 1) {
               sessionStorage.clear();
               this.getUserName();
+              this.getIsAdmin();
               this.$router.push("/");
             }
           })
@@ -164,22 +165,13 @@ export default {
         alert('관리자만 접속 가능한 페이지입니다')
         return
       } else {
-        console.log('pass')
-        http
-          .get('/users',authenitcation, this.$store.getters.requestHeader)
-          .then(res => {
-            console.log(res)
-          })
-          .catch( err =>{
-            console.log(err)
-          })
+        this.$router.push('/admin')
       }
     },
     getIsAdmin() {
-      console.log('getIsAdmin')
-      this.isAdmin = this.$store.getters.isAdmin
-      console.log(this.isAdmin)
-    }
+      console.log('getIsADMI')
+      this.isAdmin = sessionStorage.getItem('auth') === "3" ? true : false
+    } 
     // isAdmin(){
     //   this.isAdmin = this.$store.getters.isAdmin
     //   return this.isAdmin
@@ -213,7 +205,8 @@ export default {
     },
     checkAdmin(){
       console.log('checkadmin')
-      return this.isAdmin
+      console.log(this.isAdmin)
+      return this.isAdmin;
     }
   },
   mounted() {
