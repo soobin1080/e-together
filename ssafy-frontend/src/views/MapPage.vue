@@ -1,27 +1,19 @@
 <template>
   <div>
-      <!-- <button @click="toggle">{{ showMap ? "hide" : "show" }}</button>
-      <button @click="changeMapWidth">change map width</button>
-      <button @click="changeMapHeight">change map height</button> -->
-      <!-- <KakaoMap
-        v-show="showMap"
-        :appkey="appkey"
-        :center="center"
-        :width="mapWidth"
-        :height="mapHeight"
-        :isShowing="showMap"
-      ></KakaoMap> -->
+       <FindMap></FindMap>
       <KakaoMap       
         :appkey="appkey"
         :center="center"
         :width="mapWidth"
         :height="mapHeight"        
       ></KakaoMap>
+      
   </div>
 </template>
 
 <script>
 import KakaoMap from '../components/KakaoMap';
+import FindMap from '../components/FindMap';
 export default {
     data() {
         return  {
@@ -34,20 +26,9 @@ export default {
     },
 
     components: {
-        KakaoMap
+        KakaoMap,
+        FindMap
     },
 
-    // for test
-    // methods: {
-    //     toggle() {
-    //         this.showMap = !this.showMap;
-    //     },
-    //     changeMapWidth() {
-    //         this.mapWidth = this.mapWidth > 200 ? 200 : 500;
-    //     },
-    //     changeMapHeight() {
-    //         this.mapHeight = this.mapHeight > 300 ? 300 : 800;
-    //     }
-    // }
 }
 </script>
