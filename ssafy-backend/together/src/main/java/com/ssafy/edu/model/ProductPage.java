@@ -66,5 +66,4 @@ public class ProductPage {
 		return "ProductPage [productlist=" + productlist + ", currentPage=" + currentPage + ", startPage=" + startPage
 				+ ", endPage=" + endPage + ", totPage=" + totPage + "]";
 	}
-
 }

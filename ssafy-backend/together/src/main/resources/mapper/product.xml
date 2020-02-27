@@ -4,6 +4,58 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ssafy.product">
 
+	<insert id="insertProduct"
+		parameterType="com.ssafy.edu.model.Product">
+		insert ignore into product(pro_id, pro_name,
+		price,
+		main_category, weight, img)
+		values(#{pro_id},#{pro_name},#{price},#{main_category},#{weight},#{img});
+	</insert>
+
+	<select id="cntTotFood" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+
+		select count(*)
+
+		<choose>
+			<when test="_parameter.equals('전체')">
+				from product
+			</when>
+			<otherwise>
+				from product where main_category= #{category}
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="getProductListWithPage" parameterType="hashMap"
+		resultType="com.ssafy.edu.model.Product">
+		select pro_id, pro_name, price, main_category, weight, img
+		<choose>
+			<when test="category.equals('전체')">
+				from product
+			</when>
+			<otherwise>
+				from product where main_category= #{category}
+			</otherwise>
+		</choose>
+		order by pro_id LIMIT #{startContent}, 12;
+	</select>
+
+	<select id="getKeywordProductListWithPage"
+		parameterType="hashMap" resultType="com.ssafy.edu.model.Product">
+		select pro_id, pro_name, price, main_category, weight, img
+		<choose>
+			<when test="category.equals('전체')">
+				from product where pro_name like concat('%',#{keyword},'%')
+			</when>
+			<otherwise>
+				from product where main_category= #{category} and pro_name like concat('%',#{keyword},'%')
+			</otherwise>
+		</choose>
+		
+		order by pro_id LIMIT #{startContent}, 12;
+
+	</select>
 	<!-- pro_id,pro_name,price ,main_category ,gram ,img -->
 	<!-- 전체 식품 보기 - -->
 <!-- 	<select id="getAllProduct" -->
@@ -62,8 +114,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 		</if> -->
 		 order by pro_id LIMIT #{startContent}, 12;
 	</select>
-	
-	
 
 </mapper>
 
