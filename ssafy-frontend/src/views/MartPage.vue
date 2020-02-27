@@ -293,7 +293,7 @@ export default {
   },
   mounted() {
     // this.getProductList(this.keyword);
-    this.recommendBudgetBar(this.$store.state.budget);
+    //this.recommendBudgetBar(this.$store.state.budget);
     this.getProductListByCaterogy(this.category, 1, this.keyword);
   },
   computed: {
@@ -321,7 +321,7 @@ export default {
       if (this.recommendETCTotal > 0 || this.recommendTotal > 0) {
         return true;
       } else {
-        alert("비교예산이 없습니다");
+        //alert("비교예산이 없습니다");
         return false;
       }
     }
@@ -429,6 +429,7 @@ export default {
           })
           .catch(err => {});
       } else {
+        alert("예산을 입력해주세요!")
       }
     },
     getImgUrl(img) {
