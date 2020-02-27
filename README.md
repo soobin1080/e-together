@@ -26,11 +26,11 @@ e-투계더는 emart 상품을 기반으로 워크샵, MT, 여행 등 단체로 
 
 #### 3. 시스템 아키텍쳐
 
-![시스템아키텍쳐](C:\Users\multicampus\Desktop\s02p13b109\typora-user-images\시스템아키텍쳐.png)
+![시스템아키텍쳐](\typora-user-images\시스템아키텍쳐.png)
 
 #### 4. ERD
 
-![ERD](C:\Users\multicampus\Desktop\s02p13b109\typora-user-images\ERD.PNG)
+![ERD](\typora-user-images\ERD.PNG)
 
 #### 5. Restful API 
 
@@ -54,9 +54,6 @@ e-투계더는 emart 상품을 기반으로 워크샵, MT, 여행 등 단체로 
 
 ###### 	Product API
 
-- `GET /api/product` : 상품 목록 보기
-- `POST /api/product` : 
-- `GET /api/product/category/{keyword}` : 전체 상품에서 상품명으로 상품 검색
 - `GET /api/product/{category}` : 카테고리 별 상품 보기
 - `GET /api/product/{category}/{keyword}` : 카테고리 별 상품 검색
 
