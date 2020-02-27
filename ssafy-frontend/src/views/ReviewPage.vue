@@ -20,7 +20,7 @@
         <span class="fa fa-spinner fa-spin"></span> Loading
       </div>
     </transition>
-    <div
+    <!-- <div
       v-infinite-scroll="loadMore" 
       infinite-scroll-disabled="busy" 
       :infinite-scroll-distance="reviewPerPage" >
@@ -28,7 +28,13 @@
         :allReviews="allReviews"
         >
     </ReviewList>
-    </div>
+    </div> -->
+    
+    <ReviewList
+      :allReviews="allReviews"
+    >
+
+    </ReviewList>
   </div>
 </template>
 
@@ -56,6 +62,8 @@ export default {
     allReviews: [],
     reviewPerPage: 6,
     loading: false,
+    personnel: 0,
+    budget: 0,
     items: [
       {
         icon: "folder",
@@ -81,28 +89,31 @@ export default {
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-    loadMore() {
-      this.busy = true
-      console.log('loadmore')
-      setTimeout(() => {
-        http
-          .get('/review', this.$store.getters.requestHeader)
-            .then(res => {
-              if (this.allReviews.length < res.data.length) {
-                for (let i = (this.pages-1)*this.reviewPerPage; i < this.pages*this.reviewPerPage; i++ ) {
-                  if (this.allReviews.length === res.data.length) {
-                    this.busy = true
-                    break;
-                  } else {
-                    this.allReviews.push(res.data[i])
-                  }
-                } 
-                this.pages++;
-                this.busy = false
-              }
-            })
-      }, 100);
-      }
+    infiniteScroll() {
+
+    },
+    // loadMore() {
+    //   this.busy = true
+    //   console.log('loadmore')
+    //   setTimeout(() => {
+    //     http
+    //       .get('/review', this.$store.getters.requestHeader)
+    //         .then(res => {
+    //           if (this.allReviews.length < res.data.length) {
+    //             for (let i = (this.pages-1)*this.reviewPerPage; i < this.pages*this.reviewPerPage; i++ ) {
+    //               if (this.allReviews.length === res.data.length) {
+    //                 this.busy = true
+    //                 break;
+    //               } else {
+    //                 this.allReviews.push(res.data[i])
+    //               }
+    //             } 
+    //             this.pages++;
+    //             this.busy = false
+    //           }
+    //         })
+    //   }, 100);
+    //   }
   },
   computed: {
   },  

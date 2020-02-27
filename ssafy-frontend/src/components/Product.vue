@@ -106,7 +106,7 @@ export default {
       console.log(this.colorByCategory['정육/계란류'])
       
       let product = {
-        pro_id : this.product.pro_id,
+        pro_id : this.pro_id,
         pro_name: this.pro_name,
         price: Number(this.price),
         quantity: Number(this.quantity),
