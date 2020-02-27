@@ -26,7 +26,7 @@ import VuetifyNumberInput from '@jzolago/vuetify-number-input'
 
 var infiniteScroll =  require('vue-infinite-scroll');
 Vue.use(infiniteScroll)
-
+Vue.use(InfiniteLoading, { /* options */ });
 Vue.config.productionTip = false
 
 Vue.use(VueSimplemde)

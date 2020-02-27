@@ -33,8 +33,9 @@
     <ReviewList
       :allReviews="allReviews"
     >
-
     </ReviewList>
+
+    <infinite-loading @infinite="infiniteHandler" :identifier="infiniteId"></infinite-loading>
   </div>
 </template>
 
@@ -58,12 +59,13 @@ export default {
     title: "",
     body: "",
     busy: false,
-    pages: 1,
+    page: 1,
     allReviews: [],
     reviewPerPage: 6,
     loading: false,
     personnel: 0,
     budget: 0,
+    infiniteId : 0,
     items: [
       {
         icon: "folder",
@@ -89,9 +91,26 @@ export default {
     getImgUrl(img) {
       return require("../assets/" + img);
     },
-    infiniteScroll() {
-
-    },
+    infiniteHandler($state) {
+      let requestUrl = this.personnel !== 0 || this.budget !== 0 ? `/review/${this.personnel}/${this.budget}` : `/review`
+      http
+        .get(requestUrl, {
+        params: {
+          page: this.page,
+        },
+      }).then(({ data }) => {
+        console.log('infiniteHandler')
+        console.log(requestUrl)
+        console.log(data)
+        if (data.reviewlist.length) {
+          this.page += 1;
+          this.allReviews.push(data.reviewlist);
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+      });
+     }
     // loadMore() {
     //   this.busy = true
     //   console.log('loadmore')
@@ -118,7 +137,7 @@ export default {
   computed: {
   },  
   mounted() {
-    this.loadMore()
+    // this.loadMore()
   }
 };
 </script>
