@@ -71,6 +71,11 @@ export default {
   directives: {
     ResizeText
   },
+  props: {
+    review: {
+      type: Object
+    }
+  },
   data() {
     return {
       ReviewNum: 0,

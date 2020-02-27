@@ -1,6 +1,6 @@
 <template>
   <div>
-     <v-img :src="getImgUrl('shopping-879498_1920.jpg')" aspect-ratio="5.5">
+    <v-img :src="getImgUrl('shopping-879498_1920.jpg')" aspect-ratio="5.5">
       <v-layout align-center justify-center row fill-height>
         <v-flex text-xs-center>
           <span class="text-shadow display-2 font-weight-light">
@@ -15,6 +15,7 @@
         </v-flex>
       </v-layout>
     </v-img>
+    <v-container>
     <transition name="fade">
       <div class="loading" v-show="loading">
         <span class="fa fa-spinner fa-spin"></span> Loading
@@ -29,13 +30,35 @@
         >
     </ReviewList>
     </div> -->
-    
+    <div class="search text-center" width="100%">
+      <v-col cols="12" sm="6" md="3" class="d-inline-block">
+        <v-text-field
+          width="30%"
+          v-model="personnel"
+          @change="search(personnel, budget)"
+          label="인원"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" sm="6" md="3" class="d-inline-block">
+        <v-text-field
+          width="30%"
+          v-model="budget"
+          @change="search(personnel, budget)"
+          label="예산"
+        ></v-text-field>
+      </v-col>
+      <v-btn small color="primary" 
+        class="d-inline-block"
+        @click="search()"
+        >검색</v-btn>
+    </div>
     <ReviewList
       :allReviews="allReviews"
     >
     </ReviewList>
 
     <infinite-loading @infinite="infiniteHandler" :identifier="infiniteId"></infinite-loading>
+    </v-container>
   </div>
 </template>
 
@@ -63,9 +86,9 @@ export default {
     allReviews: [],
     reviewPerPage: 6,
     loading: false,
-    personnel: 0,
-    budget: 0,
-    infiniteId : 0,
+    personnel: "",
+    budget: "",
+    infiniteId : 1,
     items: [
       {
         icon: "folder",
@@ -88,11 +111,18 @@ export default {
     ]
   }),
   methods: {
+    search() {
+      this.page = 1
+      this.allReviews = []
+      this.infiniteId += 1
+    },
     getImgUrl(img) {
       return require("../assets/" + img);
     },
     infiniteHandler($state) {
-      let requestUrl = this.personnel !== 0 || this.budget !== 0 ? `/review/${this.personnel}/${this.budget}` : `/review`
+      let per = this.personnel === "" ? 0 : Number(this.personnel)
+      let bud = this.budget === "" ? 0 : Number(this.budget)
+      let requestUrl = per === 0 && bud === 0 ? `/review` : `/review/${per}/${bud}`
       http
         .get(requestUrl, {
         params: {
@@ -103,8 +133,9 @@ export default {
         console.log(requestUrl)
         console.log(data)
         if (data.reviewlist.length) {
+          console.log(data.reviewlist)
           this.page += 1;
-          this.allReviews.push(data.reviewlist);
+          this.allReviews = this.allReviews.concat((data.reviewlist));
           $state.loaded();
         } else {
           $state.complete();
@@ -143,5 +174,9 @@ export default {
 </script>
 
 <style scoped>
-
+ .search {
+   /* list-style: none; */
+  /* position: fixed;
+  width: 100%; */
+ }
 </style>
