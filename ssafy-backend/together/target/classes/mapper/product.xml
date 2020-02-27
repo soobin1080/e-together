@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values(#{pro_id},#{pro_name},#{price},#{main_category},#{weight},#{img});
 	</insert>
 
-	<select id="cntTotFood" parameterType="java.lang.String"
+	<select id="cntTotCategoryProduct" parameterType="java.lang.String"
 		resultType="java.lang.Integer">
 
 		select count(*)
@@ -24,6 +24,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</when>
 			<otherwise>
 				from product where main_category= #{category}
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="cntTotKeywordProduct" parameterType="hashMap"
+		resultType="java.lang.Integer">
+		select count(*)
+		<choose>
+			<when test="category.equals('전체')">
+				from product where pro_name like concat('%',#{keyword},'%')
+			</when>
+			<otherwise>
+				from product where main_category= #{category} and pro_name like concat('%',#{keyword},'%')
 			</otherwise>
 		</choose>
 	</select>

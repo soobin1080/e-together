@@ -53,9 +53,9 @@ public class ProductDaoImpl {
 		return sqlSession.selectList(ns + "getProductListWithPage", paramMap);
 	}
 
-	public int cntTotFood(String category) {
+	public int cntTotCategoryProduct(String category) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(ns + "cntTotFood",category);
+		return sqlSession.selectOne(ns + "cntTotCategoryProduct",category);
 	}
 
 	public List<Product> getKeywordProductListWithPage(int startContent, String category, String keyword) {
@@ -65,6 +65,14 @@ public class ProductDaoImpl {
 		paramMap.put("category", category);
 		paramMap.put("keyword", keyword);
 		return sqlSession.selectList(ns + "getKeywordProductListWithPage", paramMap);
+	}
+
+	public int cntTotKeywordProduct(String category, String keyword) {
+		// TODO Auto-generated method stub
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("category", category);
+		paramMap.put("keyword", keyword);
+		return sqlSession.selectOne(ns + "cntTotKeywordProduct",paramMap);
 	}
 
 }
