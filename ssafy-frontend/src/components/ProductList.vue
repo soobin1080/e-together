@@ -18,7 +18,9 @@ export default {
     };
   },
   props: {
-    product: { type: Object },
+    product: { 
+      type: Object 
+    },
     productPerPage: {
       type: Number
     },

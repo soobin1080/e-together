@@ -108,7 +108,7 @@ export default new Router({
 			component: FindPwdPage
 		},
 		{
-			path : '/reviewDetail/:reviewNum/:userName',
+			path : '/reviewDetail/:reviewNum',
 			name : 'reviewdetail',
 			component: ReviewDetailPage
 		},
@@ -122,6 +122,11 @@ export default new Router({
 			name : 'errorPage',
 			component: ErrorPage
 		},
+		{
+			path: '/admin',
+			name: 'adminPage',
+			component: AdminPage
+		}
 
   ]
 })

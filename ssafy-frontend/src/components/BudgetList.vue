@@ -157,14 +157,11 @@ export default {
     },
     }
   },
-
+  
 
 
   created() {
-    // EventBus.$on("addCart", product => {
-    //   // this.list.push(product);
-    //   this.total_sum(product.price*=product.quantity);
-    // });
+
   },
   watch: {
     list: {
