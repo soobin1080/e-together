@@ -204,9 +204,11 @@ export default {
         }
         if (this.personnel == "") {
           alert("인원을 입력해주세요.");
+          return
         }
         if (this.budget == "") {
           alert("예산을 입력해주세요.");
+          return
         }
         let budget_info = {
             user_email: sessionStorage.getItem('email'),
