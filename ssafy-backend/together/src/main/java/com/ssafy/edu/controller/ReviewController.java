@@ -126,8 +126,8 @@ public class ReviewController {
 		System.out.println(files.getContentType());
 		System.out.println("======================");
 
-		String path = "/home/ubuntu/opt/assets/";
-
+//		String path = "/home/ubuntu/opt/assets/";
+		String path = "/home/assets/";
 		String fileName = files.getOriginalFilename();
 		byte[] imageData = files.getBytes();
 		File folder = null;
@@ -148,7 +148,7 @@ public class ReviewController {
 			file.setReview_num(review_num);
 			file.setFile_name(fileName);
 			file.setFile_ori_name(files.getOriginalFilename());
-			file.setFile_url("/together/assets/" + fileName);
+			file.setFile_url("/home/assets/" + fileName);
 
 			reviewservice.insertReviewFile(file); // 게시글 이미지 파일 insert
 		}

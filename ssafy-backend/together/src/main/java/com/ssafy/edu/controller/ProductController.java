@@ -34,6 +34,7 @@ public class ProductController {
 	@Autowired
 	private IProductService productservice;
 
+
 //	@ApiOperation(value = "전체 상품 보기", response = List.class)
 //	@RequestMapping(value = "/product", method = RequestMethod.GET)
 //	public ResponseEntity<List<Product>> getAllProduct() throws Exception {
@@ -103,6 +104,7 @@ public class ProductController {
 		}
 		return new ResponseEntity<ProductPage>(productpage, HttpStatus.OK);
 	}
+
 
 
 }
