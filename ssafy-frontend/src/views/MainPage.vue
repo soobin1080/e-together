@@ -16,7 +16,10 @@
             </p>
           </div>
         </v-col>
-        <v-col style="padding-top:80px">
+        <v-col style="padding-top:45px">
+          <div style="text-align:center">
+          <v-btn outlined color="lightgrey" class="mb-4" @click="gotomap">전국 E-mart매장 보기</v-btn>
+          </div>
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field
               type="number"
@@ -87,6 +90,9 @@ export default {
     },
     getImgUrl(img) {
       return require("../assets/" + img);
+    },
+    gotomap(){
+      this.$router.push("/map");
     }
   }
 };

@@ -26,6 +26,11 @@
           <v-list-item-content>Review</v-list-item-content>
           <!-- <v-list-item-content>{{ item.title }}</v-list-item-content> -->
         </v-list-item>
+         <v-list-item  @click="clickmap">
+          <v-list-item-action></v-list-item-action>
+          <v-list-item-content>Map</v-list-item-content>
+          <!-- <v-list-item-content>{{ item.title }}</v-list-item-content> -->
+        </v-list-item>
         <v-list-item v-if="checkAdmin" @click="goToAdminPage">
           <v-list-item-action></v-list-item-action>
           <v-list-item-content>Admin</v-list-item-content>
@@ -48,19 +53,20 @@
           <v-icon>menu</v-icon>
         </v-app-bar-nav-icon>
       </span>
-      <v-toolbar-title>
+      <v-toolbar-title class="ml-3">
         <router-link to="/" tag="span" style="cursor: pointer">
           <v-img :src="getImgUrl('etogether.png')" width="100px" />
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-toolbar-items class="hidden-xs-only justify-content-around">
+      <v-toolbar-items>
         <!-- <div class="menu d-inline" style="height:20px">        -->
-        <v-btn text width="10%" @click="clickproduct" style="height:64px">Mart</v-btn>
-        <v-btn text width="25%" v-if="username" @click="clickmybudget" style="height:64px">My Budget</v-btn>
-        <v-btn text width="10%" @click="clickreview" style="height:64px">Review</v-btn>
-        <v-btn text width="10%" v-if="checkAdmin" style="height:64px" @click="goToAdminPage">Admin</v-btn>
+        <v-btn  class="hidden-xs-only justify-content-around" text width="10%" @click="clickproduct" style="height:64px">Mart</v-btn>
+        <v-btn  class="hidden-xs-only justify-content-around" text width="25%" v-if="username" @click="clickmybudget" style="height:64px">My Budget</v-btn>
+        <v-btn  class="hidden-xs-only justify-content-around" text width="10%" @click="clickreview" style="height:64px">Review</v-btn>
+        <v-btn  class="hidden-xs-only justify-content-around" text width="10%" @click="clickmap" style="height:64px">Map</v-btn>
+        <v-btn  class="hidden-xs-only justify-content-around" text width="10%" v-if="checkAdmin" style="height:64px" @click="goToAdminPage">Admin</v-btn>
         <v-btn text v-if="username" class="text-center"  style="padding-top:20px;">
           <v-menu offset-y open-on-hover>
             <template v-slot:activator="{ on }">
@@ -157,6 +163,9 @@ export default {
     },
     clickreview() {
       this.$router.push("/review");
+    },
+    clickmap(){
+      this.$router.push("/map");
     },
     goToAdminPage() {
       console.log('gotoadminpage')
