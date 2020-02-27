@@ -5,11 +5,12 @@ import java.util.List;
 import com.ssafy.edu.model.Review;
 import com.ssafy.edu.model.ReviewCount;
 import com.ssafy.edu.model.ReviewFile;
+import com.ssafy.edu.model.ReviewPage;
 import com.ssafy.edu.model.ReviewResult;
 
 public interface IReviewService {
 
-	List<ReviewResult> getAllReview();
+	List<ReviewResult> getAllReview(int startContent);
 
 	void insertReview(Review review);
 
@@ -33,5 +34,9 @@ public interface IReviewService {
 
 	String getReviewImage(int review_num);
 
-	List<ReviewResult> getWantedReview(int personnel, int budget);
+	List<ReviewResult> getWantedReview(int startContent,int personnel, int budget);
+
+	ReviewPage getReviewListWithPage(int page);
+
+	ReviewPage getWantedReviewListWithPage(int page, int personnel, int budget);
 }

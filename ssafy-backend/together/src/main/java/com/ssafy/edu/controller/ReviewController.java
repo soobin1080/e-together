@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +30,7 @@ import com.ssafy.edu.model.Review;
 import com.ssafy.edu.model.ReviewCount;
 import com.ssafy.edu.model.ReviewDetailResult;
 import com.ssafy.edu.model.ReviewFile;
+import com.ssafy.edu.model.ReviewPage;
 import com.ssafy.edu.model.ReviewResult;
 import com.ssafy.edu.service.IBudgetService;
 import com.ssafy.edu.service.IReviewService;
@@ -50,37 +52,38 @@ public class ReviewController {
 	@Autowired
 	private IBudgetService budgetservice;
 
-	@ApiOperation(value = "전체 review 뿌려주기", response = List.class)
+	int recentPage = 0;
+
+	@ApiOperation(value = "전체 review 뿌려주기", response = ReviewPage.class)
 	@RequestMapping(value = "/review", method = RequestMethod.GET)
-	public ResponseEntity<List<ReviewResult>> getAllReview() throws Exception {
+	public ResponseEntity<ReviewPage> getAllReview(@RequestParam(required = false, defaultValue = "1") int page)
+			throws Exception {
 		logger.info("1-------------getAllReview-----------------------------" + new Date());
 
-		// name, personnel, like_count 도 반환하도록 고치자.
-		List<ReviewResult> reviewlist = reviewservice.getAllReview();
+		recentPage = page;
 
-		for (int i = 0; i < reviewlist.size(); i++) {
+		ReviewPage reviewpage = reviewservice.getReviewListWithPage(page);
 
-			List<String> reviewlikeuser = reviewservice.getReviewLikeUser(reviewlist.get(i).getReview_num());
-			reviewlist.get(i).setLike_user(reviewlikeuser);
+		if (reviewpage == null) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<ReviewResult>>(reviewlist, HttpStatus.OK);
+		return new ResponseEntity<ReviewPage>(reviewpage, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "예산,인원에 맞는 review 뿌려주기", response = List.class)
+	@ApiOperation(value = "예산,인원에 맞는 review 뿌려주기", response = ReviewPage.class)
 	@RequestMapping(value = "/review/{personnel}/{budget}", method = RequestMethod.GET)
-	public ResponseEntity<List<ReviewResult>> getWantedReview(@PathVariable int personnel, @PathVariable int budget)
-			throws Exception {
+	public ResponseEntity<ReviewPage> getWantedReview(@RequestParam(required = false, defaultValue = "1") int page,
+			@PathVariable int personnel, @PathVariable int budget) throws Exception {
 		logger.info("1-------------getWantedReview-----------------------------" + new Date());
 
-		// name, personnel, like_count 도 반환하도록 고치자.
-		List<ReviewResult> reviewlist = reviewservice.getWantedReview(personnel, budget);
+		recentPage = page;
 
-		for (int i = 0; i < reviewlist.size(); i++) {
+		ReviewPage reviewpage = reviewservice.getWantedReviewListWithPage(page, personnel, budget);
 
-			List<String> reviewlikeuser = reviewservice.getReviewLikeUser(reviewlist.get(i).getReview_num());
-			reviewlist.get(i).setLike_user(reviewlikeuser);
+		if (reviewpage == null) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<ReviewResult>>(reviewlist, HttpStatus.OK);
+		return new ResponseEntity<ReviewPage>(reviewpage, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "review 상세보기", response = ReviewResult.class)
@@ -126,11 +129,9 @@ public class ReviewController {
 		System.out.println(files.getContentType());
 		System.out.println("======================");
 
-//		String path = "/home/ubuntu/opt/assets/";
 		String path = "/home/ubuntu/opt/assets/";
 		String fileName = files.getOriginalFilename();
 		byte[] imageData = files.getBytes();
-		File folder = null;
 
 		FileOutputStream fileOutputStream = null;
 		String url = "";
@@ -153,16 +154,13 @@ public class ReviewController {
 			reviewservice.insertReviewFile(file); // 게시글 이미지 파일 insert
 		}
 		return url;
-
 	}
 
 	@ApiOperation(value = "review 수정하기", response = ReviewResult.class)
 	@RequestMapping(value = "/review/{review_num}", method = RequestMethod.POST)
 	public void updateReview(@RequestBody Review review) throws Exception {
 		logger.info("4-------------updateReview-----------------------------" + new Date());
-
 		reviewservice.updateReview(review);
-
 	}
 
 	@ApiOperation(value = "review 좋아요 수 update", response = ReviewCount.class)
@@ -191,7 +189,7 @@ public class ReviewController {
 	@ApiOperation(value = "review 삭제하기", response = ReviewResult.class)
 	@RequestMapping(value = "/review/{review_num}", method = RequestMethod.DELETE)
 	public ResponseEntity<ReviewResult> deleteReview(@PathVariable int review_num) throws Exception {
-		logger.info("8-------------deleteReview-----------------------------" + new Date());
+		logger.info("7-------------deleteReview-----------------------------" + new Date());
 
 		reviewservice.deleteReview(review_num);
 
