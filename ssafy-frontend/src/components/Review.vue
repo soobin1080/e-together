@@ -17,8 +17,8 @@
     ></v-img>
 
     <v-card-text class="text-right">
-      <i class="material-icons" style="font-size:1.5rem">people_outline</i>{{computedReview.personnel}}명
-      <i class="material-icons" style="padding-left:15px">money</i> {{computedReview.budget}}원
+      <i class="material-icons"  style="vertical-align:top">people_outline</i> <span style="font-size:12pt"> {{computedReview.personnel}}명 </span>
+      <i class="material-icons" style="vertical-align:top; padding-left:15px">money</i> <span style="font-size:12pt"> {{computedReview.budget}}원 </span>
     </v-card-text>
 
     <v-card-actions>

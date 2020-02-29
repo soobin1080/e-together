@@ -30,7 +30,8 @@
         >
     </ReviewList>
     </div> -->
-    <div class="search text-center" width="100%">
+    <div class="search text-center mt-8" width="100%">
+      <p style="text-align:center; color:darkblue; font-weight:bold">인원과 예산으로 리뷰 검색이 가능합니다! :)</p>
       <v-col cols="12" sm="6" md="3" class="d-inline-block">
         <v-text-field
           width="30%"
@@ -168,15 +169,11 @@ export default {
   computed: {
   },  
   mounted() {
-    // this.loadMore()
+   
   }
 };
 </script>
 
 <style scoped>
- .search {
-   /* list-style: none; */
-  /* position: fixed;
-  width: 100%; */
- }
+
 </style>

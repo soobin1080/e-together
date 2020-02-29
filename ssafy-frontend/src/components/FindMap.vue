@@ -326,7 +326,7 @@ export default {
 .map_wrap {
   position: relative;
   width: 100%;
-  height: 600px;
+  height: 620px;
 }
 #menu_wrap {
   position: absolute;

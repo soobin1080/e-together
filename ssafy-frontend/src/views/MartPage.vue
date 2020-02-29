@@ -12,8 +12,16 @@
       <!-- 비율 추천 그래프 -->
       <div class="mt-8">
         <div>
-          <p style="margin:auto; width:100%; color:dimgrey;">
-            <i class="material-icons">assessment</i>예산 별 비율 추천
+          <p>
+            <span
+              class="mx-auto py-1 bg-warning rounded"
+              style="margin:auto; width:100%; color:white; font-weight:bold"
+            >
+              <i class="material-icons" style="vertical-align: top">assessment</i> 추천 비율
+            </span>
+            <span
+              style="padding-left:15px; font-size:10pt; font-weight:bold; color:darkblue"
+            >나와 비슷한 예산의 평균 카테고리별 비율입니다!</span>
           </p>
           <div
             class="progress text-center mx-auto"
@@ -57,8 +65,16 @@
             </div>
           </div>
           <br />
-          <p style="margin:auto; padding-top:5px; width:100%; color:dimgrey">
-            <i class="material-icons">assessment</i>현재 내 예산 비율
+          <p>
+            <span
+              class="mx-auto py-1 bg-warning rounded"
+              style="margin:auto; width:100%; color:white; font-weight:bold"
+            >
+              <i class="material-icons" style="vertical-align: top">assessment</i> 현재 비율
+            </span>
+            <span
+              style="padding-left:15px; font-size:10pt; font-weight:bold; color:darkblue"
+            >현재 장보기 리스트에 담은 카테고리별 비율입니다!</span>
           </p>
           <div class="progress text-center mx-auto" style="width: 100%; height: 15%;" v-on="on">
             <!-- <div v-for="category in computedBudgetListBar" class="progress-bar">{{category.category}}</div> -->
@@ -125,15 +141,12 @@
               >{{tab.title}}</v-tab>
             </v-tabs>
 
-
             <ProductList :pagingProducts="pagingProducts"></ProductList>
 
-             <!-- page navigation-->
+            <!-- page navigation-->
             <br />
             <div class="text-center">
-               
               <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
-            
             </div>
             <br />
             <!-- 카테고리 탭 -->
@@ -429,7 +442,7 @@ export default {
           })
           .catch(err => {});
       } else {
-        alert("예산을 입력해주세요!")
+        alert("예산을 입력해주세요!");
       }
     },
     getImgUrl(img) {
