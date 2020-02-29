@@ -32,7 +32,7 @@ public class MysqlProductDB {
 			connection.setAutoCommit(false);
 			Document doc = null;
 
-			String url = "http://emart.ssg.com/disp/category.ssg?dispCtgId=6000023943&page=2";
+			String url = "http://emart.ssg.com/disp/category.ssg?dispCtgId=0006110140&page=2";
 
 			// 각각의 대분류 페이지에 들어가서 다시 화면 긁어오기
 			try {
@@ -72,7 +72,7 @@ public class MysqlProductDB {
 				preparedStatementInsert.setLong(1, pro_id);
 				preparedStatementInsert.setString(2, pro_name);
 				preparedStatementInsert.setInt(3, price_num);
-				preparedStatementInsert.setString(4, "즉석식품");
+				preparedStatementInsert.setString(4, "정육/계란류");
 				preparedStatementInsert.setString(5, weight);
 				preparedStatementInsert.setString(6, img);
 				preparedStatementInsert.executeUpdate();
