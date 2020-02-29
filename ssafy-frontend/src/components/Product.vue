@@ -10,7 +10,7 @@
     </v-tooltip>
 
     <v-card-subtitle style="padding-top:5px">
-      <p class="pb-0" style="float:left; font-size:12px">{{weight}} &nbsp;</p>
+      <p class="pb-0" style="float:left; font-size:10px">{{weight}} &nbsp;</p>
       <p class="pb-0" style="float:right; font-size:15px; font-weight:bold">{{price}}원</p>
     </v-card-subtitle>
 
@@ -75,7 +75,7 @@ import EventBus from "../event-bus.js";
 export default {
   name: "Product",
   props: {
-    pro_id: { type: String },
+    pro_id: { type: Number },
     pro_name: { type: String },
     price: { type: Number },
     weight: { type: String },

@@ -37,7 +37,7 @@
           <tr>
             <th style="background-color: #fffeaa; color:#3d2300">항목</th>
             <th style="background-color: #fffeaa; color:#3d2300">수량</th>
-            <th style="background-color: #fffeaa; color:#3d2300">가격</th>
+            <th style="background-color: #fffeaa; color:#3d2300">단위 가격</th>
           </tr>
         </thead>
         <tbody>
@@ -72,7 +72,7 @@
           <div class="container">
             <div class="large-12 medium-12 small-12 cell">
               <label>
-                <i class="material-icons">insert_photo</i>
+                <i class="material-icons"  style="vertical-align: top">insert_photo</i>
                 <input type="file" id="files" ref="files" v-on:change="handleFilesUploads()">                
               </label>
               <v-textarea

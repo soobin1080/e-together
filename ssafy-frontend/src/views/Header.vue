@@ -13,7 +13,7 @@
           <v-list-item-action></v-list-item-action>
           <i class="material-icons">account_circle</i>
           {{setUserName}}
-        </v-list-item>
+        </v-list-item>        
         <v-list-item @click="clickproduct">
           <v-list-item-action></v-list-item-action>
           <v-list-item-content>Mart</v-list-item-content>
@@ -54,12 +54,19 @@
           <v-icon>menu</v-icon>
         </v-app-bar-nav-icon>
       </span>
-      <v-toolbar-title class="ml-3">
+      <v-toolbar-title class="ml-3 mr-10">
         <router-link to="/" tag="span" style="cursor: pointer">
           <v-img :src="getImgUrl('etogether.png')" width="100px" />
         </router-link>
       </v-toolbar-title>
+       <v-btn        
+        class="bg-warning"
+          width="100px"
+          @click="clickintro"
+          style="color:white; font-weight:bold; height:34px"
+        >이용 가이드</v-btn>
       <v-spacer></v-spacer>
+     
 
       <v-toolbar-items>
         <!-- <div class="menu d-inline" style="height:20px">        -->
@@ -107,12 +114,13 @@
                 class="headerMenu"
                 text
                 v-on="on"
-                style="padding-bottom:17px; font-weight:bold; color:darkblue"
+                style="padding-bottom:15px; font-size:12pt; font-weight:bold; color:darkblue"
               >
-                <i class="material-icons">account_circle</i>
+                <i class="material-icons" style="vertical-align:middle">account_circle</i>
                 {{setUserName}}
               </span>
             </template>
+           
             <v-list dense shaped width="150px">
               <v-list-item @click="pwdCheck">
                 <v-list-item-action>
@@ -129,6 +137,7 @@
                 </v-list-item-action>
               </v-list-item>
             </v-list>
+           
           </v-menu>
         </v-btn>
         <!-- <v-btn v-if="username" text @click="logout">Logout</v-btn> -->
@@ -204,6 +213,21 @@ export default {
     clickmap() {
       this.$router.push("/map");
     },
+    clickintro(){
+      // this.$router.push("/intro");
+       var _width = '1200';
+    var _height = '600';
+ 
+    // 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
+    var _left = Math.ceil(( window.screen.width - _width )/2);
+    var _top = Math.ceil(( window.screen.width - _height )/2); 
+
+
+
+      window.open('https://i02b109.p.ssafy.io/intro', '이용 가이드', 'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top)
+
+
+    },
     goToAdminPage() {
       console.log("gotoadminpage");
       const authenitcation = sessionStorage.getItem("auth");
@@ -264,5 +288,24 @@ export default {
 <style scoped>
 .headerMenu > span {
   font-size: 5vw;
+}
+.speech-bubble {
+	position: relative;
+	background: #2e5cb4;
+	border-radius: .4em;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: 16px solid transparent;
+	border-bottom-color: #2e5cb4;
+	border-top: 0;
+	margin-left: -16px;
+	margin-top: -16px;
 }
 </style>

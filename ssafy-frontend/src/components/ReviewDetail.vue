@@ -16,13 +16,10 @@
               </p>
 
               <v-card-text class="text-center" style="color:dimgrey; padding:3px">
-                <i class="material-icons">people_outline</i>
-                {{budgetInfo.personnel}}명
-                <i
-                  class="material-icons"
-                  style="padding-left:15px"
-                >money</i>
-                {{budgetInfo.budget}}원
+                <i class="material-icons"  style="vertical-align:top">people_outline</i> <span style="font-size:12pt">
+                 {{budgetInfo.personnel}}명 </span>
+                <i class="material-icons"  style="vertical-align:top">money</i> <span style="font-size:12pt">
+                {{budgetInfo.budget}}원 </span>
               </v-card-text>
 
               <p
@@ -225,24 +222,17 @@ export default {
           link: {
             webUrl:
               "https://i02b109.p.ssafy.io/reviewdetail/" +
-              this.$route.params.reviewNum +
-              "/" +
-              this.$route.params.name,
+              this.$route.params.reviewNum,
+              
             mobileWebUrl:
               "https://i02b109.p.ssafy.io/reviewdetail/" +
-              this.$route.params.reviewNum +
-              "/" +
-              this.$route.params.name,
+              this.$route.params.reviewNum,
             androidExecParams:
               "https://i02b109.p.ssafy.io/reviewdetail/" +
-              this.$route.params.reviewNum +
-              "/" +
-              this.$route.params.name,
+              this.$route.params.reviewNum,
             iosExecParams:
               "https://i02b109.p.ssafy.io/reviewdetail/" +
-              this.$route.params.reviewNum +
-              "/" +
-              this.$route.params.name
+              this.$route.params.reviewNum
           }
         },
         social: {
@@ -257,24 +247,16 @@ export default {
             link: {
               webUrl:
                 "https://i02b109.p.ssafy.io/reviewdetail/" +
-                this.$route.params.reviewNum +
-                "/" +
-                this.$route.params.name,
+                this.$route.params.reviewNum,
               mobileWebUrl:
                 "https://i02b109.p.ssafy.io/reviewdetail/" +
-                this.$route.params.reviewNum +
-                "/" +
-                this.$route.params.name,
+                this.$route.params.reviewNum,
               androidExecParams:
                 "https://i02b109.p.ssafy.io/reviewdetail/" +
-                this.$route.params.reviewNum +
-                "/" +
-                this.$route.params.name,
+                this.$route.params.reviewNum,
               iosExecParams:
                 "https://i02b109.p.ssafy.io/reviewdetail/" +
-                this.$route.params.reviewNum +
-                "/" +
-                this.$route.params.name
+                this.$route.params.reviewNum
             }
           }
         ]

@@ -17,6 +17,7 @@ import ReviewDetailPage from './views/ReviewDetailPage.vue'
 import AdminPage from './views/AdminPage.vue'
 import ErrorPage from './views/ErrorPage.vue'
 import MapPage from './views/MapPage.vue'
+import IntroPage from './views/IntroPage.vue'
 import store from './store.js'
 
 
@@ -128,6 +129,11 @@ export default new Router({
 			path: '/admin',
 			name: 'adminPage',
 			component: AdminPage
+		},
+		{
+			path: '/intro',
+			name: 'introPage',
+			component: IntroPage
 		}
 
   ]

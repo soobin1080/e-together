@@ -139,8 +139,8 @@ import http from "../http-common";
 export default {
   data(){    
     return{
-    personnel: "",
-    budget: "",
+    personnel: 0,
+    budget: 0,
     quantity: 0,
     price: 0,
     dialog: false,
