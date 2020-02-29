@@ -1,7 +1,7 @@
 package com.ssafy.edu.model;
 
 public class BudgetListResult {
-	private int pro_id;
+	private Long pro_id;
 	private String pro_name;
 	private int quantity;
 	private String price;
@@ -11,7 +11,7 @@ public class BudgetListResult {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BudgetListResult(int pro_id, String pro_name, int quantity, String price) {
+	public BudgetListResult(Long pro_id, String pro_name, int quantity, String price) {
 		super();
 		this.pro_id = pro_id;
 		this.pro_name = pro_name;
@@ -19,11 +19,11 @@ public class BudgetListResult {
 		this.price = price;
 	}
 
-	public int getPro_id() {
+	public Long getPro_id() {
 		return pro_id;
 	}
 
-	public void setPro_id(int pro_id) {
+	public void setPro_id(Long pro_id) {
 		this.pro_id = pro_id;
 	}
 
