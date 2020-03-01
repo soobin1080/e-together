@@ -4,14 +4,14 @@ public class BudgetListResult {
 	private Long pro_id;
 	private String pro_name;
 	private int quantity;
-	private String price;
+	private int price;
 
 	public BudgetListResult() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public BudgetListResult(Long pro_id, String pro_name, int quantity, String price) {
+	public BudgetListResult(Long pro_id, String pro_name, int quantity, int price) {
 		super();
 		this.pro_id = pro_id;
 		this.pro_name = pro_name;
@@ -43,11 +43,11 @@ public class BudgetListResult {
 		this.quantity = quantity;
 	}
 
-	public String getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 

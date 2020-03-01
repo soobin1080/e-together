@@ -45,7 +45,7 @@ public class RecommendService implements IRecommendService {
 				break;
 			case "라면":
 				budgetaveragerate.setNoodle(percentage);
-				System.out.println(percentage+" %");
+//				System.out.println(percentage+" %");
 				break;
 			case "쌀/잡곡":
 				budgetaveragerate.setRice(percentage);
