@@ -132,9 +132,6 @@ export default new Vuex.Store({
       }
       // state.total -= state.budgetlist[i].price;
       state.budgetlist.splice(idx,1);
-
-
-
       // this.budgetalert();
     },
 
@@ -204,27 +201,24 @@ export default new Vuex.Store({
           return budget.category === changeInfo.category
         })
         if (changeInfo.ope === 'p') {
-          state.mainTotal += changeInfo.price
+          state.mainTotal +=  (changeInfo.price * changeInfo.changeQuantity)
           console.log(state.budgetListBar[barIdx])
-          state.budgetListBar[barIdx].price += changeInfo.price
+          state.budgetListBar[barIdx].price += (changeInfo.price * changeInfo.changeQuantity)
         } else {
-          state.mainTotal -= changeInfo.price
-          state.budgetListBar[barIdx].price -= changeInfo.price
+          state.mainTotal -=  (changeInfo.price * changeInfo.changeQuantity)
+          state.budgetListBar[barIdx].price -= (changeInfo.price * changeInfo.changeQuantity)
         }
 
-        // if (state.budgetListBar[barIdx].price === 0) {
-        //   state.budgetListBar.splice(barIdx, 0)
-        // }
       } else { // 기타일때
         const barIdx = state.budgetListBarETC.findIndex(budget => {
           return budget.category === changeInfo.category
         })
         if (changeInfo.ope === 'p') {
-          state.etcTotal += changeInfo.price
-          state.budgetListBarETC[barIdx].price += changeInfo.price
+          state.etcTotal +=  (changeInfo.price * changeInfo.changeQuantity)
+          state.budgetListBarETC[barIdx].price +=  (changeInfo.price * changeInfo.changeQuantity)
         } else {
-          state.etcTotal -= changeInfo.price
-          state.budgetListBarETC[barIdx].price -= changeInfo.price
+          state.etcTotal -= (changeInfo.price * changeInfo.changeQuantity)
+          state.budgetListBarETC[barIdx].price -=  (changeInfo.price * changeInfo.changeQuantity)
         }
         // if (state.budgetListBarETC[barIdx].price === 0) {
         //   state.budgetListBarETC.splice(barIdx, 0)
@@ -235,19 +229,12 @@ export default new Vuex.Store({
       const idx = changeInfo.idx
 
       if (changeInfo.ope == 'p') {
-        state.budgetlist[idx].quantity = Number(changeInfo.changeQuantity)
-        state.budgetlist[idx].pro_price += changeInfo.price
+        state.budgetlist[idx].quantity += changeInfo.changeQuantity
+        state.budgetlist[idx].pro_price +=  (changeInfo.price * changeInfo.changeQuantity)
       } else {
-        state.budgetlist[idx].quantity = Number(changeInfo.changeQuantity)
-        state.budgetlist[idx].pro_price -= changeInfo.price
+        state.budgetlist[idx].quantity -= changeInfo.changeQuantity
+        state.budgetlist[idx].pro_price -=  (changeInfo.price * changeInfo.changeQuantity)
       }
-
-      const category = changeInfo.category
-      // if (state.ETC.includes(category)) {
-
-      // }
-
-
     },
 
     allClear: function(state) {

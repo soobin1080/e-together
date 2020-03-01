@@ -75,7 +75,7 @@ import EventBus from "../event-bus.js";
 export default {
   name: "Product",
   props: {
-    pro_id: { type: Number },
+    pro_id: { type: String },
     pro_name: { type: String },
     price: { type: Number },
     weight: { type: String },

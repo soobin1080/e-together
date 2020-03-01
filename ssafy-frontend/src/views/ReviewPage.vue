@@ -169,7 +169,7 @@ export default {
   computed: {
   },  
   mounted() {
-   
+   this.infiniteHandler($state)
   }
 };
 </script>

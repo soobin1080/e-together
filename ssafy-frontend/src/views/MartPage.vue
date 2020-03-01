@@ -180,7 +180,9 @@
         <!-- 장보기 내역 -->
         <!-- <v-col> -->
         <v-flex d-none d-lg-flex>
-          <BudgetList @changeRecommendBar="recommendBudgetBar"></BudgetList>
+          <BudgetList 
+            @changeRecommendBar="recommendBudgetBar"
+            :updateMyBudgets="updateMyBudgets"></BudgetList>
         </v-flex>
         <!-- </v-col> -->
       </v-row>
@@ -188,7 +190,9 @@
     <!-- modal 창 -->
     <v-row justify="center">
       <v-dialog v-model="budgetDialog" scrollable max-width="500px">
-        <BudgetList @changeRecommendBar="recommendBudgetBar"></BudgetList>
+        <BudgetList 
+          @changeRecommendBar="recommendBudgetBar"
+          :updateMyBudgets="updateMyBudgets"></BudgetList>
       </v-dialog>
     </v-row>
 
@@ -301,13 +305,17 @@ export default {
         { 채소: "bg-success" },
         { 라면: "bg-warning" },
         { 기타: "bg-secondary" }
-      ]
+      ],
+      updateMyBudgets: Object,
     };
   },
   mounted() {
-    // this.getProductList(this.keyword);
-    //this.recommendBudgetBar(this.$store.state.budget);
+    // console.log(this.$route.params.myBudgets)
     this.getProductListByCaterogy(this.category, 1, this.keyword);
+  },
+  created() {
+    this.updateMyBudgets = this.$route.params.myBudgets
+    
   },
   computed: {
     // mountedProduct() {
@@ -421,6 +429,7 @@ export default {
             }
           })
           .then(res => {
+            console.log(res)
             const keys = Object.keys(res.data);
             const vals = Object.values(res.data);
             const categoryDict = this.$store.state.recommendDict;
