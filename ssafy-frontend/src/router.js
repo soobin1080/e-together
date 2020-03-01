@@ -134,6 +134,15 @@ export default new Router({
 			path: '/intro',
 			name: 'introPage',
 			component: IntroPage
+		},
+
+		{
+			path : '/myBudgetModify',
+			name: 'myBudgetModify',
+			component: MartPage,
+			props: {
+				default: true
+			}
 		}
 
   ]

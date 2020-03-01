@@ -23,7 +23,7 @@
               id="personnel"
               v-model="personnel"
               @input="triggerEvent"
-              style="text-align:right"
+              style="text-align:right; width:90%;"
               autofocus
             />명
           </td>
@@ -44,7 +44,7 @@
               id="budget"
               v-model="budget"
               @input="triggerEvent"
-              style="text-align:right"
+              style="text-align:right;width:90%"
               autofocus
             />원
             <!-- <v-btn text>예산 추천</v-btn> -->
@@ -56,9 +56,9 @@
 
     <b-list-group-item class="product_table" style="height:500px">
       <table style="width:100%; margin:auto">
-        <col width="45%" />
+        <col width="30%" />
         <col width="15%" />
-        <col width="25%" />
+        <col width="20%" />
         <col width="15%" />
         <thead>
           <tr style="font-size:10pt; text-align:center;">
@@ -73,18 +73,39 @@
             <td v-html="computedBudgetList[i-1].pro_name" class="product"></td>
             <!-- <td v-html="list[i-1].quantity" class="quantity" style="text-align:center"></td> -->
             <td class style="text-align:center">
-              <input
+              <!-- <input
                 class="quantity"
                 type="number"
                 style="text-align:right; width:50px"
                 @change="changeQuantity(computedBudgetList[i-1], i-1, $event)"
                 :value="computedBudgetList[i-1].quantity"
                 min="1"
-              />
+              /> -->
+              <div class="qty mt-1">
+                <span class="minus bg-dark" @click="changeQuantity(computedBudgetList[i-1], i-1, 'm')">-</span>
+                <input 
+                  type="number" 
+                  class="count" 
+                  name="qty" 
+                  min="1"
+                  :value="computedBudgetList[i-1].quantity"
+                  @click="
+                    quantityChangeDialog=true
+                    changeBudget = computedBudgetList[i-1]
+                    changeBudgetIdx = i-1
+                    ">
+                <span class="plus bg-dark" @click="changeQuantity(computedBudgetList[i-1], i-1, 'p')">+</span>
+              </div>
             </td>
 
-            <td class="pro_price" style="text-align:center;">{{computedBudgetList[i-1].pro_price}} 원</td>
-            <td style="text-align:center;">
+            <td 
+              class="pro_price text-center" 
+              >
+              {{computedBudgetList[i-1].pro_price}} 원
+            </td>
+            
+            <td 
+              style="text-align:center;">
               <v-btn text icon color="red" @click="del_pro(i-1)">
                 <i class="fas fa-trash-alt"></i>
               </v-btn>
@@ -141,6 +162,40 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!-- 갯수 변경 modal-->
+    <v-dialog
+      v-model="quantityChangeDialog"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">수량 변경</v-card-title>
+          <v-text-field
+            width="50%"
+            label="수량을 입력해주세요"
+            v-model="changeQuantityByNum"
+          ></v-text-field>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="quantityChangeDialog = false"
+          >
+            취소
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="changeQuantityByNumber(changeBudget, changeBudgetIdx)"
+          >
+            적용
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -154,6 +209,7 @@ export default {
       quantity: 0,
       price: 0,
       dialog: false,
+      quantityChangeDialog: false,
       total: 0,
       budgetTitle: "",
       list: [],
@@ -162,11 +218,18 @@ export default {
         채소: "progress-bar bg-success",
         "생수/음료": "progress-bar bg-primary",
         라면: "progress-bar bg-warning"
-      }
+      },
+      changeQuantityByNum: "",
+      changeBudget: Object,
+      changeBudgetIdx: Number,
     };
   },
+  props: {
+    updateMyBudgets: {
+      type: Object
+    }
+  },
 
-  created() {},
   watch: {
     list: {
       handler: function(newVal) {
@@ -262,17 +325,19 @@ export default {
       this.$store.dispatch("deleteProductAsync", i);
     },
 
-    changeQuantity(budget, idx, event) {
-      const oldvalue = this.computedBudgetList[idx].quantity;
-      const newvalue = event.target.value;
-      let ope = "";
-      if (oldvalue > newvalue) {
-        // 감소
-        ope = "m";
-      } else if (oldvalue < newvalue) {
-        // 증가
-        ope = "p";
-      }
+    changeQuantity(budget, idx, changeOpe) {
+      console.log(budget)
+      // const oldvalue = this.computedBudgetList[idx].quantity;
+      // const newvalue = event.target.value;
+      let ope = changeOpe === "m" ? "m": "p";
+      if (ope === "m" && budget.quantity-1 === 0) return
+      // if (oldvalue > newvalue) {
+      //   // 감소
+      //   ope = "m";
+      // } else if (oldvalue < newvalue) {
+      //   // 증가
+      //   ope = "p";
+      // }
       let changeInfo = {
         isETC: budget.isETC,
         ope: ope,
@@ -280,23 +345,59 @@ export default {
         price: budget.price,
         id: budget.pro_id,
         category: budget.category,
-        changeQuantity: newvalue
+        changeQuantity: 1
       };
       this.$store.dispatch("changeQuantityAsync", changeInfo);
+    },
+    changeQuantityByNumber(budget, idx) {
+      console.log(this.changeBudget)
+      console.log(idx)
+      let oldValue = budget.quantity
+      let newValue = Number(this.changeQuantityByNum)
+      if (newValue > oldValue && newValue - oldValue < 0) {
+        alert('0개 이하로는 선택할 수 없습니다')
+        return
+      } else if (oldValue === newValue) {
+        return
+      }
+      else {
+        let ope = oldValue > newValue ? 'm' : 'p' 
+        let changeInfo = {
+          isETC: budget.isETC,
+          ope: ope,
+          idx: idx,
+          price: budget.price,
+          id: budget.pro_id,
+          category: budget.category,
+          changeQuantity: Math.abs(oldValue - newValue)
+        }
+        this.$store.dispatch("changeQuantityAsync", changeInfo);
+      }
+      this.changeQuantityByNum = ""
+      this.quantityChangeDialog = false
     }
   },
   mounted() {
+    console.log(this.updateMyBudgets)
+    if (this.updateMyBudgets === undefined) {
     this.personnel = this.$store.state.personnel;
     this.budget = this.$store.state.budget;
+    } else {
+      
+    }
   },
   computed: {
     computedBudgetList() {
       this.list = this.$store.state.budgetlist;
+      if (this.updateMyBudgets !== undefined) {
+        return 
+      }
       return this.$store.state.budgetlist;
     }
   },
+  created() {
 
-  craeted() {}
+  }
 };
 </script>
 <style scoped>
@@ -340,5 +441,67 @@ export default {
 .myButton:active {
   position: relative;
   top: 1px;
+}
+
+.qty .count {
+    color: #000;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 15px;
+    padding: 0 2px
+    ;min-width: 35px;
+    text-align: center;
+}
+.qty .plus {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    color: white;
+    width: 15px;
+    height: 15px;
+    font: 15px/1 Arial,sans-serif;
+    text-align: center;
+    border-radius: 50%;
+    }
+.qty .minus {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    color: white;
+    width: 15px;
+    height: 15px;
+    font: 15px/1 Arial,sans-serif;
+    text-align: center;
+    border-radius: 50%;
+    background-clip: padding-box;
+}
+div {
+    text-align: center;
+}
+.minus:hover{
+    background-color: #717fe0 !important;
+}
+.plus:hover{
+    background-color: #717fe0 !important;
+}
+/*Prevent text selection*/
+span{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+input{  
+    border: 0;
+    width: 2%;
+}
+nput::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input:disabled{
+    background-color:white;
 }
 </style>

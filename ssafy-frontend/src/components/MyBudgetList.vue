@@ -128,8 +128,11 @@ export default {
          return
        } else {
          this.$router.push({
-          name: 'product', 
-          params: {modifyBudget: budget}})
+          name: 'myBudgetModify', 
+          params: {
+            myBudgets: budget
+            }
+          })
        }
     }
   },
