@@ -21,7 +21,7 @@ public class RecommendDaoImpl {
 		return sqlSession.selectList(ns+"getBudgetNumList",budget);
 	}
 
-	public List<RecommendResult> getBudgetAverageRate(Integer budget_number) {
+	public List<RecommendResult> getBudgetAverageRate(int budget_number) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(ns+"getBudgetAverageRate",budget_number);
 	}

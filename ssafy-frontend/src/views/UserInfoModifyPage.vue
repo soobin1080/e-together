@@ -90,7 +90,7 @@ export default {
   methods: {
     getUserDetail() {
       console.log("getUserDetail active");
-      let myEmail = localStorage.getItem("email");
+      let myEmail = sessionStorage.getItem("email");
       http
         .post(`/myselfDetail/${myEmail}`)
         .then(res => {

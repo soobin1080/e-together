@@ -91,7 +91,7 @@ public class BudgetController {
 			budgetlist.setPro_id(budgetlistresult.get(i).getPro_id());
 			budgetlist.setPro_name(budgetlistresult.get(i).getPro_name());
 			budgetlist.setQuantity(budgetlistresult.get(i).getQuantity());
-			budgetlist.setPrice(budgetlistresult.get(i).getPrice());
+			budgetlist.setPrice(budgetlistresult.get(i).getPrice()*budgetlistresult.get(i).getQuantity());
 			
 			budgetservice.insertBudgetList(budgetlist);
 			

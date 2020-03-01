@@ -1,7 +1,7 @@
 <template>
-<v-flex  xs12 md10 lg10 class="main">
-  <v-layout mt-5 wrap style="width: 100%; margin: 0 auto">
-    <v-flex v-for="review in computedAllReview" xs12 sm6 lg4 :key="review.review_num">
+<v-flex class="main">
+  <v-layout mt-5 wrap style="width: 100%; margin:auto">
+    <v-flex v-for="review in computedAllReview" xs12 sm6 lg4 :key="review">
       <Review 
         :review="review" 
         class="ma-2"

@@ -54,7 +54,7 @@
         >검색</v-btn>
     </div>
     <ReviewList
-      :allReviews="allReviews"
+      :allReviews="allReviews"      
     >
     </ReviewList>
 
