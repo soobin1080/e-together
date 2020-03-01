@@ -21,7 +21,7 @@
             </span>
             <span
               style="padding-left:15px; font-size:10pt; font-weight:bold; color:darkblue"
-            >나와 비슷한 예산의 평균 카테고리별 비율입니다!</span>
+            >나와 비슷한 예산의 카테고리별 평균 비율입니다!</span>
           </p>
           <div
             class="progress text-center mx-auto"

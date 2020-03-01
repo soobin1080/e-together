@@ -265,7 +265,7 @@ export default {
 
     total_sum() {
       this.total = this.budgetList.reduce(
-        (total, budget) => (total += budget.price * budget.quantity),
+        (total, budget) => (total += budget.price),
         0
       );
       return this.total;

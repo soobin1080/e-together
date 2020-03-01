@@ -3,7 +3,7 @@
 <h5 style="text-align:center">나의 장보기 내역</h5><br>
   <table width="100%">
     <colgroup>
-      <col width="35%" />
+      <col width="30%" />
       <col width="10%" />
       <col width="10%" />
       <col width="20%" />
@@ -18,12 +18,12 @@
       <th>예산</th>
       <th>날짜</th>
       <th>적/부</th>
-      <th>수정</th>
+      <!-- <th>수정</th> -->
       <th>삭제</th>
     </tr>
     <template v-if="this.allBudgets.length==0 || this.allBudgets.length==undefined">
       <tr>
-        <td colspan="5" style="text-align:center" height="30px">장보기 내역이 없습니다.</td>
+        <td colspan="6" style="text-align:center" height="30px">장보기 내역이 없습니다.</td>
       </tr>
     </template>
     <tr v-for="budget in computedPagingBudgets" :key="budget.created_at">
@@ -44,9 +44,9 @@
           부적합
         </span>
       </td>
-      <td class="text-center text-dark" style="cursor:pointer">
+      <!-- <td class="text-center text-dark" style="cursor:pointer">
         <i @click="modifyMove(budget)" class="fas fa-tools"></i>
-      </td>
+      </td> -->
 
       <td class="text-center">
         <i @click="budgetDelete(budget.budget_num)" class="fas fa-trash-alt" style="color: red; cursor:pointer;"></i>
