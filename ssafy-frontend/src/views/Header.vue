@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div width="100%;">
     <LoginModal @checkLogIn="getUserName" @checkIsAdmin="getIsAdmin"></LoginModal>
     <v-navigation-drawer v-model="sidebar" fixed temporary>
       <v-list style="padding-top:10px;">
