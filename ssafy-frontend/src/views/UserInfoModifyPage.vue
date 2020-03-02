@@ -107,10 +107,9 @@ export default {
           .post("/updateMyself", this.user, this.$store.getters.requestHeader)
           .then(res => {
             if (
-              res.data.state == "succ" &&
-              this.$store.getters.isLoggedIn == true
+              res.data.state == "succ"
             ) {
-              alert("수정 성공");
+              alert("수정 성공하였습니다.");
             } else {
               alert("수정 오류입니다.");
             }
