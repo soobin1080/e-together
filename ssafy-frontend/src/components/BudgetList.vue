@@ -62,7 +62,7 @@
         <col width="15%" />
         <thead>
           <tr style="font-size:10pt; text-align:center;">
-            <th>항목</th>
+            <th class="">항목</th>
             <th>수량</th>
             <th>가격</th>
             <th>삭제</th>
@@ -70,7 +70,7 @@
         </thead>
         <tbody>
           <tr v-for="i in computedBudgetList.length" :key="i" style="font-size:10pt;">
-            <td v-html="computedBudgetList[i-1].pro_name" class="product"></td>
+            <td v-html="computedBudgetList[i-1].pro_name" class="product d-inline-block text-center"></td>
             <!-- <td v-html="list[i-1].quantity" class="quantity" style="text-align:center"></td> -->
             <td class style="text-align:center">
               <!-- <input
@@ -81,8 +81,8 @@
                 :value="computedBudgetList[i-1].quantity"
                 min="1"
               /> -->
-              <div class="qty mt-1">
-                <span class="minus bg-dark" @click="changeQuantity(computedBudgetList[i-1], i-1, 'm')">-</span>
+              <div class="qty mt-1 d-inline-block">
+                <!-- <span class="minus bg-dark" @click="changeQuantity(computedBudgetList[i-1], i-1, 'm')">-</span>
                 <input 
                   type="number" 
                   class="count" 
@@ -94,7 +94,7 @@
                     changeBudget = computedBudgetList[i-1]
                     changeBudgetIdx = i-1
                     ">
-                <span class="plus bg-dark" @click="changeQuantity(computedBudgetList[i-1], i-1, 'p')">+</span>
+                <span class="plus bg-dark" @click="changeQuantity(computedBudgetList[i-1], i-1, 'p')">+</span> -->
               </div>
             </td>
 
@@ -326,18 +326,8 @@ export default {
     },
 
     changeQuantity(budget, idx, changeOpe) {
-      console.log(budget)
-      // const oldvalue = this.computedBudgetList[idx].quantity;
-      // const newvalue = event.target.value;
       let ope = changeOpe === "m" ? "m": "p";
       if (ope === "m" && budget.quantity-1 === 0) return
-      // if (oldvalue > newvalue) {
-      //   // 감소
-      //   ope = "m";
-      // } else if (oldvalue < newvalue) {
-      //   // 증가
-      //   ope = "p";
-      // }
       let changeInfo = {
         isETC: budget.isETC,
         ope: ope,
@@ -378,7 +368,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.updateMyBudgets)
     if (this.updateMyBudgets === undefined) {
     this.personnel = this.$store.state.personnel;
     this.budget = this.$store.state.budget;

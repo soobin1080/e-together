@@ -68,6 +68,7 @@ import ImgBanner from "../components/ImgBanner";
 import ReviewList from "../components/ReviewList";
 import ResizeText from "vue-resize-text";
 import http from "../http-common";
+import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
   name: "ReviewPage",
@@ -75,6 +76,7 @@ export default {
   components: {
     ImgBanner,
     ReviewList,
+    InfiniteLoading,
   },
   directives: {
     ResizeText
@@ -121,9 +123,10 @@ export default {
       return require("../assets/" + img);
     },
     infiniteHandler($state) {
+      console.log('infiniteHandler')
       let per = this.personnel === "" ? 0 : Number(this.personnel)
       let bud = this.budget === "" ? 0 : Number(this.budget)
-      let requestUrl = per === 0 && bud === 0 ? `/review` : `/review/${per}/${bud}`
+      let requestUrl = (per === 0 && bud === 0) ? `/review` : `/review/${per}/${bud}`
       http
         .get(requestUrl, {
         params: {
@@ -131,12 +134,13 @@ export default {
         },
       }).then(({ data }) => {
         console.log('infiniteHandler')
-        console.log(requestUrl)
-        console.log(data)
         if (data.reviewlist.length) {
           console.log(data.reviewlist)
           this.page += 1;
-          this.allReviews = this.allReviews.concat((data.reviewlist));
+          // this.allReviews = this.allReviews.concat((data.reviewlist));
+          for (let i = 0; i < data.reviewlist.length; i++) {
+            this.allReviews.push(data.reviewlist[i])
+          }
           $state.loaded();
         } else {
           $state.complete();
@@ -169,8 +173,11 @@ export default {
   computed: {
   },  
   mounted() {
-   this.infiniteHandler($state)
-  }
+  //  this.infiniteHandler($state)
+  },
+  // created() {
+  //   this.infiniteHandler($state)
+  // }
 };
 </script>
 

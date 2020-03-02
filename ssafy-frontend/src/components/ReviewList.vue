@@ -1,7 +1,7 @@
 <template>
 <v-flex class="main">
   <v-layout mt-5 wrap style="width: 100%; margin:auto">
-    <v-flex v-for="review in computedAllReview" xs12 sm6 lg4 :key="review">
+    <v-flex v-for="review in computedAllReview" xs12 sm6 lg4 :key="review.review_num">
       <Review 
         :review="review" 
         class="ma-2"
@@ -50,8 +50,8 @@
     },
     computed: {
       computedAllReview: function () {
-        console.log("computedAllReviews")
-        console.log(this.allReviews)
+        // console.log("computedAllReviews")
+        // console.log(this.allReviews)
         return this.allReviews
       }
     },
