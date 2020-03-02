@@ -114,8 +114,9 @@
         </div>
       </div>
 
+      
       <!-- <v-flex xs12 md9 lg9 class="main"> -->
-      <v-row style="padding-top:40px; float:left">
+      <v-row style="padding-top:40px">
         <v-col lg="8" style="padding-top:0px;">
           <!-- search box -->
           <v-text-field
@@ -129,10 +130,6 @@
             v-model="keyword"
             v-on:keyup="getProductListByCaterogy(category, pages, keyword)"
           ></v-text-field>
-
-          <div class="text-center">
-            <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
-          </div>
 
           <b-card no-body style>
             <v-tabs dark background-color="darken-3" show-arrows>
@@ -149,7 +146,21 @@
 
             <!-- page navigation-->
             <br />
-
+            <div class="text-center">
+              <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
+            </div>
+            <br />
+            <!-- 카테고리 탭 -->
+            <!-- <b-tabs small card :tabs="tabs">
+              <b-tab v-for="tab in tabs" :key="tab.title" :title="tab.title" @click="clickTab">
+              </b-tab>
+              <ProductList 
+                :products="products" 
+                :pages="pages" 
+                :category="category"
+                :productPerPage="productPerPage"></ProductList>
+              
+            </b-tabs>-->
 
             <!-- modal 플로팅 버튼-->
             <v-btn
@@ -170,21 +181,19 @@
         <!-- 장보기 내역 -->
         <!-- <v-col> -->
         <v-flex d-none d-lg-flex>
-          <BudgetList 
-            @changeRecommendBar="recommendBudgetBar"
-            :updateMyBudgets="updateMyBudgets"></BudgetList>
+          <BudgetList @changeRecommendBar="recommendBudgetBar"></BudgetList>
         </v-flex>
         <!-- </v-col> -->
       </v-row>
     </v-flex>
     <!-- modal 창 -->
     <v-row justify="center">
-      <v-dialog v-model="budgetDialog" scrollable max-width="500px">
-        <BudgetList 
-          @changeRecommendBar="recommendBudgetBar"
-          :updateMyBudgets="updateMyBudgets"></BudgetList>
+      <v-dialog v-model="budgetDialog" scrollable max-width="400px">
+        <BudgetList @changeRecommendBar="recommendBudgetBar"></BudgetList>
       </v-dialog>
     </v-row>
+
+
    
     <!-- <BudgetModal id="budgetModal">
     </BudgetModal>-->
