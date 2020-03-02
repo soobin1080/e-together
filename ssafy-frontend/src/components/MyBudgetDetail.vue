@@ -209,25 +209,13 @@ export default {
         this.likeClass = "far fa-thumbs-up";
         this.dislikeClass = "fas fa-thumbs-down";
       }
-      // if (status == 0) {
-      //   return
-      // } else if (status == 1) {
-      //   like.className = 'fas fa-thumbs-up'
-      //   dislike.className = 'far fa-thumbs-up'
-      // } else {
-      //   like.className = 'far fa-thumbs-up'
-      //   dislike.className = 'fas fa-thumbs-up'
-      // }
+      
     },
     changeLikeStatus(num) {
-      // console.log(this.computedBudgetInfo.budget_num)
       console.log("changeLikeStatus");
       console.log("num : " + num);
-      // console.log("this suit : "+ this.computedBudgetInfo.suitability)
-      // console.log("computedBudgetNum : "+ this.computedBudgetInfo.budget_num)
       console.log("budget suit : " + this.budgetInfo.suitability);
       if (this.computedBudgetInfo.suitability === num || num == 0) {
-        // console.log("same status")
 
         return;
       } else {
@@ -239,15 +227,6 @@ export default {
           },
           this.$store.getters.requestHeader
         );
-        // if (num === 1) {
-        //   this.likeClass = "fas fa-thumbs-up";
-        //   this.dislikeClass = "far fa-thumbs-down";
-        //   // this.budgetInfo.suitability = 1
-        // } else if (num === 2) {
-        //   this.likeClass = "far fa-thumbs-up";
-        //   this.dislikeClass = "fas fa-thumbs-down";
-        //   // this.budgetInfo.suitability = 2
-        // }
         this.$emit("renewBudgetList");
         this.$emit("showdetail", this.budgetInfo.budget_num);
       }
@@ -262,28 +241,27 @@ export default {
 			const pageHeight = 297 //캔버스 높이 mm
       canvas.width =pdf.width
       
-      let ele = document.querySelector('body')
+      let ele = document.querySelector('#downloadpdf')
 			let width = ele.offsetWidth // 셀렉트한 요소의 px 너비
 			let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
-			let imgHeight = pageWidth * height/width // 이미지 높이값 px to mm 변환
-
+      let imgHeight = pageWidth * height/width // 이미지 높이값 px to mm 변환
 			if(!ele){
-				console.warn(selector + ' is not exist.')
+				// console.warn(selector + ' is not exist.')
 				return false
 			}
 			html2canvas(document.querySelector('body')).then(function(canvas) {
-        let position = 0
+        let position = -120
         var imgData = canvas.toDataURL("image/png"); //캔버스를 이미지로 변환
-        pdf.addImage(imgData, "PNG",0,-120, pageWidth, imgHeight, undefined, 'FAST'); //이미지를 기반으로 pdf생성
+        pdf.addImage(imgData, "PNG",0,position, pageWidth, imgHeight+1, undefined, 'FAST'); //이미지를 기반으로 pdf생성
 
         //Paging 처리
 					let heightLeft = imgHeight //페이징 처리를 위해 남은 페이지 높이 세팅.
-					heightLeft -= pageHeight
+          heightLeft -= pageHeight
 					while (heightLeft >= 0) {
-						position = heightLeft - imgHeight
+            position = -120 + heightLeft - imgHeight
 						pdf.addPage();
-						pdf.addImage(imgData, 'png', 0, position, pageWidth, imgHeight)
-						heightLeft -= pageHeight
+						pdf.addImage(imgData, 'png', 0, position+3, pageWidth, imgHeight)
+            heightLeft -= pageHeight
 					}
 
 
