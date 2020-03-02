@@ -115,7 +115,7 @@
       </div>
 
       <!-- <v-flex xs12 md9 lg9 class="main"> -->
-      <v-row style="padding-top:40px">
+      <v-row style="padding-top:40px;">
         <v-col lg="8" style="padding-top:0px;">
           <!-- search box -->
           <v-text-field
@@ -129,6 +129,10 @@
             v-model="keyword"
             v-on:keyup="getProductListByCaterogy(category, pages, keyword)"
           ></v-text-field>
+
+          <div class="text-center">
+            <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
+          </div>
 
           <b-card no-body style>
             <v-tabs dark background-color="darken-3" show-arrows>
@@ -145,21 +149,7 @@
 
             <!-- page navigation-->
             <br />
-            <div class="text-center">
-              <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
-            </div>
-            <br />
-            <!-- 카테고리 탭 -->
-            <!-- <b-tabs small card :tabs="tabs">
-              <b-tab v-for="tab in tabs" :key="tab.title" :title="tab.title" @click="clickTab">
-              </b-tab>
-              <ProductList 
-                :products="products" 
-                :pages="pages" 
-                :category="category"
-                :productPerPage="productPerPage"></ProductList>
-              
-            </b-tabs>-->
+
 
             <!-- modal 플로팅 버튼-->
             <v-btn
@@ -195,7 +185,7 @@
           :updateMyBudgets="updateMyBudgets"></BudgetList>
       </v-dialog>
     </v-row>
-
+   
     <!-- <BudgetModal id="budgetModal">
     </BudgetModal>-->
   </div>
@@ -312,6 +302,7 @@ export default {
   mounted() {
     // console.log(this.$route.params.myBudgets)
     this.getProductListByCaterogy(this.category, 1, this.keyword);
+    this.recommendBudgetBar(this.$store.state.budget)
   },
   created() {
     this.updateMyBudgets = this.$route.params.myBudgets
@@ -432,6 +423,11 @@ export default {
             console.log(res)
             const keys = Object.keys(res.data);
             const vals = Object.values(res.data);
+            const total = vals.reduce((total, val) => (total + val), 0)
+            if (total === 0) {
+              alert('범위에 맞는 예산이 없습니다. 다른 예산을 입력해주세요')
+              return
+            }
             const categoryDict = this.$store.state.recommendDict;
             for (let i = 0; i < keys.length; i++) {
               if (this.$store.state.ETC.includes(categoryDict[keys[i]])) {

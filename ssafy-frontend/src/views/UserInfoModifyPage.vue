@@ -89,12 +89,10 @@ export default {
   }),
   methods: {
     getUserDetail() {
-      console.log("getUserDetail active");
       let myEmail = sessionStorage.getItem("email");
       http
         .post(`/myselfDetail/${myEmail}`)
         .then(res => {
-          // console.log(res)
           this.user.email = res.data.email;
           this.user.name = res.data.name;
           this.user.phone = res.data.phone;
@@ -105,14 +103,9 @@ export default {
     },
     validate() {
       if (this.$refs.form.validate()) {
-        // let formData = new formData()
-        // formData.append('email', this.email)
-        // formData.append('pwd', this.pwd)
-        // formData.append('phone', this.phone)
         http
           .post("/updateMyself", this.user, this.$store.getters.requestHeader)
           .then(res => {
-            console.log(res);
             if (
               res.data.state == "succ" &&
               this.$store.getters.isLoggedIn == true
