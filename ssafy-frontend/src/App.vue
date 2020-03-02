@@ -12,7 +12,6 @@
 import store from "./store";
 import Header from "./views/Header";
 import Footer from "./views/Footer";
-import {mapState, mapActions, mapGetters} from 'vuex'
 export default {
   name: "App",
   store,

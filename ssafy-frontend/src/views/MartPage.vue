@@ -8,7 +8,7 @@
         v-resize-text
       >Mart</div>
     </ImgBanner>
-    <v-flex xs12 md9 lg9 class="main">
+    <!-- <v-flex xs12 md9 lg9 class="main"> -->
       <!-- 비율 추천 그래프 -->
       <div class="mt-8">
         <div>
@@ -114,68 +114,68 @@
         </div>
       </div>
 
-      <!-- <v-flex xs12 md9 lg9 class="main"> -->
-      <v-row style="padding-top:40px; float:left">
-        <v-col lg="8" style="padding-top:0px;">
-          <!-- search box -->
-          <v-text-field
-            width="100px"
-            flat
-            hide-details
-            label="Search"
-            prepend-inner-icon="search"
-            solo-inverted
-            shaped
-            v-model="keyword"
-            v-on:keyup="getProductListByCaterogy(category, pages, keyword)"
-          ></v-text-field>
+      <v-flex xs12 md9 lg9 class="main">
+        <v-row style="padding-top:40px; float:left">
+          <v-col lg="8" style="padding-top:0px;">
+            <!-- search box -->
+            <v-text-field
+              width="100px"
+              flat
+              hide-details
+              label="Search"
+              prepend-inner-icon="search"
+              solo-inverted
+              shaped
+              v-model="keyword"
+              v-on:keyup="getProductListByCaterogy(category, pages, keyword)"
+            ></v-text-field>
 
-          <div class="text-center">
-            <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
-          </div>
+            <div class="text-center">
+              <v-pagination v-model="pages" :length="pagingLength" total-visible="7"></v-pagination>
+            </div>
 
-          <b-card no-body style>
-            <v-tabs dark background-color="darken-3" show-arrows>
-              <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
-              <v-tab
-                v-for="tab in tabs"
-                :key="tab.title"
-                @click="getProductListByCaterogy(tab.title, pages, keyword)"
-                v-model="category"
-              >{{tab.title}}</v-tab>
-            </v-tabs>
+            <b-card no-body style>
+              <v-tabs dark background-color="darken-3" show-arrows>
+                <v-tabs-slider color="teal lighten-3"></v-tabs-slider>
+                <v-tab
+                  v-for="tab in tabs"
+                  :key="tab.title"
+                  @click="getProductListByCaterogy(tab.title, pages, keyword)"
+                  v-model="category"
+                >{{tab.title}}</v-tab>
+              </v-tabs>
 
-            <ProductList :pagingProducts="pagingProducts"></ProductList>
+              <ProductList :pagingProducts="pagingProducts"></ProductList>
 
-            <!-- page navigation-->
-            <br />
+              <!-- page navigation-->
+              <br />
 
 
-            <!-- modal 플로팅 버튼-->
-            <v-btn
-              fixed
-              dark
-              fab
-              bottom
-              right
-              color="#ffd900"
-              @click="modalAppear"
-              class="hidden-lg-only"
-            >
-              <i class="material-icons">shopping_cart</i>
-            </v-btn>
-          </b-card>
-        </v-col>
-        <!-- v-b-modal.modal-1 -->
-        <!-- 장보기 내역 -->
-        <!-- <v-col> -->
-        <v-flex d-none d-lg-flex>
-          <BudgetList 
-            @changeRecommendBar="recommendBudgetBar"
-            :updateMyBudgets="updateMyBudgets"></BudgetList>
-        </v-flex>
-        <!-- </v-col> -->
-      </v-row>
+              <!-- modal 플로팅 버튼-->
+              <v-btn
+                fixed
+                dark
+                fab
+                bottom
+                right
+                color="#ffd900"
+                @click="modalAppear"
+                class="hidden-lg-only"
+              >
+                <i class="material-icons">shopping_cart</i>
+              </v-btn>
+            </b-card>
+          </v-col>
+          <!-- v-b-modal.modal-1 -->
+          <!-- 장보기 내역 -->
+          <!-- <v-col> -->
+          <v-flex d-none d-lg-flex>
+            <BudgetList 
+              @changeRecommendBar="recommendBudgetBar"
+              :updateMyBudgets="updateMyBudgets"></BudgetList>
+          </v-flex>
+          <!-- </v-col> -->
+        </v-row>
     </v-flex>
     <!-- modal 창 -->
     <v-row justify="center">
@@ -341,6 +341,8 @@ export default {
   watch: {
     pages: function() {
       this.getProductListByCaterogy(this.category, this.pages, this.keyword);
+      window.scrollTo(0,0);
+      console.log(window.scrollTop)
     }
   },
   methods: {
