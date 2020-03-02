@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="400" min-height="330">
+  <v-card class="mx-auto" max-width="400" min-height="340">
     <v-img class="white--text align-end" height="200px" :src="img"></v-img>
     <v-tooltip top>
       <template v-slot:activator="{ on }">
@@ -9,13 +9,17 @@
       <span>{{pro_name}}</span>
     </v-tooltip>
 
-    <v-card-subtitle style="padding-top:5px">
-      <p class="pb-0" style="float:left; font-size:10px">{{weight}} &nbsp;</p>
-      <p class="pb-0" style="float:right; font-size:15px; font-weight:bold">{{price}}원</p>
+    <v-card-subtitle class="card-second-line" v-if="weight">
+      <p class="pb-0 mb-0" style="float:left; font-size:0.7rem">{{weight}}</p><br>
+      <p class="pb-0 mb-0" style="float:right; font-size:0.9rem; font-weight:bold">{{price}}원</p>
+    </v-card-subtitle>
+    <v-card-subtitle class="card-second-line" v-else>
+      <p class="pb-0 mb-0" style="float:left; font-size:0.7rem"></p><br>
+      <p class="pb-0 mb-0" style="float:right; font-size:0.9rem; font-weight:bold">{{price}}원</p>
     </v-card-subtitle>
 
-    <v-card-subtitle>
-      <p style="float:left;" class="mr-5">
+    <v-card-subtitle class="card-last-line">
+      <p style="float:left" class="mr-5">
         수량:
         <input
           type="number"
@@ -29,7 +33,7 @@
           :quantity="quantity"
         />
       </p>
-      <p style="float:right; text-align:right;">
+      <p style="float:right">
       <i
         class="far fa-plus-square"
         style="cursor:pointer; color:orange;font-size:1.2rem;"
@@ -148,6 +152,16 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.card-second-line {
+  padding-top:2px;
+  margin: 0 0 2px 0; 
+  padding-bottom:2px;
+}
+
+.card-last-line {
+  margin-top: 5px;
 }
 </style>
 

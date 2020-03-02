@@ -181,13 +181,13 @@ export default {
         http
           .post("/review", formData)
           .then(response => {
-            console.log("SUCCESS!!");
+            // console.log("SUCCESS!!");
             this.$router.push({name:'review'});
-            console.log(response);
+            // console.log(response);
             // this.result = response.;
           })
           .catch(ex => {
-            console.log("FAILURE!!");
+            // console.log("FAILURE!!");
           });
       } else {
         this.dialog = false;

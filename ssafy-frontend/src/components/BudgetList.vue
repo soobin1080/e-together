@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%">
+  <div style="min-width:387px;max-width:387px;">
     <b-list-group-item style="background-color:lightgrey">
       <strong style="text-align:center;">장보기 내역</strong>
       <span
@@ -57,7 +57,7 @@
     <b-list-group-item class="product_table" style="height:500px">
       <table style="width:100%; margin:auto">
         <col width="30%" />
-        <col width="15%" />
+        <col width="20%" />
         <col width="20%" />
         <col width="15%" />
         <thead>
@@ -72,17 +72,9 @@
           <tr v-for="i in computedBudgetList.length" :key="i" style="font-size:10pt;">
             <td v-html="computedBudgetList[i-1].pro_name" class="product d-inline-block text-center"></td>
             <!-- <td v-html="list[i-1].quantity" class="quantity" style="text-align:center"></td> -->
-            <td class style="text-align:center">
-              <!-- <input
-                class="quantity"
-                type="number"
-                style="text-align:right; width:50px"
-                @change="changeQuantity(computedBudgetList[i-1], i-1, $event)"
-                :value="computedBudgetList[i-1].quantity"
-                min="1"
-              /> -->
-              <div class="qty mt-1 d-inline-block">
-                <!-- <span class="minus bg-dark" @click="changeQuantity(computedBudgetList[i-1], i-1, 'm')">-</span>
+            <td class="qty mt-1" style="text-align:center">
+              <!-- <div class="qty mt-1 d-inline-block" style="width:50%"> -->
+                <span class="minus bg-dark" @click="changeQuantity(computedBudgetList[i-1], i-1, 'm')">-</span>
                 <input 
                   type="number" 
                   class="count" 
@@ -94,8 +86,8 @@
                     changeBudget = computedBudgetList[i-1]
                     changeBudgetIdx = i-1
                     ">
-                <span class="plus bg-dark" @click="changeQuantity(computedBudgetList[i-1], i-1, 'p')">+</span> -->
-              </div>
+                <span class="plus bg-dark" @click="changeQuantity(computedBudgetList[i-1], i-1, 'p')">+</span>
+              <!-- </div> -->
             </td>
 
             <td 
@@ -436,11 +428,11 @@ export default {
     color: #000;
     display: inline-block;
     vertical-align: top;
-    font-size: 15px;
+    font-size: 0,7rem;
     font-weight: 700;
     line-height: 15px;
-    padding: 0 2px
-    ;min-width: 35px;
+    /* padding: 0 1px; */
+    min-width: 20px;
     text-align: center;
 }
 .qty .plus {
@@ -448,10 +440,10 @@ export default {
     display: inline-block;
     vertical-align: top;
     color: white;
-    width: 15px;
-    height: 15px;
-    font: 15px/1 Arial,sans-serif;
-    text-align: center;
+    width: 12px;
+    height: 12px;
+    font: 0.8rem/1 Arial,sans-serif;
+    /* text-align: center; */
     border-radius: 50%;
     }
 .qty .minus {
@@ -459,10 +451,10 @@ export default {
     display: inline-block;
     vertical-align: top;
     color: white;
-    width: 15px;
-    height: 15px;
-    font: 15px/1 Arial,sans-serif;
-    text-align: center;
+    width: 12px;
+    height: 12px;
+    font: 0.8rem/1 Arial,sans-serif;
+    /* text-align: center; */
     border-radius: 50%;
     background-clip: padding-box;
 }
