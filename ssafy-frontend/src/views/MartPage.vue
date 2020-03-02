@@ -115,7 +115,7 @@
       </div>
 
       <!-- <v-flex xs12 md9 lg9 class="main"> -->
-      <v-row style="padding-top:40px;">
+      <v-row style="padding-top:40px; float:left">
         <v-col lg="8" style="padding-top:0px;">
           <!-- search box -->
           <v-text-field
