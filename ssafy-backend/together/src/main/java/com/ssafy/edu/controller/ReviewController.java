@@ -12,6 +12,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -53,6 +54,7 @@ public class ReviewController {
 	private IBudgetService budgetservice;
 
 	int recentPage = 0;
+	
 
 	@ApiOperation(value = "전체 review 뿌려주기", response = ReviewPage.class)
 	@RequestMapping(value = "/review", method = RequestMethod.GET)
@@ -86,9 +88,10 @@ public class ReviewController {
 		return new ResponseEntity<ReviewPage>(reviewpage, HttpStatus.OK);
 	}
 
+	@Cacheable(value = "post-single", key = "#review_num")
 	@ApiOperation(value = "review 상세보기", response = ReviewResult.class)
 	@RequestMapping(value = "/review/{review_num}", method = RequestMethod.GET)
-	public ResponseEntity<ReviewDetailResult> getOneReview(@PathVariable int review_num) throws Exception {
+	public ReviewDetailResult getOneReview(@PathVariable int review_num) throws Exception {
 		logger.info("2-------------getOneReview-----------------------------" + new Date());
 
 		ReviewDetailResult reviewdetailresult = new ReviewDetailResult();
@@ -107,7 +110,7 @@ public class ReviewController {
 		reviewdetailresult.setLike_user(like_user);
 		reviewdetailresult.setReview_img(review_img);
 
-		return new ResponseEntity<ReviewDetailResult>(reviewdetailresult, HttpStatus.OK);
+		return reviewdetailresult;
 	}
 
 	@ApiOperation(value = "review 작성하기", response = ReviewResult.class)

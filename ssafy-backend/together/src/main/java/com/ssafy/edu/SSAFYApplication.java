@@ -1,8 +1,10 @@
 package com.ssafy.edu;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+@EnableCaching
 @SpringBootApplication
 @EnableTransactionManagement
 public class SSAFYApplication {
@@ -11,4 +13,5 @@ public class SSAFYApplication {
 		SpringApplication.run(SSAFYApplication.class, args);
 	}
 }
+
 //http://localhost:8197/together/swagger-ui.html

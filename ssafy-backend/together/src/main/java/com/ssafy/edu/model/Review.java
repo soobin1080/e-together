@@ -1,11 +1,12 @@
 package com.ssafy.edu.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class Review {
+public class Review implements Serializable{
 	private int review_num;
 	private int budget_num;
 	private String name;

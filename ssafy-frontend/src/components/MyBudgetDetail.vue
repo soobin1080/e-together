@@ -1,7 +1,7 @@
 <template>
   <div style>
-    <div id="downloadpdf">
-      <table width="100%" style="font-size:15px" class="table-white">
+    <div>
+      <table width="100%" style="font-size:15px" class="table-white"> 
         <tr style="text-align:center;">
           <th>제목</th>
           <td v-html="computedBudgetInfo.budget_title" style="text-align:center"></td>
@@ -233,8 +233,7 @@ export default {
     }
     ,
     makePDF() {     
-     
-			window.html2canvas = html2canvas //Vue.js 특성상 window 객체에 직접 할당해야한다.
+     	window.html2canvas = html2canvas //Vue.js 특성상 window 객체에 직접 할당해야한다./
 			let pdf = new jsPDF('p', 'mm', 'a4')
 			let canvas = pdf.canvas
 			const pageWidth = 210//캔버스 너비 mm
@@ -242,15 +241,21 @@ export default {
       canvas.width =pdf.width
       
       let ele = document.querySelector('#downloadpdf')
-			let width = ele.offsetWidth // 셀렉트한 요소의 px 너비
-			let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
-      let imgHeight = pageWidth * height/width // 이미지 높이값 px to mm 변환
+       console.log("ele : "+ele)
+      let width = ele.offsetWidth // 셀렉트한 요소의 px 너비
+      console.log("width : "+width)
+      let height = ele.offsetHeight // 셀렉트한 요소의 px 높이
+      console.log("height : "+height)
+      let imgHeight = pageWidth*height/width // 이미지 높이값 px to mm 변환
+      
 			if(!ele){
-				// console.warn(selector + ' is not exist.')
+				console.warn(selector + ' is not exist.')
 				return false
-			}
+      }
+      
 			html2canvas(document.querySelector('body')).then(function(canvas) {
-        let position = -120
+        let position = 0
+        console.log("canvas : "+canvas.height)
         var imgData = canvas.toDataURL("image/png"); //캔버스를 이미지로 변환
         pdf.addImage(imgData, "PNG",0,position, pageWidth, imgHeight+1, undefined, 'FAST'); //이미지를 기반으로 pdf생성
 
@@ -258,7 +263,7 @@ export default {
 					let heightLeft = imgHeight //페이징 처리를 위해 남은 페이지 높이 세팅.
           heightLeft -= pageHeight
 					while (heightLeft >= 0) {
-            position = -120 + heightLeft - imgHeight
+            position = heightLeft - imgHeight
 						pdf.addPage();
 						pdf.addImage(imgData, 'png', 0, position+3, pageWidth, imgHeight)
             heightLeft -= pageHeight
@@ -267,6 +272,7 @@ export default {
 
         pdf.save("MyBudget.pdf"); //pdf저장
       });
+
 
 		}
   },

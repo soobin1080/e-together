@@ -1,8 +1,9 @@
 package com.ssafy.edu.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BudgetInfo {
+public class BudgetInfo implements Serializable {
 	private int budget_num;
 	private String user_email;
 	private String budget_title;

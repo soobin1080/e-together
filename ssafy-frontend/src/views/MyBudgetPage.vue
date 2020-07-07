@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-img :src="getImgUrl('budgetlist.jpg')" aspect-ratio="5.5">
+    <v-img :src="getImgUrl('budgetlist.jpg')" aspect-ratio="5.5" data-html2canvas-ignore="true">
       <v-layout align-center justify-center row fill-height>
         <v-flex text-xs-center>
           <span class="text-shadow display-2 font-weight-light">
@@ -31,7 +31,7 @@
         <v-pagination v-model="pages" :length="pagingLength" total-visible="9"></v-pagination>
       </div>
 
-      <div class="mx-auto my-5 flat"  v-if="showflag==true">
+      <div class="mx-auto my-5 flat"  v-if="showflag==true" >
         <MyBudgetDetail
           id="downloadpdf"
           :budgetList="budgetList"

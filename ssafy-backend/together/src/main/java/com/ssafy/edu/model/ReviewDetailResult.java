@@ -1,8 +1,9 @@
 package com.ssafy.edu.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ReviewDetailResult {
+public class ReviewDetailResult implements Serializable {
 	private Review review;
 	private BudgetInfo budgetinfo;
 	private List<BudgetListResult> budgetlist;

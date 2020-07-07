@@ -1,6 +1,8 @@
 package com.ssafy.edu.model;
 
-public class BudgetListResult {
+import java.io.Serializable;
+
+public class BudgetListResult implements Serializable{
 	private Long pro_id;
 	private String pro_name;
 	private int quantity;
